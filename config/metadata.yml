@@ -1,0 +1,924 @@
+---
+metadata:
+  Corpus:
+    title:
+      values:
+      - CGN
+      - SoNaR-500
+  Collection:
+    title:
+      values:
+      - CGN-comp-g
+      - WR-P-E-E_newsletters
+      - WR-P-P-D_newsletters
+      - WR-U-E-D_sms
+  Session:
+    Name:
+      document_count_opensonar: 0
+      document_count_opencgn: 248
+      label: SessionName
+      value_count: 248
+      key: Name
+      group: Session
+      values:
+      - fn000196
+      - fn000220
+      - fn000172
+      - fv600337
+      - fv600689
+      - fn000219
+      - fn000157
+      - fv600713
+      - fv600638
+      - fv600012
+      - fv600677
+      - fv600591
+      - fn000232
+      - fn000145
+      - fv600690
+      - fv600701
+      - fv600626
+      - fn000151
+      - fv600704
+      - fv600629
+      - fv600582
+      - fv600668
+      - fv600331
+      - fv600695
+      - fv600656
+      - fn000211
+      - fv601206
+      - fn000175
+      - fv600644
+      - fv600017
+      - fv600683
+      - fn000163
+      - fn000076
+      - fn000237
+      - fn000193
+      - fn000228
+      - fn000142
+      - fn000216
+      - fv600686
+      - fv600635
+      - fn000204
+      - fv600008
+      - fv600647
+      - fv600709
+      - fv601212
+      - fv600623
+      - fv600674
+      - fv600710
+      - fv600680
+      - fv600578
+      - fv600002
+      - fn000198
+      - fv600641
+      - fn000246
+      - fv601203
+      - fn000159
+      - fn000007
+      - fn000234
+      - fv600653
+      - fn000147
+      - fv600692
+      - fn000222
+      - fn000160
+      - fv600014
+      - fv601208
+      - fn000177
+      - fv600020
+      - fv600632
+      - fv600706
+      - fn000201
+      - fn000165
+      - fn000213
+      - fv600658
+      - fv600718
+      - fv600005
+      - fv600596
+      - fv600671
+      - fv600712
+      - fv600676
+      - fn000069
+      - fn000144
+      - fv600688
+      - fn000168
+      - fn000243
+      - fn000156
+      - fv600011
+      - fv600575
+      - fv600650
+      - fn000231
+      - fn000195
+      - fv600336
+      - fv600637
+      - fv600649
+      - fv600628
+      - fv600703
+      - fv601205
+      - fv600655
+      - fv600593
+      - fv600581
+      - fv600667
+    Title:
+      document_count_opensonar: 0
+      document_count_opencgn: 248
+      label: SessionTitle
+      key: Title
+      value_count: 7
+      group: Session
+      values:
+      - Belgian Senate debate
+      - Dutch parliamentary debate
+      - Flemish parliamentary debate
+      - meeting (about publication of a book)
+      - meeting (faculty meeting)
+      - meeting (of the CLiF board)
+      - panel discussion
+    Date:
+      document_count_opensonar: 0
+      document_count_opencgn: 248
+      label: SessionDate
+      value_count: 6
+      key: Date
+      group: Session
+      values:
+      - '1992-01-01'
+      - '1993-01-01'
+      - '1994-01-01'
+      - '1999-01-01'
+      - '2000-01-01'
+      - '2001-01-01'
+  Location:
+    Continent:
+      document_count_opensonar: 0
+      document_count_opencgn: 248
+      label: LocationContinent
+      key: Continent
+      value_count: 1
+      group: Location
+      values:
+      - Europe
+    Country:
+      document_count_opensonar: 0
+      document_count_opencgn: 248
+      label: LocationCountry
+      key: Country
+      value_count: 2
+      group: Location
+      values:
+      - Belgium
+      - Netherlands
+    Region:
+      document_count_opensonar: 0
+      document_count_opencgn: 158
+      label: LocationRegion
+      key: Region
+      value_count: 3
+      group: Location
+      values:
+      - B-10-
+      - B-261, meeting room
+      - B-370, meeting room
+    Address:
+      document_count_opensonar: 0
+      document_count_opencgn: 158
+      label: LocationAddress
+      key: Address
+      value_count: 3
+      group: Location
+      values:
+      - B-10-
+      - B-261, meeting room
+      - B-370, meeting room
+  Content:
+    Task:
+      document_count_opensonar: 0
+      document_count_opencgn: 248
+      label: ContentTask
+      value_count: 1
+      key: Task
+      group: Content
+      values:
+      - 'Activity: Unspecified'
+    Description:
+      document_count_opensonar: 0
+      document_count_opencgn: 248
+      label: ContentDescription
+      key: Description
+      value_count: 1
+      group: Content
+      values:
+      - 'This file was generated from an IMDI 1.9 file and transformed to IMDI 3.0.
+        The substructure of Genre is replaced by two elements named "Genre" and "SubGenre".
+        The original content of Genre substructure was: Interactional = '''', Discursive
+        = '''', Performance = ''''. These values have been added as Keys to the Content
+        information.'
+  Actor:
+    Type:
+      document_count_opensonar: 218
+      document_count_opencgn: 248
+      label: ActorType
+      value_count: 2
+      key: Type
+      group: Actor
+      values:
+      - author
+      - speaker
+    Education:
+      document_count_opensonar: 0
+      document_count_opencgn: 245
+      label: ActorEducation
+      key: Education
+      value_count: 3
+      group: Actor
+      values:
+      - HIGHER EDUCATION
+      - LOWER EDUCATION
+      - MIDDLE EDUCATION
+    HomeLanguage:
+      document_count_opensonar: 0
+      document_count_opencgn: 93
+      label: ActorHomeLanguage
+      key: HomeLanguage
+      value_count: 4
+      group: Actor
+      values:
+      - BRABANTS
+      - Dutch
+      - TWENTS
+      - 'dialect: Eeklo'
+    Sex:
+      document_count_opensonar: 216
+      document_count_opencgn: 248
+      label: ActorSex
+      value_count: 4
+      key: Sex
+      group: Actor
+      values:
+      - F
+      - Female
+      - M
+      - Male
+    FirstLanguageId:
+      document_count_opensonar: 0
+      document_count_opencgn: 90
+      label: ActorFirstLanguageId
+      value_count: 1
+      key: FirstLanguageId
+      group: Actor
+      values:
+      - ISO639-1:dut
+    HomeLanguageId:
+      document_count_opensonar: 0
+      document_count_opencgn: 93
+      label: ActorHomeLanguageId
+      key: HomeLanguageId
+      value_count: 1
+      group: Actor
+      values:
+      - ISO639-1:dut
+    Anonymized:
+      document_count_opensonar: 0
+      document_count_opencgn: 248
+      label: ActorAnonymized
+      key: Anonymized
+      value_count: 1
+      group: Actor
+      values:
+      - 'true'
+    WorkLanguageId:
+      document_count_opensonar: 0
+      document_count_opencgn: 90
+      label: ActorWorkLanguageId
+      key: WorkLanguageId
+      value_count: 1
+      group: Actor
+      values:
+      - ISO639-1:dut
+    FirstLanguage:
+      document_count_opensonar: 0
+      document_count_opencgn: 90
+      label: ActorFirstLanguage
+      key: FirstLanguage
+      value_count: 6
+      group: Actor
+      values:
+      - ACHTERHOEKS
+      - BRABANTS
+      - Dutch
+      - TWENTS
+      - 'dialect: Eeklo'
+      - 'regiolect: Rupelstreek'
+    WorkLanguage:
+      document_count_opensonar: 0
+      document_count_opencgn: 90
+      label: ActorWorkLanguage
+      key: WorkLanguage
+      value_count: 2
+      group: Actor
+      values:
+      - Dutch
+      - 'regiolect: Vlaamse tussentaal'
+    Age:
+      document_count_opensonar: 205
+      document_count_opencgn: 245
+      label: ActorAge
+      value_count: 58
+      key: Age
+      group: Actor
+      values:
+      - '11'
+      - '12'
+      - '13'
+      - '14'
+      - '15'
+      - '16'
+      - '17'
+      - '18'
+      - '19'
+      - '20'
+      - 20-30
+      - '21'
+      - '22'
+      - '23'
+      - '24'
+      - '25'
+      - '26'
+      - '27'
+      - '28'
+      - '29'
+      - '30'
+      - '31'
+      - '32'
+      - '33'
+      - '34'
+      - '35'
+      - '36'
+      - '37'
+      - '38'
+      - '39'
+      - '40'
+      - '41'
+      - '42'
+      - '43'
+      - '44'
+      - '45'
+      - '46'
+      - '47'
+      - '48'
+      - '49'
+      - '50'
+      - '51'
+      - '52'
+      - '53'
+      - '54'
+      - '55'
+      - '56'
+      - '57'
+      - '58'
+      - '59'
+      - '60'
+      - '61'
+      - '62'
+      - '63'
+      - '64'
+      - '67'
+      - '68'
+      - '72'
+    Town:
+      document_count_opensonar: 205
+      document_count_opencgn: 0
+      label: ActorTown
+      value_count: 100
+      key: Town
+      group: Actor
+      values:
+      - Aalst
+      - Aalter
+      - Amsterdam
+      - Antwerpen
+      - Arnhem
+      - Assen
+      - Avelgem
+      - Berlare
+      - Bilthoven
+      - Blankenberg
+      - Boom
+      - Boortmeerbeek
+      - Boxtel
+      - Brakel
+      - Brasschaart
+      - Brielle
+      - Buggenhout
+      - Cuijk
+      - De Panne
+      - De Pinte
+      - Deinze
+      - Delft
+      - Den Bosch
+      - Den Haag
+      - Denderwindeke
+      - Deurne
+      - Diest
+      - Dordrecht
+      - Drachten
+      - Drongen
+      - Ede
+      - Eindhoven
+      - Erembodegem
+      - Est
+      - Gemert
+      - Gendt
+      - Genk
+      - Gent
+      - Gistel
+      - Goirle
+      - Gorinchem
+      - Haarlem
+      - Halle
+      - Heist op-den Berg
+      - Helvoirt
+      - Herpen
+      - Hoofddorp
+      - Hooglede
+      - Ieper
+      - Ingelmunster
+      - Kortrijk
+      - Landegem
+      - Ledeberg
+      - Ledegem
+      - Leiden
+      - Lembeke
+      - Leuven
+      - Lochristie
+      - Maassluis
+      - Mariakerke
+      - Mechelen
+      - Meerkerk
+      - Meeuwen
+      - Merksplas
+      - Moerkerke
+      - Mol
+      - Nijmegen
+      - Ninove
+      - Oosteeklo
+      - Oostende
+      - Oudenaarde
+      - Raamsdonksveer
+      - Reuver
+      - Rijswijk
+      - Rossum
+      - Rotselaar
+      - Rotterdam
+      - Schoten
+      - Sint-Armands
+      - Sint-Niklaas
+      - Tessenderlo
+      - Tielt-Winge
+      - Tilburg
+      - Tongeren
+      - Turnout
+      - Utrecht
+      - Velserbroek
+      - Velthoven
+      - Volkel
+      - Vught
+      - Wageningen
+      - Wellen
+      - Werken
+      - Wilrijk
+      - Zaltbommel
+      - Zeist
+      - Zele
+      - Zellik
+      - Zoetermeer
+      - Zottegem
+    MotherTongue:
+      document_count_opensonar: 218
+      document_count_opencgn: 0
+      label: ActorMotherTongue
+      key: MotherTongue
+      value_count: 1
+      group: Actor
+      values:
+      - Dutch
+    Country:
+      document_count_opensonar: 218
+      document_count_opencgn: 0
+      label: ActorCountry
+      key: Country
+      value_count: 2
+      group: Actor
+      values:
+      - Belgium
+      - Netherlands
+    Pseudonym:
+      document_count_opensonar: 218
+      document_count_opencgn: 0
+      label: ActorPseudonym
+      key: Pseudonym
+      value_count: 218
+      group: Actor
+      values:
+      - smser043
+      - smser204
+      - smser130
+      - smser129
+      - smser216
+      - smser195
+      - smser117
+      - smser168
+      - smser016
+      - smser243
+      - smser156
+      - smser004
+      - smser231
+      - smser031
+      - smser010
+      - smser186
+      - smser034
+      - smser174
+      - smser147
+      - smser222
+      - smser198
+      - smser308
+      - smser135
+      - smser210
+      - smser209
+      - smser022
+      - smser108
+      - smser314
+      - smser001
+      - smser126
+      - smser227
+      - smser302
+      - smser039
+      - smser165
+      - smser114
+      - smser239
+      - smser240
+      - smser153
+      - smser201
+      - smser040
+      - smser192
+      - smser105
+      - smser018
+      - smser171
+      - smser245
+      - smser132
+      - smser305
+      - smser144
+      - smser206
+      - smser045
+      - smser120
+      - smser006
+      - smser218
+      - smser183
+      - smser150
+      - smser009
+      - smser236
+      - smser311
+      - smser224
+      - smser048
+      - smser123
+      - smser036
+      - smser188
+      - smser111
+      - smser024
+      - smser149
+      - smser162
+      - smser323
+      - smser248
+      - smser141
+      - smser027
+      - smser102
+      - smser003
+      - smser015
+      - smser242
+      - smser180
+      - smser167
+      - smser203
+      - smser128
+      - smser042
+      - smser215
+      - smser179
+      - smser107
+      - smser021
+      - smser233
+      - smser197
+      - smser221
+      - smser185
+      - smser033
+      - smser158
+      - smser307
+      - smser119
+      - smser146
+      - smser125
+      - smser200
+      - smser113
+      - smser164
+      - smser012
+      - smser176
+      - smser152
+  Text:
+    ProjectName:
+      document_count_opensonar: 227
+      document_count_opencgn: 0
+      label: TextProjectName
+      key: ProjectName
+      value_count: 1
+      group: Text
+      values:
+      - SoNaR
+    CollectionName:
+      document_count_opensonar: 227
+      document_count_opencgn: 0
+      label: TextCollectionName
+      key: CollectionName
+      value_count: 2
+      group: Text
+      values:
+      - Newsletters
+      - SMS
+    CollectionCode:
+      document_count_opensonar: 227
+      document_count_opencgn: 0
+      label: TextCollectionCode
+      key: CollectionCode
+      value_count: 11
+      group: Text
+      values:
+      - Batch.SoNaR.5.NL-C.251
+      - Batch.SoNaR.6.NL-C.251
+      - WR-P-E-E-0000000018
+      - WR-P-E-E-0000000019
+      - WR-P-E-E-0000000020
+      - WR-P-P-D-0000000001
+      - WR-P-P-D-0000000002
+      - WR-P-P-D-0000000003
+      - WR-P-P-D-0000000004
+      - WR-P-P-D-0000000005
+      - WR-P-P-D-0000000006
+    Title:
+      document_count_opensonar: 6
+      document_count_opencgn: 0
+      label: TextTitle
+      value_count: 4
+      key: Title
+      group: Text
+      values:
+      - fnb-bulletin
+      - taal- en spraaktechnologienieuws jul'03
+      - taal- en spraaktechnologienieuws jun'03
+      - taal- en spraaktechnologienieuws mei'03
+    Type:
+      document_count_opensonar: 227
+      document_count_opencgn: 0
+      label: TextType
+      key: Type
+      value_count: 3
+      group: Text
+      values:
+      - WR-P-E-E_newsletters
+      - WR-P-P-D_newsletters
+      - WR-U-E-D_sms
+    CollectionDescription:
+      document_count_opensonar: 218
+      document_count_opencgn: 0
+      label: TextCollectionDescription
+      key: CollectionDescription
+      value_count: 1
+      group: Text
+      values:
+      - SMS text messages
+  TotalSize:
+    Number:
+      document_count_opensonar: 227
+      document_count_opencgn: 0
+      label: TotalSizeNumber
+      key: Number
+      value_count: 181
+      group: TotalSize
+      values:
+      - '105'
+      - '94'
+      - '65'
+      - '78'
+      - '153'
+      - '73'
+      - '51'
+      - '84'
+      - '57'
+      - '122'
+      - '113'
+      - '99'
+      - '140'
+      - '131'
+      - '54'
+      - '135'
+      - '117'
+      - '79'
+      - '138'
+      - '66'
+      - '45'
+      - '133'
+      - '47'
+      - '112'
+      - '181'
+      - '52'
+      - '85'
+      - '46'
+      - '129'
+      - '43'
+      - '95'
+      - '28'
+      - '76'
+      - '121'
+      - '123'
+      - '71'
+      - '67'
+      - '156'
+      - '80'
+      - '2142'
+      - '183'
+      - '305'
+      - '723'
+      - '1132'
+      - '97'
+      - '49083'
+      - '167'
+      - '242'
+      - '64'
+      - '102'
+      - '803'
+      - '6359'
+      - '11588'
+      - '33038'
+      - '1976'
+      - '12040'
+      - '4531'
+      - '107'
+      - '460'
+      - '158'
+      - '973'
+      - '3121'
+      - '24498'
+      - '3485'
+      - '25135'
+      - '206'
+      - '120'
+      - '119'
+      - '8343'
+      - '164'
+      - '125'
+      - '877'
+      - '22159'
+      - '212'
+      - '5194'
+      - '451'
+      - '3990'
+      - '6905'
+      - '104'
+      - '13'
+      - '695'
+      - '143'
+      - '22091'
+      - '9242'
+      - '3756'
+      - '39'
+      - '2980'
+      - '516'
+      - '27963'
+      - '4449'
+      - '534'
+      - '2206'
+      - '18005'
+      - '47176'
+      - '161'
+      - '173'
+      - '2672'
+      - '1695'
+      - '692'
+      - '101'
+    SizeUnit:
+      document_count_opensonar: 227
+      document_count_opencgn: 0
+      label: TotalSizeSizeUnit
+      key: SizeUnit
+      value_count: 1
+      group: TotalSize
+      values:
+      - word tokens
+  Language:
+    Name:
+      document_count_opensonar: 227
+      document_count_opencgn: 0
+      label: LanguageName
+      value_count: 1
+      key: Name
+      group: Language
+      values:
+      - Dutch
+  License:
+    Code:
+      document_count_opensonar: 227
+      document_count_opencgn: 0
+      label: LicenseCode
+      value_count: 4
+      key: Code
+      group: License
+      values:
+      - D-Coi_SoNaR.3-0.NL-A.002
+      - D-Coi_SoNaR.3-0.NL-A.003
+      - SoNaR.5-0.NL-C.251
+      - SoNaR.6-0.NL-C.251
+    Details:
+      document_count_opensonar: 9
+      document_count_opencgn: 0
+      label: LicenseDetails
+      key: Details
+      value_count: 2
+      group: License
+      values:
+      - 'Mail van Dedicon: Sjoerd Bunnik (FNB, tegenwoordig Dedicon), http://www.dedicon.nl/'
+      - 'Mail van Taalunie: Lisanne Teunissen (NTU), http://taalunie.org/'
+    Date:
+      document_count_opensonar: 227
+      document_count_opencgn: 0
+      label: LicenseDate
+      value_count: 2
+      key: Date
+      group: License
+      values:
+      - '2008-01-01'
+      - '2011'
+    Type:
+      document_count_opensonar: 218
+      document_count_opencgn: 0
+      label: LicenseType
+      value_count: 2
+      key: Type
+      group: License
+      values:
+      - '5'
+      - '6'
+  Source:
+    Continent:
+      document_count_opensonar: 227
+      document_count_opencgn: 0
+      label: SourceContinent
+      key: Continent
+      value_count: 1
+      group: Source
+      values:
+      - Europe
+    Country:
+      document_count_opensonar: 227
+      document_count_opencgn: 0
+      label: SourceCountry
+      key: Country
+      value_count: 4
+      group: Source
+      values:
+      - Belgium
+      - NL
+      - NL/B
+      - Netherlands
+    Name:
+      document_count_opensonar: 218
+      document_count_opencgn: 0
+      label: SourceName
+      value_count: 7
+      key: Name
+      group: Source
+      values:
+      - app
+      - form
+      - iphone
+      - lc1
+      - lc36
+      - lc4
+      - textonly
+  Publication:
+    Publisher:
+      document_count_opensonar: 9
+      document_count_opencgn: 0
+      label: PublicationPublisher
+      key: Publisher
+      value_count: 2
+      group: Publication
+      values:
+      - FNB (NL)
+      - NTU (NL/B)
+  Translation:
+    Translated:
+      document_count_opensonar: 218
+      document_count_opencgn: 0
+      label: TranslationTranslated
+      key: Translated
+      value_count: 1
+      group: Translation
+      values:
+      - N

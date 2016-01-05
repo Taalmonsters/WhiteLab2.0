@@ -1,0 +1,60 @@
+<% in_paragraph = false %>
+<% paragraph_type = nil %>
+<% in_sentence = false %>
+<% paragraphs = [] %>
+<% sentences = [] %>
+<div class="row" id="document-content">
+	<div class="row pagination-row">
+		<div class="pagination pagination-top"></div>
+	</div>
+	<% if !@document['content']['audio_file'].blank? && !@document['content']['audio_file'].eql?('Unknown') %>
+		<div class="padding-bottom-20">
+			<a href="#" class="playsound btn btn-xs btn-info" data-audio-url="/documents/<%= @xmlid %>/audio?format=mp3" data-audio-id="<%= @xmlid %>" data-begin-time="<%= !@document['content']['begin_time'].eql?('Unknown') ? @document['content']['begin_time'] : '' %>" data-end-time="<%= !@document['content']['end_time'].eql?('Unknown') ? @document['content']['end_time'] : '' %>">
+				<span class="glyphicon glyphicon-play"></span> Play sound
+			</a>
+		</div>
+	<% end %>
+	<div class="div">
+	<% @document['content']['paragraphs'].each do |p,paragraph| %>
+		<div class="<%= paragraph['paragraph_type'] %>">
+			<% paragraph['sentences'].each do |s,sentence| %>
+				<div class="sentence">
+					<% if sentence.has_key?('begin_time') && sentence.has_key?('end_time') && !@document['content']['audio_file'].eql?('Unknown') %>
+						<a href="#" class="playsound btn btn-xs btn-info" data-audio-url="/documents/<%= @xmlid %>/audio?format=mp3" data-audio-id="<%= @xmlid %>" data-begin-time="<%= !sentence['begin_time'].eql?('Unknown') ? sentence['begin_time'] : '' %>" data-end-time="<%= !sentence['end_time'].eql?('Unknown') ? sentence['end_time'] : '' %>">
+							<span class="glyphicon glyphicon-play"></span>
+						</a>
+					<% end %>
+					<% if sentence.has_key?('sentence_speaker') && !sentence['sentence_speaker'].blank? %>
+						<span class="speaker"><%= sentence['sentence_speaker'] %>:</span>
+					<% end %>
+					<% sentence['tokens'].each do |token| %>
+						<div class="word" id="<%= token['xmlid'] %>">
+							<span class="t<%= token.has_key?('hit') && token['hit'] == true ? ' hit' : '' %>">
+								<a><%= token['word_type'].html_safe %></a>
+							</span>
+							<span class="attributes hoverdiv">
+								<table class="table dark-green no-margin">
+									<thead>
+										<tr><th>ID</th><th><%= token['xmlid'] %></th></tr>
+									</thead>
+									<tbody>
+										<tr><th><%= t(:"data_labels.keys.word_type").capitalize %></th><td><%= token['word_type'] %></td></tr>
+										<tr><th><%= t(:"data_labels.keys.lemma").capitalize %></th><td><%= token['lemma'] %></td></tr>
+										<tr><th><%= t(:"data_labels.keys.pos").capitalize %></th><td><%= token['pos_tag'] %></td></tr>
+										<% if token.has_key?('phonetic') && !token['phonetic'].blank? %>
+											<tr><th><%= t(:"data_labels.keys.phonetic").capitalize %></th><td><%= token['phonetic'] %></td></tr>
+										<% end %>
+									</tbody>
+								</table>
+							</span>
+						</div>
+					<% end %>
+				</div>
+			<% end %>
+		</div>
+	<% end %>
+	</div>
+	<div class="row pagination-row">
+		<div class="pagination pagination-top"></div>
+	</div>
+</div>

@@ -1,0 +1,37 @@
+<% if values.size > 0 %>
+	<% corpus_keys = values[0]['corpus_counts']['corpora'].delete_if {|x| ['value','document_count'].include?(x) } %>
+	<label class="control-label"><%= t(:'other.keys.top').capitalize %> <%= values.size %> <%= t(:'data_labels.keys.most_frequent_values') %></label><br />
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th><%= t(:'data_labels.keys.value').capitalize %></th>
+				<th><%= t(:'data_labels.keys.frequency').capitalize %> (<%= t(:'data_labels.keys.document') %>)</th>
+				<% if corpus_keys.size > 0 %>
+					<% corpus_keys.sort.each do |c| %>
+						<th><%= c %></th>
+					<% end %>
+				<% end %>
+			</tr>
+		</thead>
+		<tbody>
+			<% @values.each do |v| %>
+				<tr>
+					<td><%= v['value'] %></td>
+					<td><%= v['document_count'] %></td>
+					<% if corpus_keys.size > 0 %>
+						<% corpus_keys.sort.each do |c| %>
+							<% if v.has_key?('corpus_counts') && v['corpus_counts'].has_key?('corpora') && v['corpus_counts']['corpora'].include?(c) %>
+								<% hash = Hash[v['corpus_counts']['corpora'].map.with_index.to_a] %>
+								<td><%= number_with_delimiter(v['corpus_counts']['counts'][hash[c]], :delimiter => t(:'other.keys.numeric_delimiter')) %></td>
+							<% else %>
+								<td>0</td>
+							<% end %>
+						<% end %>
+					<% end %>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+<% else %>
+	<label class="control-label"><%= t(:"instructions.keys.no_results").html_safe %></label>
+<% end %>

@@ -1,0 +1,64 @@
+<% pages = total % number > 0 ? ((total - (total % number)) / number) + 1 : total / number %>
+<% current_page = (offset / number) + 1 %>
+<% prev_page = current_page - 1 %>
+<% next_page = current_page + 1 %>
+<% min_page = (current_page - 3) < 1 ? 1 : current_page - 3 %>
+<% max_page = (current_page + 3) > pages ? pages : current_page + 3 %>
+<% if !defined?(numbarr) %>
+	<% numbarr = [10,20,50] %>
+<% end %>
+<div class="col-xs-12 pagination">
+	<div class="col-sm-3 left-aligned">
+		<%= t(:'navigation.keys.show').capitalize %>
+		<select class="pagination-size-select">
+			<% numbarr.each do |nn| %>
+				<% if number.to_i == nn %>
+					<option value="<%= nn %>" selected><%= nn %></option>
+				<% else %>
+					<option value="<%= nn %>"><%= nn %></option>
+				<% end %>
+			<% end %>
+		</select>
+		 per <%= t(:'navigation.keys.page') %>
+	</div>
+	<div class="col-sm-6 center-aligned">
+		<div class="btn-group" role="group" data-total="<%= total %>" data-pages="<%= pages %>" data-min-page="<%= min_page %>" data-max-page="<%= max_page %>" data-current-page="<%= current_page %>">
+			<% if current_page == 1 %>
+				<button type="button" class="btn btn-default" disabled>&lt;&lt;</button>
+				<button type="button" class="btn btn-default" disabled>&lt;</button>
+			<% else %>
+				<button type="button" class="btn btn-default btn-pagination" data-offset="0" data-number="<%= number %>">&lt;&lt;</button>
+				<button type="button" class="btn btn-default btn-pagination" data-offset="<%= (prev_page - 1)*number %>" data-number="<%= number %>">&lt;</button>
+			<% end %>
+			<% if min_page > 1 %>
+				<button type="button" class="btn btn-default" disabled>&hellip;</button>
+			<% end %>
+			<% if min_page < current_page %>
+				<% (min_page..prev_page).each do |p| %>
+					<button type="button" class="btn btn-default btn-pagination" data-offset="<%= (p - 1)*number %>" data-number="<%= number %>"><%= p %></button>
+				<% end %>
+			<% end %>
+			<button type="button" class="btn btn-primary" disabled><%= current_page %></button>
+			<% if max_page > current_page %>
+				<% (next_page..max_page).each do |p| %>
+					<button type="button" class="btn btn-default btn-pagination" data-offset="<%= (p - 1)*number %>" data-number="<%= number %>"><%= p %></button>
+				<% end %>
+			<% end %>
+			<% if max_page < pages %>
+				<button type="button" class="btn btn-default" disabled>&hellip;</button>
+			<% end %>
+			<% if current_page == pages %>
+				<button type="button" class="btn btn-default" disabled>&gt;</button>
+				<button type="button" class="btn btn-default" disabled>&gt;&gt;</button>
+			<% else %>
+				<button type="button" class="btn btn-default btn-pagination" data-offset="<%= (next_page - 1)*number %>" data-number="<%= number %>">&gt;</button>
+				<button type="button" class="btn btn-default btn-pagination" data-offset="<%= (pages - 1)*number %>" data-number="<%= number %>">&gt;&gt;</button>
+			<% end %>
+		</div>
+	</div>
+	<div class="col-sm-3 right-aligned">
+		<%= t(:'navigation.keys.go_to').capitalize %> <%= t(:'navigation.keys.page') %>
+		<%= select_tag("go_to", options_for_select((1..pages), [current_page]), :class => "pagination-go-to", :data => { :number => number }) %>
+	</div>
+</div>
+<%= render partial: "/layouts/export" %>

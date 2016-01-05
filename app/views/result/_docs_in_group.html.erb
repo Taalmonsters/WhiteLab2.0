@@ -1,0 +1,10 @@
+<% if @docs && @docs.any? %>
+	<% @docs.each do |doc| %>
+		<tr>
+			<td class="doc"><%= doc['docpid'] %></td>
+			<td><%= doc['collection'] %></td>
+			<td><%= doc['corpus'] %></td>
+			<td><%= doc['hit_count'] %></td>
+		</tr>
+	<% end %>
+<% end %>

@@ -1,0 +1,59 @@
+<%= form_tag "/metadata/"+metadatum['label']+"/update", :id => 'metadatum-update-form', :class => "remote-form", :method => "PUT", :remote => true do %>
+	<div class="row">
+		<div class="errors col-xs-12 panel-error hidden"><div class="panel-body"></div></div>
+		<div class="col-xs-12 col-sm-6">
+			<div class="form-group">
+				<%= label_tag :group, t(:'data_labels.keys.group').capitalize, class: 'control-label' %> <a class="info-panel-toggle">?</a>
+				<div class="panel panel-info hidden">
+					<div class="panel-body"><%= t(:'instructions.keys.metadatum_group_description') %></div>
+				</div>
+				<%= text_field_tag :group, metadatum['group'], class: 'form-control' %>
+			</div>
+			<div class="form-group">
+				<%= label_tag :key, t(:'data_labels.keys.key').capitalize, class: 'control-label' %> <a class="info-panel-toggle">?</a>
+				<div class="panel panel-info hidden">
+					<div class="panel-body"><%= t(:'instructions.keys.metadatum_key_description') %></div>
+				</div>
+				<div class="panel panel-error hidden">
+					<div class="panel-body"><%= t(:'instructions.keys.metadatum_key_error') %></div>
+				</div>
+				<%= text_field_tag :key, metadatum['key'], class: 'form-control alphanumeric-only' %>
+			</div>
+			<div class="form-group">
+				<%= label_tag :explorable, t(:'data_labels.keys.explorable').capitalize, class: 'control-label' %> <a class="info-panel-toggle">?</a>
+				<div class="panel panel-info hidden">
+					<div class="panel-body"><% if metadatum['explorable'].blank? || metadatum['explorable'] == true %><%= t(:'instructions.keys.metadatum_explorable_description_checked') %><% else %><%= t(:'instructions.keys.metadatum_explorable_description_unchecked') %><% end %></div>
+				</div>
+				<% if metadatum.has_key?('explorable') && metadatum['explorable'].eql?(false) %>
+					<%= select_tag :explorable, options_for_select([['true', 'true'], ['false', 'false']], 'false'), class: 'form-control' %>
+				<% else %>
+					<%= select_tag :explorable, options_for_select([['true', 'true'], ['false', 'false']], 'true'), class: 'form-control' %>
+				<% end %>
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-6">
+			<div class="form-group">
+				<%= label_tag :value_count, t(:'data_labels.keys.value_count').capitalize, class: 'control-label' %>
+				<%= number_field_tag :value_count, metadatum['value_count'], class: 'form-control', disabled: true %>
+			</div>
+			<div class="form-group">
+				<%= label_tag :value_type, t(:'data_labels.keys.value_type').capitalize, class: 'control-label' %><br />
+				<%= select_tag :value_type, options_for_select([[t(:'data_labels.keys.text').capitalize, 'text'], [t(:'data_labels.keys.number').capitalize, 'number'], [t(:'data_labels.keys.date').capitalize, 'date'], [t(:'data_labels.keys.year').capitalize, 'year'], [t(:'data_labels.keys.boolean').capitalize, 'boolean']], metadatum['value_type']), class: 'form-control' %>
+			</div>
+			<div class="form-group">
+				<%= label_tag :searchable, t(:'data_labels.keys.searchable').capitalize, class: 'control-label' %> <a class="info-panel-toggle">?</a>
+				<div class="panel panel-info hidden">
+					<div class="panel-body"><% if metadatum['searchable'].blank? || metadatum['searchable'] == true %><%= t(:'instructions.keys.metadatum_searchable_description_checked') %><% else %><%= t(:'instructions.keys.metadatum_searchable_description_unchecked') %><% end %></div>
+				</div>
+				<% if metadatum.has_key?('searchable') && metadatum['searchable'].eql?(false) %>
+					<%= select_tag :searchable, options_for_select([['true', 'true'], ['false', 'false']], 'false'), class: 'form-control' %>
+				<% else %>
+					<%= select_tag :searchable, options_for_select([['true', 'true'], ['false', 'false']], 'true'), class: 'form-control' %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12"><%= submit_tag t(:'button_labels.keys.save').capitalize, class: "btn btn-primary" %></div>
+	</div>
+<% end %>

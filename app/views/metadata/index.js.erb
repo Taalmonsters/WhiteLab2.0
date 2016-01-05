@@ -1,0 +1,6 @@
+$('#metadata').data('number',<%= @number %>);
+$('#metadata').data('offset',<%= @offset %>);
+$('#metadata').data('sort','<%= @sort %>');
+$('#metadata').data('order','<%= @order %>');
+$('#metadata > div.metadata-list').html("<%= escape_javascript(raw render partial: "/metadata/index", layout: false, locals: { metadata: @metadata }) %>");  
+$('#metadata > div.pagination').html('<%= escape_javascript(raw render partial: "/layouts/pagination", layout: false, locals: { url: '/metadata/index.js', total: @total, offset: @offset, number: @number }) %>');

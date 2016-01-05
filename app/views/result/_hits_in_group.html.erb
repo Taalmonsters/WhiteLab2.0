@@ -1,0 +1,9 @@
+<% if @hits && @hits.any? %>
+	<% @hits.each do |hit| %>
+		<tr>
+			<td class="right-aligned"><%= hit['text_left'] %></td>
+			<td class="hit center-aligned"><%= hit['hit_text'] %></td>
+			<td><%= hit['text_right'] %></td>
+		</tr>
+	<% end %>
+<% end %>

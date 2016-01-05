@@ -1,0 +1,16 @@
+<div class="row" id="document-metadata">
+	<div class="col-xs-12">
+		<% @document['metadata'].each do |group, keys| %>
+			<table class="table">
+				<thead><tr><th colspan="2"><%= t(:"metadata_groups.keys.#{group}") %></th></tr></thead>
+				<tbody>
+					<% keys.each do |key, values| %>
+						<% values.each_with_index do |value, i| %>
+							<tr><th class="key-label"><%= i == 0 ? t(:"metadata_keys.keys.#{key}") : '' %></th><td><%= value %></td></tr>
+						<% end %>
+					<% end %>
+				</tbody>
+			</table>
+		<% end %>
+	</div>
+</div>

@@ -1,0 +1,15 @@
+$('#history-dialog').dialog('option', 'title', '<%= t(:'queries.keys.query_history').capitalize %>');
+$('#query-list').html("<%= escape_javascript(raw render partial: "/query/history", layout: false) %>");
+var queryId = $("a.show-history").data('query-id');
+if (queryId != null) {
+	$("tr#"+queryId).addClass("active");
+	$("tr#"+queryId+" a.remove-query").addClass("hidden");
+}
+
+<% if @has_unfinished_queries || @has_unfinished_export_queries %>
+setTimeout(function(){
+	var l = $('#query-list').find("table.query-table").first().data("query-history-limit");
+	var el = $('#query-list').find("table.export-query-table").first().data("export-query-history-limit");
+	Whitelab.history.loadQueryList(l,el);
+}, 2000);
+<% end %>

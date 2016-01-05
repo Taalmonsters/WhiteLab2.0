@@ -1,0 +1,11 @@
+<ul class="nav nav-tabs nav-justified">
+	<li role="presentation" class="<%= @tab.blank? || @tab.eql?('content') ? "active" : "" %>">
+		<a href="#" class="document-tab" data-tab="content"><%= t(:"documents.keys.content").capitalize %></a>
+	</li>
+	<li role="presentation" class="<%= !@tab.blank? && @tab.eql?('metadata') ? "active" : "" %>">
+		<a href="#" class="document-tab" data-tab="metadata"><%= t(:"documents.keys.metadata").capitalize %></a>
+	</li>
+	<li role="presentation" class="<%= !@tab.blank? && @tab.eql?('statistics') ? "active" : "" %>">
+		<a href="#" class="document-tab" data-tab="statistics"><%= t(:"documents.keys.statistics").capitalize %></a>
+	</li>
+</ul>

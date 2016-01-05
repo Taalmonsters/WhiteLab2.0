@@ -1,0 +1,22 @@
+<div class="row">
+	<div class="col-xs-12 col-sm-6" style="height: 300px; margin: 25px auto;">
+		<table class="table">
+			<thead>
+				<tr><th colspan="2" class="center-aligned">Document statistics</tr>
+			</thead>
+			<tbody>
+				<tr><th>Tokens</th><td><%= @data['token_count'] %></td></tr>
+				<tr><th>Types</th><td><%= @data['type_count'] %></td></tr>
+				<tr><th>Lemmas</th><td><%= @data['lemma_count'] %></td></tr>
+				<tr><th>Type/token ratio</th><td>1/<%= '%.1f' % (@data['token_count']/(@data['type_count']*1.0)) %> (<%= '%.2f' % (1 / (@data['token_count']/(@data['type_count']*1.0))) %>)</td></tr>
+			</tbody>
+		</table>
+	</div>
+	<div id="pos-distribution-display" class="col-xs-12 col-sm-6" style="height: 300px; margin: 25px auto;"><span class="loading"></span></div>
+</div>
+<div class="row"><div id="vocabulary-growth-display" class="col-xs-12" style="height: 350px; margin: 25px auto;"><span class="loading"></span></div></div>
+
+<script>
+	Whitelab.statistics.loadPosDistribution('/document/<%= @xmlid %>/pos_distribution');
+	Whitelab.statistics.loadVocabularyGrowth('/document/<%= @xmlid %>/vocabulary_growth');
+</script>

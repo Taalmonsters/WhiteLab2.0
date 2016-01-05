@@ -1,0 +1,31 @@
+<div id="metadata-filters" data-filter="<%= !@filter.blank? ? @filter : "" %>" data-total-tokens="<%= @total_tokens %>">
+	<%= accordion "metadata-accordion" do |a| %>
+		<% a.group image_tag('plus.png')+" "+t(:'metadata_filters.keys.metadata_filters').capitalize+" "+content_tag(:label, content_tag(:span, @filtered_total_perc.to_s, :class => "metadata-selected-percentage")+" "+t(:'metadata_filters.keys.selected')+" ("+content_tag(:span, number_with_delimiter(@filtered_total_abs, :delimiter => t(:'other.keys.numeric_delimiter')).to_s, :class => "metadata-selected-absolute", :data => { "selected-tokens" => @filtered_total_abs })+" "+t(:'data_labels.keys.word_token').pluralize+")", :class => "metadata-selected-label") do %>
+			<div class="row padding-top-15">
+				<div id="metadata-header" class="col-xs-12 col-sm-10 col-sm-offset-1">
+					<div class="col-xs-6">
+						<p><%= t(:'metadata_filters.keys.match_these_rules') %>:</p>
+					</div>
+					<div class="col-xs-5 text-right">
+						<p><span class="metadata-selected-percentage"><%= @filtered_total_perc.to_s %></span> <%= t(:'metadata_filters.keys.selected') %> (<span class="metadata-selected-absolute"><%= number_with_delimiter(@filtered_total_abs, :delimiter => t(:'other.keys.numeric_delimiter')).to_s %></span> <%= t(:'data_labels.keys.word_token').pluralize %>)</p>
+					</div>
+				</div>
+			</div>
+			<div class="row padding-bottom-15">
+				<div id="metadata-rules" class="col-xs-12 col-sm-10 col-sm-offset-1"></div>
+			</div>
+			<div class="row shaded border-top padding-top-10 padding-bottom-10">
+				<div id="metadata-options" class="col-xs-12 col-sm-10 col-sm-offset-1">
+				<% if @namespace && @namespace.eql?('search') %>
+						<%= t(:'navigation.keys.show').capitalize %>&nbsp;&nbsp;
+						<%= select_tag(:'show', options_for_select([[t(:'data_labels.keys.hit').pluralize, 'hits'],[t(:'data_labels.keys.document').pluralize]], ['hits'])) %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<%= t(:'metadata_filters.keys.within') %>&nbsp;&nbsp;
+						<%= select_tag(:'within', options_for_select([[t(:'data_labels.keys.document'), 'document'],[t(:'data_labels.keys.paragraph'), 'paragraph'],[t(:'data_labels.keys.sentence'), 'sentence']], ['document'])) %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<%= t(:'metadata_filters.keys.grouped_by') %>&nbsp;&nbsp;
+						<%= select_tag(:'group', options_for_select([[t(:'data_labels.keys.hit').pluralize, 'hits'],[t(:'data_labels.keys.document').pluralize, 'documents']], ['hits'])) %>
+				<% end %>
+				</div>
+			</div>
+		<% end %>
+	<% end %>
+</div>

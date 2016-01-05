@@ -1,0 +1,73 @@
+<% if @query.query_result.blank? || @query.query_result.is_new || @query.query_result.is_running %>
+	<% if @query.query_result.is_new %>
+		<% @query.query_result.execute(true, "EXECUTING QUERY FROM HITS VIEW") %>
+	<% end %>
+	<div class="row">
+		<div class="col-xs-12">
+			<h5 class="warn"><span class="loading"></span></h5>
+		</div>
+	</div>
+<% elsif @query.query_result.is_finished && (@query.query_result.result.blank? || @query.query_result.result.length == 0) %>
+	<div class="row">
+		<div class="col-xs-12">
+			<% if @error && !@error.blank? %>
+				<h5 class="error"><%= @error.to_s.html_safe %></h5>
+			<% else %>
+				<h5 class="warn"><%= t(:"instructions.keys.no_results").html_safe %></h5>
+			<% end %>
+		</div>
+	</div>
+<% elsif !@query.query_result.result.blank? && @query.query_result.result.length > 0 %>
+	<% docs = [] %>
+	<div class="row pagination-row pagination-top">
+		<%= render partial: "/layouts/pagination", layout: false, locals: { numbarr: [50, 100, 200], url: '/'+@namespace+'/result/id/'+@query.id.to_s+'.js', total: @query.query_result.total, offset: @query.query_result.offset, number: @query.query_result.number } %>
+	</div>
+	<div class="row" id="hits">
+		<table class="table table-hover table-striped">
+			<thead>
+				<tr>
+					<th><%= t(:"data_labels.keys.corpus").capitalize %></th>
+					<th class="right-aligned"><%= t(:"results.keys.context").capitalize+" "+t(:"results.keys.left") %></th>
+					<th class="center-aligned"><%= t(:"data_labels.keys.hit").capitalize %></th>
+					<th><%= t(:"results.keys.context").capitalize+" "+t(:"results.keys.right") %></th>
+					<th><%= t(:"data_labels.keys.hit").capitalize+" "+t(:"data_labels.keys.lemma").capitalize %></th>
+					<th><%= t(:"data_labels.keys.hit").capitalize+" "+t(:"data_labels.keys.pos").capitalize %></th>
+					<th><%= t(:"data_labels.keys.hit").capitalize+" "+t(:"data_labels.keys.phonetic").capitalize %></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<% @query.query_result.result.each do |hit| %>
+					<% if !docs.include?(hit["docpid"]) %>
+						<% docs << hit["docpid"] %>
+					<% end %>
+					<tr class="clickable hit-row" data-docpid="<%= hit["docpid"] %>" data-first-index="<%= hit["first_index"] %>" data-last-index="<%= hit["last_index"] %>">
+						<td><%= hit["corpus"] %></td>
+						<td class="right-aligned">
+							&hellip; <%= hit["text_left"].html_safe %>
+						</td>
+						<td class="center-aligned hit-text">
+							<%= hit["hit_text"].html_safe %>
+						</td>
+						<td>
+							<%= hit["text_right"].html_safe %> &hellip;
+						</td>
+						<td><%= hit["hit_lemma"].html_safe %></td>
+						<td><%= hit["hit_pos"] %></td>
+						<td>
+							<% if !hit["begin_time"].blank? && !hit["begin_time"].eql?("Unknown") && !hit["end_time"].blank? && !hit["end_time"].eql?("Unknown") %>
+								<a href="#" class="playsound btn btn-xs btn-info" data-audio-url="/documents/<%= hit['docpid'] %>/audio?format=mp3" data-audio-id="<%= hit['docpid'] +'_'+ hit['first_index'].to_s %>" data-begin-time="<%= hit["begin_time"] %>" data-end-time="<%= hit["end_time"] %>"><span class="glyphicon glyphicon-play"></span></a>
+							<% end %>
+							<%= !hit["hit_phonetic"].blank? ? hit["hit_phonetic"] : '' %>
+						</td>
+						<td style="width: 125px;"><button class="btn btn-default btn-xs show-document" data-docpid="<%= hit["docpid"] %>"><%= t(:"button_labels.keys.show").capitalize+" "+t(:"data_labels.keys.document") %></button></td>
+					</tr>
+					<tr class="hit-context-row hidden" id="<%= hit["docpid"]+"_"+hit["first_index"].to_s+"_"+hit["last_index"].to_s %>"></tr>
+				<% end %>
+			</tbody>
+		</table>
+	</div>
+	<div class="row pagination-row">
+		<%= render partial: "/layouts/pagination", layout: false, locals: { numbarr: [50, 100, 200], url: '/'+@namespace+'/result/id/'+@query.id.to_s+'.js', total: @query.query_result.total, offset: @query.query_result.offset, number: @query.query_result.number } %>
+	</div>
+<% end %>

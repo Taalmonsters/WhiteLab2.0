@@ -1,0 +1,6 @@
+<div id="<%= @page %>" class="explore-input-display" data-ngram-size="<%= @size ? @size : 0 %>" data-query-filter="<%= @query && !@query.filter.blank? ? @query.filter : "" %>" data-query-group="<%= @query && @query.query_result ? @query.query_result.group : '' %>" data-query-pattern="<%= @query && @query.query_result ? @query.query_result.patt : '' %>"><%= render partial: "explore/"+@page %></div>
+<% if !@document && @query && !['corpora','document'].include?(@page) %>
+	<div class="row" id="query">
+		<div class="col-xs-10 col-xs-offset-1" id="result"><%= render partial: "explore/query" %></div>
+	</div>
+<% end %>

@@ -1,0 +1,57 @@
+<table class="table table-striped">
+	<thead><tr><th colspan="2"></th></tr></thead>
+	<tbody>
+		<% if @namespace.eql?('search') || !@query.patt.eql?('[word=".*"]') %>
+			<tr>
+				<th>CQL <%= t(:"queries.keys.pattern").capitalize %></th>
+				<td class="patt"><%= @query.patt %></td>
+			</tr>
+		<% end %>
+		<% if @namespace.eql?('search') %>
+			<tr>
+				<th><%= t(:"queries.keys.within").capitalize %></th>
+				<td class="within"><%= @query.query_result.within %></td>
+			</tr>
+		<% end %>
+		<% if !@query.filter.blank? %>
+		<tr>
+			<th><%= t(:"queries.keys.filter").capitalize %></th>
+			<td class="filter"><%= @query.filter %></td>
+		</tr>
+		<% end %>
+		<% if !@query.query_result.sort.blank? %>
+		<tr>
+			<th><%= t(:"queries.keys.sort").capitalize %></th>
+			<td>
+				<% if !@query.query_result.sort.blank? && @query.query_result.sort.length > 0 %>
+					<%= @query.query_result.sort %> (<%= @query.query_result.order %>)
+				<% end %>
+			</td>
+		</tr>
+		<% end %>
+		<% if !@query.query_result.group.blank? %>
+		<tr>
+			<th><%= t(:"queries.keys.group").capitalize %></th>
+			<td class="group"><%= @query.query_result.group %></td>
+		</tr>
+		<% end %>
+		<tr>
+			<th><%= t(:"queries.keys.hit_count").capitalize %></th>
+			<td><%= @query.query_result.hit_count.blank? || @query.query_result.hit_count == -1 ? '-' : @query.query_result.hit_count %></td>
+		</tr>
+		<tr>
+			<th><%= t(:"queries.keys.document_count").capitalize %></th>
+			<td><%= @query.query_result.document_count.blank? || @query.query_result.document_count == -1 ? '-' : @query.query_result.document_count %></td>
+		</tr>
+		<% if [8,16].include?(@query.query_result.view) %>
+		<tr>
+			<th><%= t(:"queries.keys.group_count").capitalize %></th>
+			<td><%= @query.query_result.group_count.blank? || @query.query_result.group_count == -1 ? '-' : @query.query_result.group_count %></td>
+		</tr>
+		<% end %>
+		<tr>
+			<th><%= t(:"queries.keys.status").capitalize %></th>
+			<td><%= @query.query_result.text_status %></td>
+		</tr>
+	</tbody>	
+</table>

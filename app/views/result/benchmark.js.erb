@@ -1,0 +1,12 @@
+<% if @error %>
+	$("#<%= @cql_id %>").removeClass("running").addClass("error");
+	$("#<%= @cql_id %>").find("td.status").html("Error");
+<% else %>
+	$("#<%= @cql_id %>").find("td.iterations").html("1000");
+	$("#<%= @cql_id %>").removeClass("running").addClass("finished");
+	$("#<%= @cql_id %>").find("td.status").html("Finished");
+	$("#<%= @cql_id %>").find("td.duration").html("<%= @avg.to_s %>");
+	<!-- $("#<%= @cql_id %>").find("td.report").html("<button class='btn btn-xs benchmark-report-button'>Full report</button>"); -->
+	$("#<%= @cql_id %>-report").html("<td colspan='5'><p><%= @lines.join('</p><p>').html_safe %></p></td>");
+	<!-- $("#<%= @cql_id %>-report").removeClass("hidden"); -->
+<% end %>

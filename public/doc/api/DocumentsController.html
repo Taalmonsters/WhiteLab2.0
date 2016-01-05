@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class DocumentsController - WhiteLab 2.0</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="ApplicationController.html">ApplicationController</a>
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><span class="include">Downloadable</span>
+  
+  
+  
+    <li><a class="include" href="DataFormatHelper.html">DataFormatHelper</a>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-audio">#audio</a>
+    
+    <li ><a href="#method-i-content">#content</a>
+    
+    <li ><a href="#method-i-metadata">#metadata</a>
+    
+    <li ><a href="#method-i-pos_distribution">#pos_distribution</a>
+    
+    <li ><a href="#method-i-set_xmlid">#set_xmlid</a>
+    
+    <li ><a href="#method-i-statistics">#statistics</a>
+    
+    <li ><a href="#method-i-vocabulary_growth">#vocabulary_growth</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-DocumentsController">
+  <h1 id="class-DocumentsController" class="class">
+    class DocumentsController
+  </h1>
+
+  <section class="description">
+    
+<p>Controller for retrieval of document data.</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-audio" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">audio</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Load document audio</p>
+          
+          
+
+          
+          <div class="method-source-code" id="audio-source">
+            <pre><span class="ruby-comment"># File app/controllers/documents_controller.rb, line 9</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">audio</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@xmlid</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:format</span>]
+    <span class="ruby-identifier">audio_file_path</span> = <span class="ruby-node">&quot;#{Rails.configuration.x.audio_dir+&quot;/&quot;+params[:format]+&quot;/&quot;+@xmlid+&quot;.&quot;+params[:format]}&quot;</span>
+    <span class="ruby-identifier">file_begin</span> = <span class="ruby-value">0</span>
+    <span class="ruby-identifier">file_size</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">size</span>(<span class="ruby-identifier">audio_file_path</span>) 
+    <span class="ruby-identifier">file_end</span> = <span class="ruby-identifier">file_size</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>
+  
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">request</span>.<span class="ruby-identifier">headers</span>[<span class="ruby-string">&quot;Range&quot;</span>]
+      <span class="ruby-identifier">status_code</span> = <span class="ruby-string">&quot;200 OK&quot;</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">status_code</span> = <span class="ruby-string">&quot;206 Partial Content&quot;</span>
+      
+      <span class="ruby-identifier">match</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">headers</span>[<span class="ruby-string">&#39;range&#39;</span>].<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/bytes=(\d+)-(\d*)/</span>)
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">match</span>
+        <span class="ruby-identifier">file_begin</span> = <span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>]
+        <span class="ruby-identifier">file_end</span> = <span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">match</span>[<span class="ruby-value">2</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">match</span>[<span class="ruby-value">2</span>].<span class="ruby-identifier">empty?</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">response</span>.<span class="ruby-identifier">header</span>[<span class="ruby-string">&quot;Content-Range&quot;</span>] = <span class="ruby-string">&quot;bytes &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">file_begin</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;-&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">file_end</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;/&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">file_size</span>.<span class="ruby-identifier">to_s</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">response</span>.<span class="ruby-identifier">header</span>[<span class="ruby-string">&quot;Content-Length&quot;</span>] = (<span class="ruby-identifier">file_end</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">file_begin</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>).<span class="ruby-identifier">to_s</span>
+  
+    <span class="ruby-identifier">response</span>.<span class="ruby-identifier">header</span>[<span class="ruby-string">&quot;Cache-Control&quot;</span>] = <span class="ruby-string">&quot;public, must-revalidate, max-age=0&quot;</span>
+    <span class="ruby-identifier">response</span>.<span class="ruby-identifier">header</span>[<span class="ruby-string">&quot;Pragma&quot;</span>] = <span class="ruby-string">&quot;no-cache&quot;</span>
+    <span class="ruby-identifier">response</span>.<span class="ruby-identifier">header</span>[<span class="ruby-string">&quot;Accept-Ranges&quot;</span>]=  <span class="ruby-string">&quot;bytes&quot;</span>
+    <span class="ruby-identifier">response</span>.<span class="ruby-identifier">header</span>[<span class="ruby-string">&quot;Content-Transfer-Encoding&quot;</span>] = <span class="ruby-string">&quot;binary&quot;</span>
+    <span class="ruby-identifier">send_file</span>(<span class="ruby-identifier">audio_file_path</span>, 
+      <span class="ruby-value">:filename</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{params[:xmlid]+&quot;.&quot;+params[:format]}&quot;</span>,
+      <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;audio/#{params[:format]}&quot;</span>, 
+      <span class="ruby-value">:disposition</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;inline&quot;</span>,
+      <span class="ruby-value">:status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">status_code</span>,
+      <span class="ruby-value">:stream</span> =<span class="ruby-operator">&gt;</span>  <span class="ruby-string">&#39;true&#39;</span>,
+      <span class="ruby-value">:buffer_size</span>  =<span class="ruby-operator">&gt;</span>  <span class="ruby-value">4096</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-content" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">content</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Load document content</p>
+          
+          
+
+          
+          <div class="method-source-code" id="content-source">
+            <pre><span class="ruby-comment"># File app/controllers/documents_controller.rb, line 45</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">content</span>
+  <span class="ruby-ivar">@tab</span> = <span class="ruby-string">&#39;content&#39;</span>
+  <span class="ruby-ivar">@offset</span> = <span class="ruby-value">0</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:offset</span>]
+    <span class="ruby-ivar">@offset</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:offset</span>].<span class="ruby-identifier">to_i</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@number</span> = <span class="ruby-value">50</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:number</span>]
+    <span class="ruby-ivar">@number</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:number</span>].<span class="ruby-identifier">to_i</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">patt</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]
+    <span class="ruby-identifier">patt</span> = <span class="ruby-constant">SearchQuery</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>].<span class="ruby-identifier">to_i</span>).<span class="ruby-identifier">patt</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@document</span> = {}
+  <span class="ruby-identifier">data</span> = <span class="ruby-identifier">get_document_content</span>(<span class="ruby-ivar">@xmlid</span>,<span class="ruby-identifier">patt</span>,<span class="ruby-ivar">@offset</span>,<span class="ruby-ivar">@number</span>)
+  
+  <span class="ruby-identifier">paragraphs</span> = {}
+  <span class="ruby-identifier">current_paragraph</span> = <span class="ruby-value">0</span>
+  <span class="ruby-identifier">current_sentence</span> = <span class="ruby-value">0</span>
+  <span class="ruby-identifier">page_begin_time</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-identifier">page_end_time</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-identifier">current_end_time</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-identifier">data</span>[<span class="ruby-string">&#39;content&#39;</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">token</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">token</span>[<span class="ruby-string">&#39;paragraph_start&#39;</span>].<span class="ruby-identifier">eql?</span>(<span class="ruby-string">&#39;true&#39;</span>)
+      <span class="ruby-identifier">current_paragraph</span> = <span class="ruby-identifier">current_paragraph</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
+      <span class="ruby-identifier">current_sentence</span> = <span class="ruby-value">1</span>
+      <span class="ruby-identifier">paragraphs</span>[<span class="ruby-identifier">current_paragraph</span>] = {
+        <span class="ruby-string">&#39;sentences&#39;</span> =<span class="ruby-operator">&gt;</span> {},
+        <span class="ruby-string">&#39;paragraph_type&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;p&#39;</span>
+      }
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">token</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-string">&#39;paragraph_type&#39;</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">token</span>[<span class="ruby-string">&#39;paragraph_type&#39;</span>].<span class="ruby-identifier">blank?</span>
+        <span class="ruby-identifier">paragraphs</span>[<span class="ruby-identifier">current_paragraph</span>][<span class="ruby-string">&#39;paragraph_type&#39;</span>] = <span class="ruby-identifier">token</span>[<span class="ruby-string">&#39;paragraph_type&#39;</span>]
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">paragraphs</span>[<span class="ruby-identifier">current_paragraph</span>][<span class="ruby-string">&#39;sentences&#39;</span>][<span class="ruby-identifier">current_sentence</span>] = {
+        <span class="ruby-string">&#39;tokens&#39;</span> =<span class="ruby-operator">&gt;</span> [],
+        <span class="ruby-string">&#39;sentence_speaker&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">nil</span>,
+        <span class="ruby-string">&#39;begin_time&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">token</span>[<span class="ruby-string">&#39;begin_time&#39;</span>],
+        <span class="ruby-string">&#39;end_time&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">nil</span>
+      }
+      <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">token</span>[<span class="ruby-string">&#39;begin_time&#39;</span>].<span class="ruby-identifier">eql?</span>(<span class="ruby-string">&#39;Unknown&#39;</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">page_begin_time</span>.<span class="ruby-identifier">blank?</span>
+        <span class="ruby-identifier">page_begin_time</span> = <span class="ruby-identifier">token</span>[<span class="ruby-string">&#39;begin_time&#39;</span>]
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">token</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-string">&#39;sentence_speaker&#39;</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">token</span>[<span class="ruby-string">&#39;sentence_speaker&#39;</span>].<span class="ruby-identifier">blank?</span>
+        <span class="ruby-identifier">paragraphs</span>[<span class="ruby-identifier">current_paragraph</span>][<span class="ruby-string">&#39;sentences&#39;</span>][<span class="ruby-identifier">current_sentence</span>][<span class="ruby-string">&#39;sentence_speaker&#39;</span>] = <span class="ruby-identifier">token</span>[<span class="ruby-string">&#39;sentence_speaker&#39;</span>]
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">token</span>[<span class="ruby-string">&#39;sentence_start&#39;</span>].<span class="ruby-identifier">eql?</span>(<span class="ruby-string">&#39;true&#39;</span>)
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_paragraph</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+        <span class="ruby-identifier">current_paragraph</span> = <span class="ruby-value">1</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">paragraphs</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-identifier">current_paragraph</span>)
+        <span class="ruby-identifier">paragraphs</span>[<span class="ruby-identifier">current_paragraph</span>] = {
+          <span class="ruby-string">&#39;sentences&#39;</span> =<span class="ruby-operator">&gt;</span> {},
+          <span class="ruby-string">&#39;paragraph_type&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;p&#39;</span>
+        }
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_sentence</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">1</span>
+        <span class="ruby-identifier">paragraphs</span>[<span class="ruby-identifier">current_paragraph</span>][<span class="ruby-string">&#39;sentences&#39;</span>][<span class="ruby-identifier">current_sentence</span>][<span class="ruby-string">&#39;end_time&#39;</span>] = <span class="ruby-identifier">current_end_time</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">current_sentence</span> = <span class="ruby-identifier">current_sentence</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
+      <span class="ruby-identifier">paragraphs</span>[<span class="ruby-identifier">current_paragraph</span>][<span class="ruby-string">&#39;sentences&#39;</span>][<span class="ruby-identifier">current_sentence</span>] = {
+        <span class="ruby-string">&#39;tokens&#39;</span> =<span class="ruby-operator">&gt;</span> [],
+        <span class="ruby-string">&#39;sentence_speaker&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">nil</span>,
+        <span class="ruby-string">&#39;begin_time&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">token</span>[<span class="ruby-string">&#39;begin_time&#39;</span>],
+        <span class="ruby-string">&#39;end_time&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">nil</span>
+      }
+      <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">token</span>[<span class="ruby-string">&#39;begin_time&#39;</span>].<span class="ruby-identifier">eql?</span>(<span class="ruby-string">&#39;Unknown&#39;</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">page_begin_time</span>.<span class="ruby-identifier">blank?</span>
+        <span class="ruby-identifier">page_begin_time</span> = <span class="ruby-identifier">token</span>[<span class="ruby-string">&#39;begin_time&#39;</span>]
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">token</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-string">&#39;sentence_speaker&#39;</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">token</span>[<span class="ruby-string">&#39;sentence_speaker&#39;</span>].<span class="ruby-identifier">blank?</span>
+        <span class="ruby-identifier">paragraphs</span>[<span class="ruby-identifier">current_paragraph</span>][<span class="ruby-string">&#39;sentences&#39;</span>][<span class="ruby-identifier">current_sentence</span>][<span class="ruby-string">&#39;sentence_speaker&#39;</span>] = <span class="ruby-identifier">token</span>[<span class="ruby-string">&#39;sentence_speaker&#39;</span>]
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_paragraph</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+      <span class="ruby-identifier">current_paragraph</span> = <span class="ruby-value">1</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">paragraphs</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-identifier">current_paragraph</span>)
+      <span class="ruby-identifier">paragraphs</span>[<span class="ruby-identifier">current_paragraph</span>] = {
+        <span class="ruby-string">&#39;sentences&#39;</span> =<span class="ruby-operator">&gt;</span> {},
+        <span class="ruby-string">&#39;paragraph_type&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;p&#39;</span>
+      }
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_sentence</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+      <span class="ruby-identifier">current_sentence</span> = <span class="ruby-value">1</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">paragraphs</span>[<span class="ruby-identifier">current_paragraph</span>][<span class="ruby-string">&#39;sentences&#39;</span>].<span class="ruby-identifier">has_key?</span>(<span class="ruby-identifier">current_sentence</span>)
+      <span class="ruby-identifier">paragraphs</span>[<span class="ruby-identifier">current_paragraph</span>][<span class="ruby-string">&#39;sentences&#39;</span>][<span class="ruby-identifier">current_sentence</span>] = {
+        <span class="ruby-string">&#39;tokens&#39;</span> =<span class="ruby-operator">&gt;</span> [],
+        <span class="ruby-string">&#39;sentence_speaker&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">nil</span>,
+        <span class="ruby-string">&#39;begin_time&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">token</span>[<span class="ruby-string">&#39;begin_time&#39;</span>],
+        <span class="ruby-string">&#39;end_time&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">nil</span>
+      }
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">paragraphs</span>[<span class="ruby-identifier">current_paragraph</span>][<span class="ruby-string">&#39;sentences&#39;</span>][<span class="ruby-identifier">current_sentence</span>][<span class="ruby-string">&#39;tokens&#39;</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">token</span>
+    <span class="ruby-identifier">paragraphs</span>[<span class="ruby-identifier">current_paragraph</span>][<span class="ruby-string">&#39;sentences&#39;</span>][<span class="ruby-identifier">current_sentence</span>][<span class="ruby-string">&#39;end_time&#39;</span>] = <span class="ruby-identifier">token</span>[<span class="ruby-string">&#39;end_time&#39;</span>]
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">token</span>[<span class="ruby-string">&#39;end_time&#39;</span>].<span class="ruby-identifier">eql?</span>(<span class="ruby-string">&#39;Unknown&#39;</span>)
+      <span class="ruby-identifier">current_end_time</span> = <span class="ruby-identifier">token</span>[<span class="ruby-string">&#39;end_time&#39;</span>]
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">paragraphs</span>[<span class="ruby-identifier">current_paragraph</span>][<span class="ruby-string">&#39;sentences&#39;</span>][<span class="ruby-identifier">current_sentence</span>][<span class="ruby-string">&#39;end_time&#39;</span>] = <span class="ruby-identifier">current_end_time</span>
+  <span class="ruby-identifier">p</span> <span class="ruby-string">&quot;*** INFO: AUDIO FILE: &quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">data</span>[<span class="ruby-string">&#39;audio_file&#39;</span>]
+  <span class="ruby-identifier">p</span> <span class="ruby-string">&quot;*** INFO: SENTENCES: &quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">data</span>[<span class="ruby-string">&#39;total_sentence_count&#39;</span>].<span class="ruby-identifier">to_s</span>
+  <span class="ruby-ivar">@document</span>[<span class="ruby-string">&#39;content&#39;</span>] = { <span class="ruby-string">&#39;paragraphs&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">paragraphs</span>, <span class="ruby-string">&#39;audio_file&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">data</span>[<span class="ruby-string">&#39;audio_file&#39;</span>], <span class="ruby-string">&#39;total_sentence_count&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">data</span>[<span class="ruby-string">&#39;total_sentence_count&#39;</span>], <span class="ruby-string">&#39;begin_time&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">page_begin_time</span>, <span class="ruby-string">&#39;end_time&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_end_time</span> }
+  
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> <span class="ruby-keyword">do</span>
+      <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;/documents/content&#39;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-metadata" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">metadata</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Load document metadata</p>
+          
+          
+
+          
+          <div class="method-source-code" id="metadata-source">
+            <pre><span class="ruby-comment"># File app/controllers/documents_controller.rb, line 178</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">metadata</span>
+  <span class="ruby-ivar">@tab</span> = <span class="ruby-string">&#39;metadata&#39;</span>
+  <span class="ruby-ivar">@document</span> = {}
+  <span class="ruby-ivar">@document</span>[<span class="ruby-string">&#39;metadata&#39;</span>] = <span class="ruby-identifier">get_document_metadata</span>(<span class="ruby-ivar">@xmlid</span>)
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> <span class="ruby-keyword">do</span>
+      <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;/documents/metadata&#39;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-pos_distribution" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">pos_distribution</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Load distribution of PoS tags in document</p>
+          
+          
+
+          
+          <div class="method-source-code" id="pos_distribution-source">
+            <pre><span class="ruby-comment"># File app/controllers/documents_controller.rb, line 163</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">pos_distribution</span>
+  <span class="ruby-ivar">@document</span> = {}
+  <span class="ruby-identifier">data</span> = <span class="ruby-identifier">get_document_content</span>(<span class="ruby-ivar">@xmlid</span>,<span class="ruby-keyword">nil</span>,<span class="ruby-value">0</span>,<span class="ruby-value">0</span>)
+  <span class="ruby-identifier">p</span> <span class="ruby-identifier">data</span>
+  <span class="ruby-identifier">data</span>[<span class="ruby-string">&#39;content&#39;</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">token</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">pos_head</span> = <span class="ruby-identifier">token</span>[<span class="ruby-string">&#39;pos_tag&#39;</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;(&#39;</span>)[<span class="ruby-value">0</span>]
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@document</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-identifier">pos_head</span>)
+      <span class="ruby-ivar">@document</span>[<span class="ruby-identifier">pos_head</span>] = <span class="ruby-value">0</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-ivar">@document</span>[<span class="ruby-identifier">pos_head</span>] = <span class="ruby-ivar">@document</span>[<span class="ruby-identifier">pos_head</span>] <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> { <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;Token/POS Distribution&#39;</span>, <span class="ruby-identifier">data</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@document</span>.<span class="ruby-identifier">sort_by</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">k2</span>, <span class="ruby-identifier">v2</span><span class="ruby-operator">|</span> <span class="ruby-identifier">v2</span> }.<span class="ruby-identifier">reverse</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span> { <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">k</span>, <span class="ruby-identifier">y</span><span class="ruby-operator">:</span> <span class="ruby-identifier">v</span>} } }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-statistics" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">statistics</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Load document statistics</p>
+          
+          
+
+          
+          <div class="method-source-code" id="statistics-source">
+            <pre><span class="ruby-comment"># File app/controllers/documents_controller.rb, line 190</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">statistics</span>
+  <span class="ruby-ivar">@tab</span> = <span class="ruby-string">&#39;statistics&#39;</span>
+  <span class="ruby-ivar">@data</span> = <span class="ruby-identifier">get_document_statistics</span>(<span class="ruby-ivar">@xmlid</span>)
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> <span class="ruby-keyword">do</span>
+      <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;/documents/statistics&#39;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-vocabulary_growth" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">vocabulary_growth</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Load vocabulary growth for document</p>
+          
+          
+
+          
+          <div class="method-source-code" id="vocabulary_growth-source">
+            <pre><span class="ruby-comment"># File app/controllers/documents_controller.rb, line 157</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">vocabulary_growth</span>
+  <span class="ruby-identifier">data</span> = <span class="ruby-identifier">get_document_content</span>(<span class="ruby-ivar">@xmlid</span>,<span class="ruby-keyword">nil</span>,<span class="ruby-value">0</span>,<span class="ruby-value">0</span>)
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">format_for_vocabulary_growth</span>(<span class="ruby-identifier">data</span>[<span class="ruby-string">&#39;content&#39;</span>])
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="protected-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Protected Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-set_xmlid" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_xmlid</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Get current document id from parameters</p>
+          
+          
+
+          
+          <div class="method-source-code" id="set_xmlid-source">
+            <pre><span class="ruby-comment"># File app/controllers/documents_controller.rb, line 203</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_xmlid</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:xmlid</span>]
+    <span class="ruby-ivar">@xmlid</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:xmlid</span>]
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

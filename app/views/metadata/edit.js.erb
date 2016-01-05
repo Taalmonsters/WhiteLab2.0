@@ -1,0 +1,3 @@
+$('#metadatum-dialog div.edit-form').html("<%= escape_javascript(raw render partial: "/metadata/edit", layout: false, locals: { metadatum: @metadatum }) %>");
+$('#metadatum-dialog div.value-list').html("<%= escape_javascript(raw render partial: "/metadata/value_list", layout: false, locals: { values: @values }) %>");
+$('#metadatum-dialog').dialog('option', 'title', '<%= @metadatum['group'] + " - " + @metadatum['key'] %>');

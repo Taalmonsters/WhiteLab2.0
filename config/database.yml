@@ -1,0 +1,26 @@
+default: &default
+  adapter: mysql2
+  timeout: 6000
+  encoding: utf8 
+  username: <%= ENV["MYSQL_USER"] %> 
+  password: <%= ENV["MYSQL_PASSWORD"] %> 
+  reconnect: true
+
+development:
+  <<: *default
+  pool: 2 
+  database: whitelab_development 
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  pool: 2 
+  database: whitelab_test 
+
+production:
+  <<: *default
+  pool: 50 
+  database: whitelab_production 
+  socket: /var/run/mysqld/mysqld.sock 

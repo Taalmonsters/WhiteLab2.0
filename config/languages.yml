@@ -1,0 +1,163 @@
+languages:
+  Afar: aa
+  Abkhazian: ab
+  Afrikaans: af
+  Amharic: am
+  Aragonese: an
+  Arabic: ar
+  Assamese: as
+  Aymara: ay
+  Azerbaijani: az
+  Bashkir: ba
+  Byelorussian (Belarusian): be
+  Bulgarian: bg
+  Bihari: bh
+  Bislama: bi
+  Bengali (Bangla): bn
+  Tibetan: bo
+  Breton: br
+  Catalan: ca
+  Cherokee: ch
+  Corsican: co
+  Czech: cs
+  Chewa: cw
+  Welsh: cy
+  Danish: da
+  German: de
+  Divehi: di
+  Bhutani: dz
+  Edo: ed
+  Greek: el
+  English: en
+  Esperanto: eo
+  Spanish: es
+  Estonian: et
+  Basque: eu
+  Farsi: fa
+  Finnish: fi
+  Fiji: fj
+  Flemish: fl
+  Faeroese: fo
+  French: fr
+  Fulfulde: fu
+  Frisian: fy
+  Irish: ga
+  Gaelic (Scottish): gd
+  Georgian: ge
+  Galician: gl
+  Guarani: gn
+  Gujarati: gu
+  Gaelic (Manx): gv
+  Hausa: ha
+  Hebrew: he
+  Hindi: hi
+  Croatian: hr
+  Haitian Creole: ht
+  Hungarian: hu
+  Hawaiian: hw
+  Armenian: hy
+  Interlingua: ia
+  Ibibio: ib
+  Indonesian: in
+  Interlingue: ie
+  Igbo: ig
+  Sichuan Yi: ii
+  Inupiak: ik
+  Ido: io
+  Icelandic: is
+  Italian: it
+  Inuktitut: iu
+  Japanese: ja
+  Yiddish: ji
+  Javanese: jv
+  Kanuri: ka
+  Konkani: ki
+  Kazakh: kk
+  Greenlandic: kl
+  Cambodian: km
+  Kannada: kn
+  Korean: ko
+  Kashmiri: ks
+  Kurdish: ku
+  Kirghiz: ky
+  Latin: la
+  Limburgish ( Limburger): li
+  Lingala: ln
+  Laothian: lo
+  Lithuanian: lt
+  Latvian (Lettish): lv
+  Malagasy: mg
+  Maori: mi
+  Macedonian: mk
+  Malayalam: ml
+  Mongolian: mn
+  Moldavian: mo
+  Marathi: mr
+  Malay: ms
+  Maltese: mt
+  Burmese: my
+  Nauru: na
+  Nepali: ne
+  Dutch: nl
+  Norwegian: no
+  Occitan: oc
+  Oromo (Afaan Oromo): om
+  Oriya: or
+  Punjabi: pa
+  Polish: pl
+  Papiamentu: pp
+  Pashto (Pushto): ps
+  Portuguese: pt
+  Quechua: qu
+  Rhaeto-Romance: rm
+  Kirundi (Rundi): rn
+  Romanian: ro
+  Russian: ru
+  Kinyarwanda (Ruanda): rw
+  Sanskrit: sa
+  Sami (Lappish): sb
+  Sindhi: sd
+  Sangro: sg
+  Serbo-Croatian: sh
+  Sinhalese: si
+  Slovak: sk
+  Slovenian: sl
+  Samoan: sm
+  Shona: sn
+  Somali: so
+  Albanian: sq
+  Serbian: sr
+  Siswati: ss
+  Sesotho: st
+  Sundanese: su
+  Swedish: sv
+  Swahili (Kiswahili): sw
+  Syriac: sy
+  Tamil: ta
+  Telugu: te
+  Tajik: tg
+  Thai: th
+  Tigrinya: ti
+  Turkmen: tk
+  Tagalog: tl
+  Setswana: tn
+  Tonga: to
+  Turkish: tr
+  Tsonga: ts
+  Tatar: tt
+  Twi: tw
+  Tamazight: tz
+  Uighur: ug
+  Ukrainian: uk
+  Urdu: ur
+  Uzbek: uz
+  Venda: ve
+  Vietnamese: vi
+  Volapük: vo
+  Wallon: wa
+  Wolof: wo
+  Xhosa: xh
+  Yi: yi
+  Yoruba: yo
+  Chinese: zh
+  Zulu: zu

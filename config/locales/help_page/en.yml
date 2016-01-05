@@ -1,0 +1,6 @@
+---
+en:
+  help_page: "<p>\r\n<ul>\r\n<li><a href=\"/tour/start?namespace=explore\">Start 'Explore'
+    site tour</a></li>\r\n<li><a href=\"/tour/start?namespace=search\">Start 'Search'
+    site tour</a></li>\r\n<li><a href=\"#\" target=\"_blank\">WhiteLab 2.0 User manual</a></li>\r\n<li><a
+    href=\"/doc/api/index.html\" target=\"_blank\">WhiteLab 2.0 API documentation</a></li>\r\n</ul>\r\n</p>"

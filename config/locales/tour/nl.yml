@@ -1,0 +1,284 @@
+---
+nl:
+  search:
+    step1:
+      url: search/page
+      page: simple
+      next_url: /tour/step/2
+      steps:
+        - intro: "<p>Welkom in de WhiteLab Zoek interface. Hier vindt u verschillende interfaces voor verschillende soorten gebruikers en zoekstrategieën:<ul><li>Simpel zoeken voor beginners</li><li>Uitgebreid zoeken voor gevorderde gebruikers</li><li>Geavanceerd zoeken voor ervaren gebruikers</li><li>Expert zoeken voor experts</li></ul></p>"
+        - element: "#simple"
+          intro: "<p><b>Simpel</b> zoeken geeft slechts een zoekveld. Hier kunt u een term of frase invullen om te zoeken naar alle voorkomens in het gehele corpus.</p>"
+          position: bottom
+    step2:
+      url: search/page
+      page: extended
+      next_url: /tour/step/3
+      steps:
+        - element: "#metadata-filters"
+          intro: "<p>Bij <b>uitgebreid</b>, <b>geavanceerd</b> en <b>expert</b> zoeken kunt u verschillende filters selecteren en zo naar eigen wens een subcorpus samenstellen.</p><p>U kunt er ook voor kiezen om de resultaten onmiddellijk te groeperen op basis van verschillende kenmerken, en aangeven of een match zins- of paragraafgrenzen mag overschrijden met 'Zoek binnen'.</p>"
+          position: bottom
+        - element: "#extended"
+          intro: "<p>Bij <b>uitgebreid</b> zoeken heeft u de mogelijkheid om te zoeken naar een term of frase in zijn oppervlakte vorm (woord) of zijn gelemmatiseerde vorm (lemma), of om een specifieke woordsoort te selecteren.</p>"
+          position: top
+        - element: "#extended"
+          intro: "<p>Het is ook mogelijk om de velden te combineren en een meer precieze zoekopdracht te cre&euml;ren. Let op dat het aantal termen in ieder veld overeen moet komen om de zoekopdracht succesvol uit te voeren.</p>"
+          position: top
+        - element: "#extended"
+          intro: "<p>Bij <b>uitgebreid</b> zoeken kunt u meerdere zoekopdrachten tegelijkertijd uitvoeren (als een \"batch\"). Om dit te doen klikt u op de batch knop <img src='load.png' style='width: 15px; height: 15px; border:1px solid #555;'/> en selecteert u een bestand (.txt) van uw harde schijf met de termen of frases waar u naar wilt zoeken. Nadat het bestand geladen is wordt de inhoud weergegeven in het zoekveld en kunt u deze nog aanpassen indien nodig.</p>"
+          position: top
+        - element: "#extended input.splitcheck"
+          intro: "<p>Wanneer u een batch laadt uit een bestand, dan wordt automatisch dit vakje aangevinkt. Als het aangevinkt is, dan worden de zoekopdrachten in de batch ieder als aparte zoekopdracht uitgevoerd met de resultaten in afzonderlijke schermen.</p><p>Indien u de zoekopdrachten in de batch als &eacute;&eacute;n zoekopdracht uit wil voeren en de resultaten in &eacute;&eacute;n scherm gepresenteerd wil zien, zet u dan dit vakje uit.</p>"
+          position: top
+    step3:
+      url: search/page
+      page: advanced
+      next_url: /tour/step/4
+      steps: 
+        - element: "#advanced"
+          intro: "<p>Bij <b>geavanceerd</b> zoeken kunt u complexe zoekopdrachten op een visuele manier samenstellen. Elke kolom staat gelijk aan een positie in de frase.</p><p>De huidige zoekopdracht zal bijvoorbeeld zoeken naar frases van 3 termen die beginnen met een lidwoord en eindigen met een zelfstandig naamwoord. Wanneer u het invulveld leeg laat, zoals gedaan is in de tweede kolom, dan is ieder woord toegestaan op deze positie.</p>"
+          position: bottom
+        - element: "#advanced"
+          intro: "<p>Complexiteit kan ook toegevoegd worden binnen een kolom door condities te defini&euml;ren met behulp van OR en AND (<img src='../web/img/plus.png' style='width: 15px; height: 15px;'/>).</p><p>De huidige zoekopdracht zoekt bijvoorbeeld naar alle termen met de oppervlakte vorm 'hond' of 'kat' die geclassificeerd zijn als zelfstandig naamwoord.</p>"
+          position: bottom
+        - element: "#advanced"
+          intro: "<p>Verder kunt u verschillende manieren selecteren om een term te matchen met een woord in het corpus.</p><p>De huidige zoekopdracht zoekt bijvoorbeeld naar alle woorden die beginnen met 'hond'.</p>"
+          position: bottom
+        - element: "#advanced"
+          intro: "<p>Evenals bij uitgebreid zoeken kunt u bij <b>geavanceerd</b> zoeken meerdere zoekopdrachten als een batch uitvoeren. Om dit te doen klikt u op de batch knop <img src='../web/img/load.png' style='width: 15px; height: 15px; border:1px solid #555;'/> en selecteert u een bestand (.txt) van uw harde schijf met de termen of frases waar u naar wilt zoeken. Nadat het bestand geladen is wordt de inhoud weergegeven in het zoekveld en kunt u deze nog aanpassen indien nodig.</p><p>Let u alstublieft op dat, in tegenstelling tot de batch optie bij uitgebreid zoeken, een batch lijst hier slechts &eacute;&eacute;n term per regel mag bevatten.</p>"
+          position: bottom
+        - element: "#advanced input.splitcheck"
+          intro: "<p>Wanneer u een batch laadt uit een bestand, dan wordt automatisch dit vakje aangevinkt. Als het aangevinkt is, dan worden de zoekopdrachten in de batch ieder als aparte zoekopdracht uitgevoerd met de resultaten in afzonderlijke schermen.</p><p>Indien u de zoekopdrachten in de batch als &eacute;&eacute;n zoekopdracht uit wil voeren en de resultaten in &eacute;&eacute;n scherm gepresenteerd wil zien, zet u dan dit vakje uit.</p>"
+          position: bottom
+    step4:
+      url: search/page
+      page: expert
+      next_url: "/tour/step/5"
+      steps: 
+        - element: "#expert-input-form"
+          intro: "<p>Bij <b>expert</b> zoeken kunt u een zoekopdracht invoeren uitgedrukt in de Corpus Query Language (CQL). Een goede tutorial over CQL vindt u <a href='http://cwb.sourceforge.net/files/CQP_Tutorial/' target='_blank'>hier</a>.</p>"
+          position: right
+        - element: "#expert .expert-info"
+          intro: "<p>Eenvoudige voorbeelden van CQL zoekopdrachten worden weergegeven als u op het groene vraagteken klikt <img src='../web/img/info_icon.png' style='width: 15px; height: 15px;'/>.</p>"
+          position: left
+    step5:
+      url: search/page
+      page: simple
+      patt: "[word=\"hallo\"]"
+      view: 1
+      next_url: "/tour/step/6"
+      steps: 
+        - element: "#result"
+          intro: "<p>Nadat u in een van de interfaces een zoekopdracht heeft ingegeven en op 'Zoek' heeft geklikt, wordt het 'Resultaten' scherm getoond.</p>"
+          position: top
+        - element: "#result-pane"
+          intro: "<p>De resultaten zijn onderverdeeld in 4 secties: hits, documenten, gegroepeerde hits, and gegroepeerde documenten.</p>"
+          position: top
+        - element: "#result-pane"
+          intro: "<p>De <b>hits</b> sectie toont alle afzonderlijke hits in het corpus.</p>"
+          position: top
+        - element: "#result-pane"
+          intro: "<p>Als u op 'Toon document' klikt, kunt het document waarin de hits gevonden zijn bekijken.</p>"
+          position: top
+        - element: "#result-pane tr.hit-row"
+          intro: "<p>Als u op een specifieke hit klikt wordt de context waarin de hit gevonden is weergegeven.</p>"
+          position: top
+    step6:
+      url: search/page
+      page: simple
+      patt: "[word=\"hallo\"]"
+      view: 2
+      next_url: /tour/step/7
+      steps: 
+        - element: "#result"
+          intro: "<p>De <b>documenten</b> sectie toont alle documenten waarin hits gevonden zijn. Een klik op 'Toon document' opent het document in een apart scherm.</p>"
+          position: top
+    step7:
+      url: search/page
+      page: simple
+      patt: "[word=\"hallo\"]"
+      view: 8
+      group: Collection_title
+      next_url: /tour/step/8
+      steps: 
+        - element: "#result"
+          intro: "<p>Zowel in de <b>gegroepeerde hits</b>sectie als de <b>gegroepeerde documenten</b> sectie kunt u kiezen uit meerdere kenmerken om de hits of documenten te groeperen. Hier hebben we bijvoorbeeld gekozen om de hits te groeperen per collectie.</p>"
+          position: top
+        - element: "#result"
+          intro: "<p>Wanneer u op een specifieke groep klikt worden de eerste 20 concordanties in die groep geladen. U kunt er meer laden door te klikken op 'Laad meer'. In de <b>grouped documenten</b> sectie bevat deze lijst de specifieke documenten in de groep.</p><p>Om een aparte zoekopdracht uit te voeren naar alleen de hits of documenten in deze groep klikt u op 'Toon gedetailleerde hits in deze groep'.</p>"
+          position: top
+    step8:
+      url: search/page
+      page: document
+      patt: "[word=\"hallo\"]"
+      view: 1
+      docpid: fv901074
+      next_url: /tour/step/9
+      steps: 
+        - element: "#search-nav"
+          intro: "<p>Als u ervoor kiest om een document te laden vanuit een van de resultaatsschermen wordt het <b>document</b> scherm getoond.</p>"
+          position: right
+        - element: "#document-display"
+          intro: "<p>Het overzicht is onderverdeeld in 3 secties: tekst, metadata en statistieken.</p><p>De sectie <b>tekst</b> toont de daadwerkelijke inhoud van het document. Wanneer u met de muis over een woord beweegt wordt extra, lingu&iuml;stische informatie van dat woord getoond.</p>"
+          position: top
+    step9:
+      url: search/page
+      page: document
+      patt: "[word=\"hallo\"]"
+      view: 1
+      tab: metadata
+      docpid: fv901074
+      next_url: /tour/step/10
+      steps: 
+        - element: "#document-display"
+          intro: "<p>De sectie <b>metadata</b> toont de metadata van het huidige document.</p>"
+          position: top
+    step10:
+      url: search/page
+      page: document
+      patt: "[word=\"hallo\"]"
+      view: 1
+      tab: statistics
+      docpid: fv901074
+      next_url: /tour/step/100
+      steps: 
+        - element: "#document-display"
+          intro: "<p>De <b>statistieken</b> tonen de vocabulaire groei van het document en informatie omtrent de woorsoorten die in het document voorkomen.</p>"
+          position: top
+    step100:
+      url: search/page
+      page: simple
+      next_url: /tour/end
+      steps: 
+        - intro: "<p>Dit is het einde van deze tour.</p>"
+  explore:
+    step1:
+      url: explore/page
+      page: corpora
+      next_url: /tour/step/2?namespace=explore
+      steps:
+        - intro: "<p>Welkom in de WhiteLab Verken interface. Hier kunt u:<ul><li>Corpusverdelingen bekijken</li><li>Statistieken van subcorpora opvragen</li><li>N-grammen van subcorpora ophalen</li><li>Specifieke documenten opzoeken a.h.v. de document ID</li></ul></p>"
+        - element: "#treemap-controls"
+          intro: "<p>In het <b>Corpora</b> overzicht kunt u uit verschillende metadata filters kiezen om de verdeling over de corpora te zien.</p>"
+          position: right
+        - element: "#metadata-filters"
+          intro: "<p>Indien gewenst kunt u uw selectie beperken met behulp van de metadata filters.</p>"
+          position: bottom
+        - element: "#display"
+          intro: "<p>Het blokkenschema toont hoe de verschillende subcorpora zich tot elkaar verhouden in grootte.</p><p>Let op dat de verdeling in eerste instantie getoond wordt op een logaritmische schaal. De radio buttons bovenaan kunnen gebruikt worden om snel te schakelen tussen logaritmische en absolute schaal.</p><p>E&eacute;n blok staat gelijk aan &eacute;&eacute;n subcorpus. Als u met de muis over een blok beweegt, dan verschijnt de grootte van het subcorpus. De grootte wordt uitgedrukt in het aantal tokens, zowel absoluut als procentueel.</p>"
+          position: top
+        - element: "#bubble-chart"
+          intro: "<p>Deze grafiek toont de totale grootte (x-as) van ieder subcorpus afgezet tegen de gemiddelde grootte van de documenten in dat subcorpus (y-as). De grootte van een bubble wordt bepaald door het aantal afzonderlijke documenten in het subcorpus.</p>"
+          position: right
+    step2:
+      url: explore/page
+      page: statistics
+      next_url: /tour/step/3?namespace=explore
+      steps:
+        - element: "#metadata-filters"
+          intro: "<p>In het <b>statistieken</b> overzicht kunt u verschillende filters selecteren en zo naar eigen wens een subcorpus samenstellen.</p>"
+          position: bottom
+        - element: "#statistics"
+          intro: "<p>Tevens kunt u selecteren of u een frequentielijst wil zien van woorden, lemmas of woordsoorten.</p>"
+          position: bottom
+    step3:
+      url: explore/page
+      page: statistics
+      next_url: /tour/step/4?namespace=explore
+      filter: "(Corpus_title=CGN)AND(Actor_home_language=BRABANTS)"
+      listtype: word
+      view: 8
+      steps:
+        - element: "#query-details"
+          intro: "<p>Nadat u op de 'Zoek' knop heeft geklikt, verschijnt hier een overzicht van de door u geselecteerde opties en eenvoudige statistieken van de resultaten.</p>"
+          position: top
+        - element: "#result-pane"
+          intro: "<p>De resultaten zijn verdeeld in 3 secties: frequentielijst, documentenlijst en vocabulaire groei.</p><p>Afhankelijk van de selectie die u gemaakt heeft bij 'Frequentielijst type', wordt de <b>frequentielijst</b> getoond van alle woorden, lemmas of woordsoorten in het subcorpus, aflopend gesorteerd op frequentie."
+          position: top
+    step4:
+      url: explore/page
+      page: statistics
+      next_url: /tour/step/5?namespace=explore
+      filter: "(Corpus_title=CGN)AND(Actor_home_language=BRABANTS)"
+      listtype: word
+      view: 2
+      steps:
+        - element: "#result"
+          intro: "<p>De <b>documentenlijst</b> toont alle documenten in het subcorpus. De inhoud van een specifiek document vraagt u op door op 'Toon document' te klikken.</p>"
+          position: top
+    step5:
+      url: explore/page
+      page: statistics
+      next_url: /tour/step/6?namespace=explore
+      filter: "(Corpus_title=CGN)AND(Actor_home_language=BRABANTS)"
+      listtype: word
+      view: 4
+      steps:
+        - element: "#result"
+          intro: "<p>De <b>vocabulaire groei</b> wordt berekend over de eerste 100.000 tokens van de gevonden documenten.</p>"
+          position: top
+    step6:
+      url: explore/page
+      page: ngrams
+      next_url: /tour/step/7?namespace=explore
+      steps:
+        - element: "#metadata-filters"
+          intro: "<p>In het <b>n-gram</b> overzicht kunt u verschillende filters selecteren en zo naar eigen wens een subcorpus samenstellen.</p>"
+          position: bottom
+        - element: "#ngrams"
+          intro: "<p>U kunt zoeken naar n-grammen van groottes 1 tot en met 5. Voor elke positie in het n-gram kunt u een term invullen die op die positie voor moet komen, alsmede het type waarmee deze term moet overeenstemmen (woord, lemma, of woordsoort). Als u geen term invult, dan zijn op die positie alle woorden toegestaan.</p>"
+          position: bottom
+    step7:
+      url: explore/page
+      page: ngrams
+      next_url: /tour/step/8?namespace=explore
+      filter: "(Corpus_title=CGN)AND(Actor_home_language=BRABANTS)"
+      listtype: word
+      view: 8
+      patt: "[word=\".*\"][word=\"of\"][word=\".*\"]"
+      size: 3
+      steps:
+        - element: "#query-details"
+          intro: "<p>Nadat u op de 'Zoek' knop heeft geklikt, verschijnt hier een overzicht van de door u geselecteerde opties en eenvoudige statistieken van de resultaten.</p>"
+          position: top
+        - element: "#result-pane"
+          intro: "<p>De n-gram resultaten worden aflopend gesorteerd op hun frequentie in het subcorpus.</p>"
+          position: top
+    step8:
+      url: explore/page
+      page: document
+      next_url: /tour/step/9?namespace=explore
+      docpid: fv901074
+      steps:
+        - element: "#document-input-form"
+          intro: "<p>In het <b>document</b> overzicht kunt u een specifieke ID invoeren om dat document te bekijken.</p>"
+          position: bottom
+        - element: "#document-display"
+          intro: "<p>Het overzicht is onderverdeeld in 3 secties: tekst, metadata en statistieken.</p><p>De sectie <b>tekst</b> toont de daadwerkelijke inhoud van het document. Wanneer u met de muis over een woord beweegt wordt extra, lingu&iuml;stische informatie van dat woord getoond.</p>"
+          position: top
+    step9:
+      url: explore/page
+      page: document
+      next_url: /tour/step/10?namespace=explore
+      docpid: fv901074
+      tab: metadata
+      steps:
+        - element: "#document-display"
+          intro: "<p>De sectie <b>metadata</b> toont de metadata van het huidige document.</p>"
+          position: bottom
+    step10:
+      url: explore/page
+      page: document
+      next_url: /tour/step/100?namespace=explore
+      docpid: fv901074
+      tab: statistics
+      steps:
+        - element: "#document-display"
+          intro: "<p>De <b>statistieken</b> tonen de vocabulaire groei van het document en informatie omtrent de woorsoorten die in het document voorkomen.</p>"
+          position: bottom
+    step100:
+      url: explore/page
+      page: corpora
+      next_url: /tour/end?namespace=explore
+      steps: 
+        - intro: "<p>Dit is het einde van deze tour.</p>"

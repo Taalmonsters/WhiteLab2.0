@@ -1,0 +1,284 @@
+---
+en:
+  search:
+    step1:
+      url: search/page
+      page: simple
+      next_url: /tour/step/2
+      steps:
+        - intro: "<p>This is the WhiteLab Search view. It provides interfaces for different types of users and search strategies:<ul><li>Simple search for beginners</li><li>Extended search for intermediate users</li><li>Advanced search for experienced users</li><li>Expert search for expert users</li></ul></p>"
+        - element: "#simple"
+          intro: "<p><b>Simple</b> search offers a single input box. Here you can enter a word or a phrase to search for its occurrence throughout the entire corpus.</p>"
+          position: bottom
+    step2:
+      url: search/page
+      page: extended
+      next_url: /tour/step/3
+      steps:
+        - element: "#metadata-filters"
+          intro: "<p>The <b>extended</b>, <b>advanced</b>, and <b>expert</b> views all allow you to apply filters to select only those parts of the corpus that you are interested in.</p><p>You can also select to immediately group the hits or documents by several attributes, and define if matches may cross sentence or paragraph boundaries using the 'Search within' option.</p>"
+          position: bottom
+        - element: "#extended"
+          intro: "<p>In the <b>extended</b> view, you have the option to search for a word or phrase in its surface form (word) or its lemmatized form (lemma), or to select a specific part of speech.</p>"
+          position: top
+        - element: "#extended"
+          intro: "<p>It is also possible to combine the fields to create a more precise query. Be aware that the term length of the phrases in each field must match for the query to be successful.</p>"
+          position: top
+        - element: "#extended"
+          intro: "<p>The <b>extended</b> view allows for queries to be performed in batches. To achieve this, you press the batch button <img src='../web/img/load.png' style='width: 15px; height: 15px; border:1px solid #555;'/> and select a file (.txt) from your hard drive that contains the terms or phrases that you want to search for. After loading the file, the contents are displayed in the input field and can be adjusted if needed.</p>"
+          position: top
+        - element: "#extended input.splitcheck"
+          intro: "<p>When you load a batch list from file, this box is automatically checked. When checked, the queries in the batch are all executed as separate queries with the results presented in separate screens.</p><p>If you wish to execute the batch queries as a single query and have the results accumulated over all queries, uncheck this box.</p>"
+          position: top
+    step3:
+      url: search/page
+      page: advanced
+      next_url: /tour/step/4
+      steps: 
+        - element: "#advanced"
+          intro: "<p>In the <b>advanced</b> view, complex queries can be constructed in a visual manner. Each column represents one position in a phrase.</p><p>For instance, the current query will search for phrases of 3 words which start with a determiner and end in a noun. Leaving the input field blank, as is done in the second column box, will match any word to that position.</p>"
+          position: bottom
+        - element: "#advanced"
+          intro: "<p>Complexity can also be added within a column by specifying conditions with OR and AND (<img src='../web/img/plus.png' style='width: 15px; height: 15px;'/>).</p><p>For instance, the current query searches for all one term phrases that have the surface form 'hond' or 'kat' and are classified as nouns.</p>"
+          position: bottom
+        - element: "#advanced"
+          intro: "<p>Furthermore, different operators may be selected to define the manner in which a term may match a word in the corpus.</p><p>For instance, the current query searches for all words starting with 'hond'.</p>"
+          position: bottom
+        - element: "#advanced"
+          intro: "<p>Similar to extended search, the <b>advanced</b> view allows for queries to be performed in batches. To achieve this, you press the batch button <img src='../web/img/load.png' style='width: 15px; height: 15px; border:1px solid #555;'/> next to an input field and select a file (.txt) from your hard drive that contains the terms that you want to search for at that position. After loading the file, the contents are displayed in the input field and can be adjusted if needed.</p><p>Please note that, contrary to the batch option in the extended view, here every batch list may contain only a single term per line.</p>"
+          position: bottom
+        - element: "#advanced input.splitcheck"
+          intro: "<p>When you load a batch list from file, this box is automatically checked. When checked, the queries in the batch are all executed as separate queries with the results presented in separate screens.</p><p>If you wish to execute the batch queries as a single query and have the results accumulated over all queries, uncheck this box.</p>"
+          position: bottom
+    step4:
+      url: search/page
+      page: expert
+      next_url: "/tour/step/5"
+      steps: 
+        - element: "#expert-input-form"
+          intro: "<p>The <b>expert</b> view allows for the input of queries in pure Corpus Query Language (CQL). A good tutorial on CQL can be found <a href='http://cwb.sourceforge.net/files/CQP_Tutorial/' target='_blank'>here</a>.</p>"
+          position: right
+        - element: "#expert .expert-info"
+          intro: "<p>Some examples of basic CQL queries are displayed when you click the green question mark <img src='../web/img/info_icon.png' style='width: 15px; height: 15px;'/>.</p>"
+          position: left
+    step5:
+      url: search/page
+      page: simple
+      patt: "[word=\"hallo\"]"
+      view: 1
+      next_url: "/tour/step/6"
+      steps: 
+        - element: "#result"
+          intro: "<p>After you have entered a query in one of the views and clicked the 'Search' button, the <b>results</b> view is revealed.</p>"
+          position: top
+        - element: "#result-pane"
+          intro: "<p>The results are divided into 4 sections: hits, documents, grouped hits, and grouped documents.</p>"
+          position: top
+        - element: "#result-pane"
+          intro: "<p>The <b>hits</b> section shows all distinct matches found in the corpus.</p>"
+          position: top
+        - element: "#result-pane"
+          intro: "<p>When you click the 'Toggle titles' button, the document ID and title is revealed. Clicking this line opens the document in a separate view.</p>"
+          position: top
+        - element: "#result-pane tr.hit-row"
+          intro: "<p>When you click on a specific hit, a line is displayed containing the context in which the match was found.</p>"
+          position: top
+    step6:
+      url: search/page
+      page: simple
+      patt: "[word=\"hallo\"]"
+      view: 2
+      next_url: /tour/step/7
+      steps: 
+        - element: "#result"
+          intro: "<p>In the <b>documents</b> section, all documents that contain matches are displayed. Clicking the 'Show document' button opens the document in a separate view.</p>"
+          position: top
+    step7:
+      url: search/page
+      page: simple
+      patt: "[word=\"hallo\"]"
+      view: 8
+      group: Collection_title
+      next_url: /tour/step/8
+      steps: 
+        - element: "#result"
+          intro: "<p>Both in the <b>grouped hits</b> and <b>grouped docs</b> sections you can select multiple attributes to group the matches or documents by. For instance, here we have chosen to group the hits by collection.</p>"
+          position: top
+        - element: "#result"
+          intro: "<p>Clicking on a specific line loads the first 20 concordances in that group. More can be loaded by clicking 'Load more concordances'. In the <b>grouped docs</b> section, this lists the specific documents in the group.</p><p>To perform a separate search that only matches the hits in this group, you click 'Show detailed concordances in this group'.</p>"
+          position: top
+    step8:
+      url: search/page
+      page: document
+      patt: "[word=\"hallo\"]"
+      view: 1
+      docpid: fv901074
+      next_url: /tour/step/9
+      steps: 
+        - element: "#search-nav"
+          intro: "<p>When you choose to load a document from any of the result sections that provide this option, the <b>document</b> view is revealed.</p><p>(Please wait until the document is loaded before clicking 'Next'.)</p>"
+          position: right
+        - element: "#document-display"
+          intro: "<p>The <b>document</b> view is divided into 3 sections: text, metadata, and statistics. Only one document can be displayed at a time.</p><p>The <b>text</b> section displays the actual contents of the document. Hovering over a word with the mouse reveals additional linguistic information for that word.</p>"
+          position: top
+    step9:
+      url: search/page
+      page: document
+      patt: "[word=\"hallo\"]"
+      view: 1
+      tab: metadata
+      docpid: fv901074
+      next_url: /tour/step/10
+      steps: 
+        - element: "#document-display"
+          intro: "<p>The <b>metadata</b> tab shows metadata associated with the document.</p>"
+          position: top
+    step10:
+      url: search/page
+      page: document
+      patt: "[word=\"hallo\"]"
+      view: 1
+      tab: statistics
+      docpid: fv901074
+      next_url: /tour/step/100
+      steps: 
+        - element: "#document-display"
+          intro: "<p>The <b>statistics</b> tab shows the document's vocabulary growth, and information on the parts of speech used.</p>"
+          position: top
+    step100:
+      url: search/page
+      page: simple
+      next_url: /tour/end
+      steps: 
+        - intro: "<p>You have reached the end of this tour.</p>"
+  explore:
+    step1:
+      url: explore/page
+      page: corpora
+      next_url: /tour/step/2?namespace=explore
+      steps:
+        - intro: "<p>This is the WhiteLab Explore view. It provides interfaces to:<ul><li>Explore corpus composition</li><li>Retrieve statistics for a user defined subcorpus</li><li>Retrieve n-grams for a user defined subcorpus</li><li>Look up specific documents by their ID</li></ul></p>"
+        - element: "#treemap-controls"
+          intro: "<p>The <b>corpus</b> composition view allows for selection of several main attributes to divide the corpus.</p>"
+          position: right
+        - element: "#metadata-filters"
+          intro: "<p>If needed, you can first define a subcorpus using metadata filters.</p>"
+          position: bottom
+        - element: "#display"
+          intro: "<p>The treemap display shows the sizes of the different subcorpora.</p><p>Please note that the composition is initially shown on a logarithmic scale. Radio buttons at the top of the display provide an easy way to switch between logarithmic and absolute scale.</p><p>One block represents one subcorpus. When the mouse is placed on a block, its size is shown. The size is expressed in number of documents and the percentage of all documents that is contained within the selected subcorpus.</p>"
+          position: top
+        - element: "#bubble-chart"
+          intro: "<p>This graph shows the total size (x-axis) of each subcorpus against the average size of the documents in that subcorpus (y-axis). The size of a bubble is determined by the number of documents in the subcorpus.</p>"
+          position: right
+    step2:
+      url: explore/page
+      page: statistics
+      next_url: /tour/step/3?namespace=explore
+      steps:
+        - element: "#metadata-filters"
+          intro: "<p>In the <b>statistics</b> view various filters can be applied to select only those parts of the corpus that you are interested in.</p>"
+          position: bottom
+        - element: "#statistics"
+          intro: "<p>Additionally, you can select to retrieve a frequency list of either words, lemmas, or part-of-speech tags.</p>"
+          position: bottom
+    step3:
+      url: explore/page
+      page: statistics
+      next_url: /tour/step/4?namespace=explore
+      filter: "(Corpus_title=CGN)AND(Actor_home_language=BRABANTS)"
+      listtype: word
+      view: 8
+      steps:
+        - element: "#query-details"
+          intro: "<p>After clicking the 'Search' button, the selected options and basic search statistics are displayed here.</p>"
+          position: top
+        - element: "#result-pane"
+          intro: "<p>The results section is divided into 3 sections: frequency list, document list, and vocabulary growth.</p><p>Depending on the selection made under 'Frequency list type', the <b>frequency list</b> shows all words, lemmas, or part-of-speech tag present in the subcorpus, ordered by their frequency (descending).</p>"
+          position: top
+    step4:
+      url: explore/page
+      page: statistics
+      next_url: /tour/step/5?namespace=explore
+      filter: "(Corpus_title=CGN)AND(Actor_home_language=BRABANTS)"
+      listtype: word
+      view: 2
+      steps:
+        - element: "#result"
+          intro: "<p>The <b>document list</b> shows all documents contained in the subcorpus. The contents of a specific document can be viewed by clicking the 'Show document' button.</p>"
+          position: top
+    step5:
+      url: explore/page
+      page: statistics
+      next_url: /tour/step/6?namespace=explore
+      filter: "(Corpus_title=CGN)AND(Actor_home_language=BRABANTS)"
+      listtype: word
+      view: 4
+      steps:
+        - element: "#result"
+          intro: "<p>The <b>vocabulary growth</b> is calculated over the first 100,000 tokens of the retrieved documents.</p>"
+          position: top
+    step6:
+      url: explore/page
+      page: ngrams
+      next_url: /tour/step/7?namespace=explore
+      steps:
+        - element: "#metadata-filters"
+          intro: "<p>In the <b>n-gram</b> view various filters can be applied to select only those parts of the corpus that you are interested in.</p>"
+          position: bottom
+        - element: "#ngrams"
+          intro: "<p>You can search for n-grams of sizes 1 through 5. For each position in the n-gram, you have the option to provide a pattern to be matched on that position, and the type against which the pattern is matched (word, lemma, or part of speech). If no pattern is provided, then any word occurring in that position will be considered a match.</p>"
+          position: bottom
+    step7:
+      url: explore/page
+      page: ngrams
+      next_url: /tour/step/8?namespace=explore
+      filter: "(Corpus_title=CGN)AND(Actor_home_language=BRABANTS)"
+      listtype: word
+      view: 8
+      patt: "[word=\".*\"][word=\"of\"][word=\".*\"]"
+      size: 3
+      steps:
+        - element: "#query-details"
+          intro: "<p>After clicking the 'Search' button, the selected options and basic search statistics are displayed here.</p>"
+          position: top
+        - element: "#result-pane"
+          intro: "<p>The n-gram results are listed in reverse order by frequency of occurrence in the subcorpus.</p>"
+          position: top
+    step8:
+      url: explore/page
+      page: document
+      next_url: /tour/step/9?namespace=explore
+      docpid: fv901074
+      steps:
+        - element: "#document-input-form"
+          intro: "<p>In the <b>document</b> view, a single document identifier can be submitted to retrieve that document from the corpus.</p>"
+          position: bottom
+        - element: "#document-display"
+          intro: "<p>The document result is divided into 3 sections: text, metadata, and statistics.</p><p>The <b>text</b> section displays the actual contents of the document. Hovering over a word with the mouse reveals additional linguistic information for that word.</p>"
+          position: top
+    step9:
+      url: explore/page
+      page: document
+      next_url: /tour/step/10?namespace=explore
+      docpid: fv901074
+      tab: metadata
+      steps:
+        - element: "#document-display"
+          intro: "<p>The <b>metadata</b> tab shows metadata associated with the document.</p>"
+          position: bottom
+    step10:
+      url: explore/page
+      page: document
+      next_url: /tour/step/100?namespace=explore
+      docpid: fv901074
+      tab: statistics
+      steps:
+        - element: "#document-display"
+          intro: "<p>The <b>statistics</b> tab shows the document's vocabulary growth, and information on the parts of speech used.</p>"
+          position: bottom
+    step100:
+      url: explore/page
+      page: corpora
+      next_url: /tour/end?namespace=explore
+      steps: 
+        - intro: "<p>You have reached the end of this tour.</p>"

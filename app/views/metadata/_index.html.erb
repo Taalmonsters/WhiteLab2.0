@@ -1,0 +1,10 @@
+<% fields = [] %>
+<% fields << { key: "group", header: t(:'data_labels.keys.group').capitalize, sortable: true, method_name: "group" } %>
+<% fields << { key: "key", header: t(:'data_labels.keys.key').capitalize, sortable: true, method_name: "key" } %>
+<% @corpora.each do |corpus| %>
+	<% fields << { key: "document_count_"+corpus, header: t(:'data_labels.keys.document_count').capitalize+" "+corpus, sortable: true, method_name: "document_count_"+corpus } %>
+<% end %>
+<% fields << { key: "value_count", header: t(:'data_labels.keys.value_count').capitalize, sortable: true, method_name: "value_count" } %>
+<% fields << { key: "explorable", header: t(:'data_labels.keys.explorable').capitalize, sortable: true, method_name: "explorable", default: true } %>
+<% fields << { key: "searchable", header: t(:'data_labels.keys.searchable').capitalize, sortable: true, method_name: "searchable", default: true } %>
+<%= render partial: '/layouts/data_table', layout: false, locals: { fields: fields, url: '/admin/index?tab=metadata', things: metadata, model: 'metadatum' } %>

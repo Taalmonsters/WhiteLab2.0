@@ -1,0 +1,19 @@
+<label class="control-label"><%= t(:'data_labels.keys.pos_feature').pluralize.capitalize %></label><br />
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th><%= t(:'data_labels.keys.key').capitalize %></th>
+			<th><%= t(:'data_labels.keys.value').capitalize %></th>
+		</tr>
+	</thead>
+	<tbody>
+		<% if features && features.any? %>
+			<% features.each do |feat| %>
+				<tr>
+					<td><%= feat['key'] %></td>
+					<td><%= feat['value'] %></td>
+				</tr>
+			<% end %>
+		<% end %>
+	</tbody>
+</table>

@@ -1,0 +1,58 @@
+<div id="translate" class="row">
+	<div class="col-xs-12">
+		<div class="visible-xs" style="width: 100%; height: 10px;"></div>
+		<h3 class="padding-bottom-10"><%= t(:'page_titles.keys.translations').capitalize %></h3>
+		<%= accordion "translate-accordion" do |a| %>
+			<% @languages['en'].each do |key,val| %>
+				<% title = val['title'].capitalize %>
+				<% description = val['description'].capitalize %>
+				<% if @languages[@current_language].has_key?(key) && @languages[@current_language][key].has_key?('title') && @languages[@current_language][key]['title'].length > 0 %>
+					<% title = @languages[@current_language][key]['title'] %>
+				<% end %>
+				<% if @languages[@current_language].has_key?(key) && @languages[@current_language][key].has_key?('description') && @languages[@current_language][key]['description'].length > 0 %>
+					<% description = @languages[@current_language][key]['description'] %>
+				<% end %>
+				<% a.group title do %>
+					<% if description.length > 0 %>
+						<p><%= description %></p>
+					<% end %>
+					<%= form_tag('/admin/interface/translate?key='+key, :class => "remote-form", :method => :post, :remote => true) do %>
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>Key</th>
+									<% @languages.each do |lang,data| %>
+										<th>
+											<%= image_tag("lang/"+lang+".svg", size: "16") %>
+											<%= lang %>
+											<% if lang.eql? I18n.default_locale.to_s %>
+												(<%= t(:'default') %>)
+											<% end %>
+										</th>
+									<% end %>
+								</tr>
+							</thead>
+							<tbody>
+								<% val['keys'].each do |field, translation| %>
+									<tr>
+										<td><%= field %></td>
+										<% @languages.each do |lang,data| %>
+											<td>
+												<% if @languages[lang].has_key?(key) && @languages[lang][key]['keys'].has_key?(field) %>
+													<%= text_field_tag(lang+"."+field, @languages[lang][key]['keys'][field]) %>
+												<% else %>
+													<%= text_field_tag(lang+"."+field) %>
+												<% end %>
+											</td>
+										<% end %>
+									</tr>
+								<% end %>
+							</tbody>
+						</table>
+						<%= submit_tag(t(:'button_labels.keys.save').capitalize, :class => "btn btn-xs btn-primary") %>
+					<% end %>
+				<% end %>
+			<% end %>
+		<% end %>
+	</div>
+</div>

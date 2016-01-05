@@ -1,0 +1,34 @@
+<div id="rule<%= rule_id %>" class="rule">
+	<div class="col-xs-3 col-md-3 adjust-padding">
+		<% if group && !group.blank? && key && !key.blank? %>
+			<%= select_tag(:"key", grouped_options_for_select(filters,group+"_"+key), :class => "metadata-key-select", :include_blank => true) %>
+		<% else %>
+			<%= select_tag(:"key", grouped_options_for_select(filters), :class => "metadata-key-select", :include_blank => true) %>
+		<% end %>
+	</div>
+	<div class="col-xs-2 col-md-1 adjust-padding">
+		<select class="metadata-operator">
+			<option value="is" <%= !defined? operator || operator.blank? || operator.eql?('is') ? 'selected="true"' : '' %>><%= t(:"operators.keys.is") %></option>
+			<option value="not" <%= defined? operator && operator.eql?('not') ? 'selected="true"' : '' %>><%= t(:"operators.keys.not") %></option>
+			<option value="contains" <%= defined? operator && operator.eql?('contains') ? 'selected="true"' : '' %>><%= t(:"operators.keys.contains") %></option>
+			<option value="starts" <%= defined? operator && operator.eql?('starts') ? 'selected="true"' : '' %>><%= t(:"operators.keys.starts") %></option>
+			<option value="ends" <%= defined? operator && operator.eql?('ends') ? 'selected="true"' : '' %>><%= t(:"operators.keys.ends") %></option>
+			<option value="regex" <%= defined? operator && operator.eql?('regex') ? 'selected="true"' : '' %>><%= t(:"operators.keys.regex") %></option>
+		</select>
+	</div>
+	<div class="col-xs-5 col-md-7 adjust-padding">
+		<% if values && values.length > 0 %>
+			<%= render partial: "/metadata/values", layout: false, locals: { values: values, value: value } %>
+		<% else %>
+			<input class="metadata-input" type="text">
+		<% end %>
+	</div>
+	<div class="col-xs-2 col-md-1 adjust-padding">
+		<a class="metadata-remove-rule">
+			<%= image_tag 'minus.png' %>
+		</a>
+		<a class="metadata-add-rule">
+			<%= image_tag 'plus.png' %>
+		</a>
+	</div>
+</div>

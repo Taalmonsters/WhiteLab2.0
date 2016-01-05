@@ -1,0 +1,1 @@
+$('#<%= @rule_id %> .metadata-input').replaceWith("<%= escape_javascript(raw render partial: "/metadata/values", layout: false, locals: { values: @values }) %>");

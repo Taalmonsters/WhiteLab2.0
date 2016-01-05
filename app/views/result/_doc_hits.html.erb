@@ -1,0 +1,17 @@
+<td colspan="4">
+	<table class="table">
+		<% @doc_hits.each do |doc_hit| %>
+			<tr>
+				<td class="right-aligned">
+					&hellip; <%= doc_hit["text_left"].html_safe %>
+				</td>
+				<td class="center-aligned hit-text">
+					<b><%= doc_hit["hit_text"].html_safe %></b>
+				</td>
+				<td>
+					<%= doc_hit["text_right"].html_safe %> &hellip;
+				</td>
+			</tr>
+		<% end %>
+	</table>
+</td>

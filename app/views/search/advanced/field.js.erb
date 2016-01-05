@@ -1,0 +1,12 @@
+var box = document.getElementById('column<%= @column %>-box<%= @box %>');
+if (box == null) {
+	var column = document.getElementById('column<%= @column %>');
+	if (column == null)
+		$("#advanced-canvas").append('<%= escape_javascript(raw render partial: "/search/advanced/column", layout: false) %>');
+	else
+		$(column).find("div.panel-body").first().append('<%= escape_javascript(raw render partial: "/search/advanced/box", layout: false) %>');
+} else {
+	$(box).find("div.box-body").first().append('<%= escape_javascript(raw render partial: "/search/advanced/field", layout: false) %>');
+	Whitelab.search.advanced.resetBoxHeader(<%= @box %>, <%= @column %>);
+	Whitelab.search.advanced.resetButtonsOnColumn(<%= @column %>);
+}

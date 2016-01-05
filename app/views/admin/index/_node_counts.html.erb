@@ -1,0 +1,25 @@
+<h3><%= t(:'page_titles.keys.node_counts').capitalize %></h3>
+<table class="table">
+	<thead>
+		<tr>
+			<th><%= t(:'other.keys.model').capitalize %></th>
+			<th><%= t(:'other.keys.node_count').capitalize %></th>
+		</tr>
+	</thead>
+	<tbody>
+		<% if @data %>
+			<% @data.each do |label,count| %>
+				<% if count %>
+					<tr>
+						<td><%= label.gsub('_count','').camelize %></td>
+						<td><%= number_with_delimiter(count, :delimiter => t(:'other.keys.numeric_delimiter')) %></td>
+					</tr>
+				<% end %>
+			<% end %>
+		<% else %>
+			<tr>
+				<td colspan="2"><%= t(:"instructions.keys.no_neo") %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>

@@ -1,0 +1,21 @@
+<label class="control-label"><%= t(:'data_labels.keys.pos_tag').pluralize.capitalize %></label><br />
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th><%= t(:'data_labels.keys.pos_tag').capitalize %></th>
+			<% corpora.each do |corpus| %>
+				<th><%= t(:'data_labels.keys.frequency').capitalize+" "+corpus %></th>
+			<% end %>
+		</tr>
+	</thead>
+	<tbody>
+		<% postags.each do |p| %>
+			<tr>
+				<td><%= p['label'] %></td>
+				<% corpora.each do |corpus| %>
+					<td><%= p['token_count_'+corpus] %></td>
+				<% end %>
+			</tr>
+		<% end %>
+	</tbody>
+</table>

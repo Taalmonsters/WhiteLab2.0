@@ -1,0 +1,43 @@
+<% idlabel = "label" %>
+<% if defined? data_label %>
+	<% idlabel = data_label %>
+<% end %>
+<% if url && @number && @offset %>
+<table class="table data-table table-hover table-striped" data-url="<%= url %>" data-number="<%= @number %>" data-offset="<%= @offset %>">
+<% else %>
+<table class="table table-hover table-striped">
+<% end %>
+	<thead>
+		<tr>
+			<% fields.each_with_index do |field, i| %>
+				<% if field[:sortable] %>
+					<%= render partial: "/layouts/sort_header", layout: false, locals: { sort_key: field[:key], header_label: field[:header], i: i } %>
+				<% else %>
+				<th class="<%= i == 0 ? "fixed-width" : "" %>"><%= field[:header] %></th>
+				<% end %>
+			<% end %>
+		</tr>
+	</thead>
+	<tbody>
+		<% things.each do |thing| %>
+			<tr class="<%= model %> clickable" data-<%= model %>-label="<%= thing[idlabel] ? thing[idlabel] : '' %>">
+				<% fields.each_with_index do |field, i| %>
+					<td class="<%= i == 0 ? "fixed-width" : "" %>">
+						<% if field.has_key?(:params) %>
+							<% val = thing.send(:"#{field[:method_name]}", *field[:params]) %>
+						<% elsif thing.has_key?(field[:method_name]) %>
+							<% val = thing[field[:method_name]] %>
+						<% elsif field[:default] %>
+							<% val = field[:default].to_s %>
+						<% end %>
+						<% if val.kind_of?(Numeric) %>
+							<%= number_with_delimiter(val, :delimiter => t(:'other.keys.numeric_delimiter')) %>
+						<% else %>
+							<%= val %>
+						<% end %>
+					</td>
+				<% end %>
+			</tr>
+		<% end %>
+	</tbody>
+</table>

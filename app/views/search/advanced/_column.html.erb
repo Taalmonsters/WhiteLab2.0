@@ -1,0 +1,40 @@
+<div id="column<%= @column %>" class="advanced-column panel panel-default">
+	<div class="panel-heading">
+		<div class="close hidden"><a href="#" class="remove-column" data-column="<%= @column %>"><span class="glyphicon glyphicon-remove"></span></a></div>
+	</div>
+	<div class="panel-body">
+		<%= render partial: "/search/advanced/box", layout: false %>
+	</div>
+	<div class="panel-footer">
+		<div class="inline left-aligned">
+			<a class="add-box" data-column="<%= @column %>"><%= image_tag 'plus.png' %></a>
+		</div>
+		<div class="inline right-aligned">
+			<div class="repeat switch <%= !@repeat_from.to_s.eql?('1') || !@repeat_to.to_s.eql?('1') ? 'active' : '' %>">
+				<span><%= t(:"operators.keys.repeat") %></span>
+				<input type="number" class="from" min="0" value="<%= @repeat_from %>">
+				<span><%= t(:"operators.keys.to") %></span>
+				<input type="number" class="to" min="1" value="<%= @repeat_to %>">
+				<span><%= t(:"operators.keys.times") %></span>
+			</div>
+			<div class="settings">
+				<a href="#" class="toggle-settings" data-column="<%= @column %>"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+				<ul class="options hidden">
+					<li>
+						<a class="repeat" data-column="<%= @column %>"><%= t(:"operators.keys.repeat") %></a>
+					</li>
+					<li>
+						<a class="startsen" data-column="<%= @column %>"><%= t(:"operators.keys.start_of_sentence") %></a>
+					</li>
+					<li>
+						<a class="endsen" data-column="<%= @column %>"><%= t(:"operators.keys.end_of_sentence") %></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="right-aligned">
+			<span class="btn btn-xs btn-info switch startsen <%= @startsen ? 'active' : '' %>"><%= t(:"operators.keys.start_of_sentence") %> <a href="#" class="startsen" data-column="<%= @column %>"><span class="glyphicon glyphicon-remove red"></span></a></span>
+			<span class="btn btn-xs btn-info switch endsen <%= @endsen ? 'active' : '' %>"><%= t(:"operators.keys.end_of_sentence") %> <a href="#" class="endsen" data-column="<%= @column %>"><span class="glyphicon glyphicon-remove red"></span></a></span>
+		</div>
+	</div>
+</div>

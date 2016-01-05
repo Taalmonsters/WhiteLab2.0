@@ -1,0 +1,77 @@
+<div>
+<% if !@queries.blank? && @queries.any? %>
+	<div class="col-xs-12">
+	<h5><%= @namespace.eql?('explore') ? t(:"queries.keys.explore_queries").capitalize : t(:"queries.keys.queries").capitalize %></h5>
+	<table class="table table-hover query-table" data-query-history-limit="<%= @qllimit %>" data-current-query-id="<%= @query ? @query.id : '' %>">
+		<thead>
+			<tr>
+				<th>CQL <%= t(:"queries.keys.pattern").capitalize %></th>
+				<th><%= t(:"queries.keys.within").capitalize %></th>
+				<th><%= t(:"queries.keys.filter").capitalize %></th>
+				<th><%= t(:"queries.keys.group").capitalize %></th>
+				<th><%= t(:"queries.keys.hit_count").capitalize %></th>
+				<th><%= t(:"queries.keys.document_count").capitalize %></th>
+				<th><%= t(:"queries.keys.group_count").capitalize %></th>
+				<th><%= t(:"queries.keys.status").capitalize %></th>
+				<th><%= t(:"button_labels.keys.delete").capitalize %></th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @queries.each do |query| %>
+				<tr id="<%= query.id %>" class="clickable" data-query-id="<%= query.id %>" data-offset="<%= query.query_result.offset %>" data-number="<%= query.query_result.number %>" data-view="<%= query.query_result.view %>" data-query-view-page="<%= query.page %>">
+					<td class="patt" data-patt="<%= query.patt %>"><%= query.patt %></td>
+					<td class="within" data-within="<%= query.query_result.within %>"><%= query.query_result.within %></td>
+					<td class="filter" data-filter="<%= query.filter %>"><%= query.filter %></td>
+					<td class="group" data-group="<%= query.query_result.group %>"><%= query.query_result.group %></td>
+					<td><%= query.query_result.hit_count.blank? ? '-' : query.query_result.hit_count %></td>
+					<td><%= query.query_result.document_count.blank? ? '-' : query.query_result.document_count %></td>
+					<td><%= query.query_result.group_count.blank? ? '-' : query.query_result.group_count %></td>
+					<td><%= query.query_result.text_status %></td>
+					<td><a href="#" class="remove-query" data-query-id="<%= query.id %>"><span class="glyphicon glyphicon-remove"></span></a></td>
+				</tr>
+			<% end %>
+		</tbody>	
+	</table>
+	<% if @has_more_queries %>
+		<button id="load-more-queries" type="button" class="btn btn-primary"><%= t(:"button_labels.keys.load_more").capitalize %></button>
+	<% end %>
+	</div>
+<% end %>
+<% if !@export_queries.blank? && @export_queries.any? %>
+	<div class="col-xs-12">
+	<h5><%= t(:"queries.keys.export_queries").capitalize %></h5>
+	<table class="table table-hover export-query-table" data-export-query-history-limit="<%= @eqllimit %>">
+		<thead>
+			<tr>
+				<th>CQL <%= t(:"queries.keys.pattern").capitalize %></th>
+				<th><%= t(:"queries.keys.within").capitalize %></th>
+				<th><%= t(:"queries.keys.filter").capitalize %></th>
+				<th><%= t(:"queries.keys.group").capitalize %></th>
+				<th><%= t(:"queries.keys.status").capitalize %></th>
+				<th><%= t(:"button_labels.keys.download").capitalize %></th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @export_queries.each do |query| %>
+				<tr>
+					<td><%= query.patt %></td>
+					<td><%= query.within %></td>
+					<td><%= query.filter %></td>
+					<td><%= query.group %></td>
+					<td><%= query.text_status %></td>
+					<td>
+						<% if query.status == 10 %>
+							<a href="#" class="download-result" data-format="csv" data-export-query-id="<%= query.id %>"><span class="text-info"><b>CSV</b></span></a>, 
+							<a href="#" class="download-result" data-format="json" data-export-query-id="<%= query.id %>"><span class="text-info"><b>JSON</b></span></a>
+						<% end %>
+					</td>
+				</tr>
+			<% end %>
+		</tbody>	
+	</table>
+	<% if @has_more_export_queries %>
+		<button id="load-more-export-queries" type="button" class="btn btn-primary"><%= t(:"button_labels.keys.load_more").capitalize %></button>
+	<% end %>
+	</div>
+<% end %>
+</div>

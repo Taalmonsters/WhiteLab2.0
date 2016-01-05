@@ -1,0 +1,11 @@
+<div id="column<%= @column %>-box<%= @box %>" class="advanced-box">
+	<div class="box-header">
+		<div class="hidden"><%= t(:"instructions.keys.advanced_search_box_header").html_safe %>:</div>
+	</div>
+	<div class="box-body">
+		<%= render partial: "/search/advanced/field", layout: false %>
+	</div>
+	<div class="box-footer right-aligned">
+		<a class="add-field" data-column="<%= @column %>" data-box="<%= @box %>">OR</a>
+	</div>
+</div>

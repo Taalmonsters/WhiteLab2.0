@@ -1,0 +1,3 @@
+$('#pos-head-dialog').dialog('option', 'title', '<%= @poshead['label'] %>');
+$('#pos-head-dialog div.feature-list').html("<%= escape_javascript(raw render partial: "/pos_heads/feature_list", layout: false, locals: { features: @features }) %>");
+$('#pos-head-dialog div.pos-tag-list').html("<%= escape_javascript(raw render partial: "/pos_heads/pos_tag_list", layout: false, locals: { postags: @postags, corpora: @corpora }) %>");

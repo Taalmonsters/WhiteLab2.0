@@ -1,0 +1,14 @@
+<% if @namespace && @namespace.eql?('admin') && @page && @page.eql?('index') %>
+	<% if @tab && @tab.eql?('actors') %>
+		<%= render partial: "actors/dialog" %>
+	<% elsif @tab && @tab.eql?('metadata') %>
+		<%= render partial: "metadata/dialog" %>
+	<% elsif @tab && @tab.eql?('posheads') %>
+		<%= render partial: "pos_heads/dialog" %>
+	<% elsif @tab && @tab.eql?('postags') %>
+		<%= render partial: "pos_tags/dialog" %>
+	<% end %>
+<% elsif @namespace && (@namespace.eql?('search') || @namespace.eql?('explore')) %>
+	<%= render partial: "/query/history_dialog" %>
+<% end %>
+<%= render partial: "/static_pages/help_dialog" %>

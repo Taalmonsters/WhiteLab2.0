@@ -1,0 +1,5 @@
+$('#pos-heads').data('number',<%= @number %>);
+$('#pos-heads').data('offset',<%= @offset %>);
+$('#pos-heads').data('sort','<%= @sort %>');
+$('#pos-heads').data('order','<%= @order %>');
+$('#pos-heads > div.pos-heads-list').html("<%= escape_javascript(raw render partial: "/pos_heads/index", layout: false, locals: { posheads: @posheads, corpora: @corpora }) %>");

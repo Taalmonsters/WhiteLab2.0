@@ -1,0 +1,6 @@
+<% fields = [] %>
+<% fields << { key: "label", header: t(:'data_labels.keys.label').capitalize, sortable: true, method_name: "label" } %>
+<% @corpora.each do |corpus| %>
+	<% fields << { key: "token_count_"+corpus, header: t(:'data_labels.keys.token_count').capitalize+" "+corpus, sortable: true, method_name: "token_count_"+corpus } %>
+<% end %>
+<%= render partial: '/layouts/data_table', layout: false, locals: { fields: fields, url: '/admin/index?tab=postags', things: postags, model: 'pos-tag' } %>

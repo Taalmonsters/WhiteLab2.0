@@ -1,0 +1,11 @@
+<ul class="nav nav-tabs nav-justified">
+	<li role="presentation" class="<%= @view == 8 ? "active" : "" %>">
+		<a href="#" class="explore-statistics-tab" data-view="8"><%= t(:"results.keys.frequency_list").capitalize %></a>
+	</li>
+	<li role="presentation" class="<%= @view == 2 ? "active" : "" %>">
+		<a href="#" class="explore-statistics-tab" data-view="2"><%= t(:"results.keys.document_list").capitalize %></a>
+	</li>
+	<li role="presentation" class="<%= @view == 4 ? "active" : "" %>">
+		<a href="#" class="explore-statistics-tab" data-view="4" data-offset="0" data-number="<%= 100000 %>"><%= t(:"results.keys.vocabulary_growth").capitalize %></a>
+	</li>
+</ul>

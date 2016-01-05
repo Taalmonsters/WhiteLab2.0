@@ -1,0 +1,13 @@
+<div class="row" id="document-display" data-tab="<%= @tab %>" data-xmlid="<%= @xmlid %>" data-query-id="<%= !@query.blank? ? @query.id : "" %>">
+	<div class="col-xs-10 col-xs-offset-1">
+		<div class="panel panel-default">
+			<div class="panel-heading"><label><%= t("data_labels.keys.document").capitalize %>: <%= @xmlid %></label></div>
+			<div class="panel-body">
+				<div class="row">
+					<%= render partial: "/documents/doc_tabs" %>
+					<div class="tab-content"><span class="loading"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

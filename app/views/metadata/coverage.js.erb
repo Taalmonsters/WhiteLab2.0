@@ -1,0 +1,3 @@
+$('span.metadata-selected-percentage').html('<%= @filtered_total_perc.to_s %>');
+$('span.metadata-selected-absolute').attr('data-selected-tokens',<%= @filtered_total_abs %>);
+$('span.metadata-selected-absolute').html('<%= number_with_delimiter(@filtered_total_abs, :delimiter => t(:'other.keys.numeric_delimiter')).to_s %>');

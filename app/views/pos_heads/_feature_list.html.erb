@@ -1,0 +1,21 @@
+<label class="control-label"><%= t(:'data_labels.keys.pos_feature').pluralize.capitalize %></label><br />
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th><%= t(:'data_labels.keys.key').capitalize %></th>
+			<th><%= t(:'data_labels.keys.value').capitalize %></th>
+		</tr>
+	</thead>
+	<tbody>
+		<% features.each do |row| %>
+			<% row.each do |key, values| %>
+				<% values.each_with_index do |value, i| %>
+					<tr>
+						<td><%= key if i == 0 %></td>
+						<td><%= value %></td>
+					</tr>
+				<% end %>
+			<% end %>
+		<% end %>
+	</tbody>
+</table>

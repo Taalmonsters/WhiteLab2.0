@@ -1,0 +1,126 @@
+.navbar-whitelab {
+  
+  min-height: 45px !important;
+  max-height: 45px !important;
+  min-width: 800px !important;
+  overflow-x: hidden;
+  background: #333;
+  overflow: visible;
+  line-height: 45px;
+  position: relative;
+  margin-bottom: 0 !important;
+  
+  #help-icon {
+    width: 30px;
+    height: 45px;
+    padding: 0;
+    
+    >img {
+      vertical-align: middle;
+      width: 30px;
+      height: 30px;
+    }
+  }
+  
+  ul {
+    width: auto;
+    height: auto !important;
+    max-height: 45px;
+    display: inline;
+    background: #333;
+    font-size: 16px;
+    margin: 0;
+    list-style: none;
+    
+    &.left {
+      float: left !important;
+    }
+    
+    >li {
+      float: left;
+      
+      &.left-spaced {
+        padding-left: 10px !important;
+      }
+      
+      >a {
+        padding: 0 15px;
+        line-height: 45px;
+        background: #333;
+        display: block;
+        width: 100%;
+        color: #fff !important;
+        font-size: 90%;
+        font-weight: 500 !important;
+        text-decoration: none;
+      }
+      
+      &.active > a {
+        background: #A90C28;
+      }
+      
+    }
+    
+  }
+
+  .lang-icon {
+    width: 25px;
+    height: 20px;
+    &.current {
+      border: 2px solid #11D100;
+      width: 29px;
+      height: auto;
+    }
+  }
+  
+  > div.right {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    max-height: 35px;
+    // float: right !important;
+    // padding-right: 50px;
+  }
+
+}
+
+.subnav {
+  padding-top: 25px;
+  border-bottom: 1px solid #E3E3E3;
+  position: absolute;
+  top: 45px;
+  width: 100%;
+  z-index: 1000;
+  background: #fff;
+  
+  ul {
+    margin: 0;
+    margin-bottom: 17px;
+    list-style: none;
+    height: 22px;
+    
+    > li {
+      height: 22px;
+      float: left;
+      display: inline;
+      margin-left: 4px;
+      margin-bottom: 10px;
+      font-family: "Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
+      font-weight: normal;
+      font-size: 88%;
+      color: #999;
+      
+      >a {
+        border-radius: 10px;
+        text-decoration: none;
+        color: #999;
+        padding: 3px 12px;
+      }
+      
+      &.active > a {
+        background: #B4425A;
+        color: #FFF !important;
+      }
+    }
+  }
+}

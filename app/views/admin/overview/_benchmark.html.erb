@@ -1,0 +1,64 @@
+<h3><%= t(:'page_titles.keys.benchmarker').capitalize %></h3>
+<div class="panel panel-info">
+	<div class="panel-body">
+		<%= t(:'instructions.keys.benchmarker').html_safe %>
+	</div>
+</div>
+<br />
+<div>
+<h4><%= t(:'form_labels.keys.enter_query') %></h4>
+<%= form_tag({:url => '/admin/overview'}, {:method => 'get', :multipart => true}) do %>
+	<%= hidden_field_tag 'tab', 'qbm' %>
+	<%= text_field_tag :query, @cql_query ? @cql_query.query : nil, {:class => "form-control"} %>
+	<br />
+	<br />
+	<%= submit_tag t(:'button_labels.keys.submit').capitalize, :class => "btn btn-primary" %>
+<% end %>
+</div>
+<br />
+<br />
+<h4><%= t(:'other.keys.or').upcase %></h4>
+<br />
+<div>
+<h4><%= t(:'form_labels.keys.upload_file') %> <button class="info-panel-toggle btn btn-xs btn-info">?</button></h4>
+<div class="panel panel-info panel-info-lg hidden">
+	<div class="panel-body"><%= t(:'instructions.keys.batch_cql_description').html_safe %></div>
+</div>
+<%= form_tag({:url => '/admin/overview'}, :multipart => true) do %>
+	<%= hidden_field_tag 'tab', 'qbm' %>
+	<%= file_field_tag :file, :accept => '.txt' %>
+	<br />
+	<br />
+	<%= submit_tag t(:'button_labels.keys.submit').capitalize, :class => "btn btn-primary" %>
+<% end %>
+</div>
+<br />
+<br />
+<% if @queries && @queries.size() > 0 %>
+	<h4><%= t(:"queries.keys.query").pluralize.capitalize %></h4>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>CQL</th>
+				<th>Status</th>
+				<th>Iterations</th>
+				<th>Avg. duration (ms)</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @queries.each_with_index do |query, i| %>
+				<tr id="cql<%= i.to_s %>" class="benchmark-query waiting clickable">
+					<td class="cql"><%= query %></td>
+					<td class="status">Waiting</td>
+					<td class="iterations">0</td>
+					<td class="duration">-</td>
+					<td class="report"><button class='btn btn-xs benchmark-report-button'>Full report</button></td>
+				</tr>
+				<tr id="cql<%= i.to_s %>-report" class="benchmark-report-row hidden"></tr>
+			<% end %>
+		</tbody>
+	</table>
+<br />
+<br />
+<% end %>

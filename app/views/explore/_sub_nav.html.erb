@@ -1,0 +1,27 @@
+<div class="row subnav">
+	<ul id="explore-nav">
+		<% if !@page || @page.eql?('corpora') %>
+			<li id="corpora_link" class="active"><a class="tablink" onclick="event.preventDefault();"><%= t(:"page_titles.keys.corpora").capitalize %></a></li>
+		<% else %>
+			<li id="corpora_link"><a class="tablink"  href="/explore/corpora<%= '?filter='+@filter if !@filter.blank? %>"><%= t(:"page_titles.keys.corpora").capitalize %></a></li>
+		<% end %>
+		<% if @page && @page.eql?('statistics') %>
+			<li id="statistics_link" class="active"><a class="tablink" onclick="event.preventDefault();"><%= t(:"page_titles.keys.statistics").capitalize %></a></li>
+		<% else %>
+			<li id="statistics_link"><a class="tablink"  href="/explore/statistics<%= '?filter='+@filter if !@filter.blank? %>"><%= t(:"page_titles.keys.statistics").capitalize %></a></li>
+		<% end %>
+		<% if @page && @page.eql?('ngrams') %>
+			<li id="ngrams_link" class="active"><a class="tablink" onclick="event.preventDefault();"><%= t(:"page_titles.keys.ngrams").capitalize %></a></li>
+		<% else %>
+			<li id="ngrams_link"><a class="tablink"  href="/explore/ngrams<%= '?filter='+@filter if !@filter.blank? %>"><%= t(:"page_titles.keys.ngrams").capitalize %></a></li>
+		<% end %>
+		<% if @page && @page.eql?('document') %>
+			<li id="document_link" class="active"><a class="tablink" onclick="event.preventDefault();"><%= t(:"page_titles.keys.document").capitalize %></a></li>
+		<% else %>
+			<li id="document_link"><a class="tablink"  href="/explore/document"><%= t(:"page_titles.keys.document").capitalize %></a></li>
+		<% end %>
+	</ul>
+	<% if @page && !@page.eql?('document') %>
+		<%= render partial: "metadata/filters" %>
+	<% end %>
+</div>

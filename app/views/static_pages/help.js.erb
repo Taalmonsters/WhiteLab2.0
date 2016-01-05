@@ -1,0 +1,2 @@
+$('#help-dialog').dialog('option', 'title', '<%= t(:'page_titles.keys.help').capitalize %>');
+$('#help-content').html("<%= escape_javascript(raw render partial: "/static_pages/help", layout: false) %>");

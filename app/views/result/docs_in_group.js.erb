@@ -1,0 +1,5 @@
+$('#<%= @group_id %>').data('offset',<%= @offset.to_i+20 %>);
+if ($('#<%= @group_id %> div.docs > table > tbody').html().indexOf('loading') > -1) {
+	$('#<%= @group_id %> div.docs > table > tbody').html('');
+}
+$('#<%= @group_id %> div.docs > table > tbody').append("<%= escape_javascript(raw render partial: "/result/docs_in_group", layout: false) %>");

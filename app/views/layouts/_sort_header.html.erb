@@ -1,0 +1,9 @@
+<th class="<%= i == 0 ? "fixed-width" : "" %>">
+	<% if @sort.eql?(sort_key) && @order.eql?('asc') %>
+		<a href="#" class="sort-header" data-sort-key="<%= sort_key %>" data-sort-order="desc"><%= header_label %> &utrif;</a>
+	<% elsif @sort.eql?(sort_key) && @order.eql?('desc') %>
+		<a href="#" class="sort-header" data-sort-key="<%= sort_key %>" data-sort-order="asc"><%= header_label %> &dtrif;</a>
+	<% else %>
+		<a href="#" class="sort-header" data-sort-key="<%= sort_key %>" data-sort-order="asc"><%= header_label %></a>
+	<% end %>
+</th>

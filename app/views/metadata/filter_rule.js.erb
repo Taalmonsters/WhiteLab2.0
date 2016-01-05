@@ -1,0 +1,1 @@
+$('#metadata-rules').append("<%= escape_javascript(raw render partial: "/metadata/filter_rule", layout: false, locals: { filters: @filters, rule_id: @rule_id, group: @group, key: @key, values: @values, value: @value, operator: @operator }) %>");

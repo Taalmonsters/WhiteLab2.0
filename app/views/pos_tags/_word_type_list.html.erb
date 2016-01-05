@@ -1,0 +1,17 @@
+<label class="control-label">Top <%= word_types.size %> <%= t(:'data_labels.keys.most_frequent_word_types').capitalize %></label><br />
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th><%= t(:'data_labels.keys.word_type').capitalize %></th>
+			<th><%= t(:'data_labels.keys.frequency').capitalize %></th>
+		</tr>
+	</thead>
+	<tbody>
+		<% word_types.each do |w| %>
+			<tr>
+				<td><%= w['word_type'] %></td>
+				<td><%= w['token_count'] %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>

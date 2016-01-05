@@ -1,0 +1,20 @@
+<% if @namespace.eql?('explore') %>
+	<% if !@query.input_page.blank? && @query.input_page.eql?('statistics') %>
+		<%= render partial: "/"+@namespace+"/statistics/result_tabs" %>
+	<% end %>
+<% elsif @namespace.eql?('search') %>
+	<%= render partial: "/"+@namespace+"/result_tabs", layout: false, locals: { view: @query.query_result.view } %>
+<% end %>
+<div id="query-result" class="tab-content">
+	<% if @query.query_result.view == 1 %>
+		<%= render partial: "/result/hits" %>
+	<% elsif @query.query_result.view == 2 %>
+		<%= render partial: "/result/docs" %>
+	<% elsif @query.query_result.view == 4 %>
+		<%= render partial: "/result/vocabulary_growth" %>
+	<% elsif @query.query_result.view == 8 %>
+		<%= render partial: "/result/grouped_hits" %>
+	<% elsif @query.query_result.view == 16 %>
+		<%= render partial: "/result/grouped_docs" %>
+	<% end %>
+</div>

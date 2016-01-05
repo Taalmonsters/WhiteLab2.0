@@ -1,0 +1,48 @@
+<h3>CQL Tester</h3>
+<%= form_tag({:url => '/admin/overview'}, {:method => 'get'}) do |f| %>
+	<br />
+	<br />
+	<h5><%= t(:"instructions.keys.cql_tester_header") %></h5>
+	<%= text_field_tag :query, @cql_query ? @cql_query.query : nil, {:class => "form-control"} %>
+	<br />
+	<br />
+	<div class="btn-group" role="group">
+		<%= submit_tag "Submit", :class => "btn btn-primary" %>
+		<button onclick="window.location='/admin/overview';" type="button" class="btn btn-default"><%= t('button_labels.keys.reset').capitalize %></button>
+	</div>
+	<br />
+	<br />
+<% end %>
+<% if @cql_query %>
+	<h4>JSON query</h4>
+	<pre id="output-panel" class="padding-bottom-10"><%= JSON.pretty_generate(@cql_query.json).html_safe %></pre>
+	<h4>Cypher query</h4>
+	<pre id="output-panel" class="padding-bottom-10"><%= @cql_query.cypher.gsub(/ +(MATCH|WITH|WHERE|RETURN|SKIP|ORDER)/,"\n"+'\1').html_safe %></pre>
+	<h4>First <%= @cql_query.hits_json.size %> hits</h4>
+	<table class="table">
+		<thead>
+			<tr>
+				<th><%= t(:"data_labels.keys.document").capitalize %> ID</th>
+				<th><%= t(:"results.keys.context").capitalize+" "+t(:"results.keys.left") %></th>
+				<th><%= t(:"data_labels.keys.hit").capitalize %></th>
+				<th><%= t(:"results.keys.context").capitalize+" "+t(:"results.keys.right") %></th>
+				<th><%= t(:"data_labels.keys.hit").capitalize+" "+t(:"data_labels.keys.lemma") %></th>
+				<th><%= t(:"data_labels.keys.hit").capitalize+" "+t(:"data_labels.keys.pos") %></th>
+				<th><%= t(:"data_labels.keys.hit").capitalize+" "+t(:"data_labels.keys.phonetic") %></th>
+			</tr>
+		</thead>
+		<tbody>
+		<% @cql_query.hits_json.each do |hit| %>
+			<tr>
+				<td><%= hit['docpid'] %></td>
+				<td><%= hit['text_left'].html_safe %></td>
+				<td><%= hit['hit_text'].html_safe %></td>
+				<td><%= hit['text_right'].html_safe %></td>
+				<td><%= hit['hit_lemma'].html_safe %></td>
+				<td><%= hit['hit_pos'] %></td>
+				<td><%= hit['hit_phonetic'].html_safe %></td>
+			</tr>
+		<% end %>
+		</tbody>
+	</table>
+<% end %>

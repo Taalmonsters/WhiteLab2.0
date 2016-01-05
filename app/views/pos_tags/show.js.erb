@@ -1,0 +1,3 @@
+$('#pos-tag-dialog').dialog('option', 'title', '<%= @postag['label'] %>');
+$('#pos-tag-dialog div.feature-list').html("<%= escape_javascript(raw render partial: "/pos_tags/feature_list", layout: false, locals: { features: @features }) %>");
+$('#pos-tag-dialog div.word-type-list').html("<%= escape_javascript(raw render partial: "/pos_tags/word_type_list", layout: false, locals: { word_types: @types }) %>");

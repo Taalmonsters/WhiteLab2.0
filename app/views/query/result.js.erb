@@ -1,0 +1,16 @@
+$('#query div#result-pane').html("<%= escape_javascript(raw render partial: "/query/result", layout: false) %>");
+<% if @query.query_result.is_running %>
+setTimeout(function(){
+	$.getScript('/<%= @namespace %>/result/id/<%= @query.id %>.js');
+}, 2000);
+<% elsif @query.query_result.is_counting %>
+	setTimeout(function(){
+		$.getScript('/<%= @namespace %>/result/id/<%= @query.id %>/pagination.js');
+	}, 2000);
+<% else %>
+if ($('#query div#result-pane').html().indexOf('class="loading"') > -1) {
+	setTimeout(function(){
+		$.getScript('/<%= @namespace %>/result/id/<%= @query.id %>.js');
+	}, 2000);
+}
+<% end %>

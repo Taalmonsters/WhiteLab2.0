@@ -1,0 +1,6 @@
+$('#pos-tags').data('number',<%= @number %>);
+$('#pos-tags').data('offset',<%= @offset %>);
+$('#pos-tags').data('sort','<%= @sort %>');
+$('#pos-tags').data('order','<%= @order %>');
+$('#pos-tags > div.pos-tags-list').html("<%= escape_javascript(raw render partial: "/pos_tags/index", layout: false, locals: { postags: @postags, corpora: @corpora }) %>");  
+$('#pos-tags > div.pagination').html('<%= escape_javascript(raw render partial: "/layouts/pagination", layout: false, locals: { url: '/pos/index.js', total: @total, offset: @offset, number: @number }) %>');
