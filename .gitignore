@@ -16,6 +16,9 @@
 !/log/.keep
 /tmp
 
+# Ignore generated documentation in public
+/public/doc/
+
 # Eclipse
 .classpath
 .project

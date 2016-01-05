@@ -32,8 +32,7 @@ module WhitelabV20
     config.i18n.load_path += Dir["#{Rails.root.to_s}/config/locales/**/*.{rb,yml}"]
     config.x.database_type = 'neo4j'
     config.x.total_token_count = -1
-    config.x.audio_dir = '/Users/matje/Documents/whitelab_test_data/test_corpora/opencgn/audio'
-    # config.x.audio_dir = '/home/matje/san/audio'
+    config.x.audio_dir = ENV['WHITELAB_AUDIO_DIR']
   end
 end
 
