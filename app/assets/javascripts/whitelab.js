@@ -326,20 +326,20 @@ var Whitelab = {
 		if (group.indexOf("hit_") > -1) {
 			patt = "[word=\"(?c)"+group_value+"\"]";
 		} else if (group.indexOf("_left") > -1) {
-			if (group.indexOf("lemma_"))
+			if (group.indexOf("lemma_") > -1)
 				patt = "[lemma=\"(?c)"+group_value+"\"]"+patt;
-			else if (group.indexOf("pos_"))
+			else if (group.indexOf("pos_") > -1)
 				patt = "[pos=\""+group_value+"\"]"+patt;
-			else if (group.indexOf("phonetic_"))
+			else if (group.indexOf("phonetic_") > -1)
 				patt = "[phonetic=\"(?c)"+group_value+"\"]"+patt;
 			else
 				patt = "[word=\"(?c)"+group_value+"\"]"+patt;
 		} else if (group.indexOf("_right") > -1) {
-			if (group.indexOf("lemma_"))
+			if (group.indexOf("lemma_") > -1)
 				patt = patt+"[lemma=\"(?c)"+group_value+"\"]";
-			else if (group.indexOf("pos_"))
+			else if (group.indexOf("pos_") > -1)
 				patt = patt+"[pos=\"(?c)"+group_value+"\"]";
-			else if (group.indexOf("phonetic_"))
+			else if (group.indexOf("phonetic_") > -1)
 				patt = patt+"[phonetic=\"(?c)"+group_value+"\"]";
 			else
 				patt = patt+"[word=\"(?c)"+group_value+"\"]";
@@ -347,11 +347,6 @@ var Whitelab = {
 			filter = filter+"AND("+group+"="+"\""+group_value+"\")";
 		}
 		window.location = "/search/expert?view=2&patt="+patt+"&within="+within+"&filter="+filter;
-//		var qid = $("#result-pane").data("query-id");
-//		if ($('#search').length > 0)
-//			$.getScript('/search/result/id/'+qid+'/groupdocs.js?docs_group='+group_value);
-//		else if ($('#explore').length > 0)
-//			$.getScript('/explore/result/id/'+qid+'/groupdocs.js?docs_group='+group_value);
 	},
 
 	showGroupedHits : function(group_value) {
@@ -363,20 +358,20 @@ var Whitelab = {
 		if (group.indexOf("hit_") > -1) {
 			patt = "[word=\"(?c)"+group_value+"\"]";
 		} else if (group.indexOf("_left") > -1) {
-			if (group.indexOf("lemma_"))
+			if (group.indexOf("lemma_") > -1)
 				patt = "[lemma=\"(?c)"+group_value+"\"]"+patt;
-			else if (group.indexOf("pos_"))
+			else if (group.indexOf("pos_") > -1)
 				patt = "[pos=\""+group_value+"\"]"+patt;
-			else if (group.indexOf("phonetic_"))
+			else if (group.indexOf("phonetic_") > -1)
 				patt = "[phonetic=\"(?c)"+group_value+"\"]"+patt;
 			else
 				patt = "[word=\"(?c)"+group_value+"\"]"+patt;
 		} else if (group.indexOf("_right") > -1) {
-			if (group.indexOf("lemma_"))
+			if (group.indexOf("lemma_") > -1)
 				patt = patt+"[lemma=\"(?c)"+group_value+"\"]";
-			else if (group.indexOf("pos_"))
+			else if (group.indexOf("pos_") > -1)
 				patt = patt+"[pos=\"(?c)"+group_value+"\"]";
-			else if (group.indexOf("phonetic_"))
+			else if (group.indexOf("phonetic_") > -1)
 				patt = patt+"[phonetic=\"(?c)"+group_value+"\"]";
 			else
 				patt = patt+"[word=\"(?c)"+group_value+"\"]";
@@ -384,11 +379,6 @@ var Whitelab = {
 			filter = filter+"AND("+group+"="+"\""+group_value+"\")";
 		}
 		window.location = "/search/expert?view=1&patt="+patt+"&within="+within+"&filter="+filter;
-//		var qid = $("#result-pane").data("query-id");
-//		if ($('#search').length > 0)
-//			$.getScript('/search/result/id/'+qid+'/grouphits.js?hits_group='+group_value);
-//		else if ($('#explore').length > 0)
-//			$.getScript('/explore/result/id/'+qid+'/grouphits.js?hits_group='+group_value);
 	},
 	
 	sleep : function(ms) {
