@@ -1,6 +1,6 @@
 # Controller for PoS heads in Admin namespace.
 class PosHeadsController < ApplicationController
-  include DatabaseHelper
+  
   before_action :set_logged_in
   before_action :current_pos_head_label, :only => :show
   
@@ -10,10 +10,10 @@ class PosHeadsController < ApplicationController
       redirect_to 'admin/login'
     end
     set_pagination_params(0, 0, 'label')
-    data = get_pos_heads(@number, @offset, @sort, @order)
+    data = @@BACKEND.get_pos_heads(@number, @offset, @sort, @order)
     @posheads = data['pos_heads']
     @total = data['total']
-    @corpora = get_corpus_labels
+    @corpora = @@BACKEND.get_corpus_titles
   end
   
   # Show PoS head properties
@@ -22,10 +22,10 @@ class PosHeadsController < ApplicationController
       redirect_to 'admin/login'
     end
     if @label
-      @poshead = get_pos_head_by_label(@label)
-      @features = get_pos_head_features_by_label(@label)
-      @postags = get_pos_head_tags_by_label(0,0,'token_count','desc',@label)
-      @corpora = get_corpus_labels
+      @poshead = @@BACKEND.get_pos_head_by_label(@label)
+      @features = @@BACKEND.get_pos_head_features_by_label(@label)
+      @postags = @@BACKEND.get_pos_head_tags_by_label(0,0,'token_count','desc',@label)
+      @corpora = @@BACKEND.get_corpus_titles
     end
   end
   

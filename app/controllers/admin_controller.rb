@@ -1,6 +1,6 @@
 # Controller for pages in Admin namespace.
 class AdminController < ApplicationController
-  include DatabaseHelper
+  
   before_action :set_admin_namespace
   before_action :set_logged_in, :only => [:page, :login]
   before_action :set_counter, :only => [:page]
@@ -175,7 +175,7 @@ class AdminController < ApplicationController
   def benchmark_test
     @cql_id = params[:id]
     if (params[:cql])
-      result = run_benchmark_test(params[:cql],1000)
+      result = @@BACKEND.run_benchmark_test(params[:cql],1000)
       @lines = result.split("\n")
       @lines.reverse.each do |line|
         if line =~ / ([0-9]+(\.[0-9]+)*) ms\./

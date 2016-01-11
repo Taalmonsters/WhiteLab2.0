@@ -4,7 +4,6 @@ class ApplicationController < ActionController::Base
   before_action :set_user
   before_action :set_locale
   include ApplicationHelper
-  include DatabaseHelper
   include DataFormatHelper
   
   # Set the current user
@@ -67,8 +66,8 @@ class ApplicationController < ActionController::Base
   # If Neo4j is used for the backend, then load its counter node
   def set_counter
     @counter = nil
-    if Rails.configuration.x.database_type.eql?('neo4j')
-      @counter = get_counter_node
+    if @@BACKEND.get_backend_type.eql?('neo4j')
+      @counter = @@BACKEND.get_counter_node
     end
   end
   

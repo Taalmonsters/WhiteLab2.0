@@ -1,6 +1,6 @@
 # Main controller for Search namespace.
 class SearchController < ApplicationController
-  include DatabaseHelper
+  
   before_action :set_search_namespace
   before_action :set_page, :only => [:simple, :extended, :advanced, :expert, :document]
   before_action :set_tab, :only => [:document]
@@ -100,7 +100,7 @@ class SearchController < ApplicationController
   def doc_hits
     if @query && params.has_key?(:docpid)
       @target = params[:docpid]
-      @doc_hits = get_search_results_for_query(@query.query_result, params[:docpid], nil, nil)["results"]
+      @doc_hits = @@BACKEND.get_search_results_for_query(@query.query_result, params[:docpid], nil, nil)["results"]
     end
     respond_to do |format|
       format.js do
@@ -115,9 +115,7 @@ class SearchController < ApplicationController
       @offset = params[:offset] || 0
       @group = params[:hits_group]
       @group_id = params[:group_id]
-      @hits = get_hits_in_group(@query.query_result,@group,@offset,20)['hits']
-    # elsif params.has_key?(:hits_group)
-      # TODO: new query from group or redirect to search page with new query params
+      @hits = @@BACKEND.get_hits_in_group(@query.query_result,@group,@offset,20)['hits']
     end
     respond_to do |format|
       format.js do
@@ -132,9 +130,7 @@ class SearchController < ApplicationController
       @offset = params[:offset] || 0
       @group = params[:docs_group]
       @group_id = params[:group_id]
-      @docs = get_docs_in_group(@query.query_result,@group,@offset,20)['docs']
-    # elsif params.has_key?(:docs_group)
-      # TODO: new query from group or redirect to search page with new query params
+      @docs = @@BACKEND.get_docs_in_group(@query.query_result,@group,@offset,20)['docs']
     end
     respond_to do |format|
       format.js do
@@ -147,7 +143,7 @@ class SearchController < ApplicationController
   def kwic
     if params.has_key?(:docpid) && params.has_key?(:first_index) && params.has_key?(:last_index) && params.has_key?(:size)
       @target = params[:docpid]+'_'+params[:first_index].to_s+'_'+params[:last_index].to_s
-      @kwic = get_kwic(params[:docpid], params[:first_index], params[:last_index], params[:size])
+      @kwic = @@BACKEND.get_kwic(params[:docpid], params[:first_index], params[:last_index], params[:size])
     end
     respond_to do |format|
       format.js do

@@ -8,7 +8,7 @@ module DataFormatHelper
     if view == 2 || view == 16
       suffix = "docs"
     end
-    if view == 8 || view == 16
+    if @@BACKENDTYPE.eql?('neo4j') && (view == 8 || view == 16)
       prefix = "grouped_"
     end
     prefix+suffix

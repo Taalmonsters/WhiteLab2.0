@@ -45,7 +45,6 @@ class DataController < ApplicationController
     end
     if @namespace.eql?('search') && params[:id]
       @query = SearchQuery.find_by_id_and_user_id(params[:id], @user.id)
-      p @query.to_json
     elsif @namespace.eql?('explore') && params[:id]
       @query = ExploreQuery.find(params[:id])
     end

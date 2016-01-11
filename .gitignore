@@ -19,6 +19,10 @@
 # Ignore generated documentation in public
 /public/doc/
 
+# Ignore corpus specific configuration files
+/config/metadata_*.yml
+/config/metadata_*/*.yml
+
 # Eclipse
 .classpath
 .project

@@ -1,6 +1,6 @@
 # Controller for Metadata management from Admin namespace and filtering in other namespaces.
 class MetadataController < ApplicationController
-  include DatabaseHelper
+  
   before_action :set_logged_in, :only => [:index, :edit, :update]
   before_action :current_metadatum_label, :only => [:edit, :update, :values, :filter_rule]
   before_action :set_filtered_amount, :only => [:coverage]
@@ -11,10 +11,10 @@ class MetadataController < ApplicationController
       redirect_to 'admin/login'
     end
     set_pagination_params(0, 10, 'group')
-    data = get_metadata(@number, @offset, @sort, @order)
+    data = @@BACKEND.get_metadata(@number, @offset, @sort, @order)
     @metadata = data['metadata']
     @total = data['total']
-    @corpora = get_corpus_labels
+    @corpora = @@BACKEND.get_corpus_titles
   end
   
   # Show metadatum edit form
@@ -23,8 +23,8 @@ class MetadataController < ApplicationController
       redirect_to 'admin/login'
     end
     if @label
-      @metadatum = get_metadatum_by_label(@label)[0]
-      @values = get_metadatum_values_by_label(5, 0, "document_count", "desc", @label)['values']
+      @metadatum = @@BACKEND.get_metadatum_by_label(@label)[0]
+      @values = @@BACKEND.get_metadatum_values_by_label(5, 0, "document_count", "desc", @label)['values']
     else
       p "*** WARN: NO LABEL"
     end
@@ -42,8 +42,8 @@ class MetadataController < ApplicationController
           updates[key] = params[key].to_s
         end
       end
-      update_metadatum(@label,updates)
-      @metadatum = get_metadatum_by_label(@label)
+      @@BACKEND.update_metadatum(@label,updates)
+      @metadatum = @@BACKEND.get_metadatum_by_label(@label)
     end
   end
   
@@ -55,7 +55,7 @@ class MetadataController < ApplicationController
       @rule_id = params[:rule_id]
     end
     if @group && @key
-      mvalues = get_metadatum_values_by_group_and_key(0, 0, "value", "asc", @group, @key, false)
+      mvalues = @@BACKEND.get_metadatum_values_by_group_and_key(0, 0, "value", "asc", @group, @key, false)
       @values = mvalues['values'].map{|x| x["value"]}
       @value = params[:value]
       @operator = params[:operator]
@@ -67,7 +67,7 @@ class MetadataController < ApplicationController
     @values = metadata_values(@group,@key)
     @value_list_incomplete = false
     if @values.blank?
-      @values = get_metadatum_values_by_group_and_key(0, 0, "value", "asc", @group, @key, false)['values'].map{|x| x["value"]}
+      @values = @@BACKEND.get_metadatum_values_by_group_and_key(0, 0, "value", "asc", @group, @key, false)['values'].map{|x| x["value"]}
     else
       @value_count = metadata_value_count(@group,@key)
       if !@value_count.blank? && @value_count > METADATUM_VALUES_MAX

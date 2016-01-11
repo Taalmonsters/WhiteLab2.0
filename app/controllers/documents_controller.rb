@@ -48,15 +48,16 @@ class DocumentsController < ApplicationController
       @offset = params[:offset].to_i
     end
     @number = 50
-    if params[:number]
-      @number = params[:number].to_i
-    end
+    # @number = @@BACKEND.get_backend_type.eql?('blacklab') ? 500 : 50
+    # if params[:number]
+      # @number = params[:number].to_i
+    # end
     patt = nil
     if params[:id]
       patt = SearchQuery.find(params[:id].to_i).patt
     end
     @document = {}
-    data = get_document_content(@xmlid,patt,@offset,@number)
+    data = @@BACKEND.get_document_content(@xmlid,patt,@offset,@number)
     
     paragraphs = {}
     current_paragraph = 0
@@ -141,8 +142,6 @@ class DocumentsController < ApplicationController
       end
     end
     paragraphs[current_paragraph]['sentences'][current_sentence]['end_time'] = current_end_time
-    p "*** INFO: AUDIO FILE: "+data['audio_file']
-    p "*** INFO: SENTENCES: "+data['total_sentence_count'].to_s
     @document['content'] = { 'paragraphs' => paragraphs, 'audio_file' => data['audio_file'], 'total_sentence_count' => data['total_sentence_count'], 'begin_time' => page_begin_time, 'end_time' => current_end_time }
     
     respond_to do |format|
@@ -154,15 +153,22 @@ class DocumentsController < ApplicationController
   
   # Load vocabulary growth for document
   def vocabulary_growth
-    data = get_document_content(@xmlid,nil,0,0)
+    n = 0
+    if @@BACKEND.get_backend_type.eql?('blacklab')
+      n = get_document_token_count(@xmlid)
+    end
+    data = @@BACKEND.get_document_content(@xmlid,nil,0,n)
     render json: format_for_vocabulary_growth(data['content'])
   end
   
   # Load distribution of PoS tags in document
   def pos_distribution
     @document = {}
-    data = get_document_content(@xmlid,nil,0,0)
-    p data
+    n = 0
+    if @@BACKEND.get_backend_type.eql?('blacklab')
+      n = get_document_token_count(@xmlid)
+    end
+    data = @@BACKEND.get_document_content(@xmlid,nil,0,n)
     data['content'].each do |token|
       pos_head = token['pos_tag'].split('(')[0]
       if !@document.has_key?(pos_head)
@@ -177,7 +183,7 @@ class DocumentsController < ApplicationController
   def metadata
     @tab = 'metadata'
     @document = {}
-    @document['metadata'] = get_document_metadata(@xmlid)
+    @document['metadata'] = @@BACKEND.get_document_metadata(@xmlid)
     respond_to do |format|
       format.js do
         render '/documents/metadata'
@@ -188,7 +194,7 @@ class DocumentsController < ApplicationController
   # Load document statistics
   def statistics
     @tab = 'statistics'
-    @data = get_document_statistics(@xmlid)
+    @data = @@BACKEND.get_document_statistics(@xmlid)
     respond_to do |format|
       format.js do
         render '/documents/statistics'

@@ -1,6 +1,41 @@
 # General helper methods
 module ApplicationHelper
-  include DatabaseHelper
+  
+  @@BACKEND = WhitelabBackend.instance
+  
+  def get_group_options(v)
+    groups = {}
+    if v == 8
+      groups['hit'] = []
+      groups['left'] = []
+      groups['right'] = []
+      ['hit'].each do |position|
+        ['text','lemma','pos','phonetic'].each do |annotation|
+          groups['hit'] << [annotation, position+'_'+annotation]
+        end
+      end
+      ['left','right'].each do |position|
+        ['text','lemma','pos','phonetic'].each do |annotation|
+          groups[position] << [annotation, annotation+'_'+position]
+        end
+      end
+    end
+    groups[translate(:"data_labels.keys.corpus").capitalize] = []
+    groups[translate(:"data_labels.keys.corpus").capitalize] << [translate(:"data_labels.keys.corpus").capitalize+' '+translate(:"navigation.keys.title").capitalize, 'Corpus_title']
+    groups[translate(:"data_labels.keys.collection").capitalize] = []
+    groups[translate(:"data_labels.keys.collection").capitalize] << [translate(:"data_labels.keys.collection").capitalize+' '+translate(:"navigation.keys.title").capitalize, 'Collection_title']
+    
+    @@BACKEND.get_metadata_group_options({}).each do |group, data|
+      if !groups.has_key?(translate(:"#{group}").capitalize)
+        groups[translate(:"#{group}").capitalize] = []
+      end
+      data.each do |arr|
+        groups[translate(:"#{group}").capitalize] << [translate(:"#{arr[0]}"), arr[1]]
+      end
+    end
+    
+    groups
+  end
   
   # Get total number of tokens in index
   def get_total_word_token_count
@@ -30,8 +65,12 @@ module ApplicationHelper
     docs = get_filtered_documents(filter)
     docs_included = []
     parts = option.split(/\!*=/)[0]
-    group = parts.split('_')[0]
-    key = parts.sub(group+'_','')
+    group = "Metadata"
+    key = parts
+    if parts.include?("_")
+      group = parts.split('_')[0]
+      key = parts.sub(group+'_','')
+    end
     data = DOCUMENT_METADATA[group][key]
     result = {}
     data.each do |value, d|
@@ -231,7 +270,7 @@ module ApplicationHelper
       end
     end
     
-    metadata = YAML.load_file(Rails.root.join('config').to_s+'/metadata.yml')
+    metadata = YAML.load_file(Rails.root.join('config').to_s+'/metadata_'+@@BACKEND.get_backend_type+'.yml')
     changed = false
     
     metadata['metadata'].each do |group, keys|

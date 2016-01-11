@@ -1,12 +1,14 @@
 # Module for Query Results to be connected to queries
 class QueryResult < ActiveRecord::Base
-  include DatabaseHelper
-  include DataFormatHelper
+  include BackendHelper
+  # include DataFormatHelper
   has_many :search_queries
   has_many :explore_queries
   has_and_belongs_to_many :export_queries
   
   serialize :result, JSON
+  
+  @@BACKEND = WhitelabBackend.instance
   
   # Find of create QueryResult from parameters
   def self.get_current_query_result(params)
@@ -92,7 +94,7 @@ class QueryResult < ActiveRecord::Base
   # Run query and store results
   def run(count, o, n)
     self.update_attribute(:status, 1)
-    data = get_search_results_for_query(self, nil, o, n)
+    data = @@BACKEND.get_search_results_for_query(self, nil, o, n)
     if self.view == 4
       Thread.new do
         self.update_attribute(:result, format_for_vocabulary_growth(data['content']))
@@ -164,7 +166,7 @@ class QueryResult < ActiveRecord::Base
     elsif attr.eql?('document_count')
       view = 2
     end
-    set_count(get_search_result_counts_for_query(self, nil, view, 0, 0), attr, 0)
+    set_count(@@BACKEND.get_search_result_counts_for_query(self, nil, view, 0, 0), attr, 0)
   end
   
   # Set count in QueryResult

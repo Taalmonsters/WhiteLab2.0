@@ -1,7 +1,7 @@
 # Base module for Search and Explore queries
 module WhitelabQuery
   extend ActiveSupport::Concern
-  include DatabaseHelper
+  
 
   included do
     belongs_to :user

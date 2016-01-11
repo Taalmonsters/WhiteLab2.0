@@ -1,6 +1,6 @@
 # Main controller for Explore namespace.
 class ExploreController < ApplicationController
-  include DatabaseHelper
+  
   before_action :set_explore_namespace
   before_action :set_page, :only => [:corpora, :statistics, :ngrams, :document]
   before_action :set_treemap_option, :only => [:corpora, :treemap, :bubble]
@@ -52,8 +52,7 @@ class ExploreController < ApplicationController
   def vocabulary_growth
     if @query && (@query.query_result.blank? || (@query.query_result.result.blank? && (!@query.query_result.is_running || !@query.query_result.is_finished)))
       @document = { 'types' => [{ name: '', x: 0, y: 0 }], 'lemmas' => [{ name: '', x: 0, y: 0 }] }
-      data = get_filtered_content(@query.query_result)
-      # p data
+      data = @@BACKEND.get_filtered_content(@query.query_result)
       types_seen = []
       t = 0
       lemmas_seen = []

@@ -1,21 +1,26 @@
+backend = WhitelabBackend.instance
+metadata_dir = Rails.root.join('config','metadata_'+backend.get_backend_type).to_s
+
+if !File.directory?(metadata_dir)
+  Dir.mkdir metadata_dir
+end
+
+doc_file = metadata_dir+'/documents.yml'
+
 logger = Logger.new STDOUT
 logger.formatter = Logger::Formatter.new
-doc_file = Rails.root.join('config','metadata').to_s+'/documents.yml'
 logger.info "Loading documents"
+
 if !File.exists?(doc_file)
-  data = `curl --header "Authorization: Basic bmVvNGo6Nzc0M21vbnN0ZXJzODE=" -H accept:application/json -H content-type:application/json -d '{"statements": [{ "statement": "MATCH (d:Document) MATCH d<-[:HAS_DOCUMENT]->(cc:Collection) MATCH cc<-[:HAS_COLLECTION]-(c:Corpus) RETURN DISTINCT d.xmlid AS xmlid, d.token_count AS token_count, c.title AS corpus, cc.title AS collection;" }]}' http://localhost:7474/db/data/transaction/commit`;
-  data = JSON.parse(data)
-  docs = {}
-  data["results"][0]["data"].each do |x|
-    docs[x["row"][0]] = {"token_count" => x["row"][1], "corpus" => x["row"][2], "collection" => x["row"][3]}
-  end
+  logger.info "Retrieving document list from backend '"+backend.get_backend_type+"'"
+  docs = backend.get_document_list
   File.open(doc_file, 'w') { |f| YAML.dump({ "documents" => docs }, f) }
 end
   
 ::DOCUMENT_DATA = YAML.load_file(doc_file)["documents"]
 logger.info "Finished loading documents"
 
-if Dir[Rails.root.join('config','metadata').to_s+'/*.yml'].length < 2
+if Dir[metadata_dir+'/*.yml'].length < 2
   logger.info "Creating metadata coverage configuration file"
   
   logger.info "Loading document metadata"
@@ -29,20 +34,25 @@ if Dir[Rails.root.join('config','metadata').to_s+'/*.yml'].length < 2
           logger.info "Thread "+Thread.current.object_id.to_s+" processed "+d.to_s+" out of "+i.to_s+" docs"
         end
         if !doc_data.blank?
-          # doc_row.each do |xmlid, doc_data|
-            doc_tmp_file = Rails.root.join('tmp','data').to_s+'/'+xmlid+'.js'
-            if doc_data.has_key?("token_count") && !doc_data["token_count"].blank? && doc_data["token_count"] > 0 && !File.exists?(doc_tmp_file)
-              doc_metadata = HTTParty.get('http://localhost:7474/whitelab/search/docs/'+xmlid+'/metadata',
-                :headers => { 'Content-Type' => 'application/json',
-                              'Authorization' => 'Basic '+Base64.encode64(NEO4J_USER+':'+NEO4J_PW) } ).parsed_response
-              doc_metadata["token_count"] = doc_data["token_count"]
-              doc_metadata["corpus"] = doc_data["corpus"]
-              doc_metadata["collection"] = doc_data["collection"]
-              File.open(doc_tmp_file, "w+") do |f|
-                f.puts(doc_metadata.to_json)
-              end
+          doc_tmp_file = Rails.root.join('tmp','data').to_s+'/'+xmlid+'.js'
+          if doc_data.has_key?("token_count") && !doc_data["token_count"].blank? && doc_data["token_count"] > 0 && !File.exists?(doc_tmp_file)
+            doc_metadata = {}
+            doc_metadata["metadata"] = backend.get_document_metadata(xmlid)
+            
+            # doc_metadata = HTTParty.get('http://localhost:7474/whitelab/search/docs/'+xmlid+'/metadata',
+              # :headers => { 'Content-Type' => 'application/json',
+                            # 'Authorization' => 'Basic '+Base64.encode64(NEO4J_USER+':'+NEO4J_PW) } ).parsed_response
+            
+            doc_metadata["token_count"] = doc_data["token_count"]
+            doc_metadata["corpus"] = doc_data["corpus"]
+            doc_metadata["collection"] = doc_data["collection"]
+            if !doc_metadata.has_key?("document_xmlid")
+              doc_metadata["document_xmlid"] = xmlid
             end
-          # end
+            File.open(doc_tmp_file, "w+") do |f|
+              f.puts(doc_metadata.to_json)
+            end
+          end
         end
       end
     end
@@ -55,6 +65,9 @@ if Dir[Rails.root.join('config','metadata').to_s+'/*.yml'].length < 2
   metadata["Corpus"]["title"] = {}
   metadata["Collection"] = {}
   metadata["Collection"]["title"] = {}
+  if backend.get_backend_type.eql?('blacklab')
+    metadata["Metadata"] = {}
+  end
   files = Dir[Rails.root.join('tmp','data').to_s+'/*.js']
   files.each_with_index do |file, f|
     if f > 0 && f % 100000 == 0
@@ -72,19 +85,31 @@ if Dir[Rails.root.join('config','metadata').to_s+'/*.yml'].length < 2
       end
       metadata["Collection"]["title"][doc_data["collection"]] << doc_data["document_xmlid"]
       
-      doc_data["metadata"].each do |group, keys|
-        if !metadata.has_key?(group)
-          metadata[group] = {}
-        end
-        keys.each do |key, values|
-          if !metadata[group].has_key?(key)
-            metadata[group][key] = {}
+      if backend.get_backend_type.eql?('blacklab')
+        doc_data["metadata"].each do |key, value|
+          if !metadata["Metadata"].has_key?(key)
+            metadata["Metadata"][key] = {}
           end
-          values.each do |value|
-            if !metadata[group][key].has_key?(value)
-              metadata[group][key][value] = []
+          if !metadata["Metadata"][key].has_key?(value)
+            metadata["Metadata"][key][value] = []
+          end
+          metadata["Metadata"][key][value] << doc_data["document_xmlid"]
+        end
+      elsif backend.get_backend_type.eql?('neo4j')
+        doc_data["metadata"].each do |group, keys|
+          if !metadata.has_key?(group)
+            metadata[group] = {}
+          end
+          keys.each do |key, values|
+            if !metadata[group].has_key?(key)
+              metadata[group][key] = {}
             end
-            metadata[group][key][value] << doc_data["document_xmlid"]
+            values.each do |value|
+              if !metadata[group][key].has_key?(value)
+                metadata[group][key][value] = []
+              end
+              metadata[group][key][value] << doc_data["document_xmlid"]
+            end
           end
         end
       end
@@ -99,7 +124,7 @@ if Dir[Rails.root.join('config','metadata').to_s+'/*.yml'].length < 2
   metadata.each do |group, keys|
     threads << Thread.new do
       keys.each do |key, values|
-        key_file = Rails.root.join('config','metadata').to_s+'/'+group+'.'+key+'.yml'
+        key_file = metadata_dir+'/'+group+'.'+key+'.yml'
         if !File.exists?(key_file)
           File.open(key_file, 'w', external_encoding: 'ASCII-8BIT') { |f| YAML.dump({ "values" => metadata[group][key] }, f) }
         end
@@ -111,9 +136,9 @@ end
 
 logger.info "Loading metadata"
 metadata = {}
-Dir[Rails.root.join('config','metadata').to_s+'/*.yml'].each do |file|
+Dir[metadata_dir+'/*.yml'].each do |file|
   if !file.end_with?('documents.yml')
-    base = file.sub(Rails.root.join('config','metadata').to_s+'/','').sub('.yml','')
+    base = file.sub(metadata_dir+'/','').sub('.yml','')
     group = base.split('.')[0]
     key = base.split('.')[1]
     if !metadata.has_key?(group)

@@ -1,6 +1,6 @@
 # Controller for PoS tags in Admin namespace.
 class PosTagsController < ApplicationController
-  include DatabaseHelper
+  
   before_action :set_logged_in
   before_action :current_pos_tag_label, :only => :show
   
@@ -10,10 +10,10 @@ class PosTagsController < ApplicationController
       redirect_to 'admin/login'
     end
     set_pagination_params(0, 10, 'label')
-    data = get_pos_tags(@number, @offset, @sort, @order)
+    data = @@BACKEND.get_pos_tags(@number, @offset, @sort, @order)
     @postags = data['pos_tags']
     @total = data['total']
-    @corpora = get_corpus_labels
+    @corpora = @@BACKEND.get_corpus_titles
   end
   
   # Show PoS tag properties
@@ -22,9 +22,9 @@ class PosTagsController < ApplicationController
       redirect_to 'admin/login'
     end
     if @label
-      @postag = get_pos_tag_by_label(@label)
-      @features = get_pos_tag_features_by_label(@label)
-      @types = get_pos_tag_types_by_label(10,0,'token_count','desc',@label)
+      @postag = @@BACKEND.get_pos_tag_by_label(@label)
+      @features = @@BACKEND.get_pos_tag_features_by_label(@label)
+      @types = @@BACKEND.get_pos_tag_types_by_label(10,0,'token_count','desc',@label)
     end
   end
   
