@@ -298,6 +298,87 @@ module Neo4jHelper
     })
   end
   
+  def get_pos_tags(number, offset, sort, order)
+    execute_query({
+      :url => @@BACKEND_URL+'whitelab/search/pos/tags',
+      :query => { 
+        "number" => number,
+        "offset" => offset,
+        "sort" => sort,
+        "order" => order
+      },
+      :headers => @@HEADERS
+    })
+  end
+  
+  def get_pos_heads(number, offset, sort, order)
+    execute_query({
+      :url => @@BACKEND_URL+'whitelab/search/pos/heads',
+      :query => { 
+        "number" => number,
+        "offset" => offset,
+        "sort" => sort,
+        "order" => order
+      },
+      :headers => @@HEADERS
+    })
+  end
+  
+  def get_pos_tag_by_label(label)
+    execute_query({
+      :url => @@BACKEND_URL+'whitelab/search/pos/tags/'+label,
+      :headers => @@HEADERS
+    })
+  end
+  
+  def get_pos_head_by_label(label)
+    execute_query({
+      :url => @@BACKEND_URL+'whitelab/search/pos/heads/'+label,
+      :headers => @@HEADERS
+    })
+  end
+  
+  def get_pos_tag_features_by_label(label)
+    execute_query({
+      :url => @@BACKEND_URL+'whitelab/search/pos/tags/'+label+'/features',
+      :headers => @@HEADERS
+    })
+  end
+  
+  def get_pos_head_features_by_label(label)
+    execute_query({
+      :url => @@BACKEND_URL+'whitelab/search/pos/heads/'+label+'/features',
+      :headers => @@HEADERS
+    })
+  end
+  
+  def get_pos_tag_types_by_label(number, offset, sort, order, label)
+    resp = execute_query({
+      :url => @@BACKEND_URL+'whitelab/search/pos/tags/'+label+'/word_types',
+      :query => { 
+        "number" => number,
+        "offset" => offset,
+        "sort" => sort,
+        "order" => order
+      },
+      :headers => @@HEADERS
+    })
+    resp['word_types']
+  end
+  
+  def get_pos_head_tags_by_label(number, offset, sort, order, label)
+    execute_query({
+      :url => @@BACKEND_URL+'whitelab/search/pos/heads/'+label+'/tags',
+      :query => { 
+        "number" => number,
+        "offset" => offset,
+        "sort" => sort,
+        "order" => order
+      },
+      :headers => @@HEADERS
+    })
+  end
+  
   def get_results(path, query, docpid, w, n, o)
     execute_query({
       :url => @@BACKEND_URL+'whitelab/search/'+path,

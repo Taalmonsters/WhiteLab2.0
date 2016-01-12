@@ -423,6 +423,45 @@ module BlacklabHelper
     resp["fieldValues"][offset..offset+number]
   end
   
+  def get_pos_heads(number, offset, sort, order)
+    orig_sort = sort
+    if sort.eql?('label')
+      sort = 'identity'
+    else
+      sort = 'size'
+    end
+    if order.eql?('desc')
+      sort = '-'+sort
+    end
+    data = execute_query({
+      :url => @@BACKEND_URL+'hits',
+      :query => { 
+        "outputformat" => "json",
+        "patt" => '[poshead="..*"]',
+        "group" => 'hit:poshead:s',
+        "number" => number,
+        "offset" => offset,
+        "sort" => sort
+      },
+      :headers => @@HEADERS
+    })
+    ph = {
+      "total" => data["summary"]["numberOfGroups"],
+      "number" => number,
+      "offset" => offset,
+      "sort" => orig_sort,
+      "order" => order,
+      "pos_heads" => []
+    }
+    data["hitGroups"].each do |group|
+      ph["pos_heads"] << {
+        "label" => group["identityDisplay"],
+        "token_count" => group["size"]
+      }
+    end
+    ph
+  end
+  
   def get_results(path, query, w, n, o)
     execute_query({
       :url => @@BACKEND_URL+path,
