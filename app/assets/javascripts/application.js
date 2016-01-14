@@ -14,8 +14,6 @@
 //= require jquery_ujs
 //= require bootstrap-sprockets
 //= require d3.min
-//= require highcharts
-//= require export-csv
 //= require whitelab
 //= require intro
 //= require turbolinks
