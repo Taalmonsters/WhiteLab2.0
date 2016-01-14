@@ -1,2 +1,1 @@
-console.log('#<%= @target %>');
 $('#<%= @target %>').html("<%= escape_javascript(raw render partial: "/result/doc_hits", layout: false) %>");

@@ -22,7 +22,7 @@ function buildTreemap(data){
 			max = d.size;
 		}
 	}
-	console.log("MIN: "+min+", MAX: "+max+", Sizing: "+sizing);
+	Whitelab.debug("MIN: "+min+", MAX: "+max+", Sizing: "+sizing);
 	
 	var mid = max / 10;
 	

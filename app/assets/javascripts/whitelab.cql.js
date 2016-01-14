@@ -565,7 +565,7 @@ Whitelab.cql = {
 		$.each(types, function(t,type) {
 			if ($("#extended-"+type+" .inputrow").hasClass('active')) {
 				var textInput = document.getElementById(type+"-text");
-				console.log(textInput);
+				Whitelab.debug(textInput);
 				if ($(textInput).val().length > 0) {
 					var vals = $(textInput).val().split(" ");
 					for (var v = 0; v < vals.length; v++) {

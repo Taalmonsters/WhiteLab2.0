@@ -139,7 +139,7 @@ Whitelab.search = {
 			
 			$(document).on('click', '#advanced button.btn-submit', function(e) {
 				e.preventDefault();
-				console.log('FORM CLICK ADVANCED');
+				Whitelab.debug('FORM CLICK ADVANCED');
 				Whitelab.search.advanced.parseQuery();
 			});
 			
@@ -384,7 +384,7 @@ Whitelab.search = {
 			
 			$(document).on('click', '#expert button.btn-submit', function(e) {
 				e.preventDefault();
-				console.log('FORM CLICK EXPERT');
+				Whitelab.debug('FORM CLICK EXPERT');
 				Whitelab.search.expert.parseQuery();
 			});
 
@@ -415,7 +415,7 @@ Whitelab.search = {
 			
 			$(document).on('click', '#extended button.btn-submit', function(e) {
 				e.preventDefault();
-				console.log('FORM CLICK EXTENDED');
+				Whitelab.debug('FORM CLICK EXTENDED');
 				Whitelab.search.extended.parseQuery();
 			});
 			
@@ -528,7 +528,7 @@ Whitelab.search = {
 		init : function() {
 			
 			$(document).on('click', '#simple button.btn-submit', function(e) {
-				console.log('FORM CLICK SIMPLE');
+				Whitelab.debug('FORM CLICK SIMPLE');
 				e.preventDefault();
 				e.stopPropagation();
 				Whitelab.search.simple.parseQuery();
