@@ -462,6 +462,10 @@ module BlacklabHelper
     ph
   end
   
+  def get_query_headers
+    return @@HEADERS
+  end
+  
   def get_results(path, query, w, n, o)
     execute_query({
       :url => @@BACKEND_URL+path,
@@ -514,6 +518,10 @@ module BlacklabHelper
     end
     
     { "results" => reformat_output(query, data, v) }
+  end
+  
+  def get_url
+    return @@BACKEND_URL
   end
   
   # Reformat BlackLab content output to same format as Neo4J

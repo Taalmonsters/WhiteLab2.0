@@ -379,6 +379,10 @@ module Neo4jHelper
     })
   end
   
+  def get_query_headers
+    return @@HEADERS
+  end
+  
   def get_results(path, query, docpid, w, n, o)
     execute_query({
       :url => @@BACKEND_URL+'whitelab/search/'+path,
@@ -432,6 +436,10 @@ module Neo4jHelper
     end
     
     { "results" => data }
+  end
+  
+  def get_url
+    return @@BACKEND_URL
   end
   
   # Run CQL query on server for set amount of iterations

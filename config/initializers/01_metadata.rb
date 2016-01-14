@@ -2,8 +2,6 @@ backend = WhitelabBackend.instance
 logger = Logger.new STDOUT
 logger.formatter = Logger::Formatter.new
 
-logger.info "Using backend '"+backend.get_backend_type+"'"
-
 metadata_config = Rails.root.join('config').to_s+'/metadata_'+backend.get_backend_type+'.yml'
 
 if !File.exists?(metadata_config)
@@ -96,15 +94,7 @@ if !File.exists?(metadata_config)
         order = "desc"
         count = true
       end
-      values = HTTParty.get('http://localhost:7474/whitelab/search/metadata/'+metadatum["data"]["label"]+'/values', timeout: BACKEND_TIMEOUT_SECONDS,
-        :query => { "number" => METADATUM_VALUES_MAX, 
-                   "offset" => 0,
-                   "sort" => sort, 
-                   "order" => order,
-                   "count" => count
-                 },
-        :headers => { 'Content-Type' => 'application/json',
-                      'Authorization' => 'Basic '+Base64.encode64(NEO4J_USER+':'+NEO4J_PW) } )["values"]
+      values = backend.get_metadatum_values_by_label(0, 0, sort, order, metadatum["data"]["label"])
       values.each do |value|
         metadata[metadatum["data"]["group"]][metadatum["data"]["key"]]["values"].push(value["value"])
       end
