@@ -19,7 +19,6 @@ module BackendHelper
         resp = get_headers(data)
       end
     end
-    p resp
     resp.parsed_response
   end
   
