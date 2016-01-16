@@ -117,7 +117,7 @@ en:
       steps: 
         - element: "#search-nav"
           intro: "<p>When you choose to load a document from any of the result sections that provide this option, the <b>document</b> view is revealed.</p><p>(Please wait until the document is loaded before clicking 'Next'.)</p>"
-          position: right
+          position: bottom
         - element: "#document-display"
           intro: "<p>The <b>document</b> view is divided into 3 sections: text, metadata, and statistics. Only one document can be displayed at a time.</p><p>The <b>text</b> section displays the actual contents of the document. Hovering over a word with the mouse reveals additional linguistic information for that word.</p>"
           position: top

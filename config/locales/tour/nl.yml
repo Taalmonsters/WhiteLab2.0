@@ -117,7 +117,7 @@ nl:
       steps: 
         - element: "#search-nav"
           intro: "<p>Als u ervoor kiest om een document te laden vanuit een van de resultaatsschermen wordt het <b>document</b> scherm getoond.</p>"
-          position: right
+          position: bottom
         - element: "#document-display"
           intro: "<p>Het overzicht is onderverdeeld in 3 secties: tekst, metadata en statistieken.</p><p>De sectie <b>tekst</b> toont de daadwerkelijke inhoud van het document. Wanneer u met de muis over een woord beweegt wordt extra, lingu&iuml;stische informatie van dat woord getoond.</p>"
           position: top

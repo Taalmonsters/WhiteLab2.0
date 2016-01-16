@@ -1143,30 +1143,61 @@
    * @param {Object} element
    * @returns Element's position info
    */
+//  function _getOffset(element) {
+//    var elementPosition = {};
+//
+//    //set width
+//    elementPosition.width = element.offsetWidth;
+//
+//    //set height
+//    elementPosition.height = element.offsetHeight;
+//
+//    //calculate element top and left
+//    var _x = 0;
+//    var _y = 0;
+//    while (element && !isNaN(element.offsetLeft) && !isNaN(element.offsetTop)) {
+//      _x += element.offsetLeft;
+//      _y += element.offsetTop;
+//      element = element.offsetParent;
+//    }
+//    //set top
+//    elementPosition.top = _y;
+//    //set left
+//    elementPosition.left = _x;
+//
+//    return elementPosition;
+//  }
+  
   function _getOffset(element) {
-    var elementPosition = {};
+	    var elementPosition = {};
 
-    //set width
-    elementPosition.width = element.offsetWidth;
+	    //set width
+	    elementPosition.width = element.offsetWidth;
 
-    //set height
-    elementPosition.height = element.offsetHeight;
+	    //set height
+	    elementPosition.height = element.offsetHeight;
 
-    //calculate element top and left
-    var _x = 0;
-    var _y = 0;
-    while (element && !isNaN(element.offsetLeft) && !isNaN(element.offsetTop)) {
-      _x += element.offsetLeft;
-      _y += element.offsetTop;
-      element = element.offsetParent;
-    }
-    //set top
-    elementPosition.top = _y;
-    //set left
-    elementPosition.left = _x;
+	    //calculate element top and left
+	    /* ( Comment old way to get the offsets )
+	    var _x = 0;
+	    var _y = 0;
+	    while (element && !isNaN(element.offsetLeft) && !isNaN(element.offsetTop)) {
+	        _x += element.offsetLeft;
+	        _y += element.offsetTop;
+	        element = element.offsetParent;
+	    }
+	    //set top
+	    elementPosition.top = _y;
+	    //set left
+	    elementPosition.left = _x;
+	    */
 
-    return elementPosition;
-  }
+	    var clientRect = element.getBoundingClientRect();
+	    elementPosition.top = clientRect.top;
+	    elementPosition.left = clientRect.left;
+
+	    return elementPosition;
+	}
 
   /**
    * Gets the current progress percentage
