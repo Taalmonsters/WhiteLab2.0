@@ -467,6 +467,7 @@ module BlacklabHelper
   end
   
   def get_results(path, query, w, n, o)
+    p "*** INFO: BlacklabHelper.get_results"
     execute_query({
       :url => @@BACKEND_URL+path,
       :query => {  
@@ -480,7 +481,7 @@ module BlacklabHelper
     })
   end
   
-  def get_search_result_counts_for_query(query, docpid, view, n, o)
+  def get_search_result_counts_for_query(query, docpid, view, number, offset)
     v = get_view(query, docpid, view)
     o = get_offset(query, docpid, offset)
     n = get_number(query, docpid, number)
@@ -498,6 +499,7 @@ module BlacklabHelper
   end
   
   def get_search_results_for_query(query, docpid, offset, number)
+    p "*** INFO: BlacklabHelper.get_search_results_for_query"
     v = get_view(query, docpid, nil)
     o = get_offset(query, docpid, offset)
     n = get_number(query, docpid, number)
@@ -551,6 +553,7 @@ module BlacklabHelper
     if !filters.blank?
       return filters.gsub('=',':')
     end
+    return ''
   end
   
   def reformat_group(group)

@@ -8,18 +8,22 @@ module Neo4jHelper
   include DataFormatHelper
   
   def count_docs(query, docpid, w, n, o)
+    p "*** INFO: Neo4jHelper.count_docs"
     get_results("docs/count", query, docpid, w, n, o)
   end
   
   def count_grouped_docs(query, docpid, w, n, o)
+    p "*** INFO: Neo4jHelper.count_grouped_docs"
     get_grouped_results("grouped_docs/count", query, docpid, w, n, o)
   end
   
   def count_grouped_hits(query, docpid, w, n, o)
+    p "*** INFO: Neo4jHelper.count_grouped_hits"
     get_grouped_results("grouped_hits/count", query, docpid, w, n, o)
   end
   
   def count_hits(query, docpid, w, n, o)
+    p "*** INFO: Neo4jHelper.count_hits"
     get_results("hits/count", query, docpid, w, n, o)
   end
   
@@ -384,6 +388,7 @@ module Neo4jHelper
   end
   
   def get_results(path, query, docpid, w, n, o)
+    p "*** INFO: Neo4jHelper.get_results"
     execute_query({
       :url => @@BACKEND_URL+'whitelab/search/'+path,
       :query => {  
@@ -398,11 +403,17 @@ module Neo4jHelper
     })
   end
   
-  def get_search_result_counts_for_query(query, docpid, view, n, o)
+  def get_search_result_counts_for_query(query, docpid, view, number, offset)
+    p "*** INFO: Neo4jHelper.get_search_result_counts_for_query"
     v = get_view(query, docpid, view)
+    p "*** INFO: Neo4jHelper.get_search_result_counts_for_query 1"
     o = get_offset(query, docpid, offset)
+    p "*** INFO: Neo4jHelper.get_search_result_counts_for_query 2"
     n = get_number(query, docpid, number)
+    p "*** INFO: Neo4jHelper.get_search_result_counts_for_query 3"
     w = get_within(query, 'document')
+    
+    p "*** INFO: Neo4jHelper.get_search_result_counts_for_query: view = "+v.to_s
     
     if v == 1
       count_hits(query, docpid, w, n, o)
@@ -412,6 +423,8 @@ module Neo4jHelper
       count_grouped_hits(query, docpid, w, n, o)
     elsif v == 16
       count_grouped_docs(query, docpid, w, n, o)
+    else
+      p "*** ERROR: view = "+v.to_s
     end
   end
   

@@ -93,13 +93,21 @@ class QueryResult < ActiveRecord::Base
   
   # Run query and store results
   def run(count, o, n)
+    p "*** INFO: QueryResult.run"
     self.update_attribute(:status, 1)
     data = @@BACKEND.get_search_results_for_query(self, nil, o, n)
+    p "*** INFO: QueryResult.run: got data"
     if self.view == 4
+      p "*** INFO: QueryResult.run: reformatting data"
       Thread.new do
         self.update_attribute(:result, format_for_vocabulary_growth(data['content']))
       end
     else
+      p "*** INFO: QueryResult.run: returning results"
+      if !data.has_key?('results')
+        p "*** ERROR: QueryResult.run: no results in data:"
+        p data
+      end
       self.update_attribute(:result, data['results'])
     end
     if count
@@ -109,18 +117,22 @@ class QueryResult < ActiveRecord::Base
   
   # Perform hit, document, and group count for query
   def do_count
+    p "*** INFO: QueryResult.do_count"
     Thread.new do
       if self.hit_count.blank? && !self.is_counting
+        p "*** INFO: QueryResult.do_count 1"
         self.update_attribute(:status, 2)
         get_count('hit_count')
         self.update_attribute(:status, 1)
       end
       if self.document_count.blank? && !self.is_counting
+        p "*** INFO: QueryResult.do_count 2"
         self.update_attribute(:status, 3)
         get_count('document_count')
         self.update_attribute(:status, 1)
       end
       if [8, 16].include?(self.view) && self.group_count.blank? && !self.is_counting
+        p "*** INFO: QueryResult.do_count 3"
         self.update_attribute(:status, 4)
         get_count('group_count')
         self.update_attribute(:status, 1)
@@ -142,7 +154,9 @@ class QueryResult < ActiveRecord::Base
   
   # Get count from existing QueryResult
   def get_count(attr)
+    p "*** INFO: QueryResult.get_count"
     if self.read_attribute(attr).blank?
+      p "*** INFO: QueryResult.get_count: attr '"+attr+"' is blank"
       results = []
       if attr.eql?('group_count')
         results = QueryResult.where({:patt => self.patt, :filter => self.filter, :within => self.within, :group => self.group, :status => 10}).where.not(:"#{attr}" => nil)
@@ -150,8 +164,10 @@ class QueryResult < ActiveRecord::Base
         results = QueryResult.where("patt = ? AND filter = ? AND within = ? AND #{attr} IS NOT NULL AND status = ?", self.patt, self.filter, self.within, 10)
       end
       if results.any?
+        p "*** INFO: QueryResult.get_count: found results in db"
         self.update_attribute(:"#{attr}", results.first.read_attribute(attr))
       else
+        p "*** INFO: QueryResult.get_count: did not find results in db"
         calculate_count(attr)
       end
     end
@@ -160,13 +176,16 @@ class QueryResult < ActiveRecord::Base
   
   # Calculate count from index
   def calculate_count(attr)
+    p "*** INFO: QueryResult.calculate_count: start"
     view = 1
     if attr.eql?('group_count')
       view = 8
     elsif attr.eql?('document_count')
       view = 2
     end
+    p "*** INFO: Backend type: "+@@BACKEND.get_backend_type
     set_count(@@BACKEND.get_search_result_counts_for_query(self, nil, view, 0, 0), attr, 0)
+    p "*** INFO: QueryResult.calculate_count: end"
   end
   
   # Set count in QueryResult
