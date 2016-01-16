@@ -8,7 +8,8 @@ module DataFormatHelper
     if view == 2 || view == 16
       suffix = "docs"
     end
-    if @@BACKENDTYPE.eql?('neo4j') && (view == 8 || view == 16)
+    backend = WhitelabBackend.instance
+    if backend.get_backend_type.eql?('neo4j') && (view == 8 || view == 16)
       prefix = "grouped_"
     end
     prefix+suffix
