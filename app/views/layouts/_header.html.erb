@@ -49,20 +49,20 @@
 					<li class="left-spaced">
 						<a id="admin-icon" href="/admin/login"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
 					</li>
-					<% if !@namespace || @namespace.eql?('main') %>
-						<li id="main-home" class="left-spaced active"><a href="#" onclick="event.preventDefault();"><%= t(:"page_titles.keys.home").capitalize %></a></li>
+					<% if @namespace && @namespace.eql?('search') %>
+						<li id="main-search" class="left-spaced active"><a href="#" onclick="event.preventDefault();"><%= t(:"page_titles.keys.search").capitalize %></a></li>
 					<% else %>
-						<li id="main-home" class="left-spaced"><a href="/"><%= t(:"page_titles.keys.home").capitalize %></a></li>
+						<li id="main-search" class="left-spaced"><a href="/search/simple"><%= t(:"page_titles.keys.search").capitalize %></a></li>
 					<% end %>
 					<% if @namespace && @namespace.eql?('explore') %>
 						<li id="main-explore" class="left-spaced active"><a href="#" onclick="event.preventDefault();"><%= t(:"page_titles.keys.explore").capitalize %></a></li>
 					<% else %>
 						<li id="main-explore" class="left-spaced"><a href="/explore/corpora"><%= t(:"page_titles.keys.explore").capitalize %></a></li>
 					<% end %>
-					<% if @namespace && @namespace.eql?('search') %>
-						<li id="main-search" class="left-spaced active"><a href="#" onclick="event.preventDefault();"><%= t(:"page_titles.keys.search").capitalize %></a></li>
+					<% if !@namespace || @namespace.eql?('main') %>
+						<li id="main-home" class="left-spaced active"><a href="#" onclick="event.preventDefault();"><%= t(:"page_titles.keys.home").capitalize %></a></li>
 					<% else %>
-						<li id="main-search" class="left-spaced"><a href="/search/simple"><%= t(:"page_titles.keys.search").capitalize %></a></li>
+						<li id="main-home" class="left-spaced"><a href="/info"><%= t(:"page_titles.keys.home").capitalize %></a></li>
 					<% end %>
 				</ul>
 

@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   
-  root 'static_pages#home'
+  root 'search#search'
+  
+  get '/info' => 'static_pages#home'
   
   get '/cql/validate' => 'admin#cql', as: 'cql_tester'
   get '/test' => 'static_pages#test'

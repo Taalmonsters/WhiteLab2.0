@@ -91,7 +91,7 @@ en:
     title: Page titles
     description: Translations of page titles
     keys:
-      home: home
+      home: info
       help: help
       search: search
       simple: simple
