@@ -94,7 +94,7 @@ if !File.exists?(metadata_config)
         order = "desc"
         count = true
       end
-      values = backend.get_metadatum_values_by_label(0, 0, sort, order, metadatum["data"]["label"])
+      values = backend.get_metadatum_values_by_group_and_key(0, 0, sort, order, metadatum["data"]["group"], metadatum["data"]["key"], false)
       values.each do |value|
         metadata[metadatum["data"]["group"]][metadatum["data"]["key"]]["values"].push(value["value"])
       end
