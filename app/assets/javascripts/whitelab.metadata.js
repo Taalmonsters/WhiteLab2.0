@@ -30,17 +30,6 @@ Whitelab.metadata = {
 		$(document).on('change', 'select.metadata-operator', function(e) {
 			Whitelab.metadata.updateCoverage();
 		});
-		$(document).on('click', 'a.metadata-remove-rule', function(e) {
-			e.preventDefault();
-			if ($('div.rule').length > 1) {
-				$(this).parent().parent().remove();
-				Whitelab.metadata.updateCoverage();
-			}
-		});
-		$(document).on('click', 'a.metadata-add-rule', function(e) {
-			e.preventDefault();
-			Whitelab.metadata.addMetadataRule();
-		});
 	},
 	
 	addMetadataRule : function(group,key,operator,value) {

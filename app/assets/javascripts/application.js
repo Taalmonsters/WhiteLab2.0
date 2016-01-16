@@ -25,6 +25,21 @@ ready = function() {
 	Whitelab.init();
 };
 
+$(document).on('click', 'a.metadata-remove-rule', function(e) {
+	e.preventDefault();
+	e.stopPropagation();
+	if ($('div.rule').length > 1) {
+		$(this).parent().parent().remove();
+		Whitelab.metadata.updateCoverage();
+	}
+});
+$(document).on('click', 'a.metadata-add-rule', function(e) {
+	console.log("CLICK");
+	e.preventDefault();
+	e.stopPropagation();
+	Whitelab.metadata.addMetadataRule();
+});
+
 $(document).ready(ready);
 $(document).on('page:load', ready);
 
