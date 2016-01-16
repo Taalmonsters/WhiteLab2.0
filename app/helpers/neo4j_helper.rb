@@ -109,8 +109,8 @@ module Neo4jHelper
       },
       :headers => @@HEADERS
     })
-    return data
-    # return { "content" => data['content'][0] }
+    # return data
+    return data['content'][0]
   end
   
   def get_document_list

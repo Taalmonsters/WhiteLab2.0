@@ -121,10 +121,10 @@ module BlacklabHelper
   
   def get_document_audio_file(xmlid)
     data = get_document_metadata(xmlid)
-    if data["Metadata"].has_key?("ResourceLink")
-      return "mp3/"+xmlid+".mp3"
+    if data["Metadata"].has_key?("AudioExportFormat")
+      return data["Metadata"]["AudioExportFormat"]+"/"+xmlid+"."+data["Metadata"]["AudioExportFormat"]
     end
-    ""
+    "Unknown"
   end
   
   def get_document_content(xmlid, patt, offset, number)
@@ -186,11 +186,9 @@ module BlacklabHelper
       },
       :headers => @@HEADERS
     })
+    p data
     metadata = {
-      # "document_xmlid" => xmlid,
-      # "metadata" => {
-        "Metadata" => {}
-      # }
+      "Metadata" => {}
     }
     data['docInfo'].each do |m, v|
       metadata["Metadata"][m] = [v]
