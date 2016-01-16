@@ -201,7 +201,7 @@ class SearchController < ApplicationController
   def update_query
     if @query && @query.has_changed(params)
       if @query.update_attributes(query_update_params)
-        @query.execute(true, "SEARCH QUERY CHANGED")
+        @query.query_result.execute(true, "SEARCH QUERY CHANGED")
       end
     end
   end
