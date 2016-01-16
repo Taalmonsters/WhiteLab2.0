@@ -278,6 +278,7 @@ var Whitelab = {
 	loadGroupedDocs : function(group_id,group_value) {
 		var qid = $("#result-pane").data("query-id");
 		var o = $("#"+group_id).data("offset");
+		group_value = encodeURIComponent(group_value);
 		if ($('#search').length > 0)
 			$.getScript('/search/result/id/'+qid+'/groupdocs.js?group_id='+group_id+'&docs_group='+group_value+'&offset='+o+'&number=20');
 		else if ($('#explore').length > 0)
@@ -286,6 +287,7 @@ var Whitelab = {
 	
 	loadGroupedHits : function(group_id,group_value) {
 		Whitelab.debug("loadGroupedHits");
+		group_value = encodeURIComponent(group_value);
 		var qid = $("#result-pane").data("query-id");
 		var o = $("#"+group_id).data("offset");
 		if ($('#search').length > 0)
@@ -322,10 +324,14 @@ var Whitelab = {
 		var patt = $("#query-details td.patt").html();
 		var within = $("#query-details td.within").html();
 		var filter = $("#query-details td.filter").html();
+		if (typeof filter === 'undefined')
+			filter = '';
 		var group = $("#query-details td.group").html();
 		if (group.indexOf("hit_") > -1) {
+			group_value = encodeURIComponent(group_value);
 			patt = "[word=\"(?c)"+group_value+"\"]";
 		} else if (group.indexOf("_left") > -1) {
+			group_value = encodeURIComponent(group_value);
 			if (group.indexOf("lemma_") > -1)
 				patt = "[lemma=\"(?c)"+group_value+"\"]"+patt;
 			else if (group.indexOf("pos_") > -1)
@@ -335,6 +341,7 @@ var Whitelab = {
 			else
 				patt = "[word=\"(?c)"+group_value+"\"]"+patt;
 		} else if (group.indexOf("_right") > -1) {
+			group_value = encodeURIComponent(group_value);
 			if (group.indexOf("lemma_") > -1)
 				patt = patt+"[lemma=\"(?c)"+group_value+"\"]";
 			else if (group.indexOf("pos_") > -1)
@@ -344,7 +351,10 @@ var Whitelab = {
 			else
 				patt = patt+"[word=\"(?c)"+group_value+"\"]";
 		} else {
-			filter = filter+"AND("+group+"="+"\""+group_value+"\")";
+			if (filter.length > 0)
+				filter = filter+"AND("+group+"="+"\""+group_value+"\")";
+			else
+				filter = "("+group+"="+"\""+group_value+"\")";
 		}
 		window.location = "/search/expert?view=2&patt="+patt+"&within="+within+"&filter="+filter;
 	},
@@ -354,10 +364,14 @@ var Whitelab = {
 		var patt = $("#query-details td.patt").html();
 		var within = $("#query-details td.within").html();
 		var filter = $("#query-details td.filter").html();
+		if (typeof filter === 'undefined')
+			filter = '';
 		var group = $("#query-details td.group").html();
 		if (group.indexOf("hit_") > -1) {
+			group_value = encodeURIComponent(group_value);
 			patt = "[word=\"(?c)"+group_value+"\"]";
 		} else if (group.indexOf("_left") > -1) {
+			group_value = encodeURIComponent(group_value);
 			if (group.indexOf("lemma_") > -1)
 				patt = "[lemma=\"(?c)"+group_value+"\"]"+patt;
 			else if (group.indexOf("pos_") > -1)
@@ -367,6 +381,7 @@ var Whitelab = {
 			else
 				patt = "[word=\"(?c)"+group_value+"\"]"+patt;
 		} else if (group.indexOf("_right") > -1) {
+			group_value = encodeURIComponent(group_value);
 			if (group.indexOf("lemma_") > -1)
 				patt = patt+"[lemma=\"(?c)"+group_value+"\"]";
 			else if (group.indexOf("pos_") > -1)
@@ -376,7 +391,10 @@ var Whitelab = {
 			else
 				patt = patt+"[word=\"(?c)"+group_value+"\"]";
 		} else {
-			filter = filter+"AND("+group+"="+"\""+group_value+"\")";
+			if (filter.length > 0)
+				filter = filter+"AND("+group+"="+"\""+group_value+"\")";
+			else
+				filter = "("+group+"="+"\""+group_value+"\")";
 		}
 		window.location = "/search/expert?view=1&patt="+patt+"&within="+within+"&filter="+filter;
 	},

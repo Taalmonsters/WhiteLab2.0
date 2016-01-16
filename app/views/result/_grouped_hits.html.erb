@@ -39,7 +39,7 @@
 			<tbody>
 				<% @query.query_result.result.each_with_index do |group,i| %>
 					<tr class="clickable grouped-hit-row" data-group-value="<%= group[@group] %>" data-group-id="<%= @query.query_result.group+i.to_s %>">
-						<td><%= group[@group].html_safe %></td>
+						<td><%= group[@group].kind_of?(Array) ? group[@group][0].html_safe : group[@group].html_safe %></td>
 						<td class="progress-field">
 							<div class="progress">
 								<div class="progress-bar" role="progressbar" aria-valuenow="<%= group['hit_count'] %>" aria-valuemin="1" aria-valuemax="<%= @query.query_result.hit_count %>" style="width: <%= [group['hit_count'],100].min %>%; min-width: 4em;"><%= group['hit_count'] %></div>
