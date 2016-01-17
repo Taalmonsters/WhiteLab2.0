@@ -111,6 +111,7 @@ class QueryResult < ActiveRecord::Base
       self.update_attribute(:result, data['results'])
     end
     if count
+      self.update_attribute(:group_count, nil)
       do_count
     end
   end
