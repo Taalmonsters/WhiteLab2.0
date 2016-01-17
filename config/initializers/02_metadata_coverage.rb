@@ -38,16 +38,14 @@ if Dir[metadata_dir+'/*.yml'].length < 2
           if doc_data.has_key?("token_count") && !doc_data["token_count"].blank? && doc_data["token_count"] > 0 && !File.exists?(doc_tmp_file)
             doc_metadata = {}
             doc_metadata["metadata"] = backend.get_document_metadata(xmlid)
-            
-            # doc_metadata = HTTParty.get('http://localhost:7474/whitelab/search/docs/'+xmlid+'/metadata',
-              # :headers => { 'Content-Type' => 'application/json',
-                            # 'Authorization' => 'Basic '+Base64.encode64(NEO4J_USER+':'+NEO4J_PW) } ).parsed_response
-            
             doc_metadata["token_count"] = doc_data["token_count"]
             doc_metadata["corpus"] = doc_data["corpus"]
             doc_metadata["collection"] = doc_data["collection"]
             if !doc_metadata.has_key?("document_xmlid")
               doc_metadata["document_xmlid"] = xmlid
+            end
+            if !File.directory?(Rails.root.join('tmp','data').to_s)
+              Dir.mkdir Rails.root.join('tmp','data').to_s
             end
             File.open(doc_tmp_file, "w+") do |f|
               f.puts(doc_metadata.to_json)
