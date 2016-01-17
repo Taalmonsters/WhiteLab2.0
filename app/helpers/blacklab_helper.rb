@@ -186,7 +186,6 @@ module BlacklabHelper
       },
       :headers => @@HEADERS
     })
-    p data
     metadata = {
       "Metadata" => {}
     }
@@ -465,7 +464,6 @@ module BlacklabHelper
   end
   
   def get_results(path, query, w, n, o)
-    p "*** INFO: BlacklabHelper.get_results"
     execute_query({
       :url => @@BACKEND_URL+path,
       :query => {  
@@ -497,7 +495,6 @@ module BlacklabHelper
   end
   
   def get_search_results_for_query(query, docpid, offset, number)
-    p "*** INFO: BlacklabHelper.get_search_results_for_query"
     v = get_view(query, docpid, nil)
     o = get_offset(query, docpid, offset)
     n = get_number(query, docpid, number)

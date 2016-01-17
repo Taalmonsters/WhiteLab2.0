@@ -115,7 +115,6 @@ class SearchController < ApplicationController
       @offset = params[:offset] || 0
       @group = params[:hits_group]
       @group_id = params[:group_id]
-      p "GROUP: "+@group+", GROUP ID: "+@group_id
       @hits = @@BACKEND.get_hits_in_group(@query.query_result,@group,@offset,20)['hits']
     end
     respond_to do |format|

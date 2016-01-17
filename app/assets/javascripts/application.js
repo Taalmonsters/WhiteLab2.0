@@ -35,7 +35,6 @@ $(document).on('click', 'a.metadata-remove-rule', function(e) {
 	}
 });
 $(document).on('click', 'a.metadata-add-rule', function(e) {
-	console.log("CLICK");
 	e.preventDefault();
 	e.stopPropagation();
 	Whitelab.metadata.addMetadataRule();

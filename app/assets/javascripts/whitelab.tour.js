@@ -38,7 +38,6 @@ Whitelab.tour = {
 	
 	setScrollTop : function(current) {
 		if (Whitelab.tour.element != undefined) {
-			console.log("scrolling");
 			var pos = $(Whitelab.tour.element).offset().top - Whitelab.tour.offset - 268;
 			$("body").animate({
 		        scrollTop: pos

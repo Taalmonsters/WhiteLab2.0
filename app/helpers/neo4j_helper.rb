@@ -8,22 +8,18 @@ module Neo4jHelper
   include DataFormatHelper
   
   def count_docs(query, docpid, w, n, o)
-    p "*** INFO: Neo4jHelper.count_docs"
     get_results("docs/count", query, docpid, w, n, o)
   end
   
   def count_grouped_docs(query, docpid, w, n, o)
-    p "*** INFO: Neo4jHelper.count_grouped_docs"
     get_grouped_results("grouped_docs/count", query, docpid, w, n, o)
   end
   
   def count_grouped_hits(query, docpid, w, n, o)
-    p "*** INFO: Neo4jHelper.count_grouped_hits"
     get_grouped_results("grouped_hits/count", query, docpid, w, n, o)
   end
   
   def count_hits(query, docpid, w, n, o)
-    p "*** INFO: Neo4jHelper.count_hits"
     get_results("hits/count", query, docpid, w, n, o)
   end
   
@@ -158,7 +154,6 @@ module Neo4jHelper
   end
   
   def get_grouped_hits(query, docpid, w, n, o)
-    p "*** INFO: Neo4jHelper.get_grouped_hits"
     data = get_grouped_results("grouped_hits", query, docpid, w, n, o)
     data["grouped_hits"]
   end
@@ -389,7 +384,6 @@ module Neo4jHelper
   end
   
   def get_results(path, query, docpid, w, n, o)
-    p "*** INFO: Neo4jHelper.get_results"
     execute_query({
       :url => @@BACKEND_URL+'whitelab/search/'+path,
       :query => {  
@@ -405,7 +399,6 @@ module Neo4jHelper
   end
   
   def get_search_result_counts_for_query(query, docpid, view, number, offset)
-    p "*** INFO: Neo4jHelper.get_search_result_counts_for_query"
     v = get_view(query, docpid, view)
     o = get_offset(query, docpid, offset)
     n = get_number(query, docpid, number)
@@ -425,15 +418,10 @@ module Neo4jHelper
   end
   
   def get_search_results_for_query(query, docpid, offset, number)
-    p "*** INFO: Neo4jHelper.get_search_results_for_query"
     v = get_view(query, docpid, nil)
-    p "*** INFO: Neo4jHelper.get_search_results_for_query 1"
     o = get_offset(query, docpid, offset)
-    p "*** INFO: Neo4jHelper.get_search_results_for_query 2"
     n = get_number(query, docpid, number)
-    p "*** INFO: Neo4jHelper.get_search_results_for_query 3"
     w = get_within(query, 'document')
-    p "*** INFO: Neo4jHelper.get_search_results_for_query 4"
     
     data = nil
     
