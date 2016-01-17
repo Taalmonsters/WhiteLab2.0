@@ -1,5 +1,5 @@
-WhiteLab 2.0
-============
+# WhiteLab 2.0
+==============
 
 WhiteLab 2.0 is a Ruby on Rails implementation of [WhiteLab](https://github.com/TiCCSoftware/WhiteLab), 
 a web application for the search and exploration of large corpora with linguistic annotations.
