@@ -6,9 +6,9 @@
 		<% if !@tour_data.blank? %>
 			Whitelab.tour.active = true;
 			<% if @tour_data.has_key?('next_url') %>
-				Whitelab.tour.nextUrl = '<%= @tour_data['next_url'] %>';
+			Whitelab.tour.nextUrl = '<%= @tour_data['next_url'] %>';
 			<% else %>
-				Whitelab.tour.nextUrl = null;
+			Whitelab.tour.nextUrl = null;
 			<% end %>
 			Whitelab.tour.steps = <%= @tour_data['steps'].to_json.html_safe %>;
 		<% end %>

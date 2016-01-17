@@ -11,7 +11,6 @@ $wlgray-lighter: lighten($gray-light, 52%);
 }
 
 html, body {
-  overflow: hidden;
   height: 100%;
   font-size: small;
 }
@@ -188,10 +187,6 @@ div.full-height-container {
 .text-vert-center {
   height: 100%;
   vertical-align: middle;
-}
-
-.main-content {
-  margin-top: 65px;
 }
 
 .box-xs {
