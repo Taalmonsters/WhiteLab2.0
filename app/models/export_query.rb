@@ -139,7 +139,7 @@ class ExportQuery < ActiveRecord::Base
     if self.patt.eql?('[word=".*"]')
       filename = filename+'_p=empty'
     else
-      patt = self.patt.sub(/\]\[/,' ').sub(/\[*(word|lemma|pos|phonetic)=\"/,'').sub(/\"\]*/,'')
+      patt = self.patt.gsub(/\]\[/,' ').gsub(/\[*(word|lemma|pos|phonetic)=\"/,'').gsub(/\"\]*/,'')
       filename = filename+'_p='+patt
     end
     if !self.filter.blank?
