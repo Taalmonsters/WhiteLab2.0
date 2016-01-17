@@ -17,6 +17,7 @@
 //= require whitelab
 //= require intro
 //= require turbolinks
+//= require cookies_eu
 //= require_tree .
 
 var ready;

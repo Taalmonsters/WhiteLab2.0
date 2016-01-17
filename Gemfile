@@ -20,6 +20,7 @@ gem 'will_paginate-bootstrap'
 gem 'httparty'
 gem 'ruby-mp3info'
 gem 'chartkick'
+gem 'cookies_eu'
 
 gem 'sdoc', '~> 0.4.0', group: :doc
 

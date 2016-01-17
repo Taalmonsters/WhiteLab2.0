@@ -81,6 +81,7 @@
 				</div>
 	</nav>
 	<div id="<%= @namespace %>" class="container-fluid main-content" style="margin-top: 65px; padding-top: 40px; padding-bottom: 150px;">
+		<%= render 'cookies_eu/consent_banner' %>
 		<% if @namespace && !@namespace.eql?('main') %>
 			<%= render partial: @namespace+'/sub_nav' %>
 		<% end %>
