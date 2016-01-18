@@ -10,8 +10,7 @@ Within the *Explore* interface, URL parameters may be passed to the statistics p
 and accepts the following paramaters:
 
 - metadata: Metadata filters are **required** for corpus statistics. Each field may be used multiple times and accepts literal values only. Prefix a value with '-' to exclude it (for example: CollectionName=-Newspapers). Values consisting of multiple tokens should be surrounded with quotes (CollectionName="Discussion lists").
-- **tab**: Optional. Defines the type of results to be displayed: 'freqlist' for frequency list (default), 'doclist' for document list, 'growth' for vocabulary growth, 'wordcloud' for the word cloud.
-- **group**: Optional. Can only be used in combination with 'tab=freqlist' or 'tab=wordcloud'. The following values can be used as input:
+- **group**: Optional. The following values can be used as input:
   - hit:word
   - hit:lemma
   - hit:pos
@@ -36,7 +35,6 @@ The document page is accessible through:
 and accepts only a single parameter:
 
 - **docpid**: Required. Unique id for a document in the corpus.
-- **tab**: Optional. Defines the type of results to be displayed: 'text' for document contents (default), 'metadata' for document metadata, 'statistics' for document statistics, 'wordcloud' for the document word cloud.
 
 ## Search
 
