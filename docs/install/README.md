@@ -222,7 +222,7 @@ MySQL
 Install MySQL using the instructions on [this page](https://www.linode.com/docs/databases/mysql/how-to-install-mysql-on-ubuntu-14-04). It is used within the WhiteLab 2.0 web application to keep track of users and their queries.
 
 WhiteLab 2.0 web application
-===========================-
+============================
 
 We are now ready to install the WhiteLab 2.0 web application. Download it from [here](https://github.com/Taalmonsters/WhiteLab2.0) and unpack it in /var/www/html. For convenience, you may rename the unpacked directory to, for instance, 'whitelab'.
 Descend into the newly created whitelab directory and issue the following command:
