@@ -231,7 +231,25 @@ Descend into the newly created whitelab directory and issue the following comman
 $ bundle install
 ```
 
-This will install rails and all Ruby gems that are required to run WhiteLab 2.0. Next issue the following command:
+This will install rails and all Ruby gems that are required to run WhiteLab 2.0. The configuration for the application is located in config/application.rb. By default it is configured to use Neo4j as the backend:
+
+```
+config.x.database_type = 'neo4j'
+config.x.database_url = 'http://localhost:7474/'
+```
+
+If you wish to use BlackLab and BlackLab Server instead, use:
+
+```
+config.x.database_type = 'blacklab'
+config.x.database_url = 'http://localhost:8080/blacklab-server/corpusname/'
+```
+
+If one or more of your corpora include audio, create an environment variable titled WHITELAB_AUDIO_DIR which defines the absolute path to the directory where your audio files are located. This folder should include a subdirectory for each available audio format, with the document audio files located directly into the format subdirectory.
+
+*NB*: Do NOT adjust the "config.x.total_token_count" property. This will be set by the application upon initialization.
+
+Next issue the following command:
 
 ```
 $ rake assets:precompile dp:drop db:create db:migrate RAILS_ENV=production
