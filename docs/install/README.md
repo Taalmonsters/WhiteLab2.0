@@ -48,6 +48,11 @@ WhiteLab 2.0 Neo4j Plugin
 =========================
 
 Download the [plugin](https://github.com/Taalmonsters/WhiteLab2.0-Neo4j-Plugin). Unpack it and move into the unpacked directory. Use the command 'mvn clean package' to create the plugin jar-file in the target directory.
+
+```
+*NB*: Please make sure that the Neo4j version defined in pom.xml is the same as the version of your Neo4j installation.
+```
+
 Two jars will be created: whitelab-neo4j-extension-1.0.jar and whitelab-neo4j-extension-1.0-jar-with-dependencies.jar. Move the version whitelab-neo4j-extension-1.0-jar-with-dependencies.jar to the plugins folder of your Neo4j installation directory.
 Next, open and edit the file conf/neo4j-server.properties. First, change the location of the database to the full path of the directory where you plan to store your database:
 
@@ -100,6 +105,11 @@ WhiteLab 2.0 Importer
 =====================
 
 To create an index that is compatible with WhiteLab 2.0, downlad the [WhiteLab 2.0 Importer](https://github.com/Taalmonsters/WhiteLab2.0-Importer). Unpack the archive, descend into the create folder and run 'mvn clean package'. This creates a file 'whitelab-neo4j-importer-1.0-jar-with-dependencies.jar' in the target subdirectory.
+
+```
+*NB*: Please make sure that the Neo4j version defined in pom.xml is the same as the version of your Neo4j installation.
+```
+
 The importer can index multiple corpora at once. Make sure your input directory has the following structure and files:
 
 ```
