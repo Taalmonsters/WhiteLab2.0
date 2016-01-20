@@ -50,7 +50,7 @@ WhiteLab 2.0 Neo4j Plugin
 Download the [plugin](https://github.com/Taalmonsters/WhiteLab2.0-Neo4j-Plugin). Unpack it and move into the unpacked directory. Use the command 'mvn clean package' to create the plugin jar-file in the target directory.
 
 ```
-*NB*: Please make sure that the Neo4j version defined in pom.xml is the same as the version of your Neo4j installation.
+NB: Please make sure that the Neo4j version defined in pom.xml is the same as the version of your Neo4j installation.
 ```
 
 Two jars will be created: whitelab-neo4j-extension-1.0.jar and whitelab-neo4j-extension-1.0-jar-with-dependencies.jar. Move the version whitelab-neo4j-extension-1.0-jar-with-dependencies.jar to the plugins folder of your Neo4j installation directory.
@@ -107,7 +107,7 @@ WhiteLab 2.0 Importer
 To create an index that is compatible with WhiteLab 2.0, downlad the [WhiteLab 2.0 Importer](https://github.com/Taalmonsters/WhiteLab2.0-Importer). Unpack the archive, descend into the create folder and run 'mvn clean package'. This creates a file 'whitelab-neo4j-importer-1.0-jar-with-dependencies.jar' in the target subdirectory.
 
 ```
-*NB*: Please make sure that the Neo4j version defined in pom.xml is the same as the version of your Neo4j installation.
+NB: Please make sure that the Neo4j version defined in pom.xml is the same as the version of your Neo4j installation.
 ```
 
 The importer can index multiple corpora at once. Make sure your input directory has the following structure and files:
@@ -257,7 +257,7 @@ config.x.database_url = 'http://localhost:8080/blacklab-server/corpusname/'
 
 If one or more of your corpora include audio, create an environment variable titled WHITELAB_AUDIO_DIR which defines the absolute path to the directory where your audio files are located. This folder should include a subdirectory for each available audio format, with the document audio files located directly into the format subdirectory.
 
-*NB*: Do NOT adjust the "config.x.total_token_count" property. This will be set by the application upon initialization.
+NB: Do NOT adjust the "config.x.total_token_count" property. This will be set by the application upon initialization.
 
 Next issue the following command:
 
@@ -267,7 +267,7 @@ $ rake assets:precompile dp:drop db:create db:migrate RAILS_ENV=production
 
 This will precompile all css, images and javascript files, and also create the MySQL database to store the user profiles and query results.
 
-*NB*: WhiteLab 2.0 includes functionality for creating cron jobs that check and clean the database at regular intervals. To use them issue the following command from the WhiteLab 2.0 root directory:
+NB: WhiteLab 2.0 includes functionality for creating cron jobs that check and clean the database at regular intervals. To use them issue the following command from the WhiteLab 2.0 root directory:
 
 ```
 $ whenever -w
@@ -275,7 +275,7 @@ $ whenever -w
 
 This will write the job schedule defined in config/schedule.rb to your crontab file.
 
-*NB*: Any "rake" commands will initialize the application in the background to check for errors. During first initialization the application will
+NB: Any "rake" commands will initialize the application in the background to check for errors. During first initialization the application will
 retrieve lists of available metadata en documents from the index and stores them for use in the interface (i.e. to dynamically calculate filter coverage). If your index is of considerable size, this may take some time. Please do not interrupt the process.
 
 Next, go into the directory /etc/apache2/sites-available and copy the default site configuration to a new file:
