@@ -157,7 +157,7 @@ class AdminController < ApplicationController
   
   # Sign in to admin
   def signin
-    if params[:user] && params[:user] == ENV["WL2_ADMIN"] && params[:key] && params[:key] == ENV["WL2_ADMIN_KEY"]
+    if params[:user] && params[:user] == ADMIN_USER && params[:key] && params[:key] == ADMIN_PW
       session[:admin_active] = true
       redirect_to admin_page_path(:page => 'overview')
     else
