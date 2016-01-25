@@ -267,16 +267,26 @@ $ rake assets:precompile dp:drop db:create db:migrate RAILS_ENV=production
 
 This will precompile all css, images and javascript files, and also create the MySQL database to store the user profiles and query results.
 
-NB: WhiteLab 2.0 includes functionality for creating cron jobs that check and clean the database at regular intervals. To use them issue the following command from the WhiteLab 2.0 root directory:
+```
+NB: Any "rake" commands will initialize the application in the background to check for errors. During first initialization the application will
+retrieve lists of available metadata en documents from the index and stores them for use in the interface (i.e. to dynamically calculate filter coverage). If your index is of considerable size, this may take some time. Please do not interrupt the process.
+```
+
+If you are running WhiteLab 2.0 in production mode, you should generate a secret key base for the application using the following command:
+
+```
+$ rake secret
+```
+
+Store the resulting string in an environment variable named 'SECRET_KEY_BASE'.
+
+WhiteLab 2.0 includes functionality for creating cron jobs that check and clean the database at regular intervals. To use them issue the following command from the WhiteLab 2.0 root directory:
 
 ```
 $ whenever -w
 ```
 
 This will write the job schedule defined in config/schedule.rb to your crontab file.
-
-NB: Any "rake" commands will initialize the application in the background to check for errors. During first initialization the application will
-retrieve lists of available metadata en documents from the index and stores them for use in the interface (i.e. to dynamically calculate filter coverage). If your index is of considerable size, this may take some time. Please do not interrupt the process.
 
 Next, go into the directory /etc/apache2/sites-available and copy the default site configuration to a new file:
 
@@ -307,3 +317,6 @@ $ sudo service apache2 restart
 
 WhiteLab 2.0 is now available at http://yourdomain.com.
 
+WhiteLab 2.0 includes an administration interface for the management of the interface and metadata. It requires a login.
+Add the username and password you wish to use for this interface as environment variables respectively named 'WL2_ADMIN' and 'WL2_ADMIN_KEY'.
+You may need to restart the application for the changes to take effect.
