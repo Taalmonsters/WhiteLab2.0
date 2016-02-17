@@ -19,7 +19,11 @@ module BackendHelper
         resp = get_headers(data)
       end
     end
-    resp.parsed_response
+    if WhitelabBackend.instance.get_backend_type.eql?('neo4j')
+      return resp.parsed_response
+    else
+      return resp
+    end
   end
   
   def get_headers(data)
