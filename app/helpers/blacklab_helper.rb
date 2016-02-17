@@ -578,7 +578,7 @@ module BlacklabHelper
           "hit_text"=> hit["match"]["word"].join(" "),
           "last_index" => hit["end"]-1,
           "text_right" => hit["right"]["word"].join(" "),
-          "docpid" => "WR-U-E-D-0000000308",
+          "docpid" => hit["docPid"],
           "end_time" => "Unknown",
           "begin_time" => "Unknown",
           "hit_pos" => hit["match"]["pos"].join(" "),
