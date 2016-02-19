@@ -122,7 +122,11 @@ module BlacklabHelper
   def get_document_audio_file(xmlid)
     data = get_document_metadata(xmlid)
     if data["Metadata"].has_key?("AudioExportFormat")
-      return data["Metadata"]["AudioExportFormat"]+"/"+xmlid+"."+data["Metadata"]["AudioExportFormat"]
+      if data["Metadata"]["AudioExportFormat"].respond_to?('each')
+        return data["Metadata"]["AudioExportFormat"][0]+"/"+xmlid+"."+data["Metadata"]["AudioExportFormat"][0]
+      else
+        return data["Metadata"]["AudioExportFormat"]+"/"+xmlid+"."+data["Metadata"]["AudioExportFormat"]
+      end
     end
     "Unknown"
   end
