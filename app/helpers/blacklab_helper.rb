@@ -605,8 +605,8 @@ module BlacklabHelper
     elsif view == 8
       data.each do |hitgroup|
         reformat << {
-          query.group => docgroup["identityDisplay"],
-          "hit_count" => docgroup["size"]
+          query.group => hitgroup["identityDisplay"],
+          "hit_count" => hitgroup["size"]
         }
       end
     elsif view == 16
