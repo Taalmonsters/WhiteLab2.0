@@ -42,7 +42,13 @@
 						<% docs << hit["docpid"] %>
 					<% end %>
 					<tr class="clickable hit-row" data-docpid="<%= hit["docpid"] %>" data-first-index="<%= hit["first_index"] %>" data-last-index="<%= hit["last_index"] %>">
-						<td><%= hit["corpus"] %></td>
+						<td>
+						<% if hit["corpus"].respond_to?('each') %>
+							<%= hit["corpus"][0] %>
+						<% else %>
+							<%= hit["corpus"] %>
+						<% end %>
+						</td>
 						<td class="right-aligned">
 							&hellip; <%= hit["text_left"].html_safe %>
 						</td>
