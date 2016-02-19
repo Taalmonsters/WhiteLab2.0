@@ -175,6 +175,9 @@ module ApplicationHelper
   
   # Get documents not matching metadatum value
   def get_negative_filter_value_matches(group, key, values)
+    if group.eql?(key)
+      group = "Metadata"
+    end
     docs = []
     DOCUMENT_METADATA[group][key].each do |value, d|
       if !values.include?(value)
@@ -186,16 +189,25 @@ module ApplicationHelper
   
   # Get documents matching metadatum value
   def get_positive_filter_value_matches(group, key, value)
+    if group.eql?(key)
+      group = "Metadata"
+    end
     DOCUMENT_METADATA[group][key][value]
   end
   
   # Get values for metadatum
   def metadata_values(group,key)
+    if group.eql?(key)
+      group = "Metadata"
+    end
     DOCUMENT_METADATA[group][key].keys
   end
   
   # Count values for metadatum
   def metadata_value_count(group,key)
+    if group.eql?(key)
+      group = "Metadata"
+    end
     DOCUMENT_METADATA[group][key].keys.length
   end
   
