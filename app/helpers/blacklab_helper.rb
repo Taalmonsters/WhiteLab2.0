@@ -194,7 +194,7 @@ module BlacklabHelper
       "Metadata" => {}
     }
     data['docInfo'].each do |m, v|
-      metadata["Metadata"][m] = [v]
+      metadata["Metadata"][m] = v
     end
     metadata
   end
