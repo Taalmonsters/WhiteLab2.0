@@ -88,10 +88,10 @@ if Dir[metadata_dir+'/*.yml'].length < 2
           if !metadata["Metadata"].has_key?(key)
             metadata["Metadata"][key] = {}
           end
-          if !metadata["Metadata"][key].has_key?(value[0])
-            metadata["Metadata"][key][value[0]] = []
+          if !metadata["Metadata"][key].has_key?(value)
+            metadata["Metadata"][key][value] = []
           end
-          metadata["Metadata"][key][value[0]] << doc_data["document_xmlid"]
+          metadata["Metadata"][key][value] << doc_data["document_xmlid"]
         end
       elsif backend.get_backend_type.eql?('neo4j')
         doc_data["metadata"].each do |group, keys|
