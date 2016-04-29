@@ -538,6 +538,8 @@ module BlacklabHelper
           if field.eql?("pos")
             token[field+"_tag"] = sentence[field][i]
           else
+            p "*** INFO: field = "+field+", i = "+i.to_s+", sentence ="
+            p sentence.to_json
             token[field] = sentence[field][i]
           end
         end
