@@ -122,7 +122,7 @@ module BlacklabHelper
   def get_document_audio_file(xmlid)
     data = get_document_metadata(xmlid)
     if data["Metadata"].has_key?("AudioExportFormat")
-      if data["Metadata"]["AudioExportFormat"].respond_to?('each')
+      if data["Metadata"]["AudioExportFormat"].kind_of?(Array)
         return data["Metadata"]["AudioExportFormat"][0]+"/"+xmlid+"."+data["Metadata"]["AudioExportFormat"][0]
       else
         return data["Metadata"]["AudioExportFormat"]+"/"+xmlid+"."+data["Metadata"]["AudioExportFormat"]
@@ -194,7 +194,7 @@ module BlacklabHelper
       "Metadata" => {}
     }
     data['docInfo'].each do |m, v|
-      metadata["Metadata"][m] = v
+      metadata["Metadata"][m] = [v]
     end
     metadata
   end
