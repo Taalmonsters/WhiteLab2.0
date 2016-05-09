@@ -7,8 +7,8 @@ Whitelab.metadata = {
 			filter = filter.substr(1,filter.length - 2);
 			var parts = filter.split(')AND(');
 			for (var i = 0; i < parts.length; i++) {
-				var match = parts[i].match(/^([A-Za-z0-9]+)_([A-Za-z0-9_]+)(\!*=|\>=*|\<=*)(.+)$/);
-				Whitelab.metadata.addMetadataRule(match[1],match[2],Whitelab.search.operatorToValue(match[3]),match[4].replace(/"/g, ''));
+				var match = parts[i].match(/^(([A-Za-z0-9]+)_)*([A-Za-z0-9_]+)(\!*=|\>=*|\<=*)(.+)$/);
+				Whitelab.metadata.addMetadataRule(match[1],match[3],Whitelab.search.operatorToValue(match[4]),match[5].replace(/"/g, ''));
 			}
 		} else {
 			Whitelab.metadata.addMetadataRule(null,null,null,null);
