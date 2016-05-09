@@ -190,7 +190,7 @@ class ExploreController < ApplicationController
   
   # Get selected list type from parameters
   def set_list_type
-    @listtype = ''
+    @listtype = 'word'
     if params.has_key?(:listtype)
       @listtype = params[:listtype]
     end

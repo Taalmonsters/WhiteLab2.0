@@ -11,7 +11,7 @@
 					<div class="form-group">
 						<label for="listtype" class="col-xs-4 col-sm-3"><%= t(:"form_labels.keys.freq_list_type") %></label>
 						<div class="col-xs-6 col-sm-7">
-							<%= select_tag(:"listtype", options_for_select(@listtype_options,@listtype), :include_blank => true) %>
+							<%= select_tag(:"listtype", options_for_select(@listtype_options,@listtype), :include_blank => false) %>
 						</div>
 					</div>
 					<div class="col-xs-12 right-aligned">
