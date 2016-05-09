@@ -84,14 +84,16 @@ if Dir[metadata_dir+'/*.yml'].length < 2
       metadata["Collection"]["title"][doc_data["collection"]] << doc_data["document_xmlid"]
       
       if backend.get_backend_type.eql?('blacklab')
-        doc_data["metadata"]["Metadata"].each do |key, value|
+        doc_data["metadata"]["Metadata"].each do |key, values|
           if !metadata["Metadata"].has_key?(key)
             metadata["Metadata"][key] = {}
           end
-          if !metadata["Metadata"][key].has_key?(value[0])
-            metadata["Metadata"][key][value[0]] = []
+          values.each do |value|
+            if !metadata["Metadata"][key].has_key?(value[0])
+              metadata["Metadata"][key][value[0]] = []
+            end
+            metadata["Metadata"][key][value[0]] << doc_data["document_xmlid"]
           end
-          metadata["Metadata"][key][value[0]] << doc_data["document_xmlid"]
         end
       elsif backend.get_backend_type.eql?('neo4j')
         doc_data["metadata"].each do |group, keys|
