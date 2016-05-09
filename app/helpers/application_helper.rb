@@ -26,11 +26,13 @@ module ApplicationHelper
     groups[translate(:"data_labels.keys.collection").capitalize] << [translate(:"data_labels.keys.collection").capitalize+' '+translate(:"navigation.keys.title").capitalize, 'Collection_title']
     
     @@BACKEND.get_metadata_group_options({}).each do |group, data|
-      if !groups.has_key?(translate(:"#{group}").capitalize)
-        groups[translate(:"#{group}").capitalize] = []
+      g = @@BACKEND.get_backend_type.eql?('neo4j') ? translate(:"#{group}").capitalize : group
+      if !groups.has_key?(g)
+        groups[g] = []
       end
       data.each do |arr|
-        groups[translate(:"#{group}").capitalize] << [translate(:"#{arr[0]}"), arr[1]]
+        f = @@BACKEND.get_backend_type.eql?('neo4j') ? translate(:"#{arr[0]}") : arr[0]
+        groups[g] << [f, arr[1]]
       end
     end
     
