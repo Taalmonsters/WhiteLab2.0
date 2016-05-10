@@ -66,7 +66,7 @@ class DocumentsController < ApplicationController
     page_end_time = nil
     current_end_time = nil
     data['content'].each do |token|
-      if token['paragraph_start'].eql?('true')
+      if token.has_key?('paragraph_start') && token['paragraph_start'].eql?('true')
         current_paragraph = current_paragraph + 1
         current_sentence = 1
         paragraphs[current_paragraph] = {
@@ -88,7 +88,7 @@ class DocumentsController < ApplicationController
         if token.has_key?('sentence_speaker') && !token['sentence_speaker'].blank?
           paragraphs[current_paragraph]['sentences'][current_sentence]['sentence_speaker'] = token['sentence_speaker']
         end
-      elsif token['sentence_start'].eql?('true')
+      elsif token.has_key?('sentence_start') && token['sentence_start'].eql?('true')
         if current_paragraph == 0
           current_paragraph = 1
         end
@@ -137,7 +137,7 @@ class DocumentsController < ApplicationController
       end
       paragraphs[current_paragraph]['sentences'][current_sentence]['tokens'] << token
       paragraphs[current_paragraph]['sentences'][current_sentence]['end_time'] = token['end_time']
-      if !token['end_time'].eql?('Unknown')
+      if token.has_key?('end_time') && !token['end_time'].blank? && !token['end_time'].eql?('Unknown')
         current_end_time = token['end_time']
       end
     end

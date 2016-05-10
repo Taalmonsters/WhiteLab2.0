@@ -527,7 +527,7 @@ module BlacklabHelper
   # Reformat BlackLab content output to same format as Neo4J
   def reformat_content(xmlid, data)
     t = 0
-    fields = ["lemma", "pos", "phonetic", "xmlid", "speaker"]
+    fields = ["lemma", "pos", "phonetic", "xmlid", "speaker", "begin_time", "end_time"]
     reformat = []
     data.each do |sentence|
       sentence["word"].each_with_index do |word, i|
