@@ -138,9 +138,8 @@ module BlacklabHelper
     }
     sdata = []
     sentences = get_document_sentence_starts(xmlid, offset, number+1)
-    ss = sentences["hits"].length
     (offset..offset+number-1).each_with_index do |s, i|
-      if sentences["hits"].length > s+1
+      if sentences["hits"].length > i+1
         t = sentences["hits"][i+1]["start"]
       else
         t = get_document_token_count(xmlid)
@@ -151,7 +150,7 @@ module BlacklabHelper
       end
     end
     
-    data["content"] = reformat_content(sdata)
+    data["content"] = reformat_content(xmlid, sdata)
     return data
   end
   
@@ -204,7 +203,7 @@ module BlacklabHelper
       :url => @@BACKEND_URL+'hits',
       :query => {
         "outputformat" => "json",
-        "patt" => '[sentence_start="true"]',
+        "patt" => '[xmlid="(p.[0-9]+.)*(s.)*[0-9]+.(w.)*1"]',
         "filter" => "id:"+xmlid,
         "first" => 0,
         "number" => 1
@@ -223,7 +222,7 @@ module BlacklabHelper
       :url => @@BACKEND_URL+'hits',
       :query => {
         "outputformat" => "json",
-        "patt" => '[sentence_start="true"]',
+        "patt" => '[xmlid="(p.[0-9]+.)*(s.)*[0-9]+.(w.)*1"]',
         "filter" => "id:"+xmlid,
         "first" => o,
         "number" => n
@@ -526,9 +525,9 @@ module BlacklabHelper
   end
   
   # Reformat BlackLab content output to same format as Neo4J
-  def reformat_content(data)
+  def reformat_content(xmlid, data)
     t = 0
-    fields = ["lemma", "pos", "phonetic", "xmlid", "paragraph_start", "sentence_start", "sentence_speaker"]
+    fields = ["lemma", "pos", "phonetic", "xmlid", "speaker"]
     reformat = []
     data.each do |sentence|
       sentence["word"].each_with_index do |word, i|
@@ -537,6 +536,20 @@ module BlacklabHelper
         fields.each do |field|
           if field.eql?("pos")
             token[field+"_tag"] = sentence[field][i]
+          elsif field.eql?("speaker")
+            token["sentence_"+field] = sentence[field][i]
+          elsif field.eql?("xmlid")
+            token[field] = xmlid+"."+sentence[field][i]
+            if sentence[field][i] =~ /\.(s\.)*1\.(w\.)*1$/
+              token["paragraph_start"] = "true"
+            else
+              token["paragraph_start"] = "false"
+            end
+            if sentence[field][i] =~ /\.(w\.)*1$/
+              token["sentence_start"] = "true"
+            else
+              token["sentence_start"] = "false"
+            end
           elsif sentence.has_key?(field)
             token[field] = sentence[field][i]
           end
