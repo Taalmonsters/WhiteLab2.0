@@ -424,39 +424,40 @@ module BlacklabHelper
   end
   
   def get_pos_heads(number, offset, sort, order)
-    orig_sort = sort
-    if sort.eql?('label')
-      sort = 'identity'
-    else
-      sort = 'size'
-    end
-    if order.eql?('desc')
-      sort = '-'+sort
-    end
-    data = execute_query({
-      :url => @@BACKEND_URL+'hits',
-      :query => { 
-        "outputformat" => "json",
-        "patt" => '[poshead="..*"]',
-        "group" => 'hit:poshead:s',
-        "number" => number,
-        "offset" => offset,
-        "sort" => sort
-      },
-      :headers => @@HEADERS
-    })
+    # orig_sort = sort
+    # if sort.eql?('label')
+      # sort = 'identity'
+    # else
+      # sort = 'size'
+    # end
+    # if order.eql?('desc')
+      # sort = '-'+sort
+    # end
+    # data = execute_query({
+      # :url => @@BACKEND_URL+'hits',
+      # :query => { 
+        # "outputformat" => "json",
+        # "patt" => '[poshead="..*"]',
+        # "group" => 'hit:poshead:s',
+        # "number" => number,
+        # "offset" => offset,
+        # "sort" => sort
+      # },
+      # :headers => @@HEADERS
+    # })
+    data = ['ADJ', 'BW', 'LET', 'LID', 'N', 'SPEC', 'TW', 'TSW', 'VG', 'VNW', 'VZ', 'WW']
     ph = {
-      "total" => data["summary"]["numberOfGroups"],
+      "total" => data.size,
       "number" => number,
       "offset" => offset,
-      "sort" => orig_sort,
+      "sort" => sort,
       "order" => order,
       "pos_heads" => []
     }
-    data["hitGroups"].each do |group|
+    data.each do |group|
       ph["pos_heads"] << {
-        "label" => group["identityDisplay"],
-        "token_count" => group["size"]
+        "label" => group,
+        "token_count" => 0
       }
     end
     ph
