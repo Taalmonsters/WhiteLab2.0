@@ -47,7 +47,7 @@ if !File.exists?(metadata_config)
   
   # load available metadata fields from server
   logger.info  "Loading metadata from server"
-  data = backend.get_metadata(0, 0, nil, nil)
+  data = backend.get_metadata_from_server(0, 0, nil, nil)
   
   # loop through fields
   data.each do |metadatum|

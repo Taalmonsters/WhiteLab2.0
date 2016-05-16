@@ -15,7 +15,12 @@ class AdminController < ApplicationController
     end
     respond_to do |format|
       format.html do
-        if @page.eql?('index') && (!@tab || @tab.eql?('counts'))
+        @btype = @@BACKEND.get_backend_type
+        if @page.eql?('index') && !@tab
+          @tab = 'counts' if @btype.eql?('neo4j')
+          @tab = 'metadata' if @btype.eql?('blacklab')
+        end
+        if @page.eql?('index') && @tab.eql?('counts')
           @data = @counter
         elsif @page.eql?('index') && @tab.eql?('actors')
           set_pagination_params(0, 0, 'key')

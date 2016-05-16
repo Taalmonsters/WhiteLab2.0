@@ -1,5 +1,5 @@
 <% if values.size > 0 %>
-	<% corpus_keys = values[0]['corpus_counts']['corpora'].delete_if {|x| ['value','document_count'].include?(x) } %>
+	<% corpus_keys = load_corpora %>
 	<label class="control-label"><%= t(:'other.keys.top').capitalize %> <%= values.size %> <%= t(:'data_labels.keys.most_frequent_values') %></label><br />
 	<table class="table table-striped">
 		<thead>

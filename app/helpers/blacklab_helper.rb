@@ -56,6 +56,10 @@ module BlacklabHelper
     end
   end
   
+  def db_type
+    'blacklab'
+  end
+  
   # Load list of collection titles in index
   def get_collection_titles
     collections = []
@@ -389,7 +393,118 @@ module BlacklabHelper
   # end
   
   def get_metadata_from_server(number, offset, sort, order)
-    
+    resp = execute_query({
+      :url => @@BACKEND_URL,
+      :query => {
+        "outputformat" => "json"
+      },
+      :headers => { 'Content-Type' => 'application/json' }
+    })
+    fields = resp["fieldInfo"]["metadataFields"]
+    if number == 0
+      wanted = fields
+    else
+      wanted = fields.keys[offset..offset+number]
+    end
+    data = []
+    fields.each do |key, value|
+      if wanted.include?(key)
+        data << value
+      end
+    end
+    return data
+  end
+  
+  def get_pos_heads(number, offset, sort, order)
+    data = ['ADJ', 'BW', 'LET', 'LID', 'N', 'SPEC', 'TW', 'TSW', 'VG', 'VNW', 'VZ', 'WW']
+    ph = {
+      "total" => data.size,
+      "number" => number,
+      "offset" => offset,
+      "sort" => sort,
+      "order" => order,
+      "pos_heads" => []
+    }
+    data[offset..offset+number-1].each do |head|
+      obj = {
+        "label" => head,
+        "token_count" => 0
+      }
+      get_corpus_titles.each do |corpus|
+        resp = nil
+        while resp == nil
+          resp = execute_query({
+            :url => @@BACKEND_URL+"/hits",
+            :query => {  
+              "outputformat" => "json",
+              "patt" => "[pos=\"#{head}.*\"]", 
+              "group" => "hit:pos",
+              "filter" => "Corpus_title:"+corpus
+            },
+            :headers => @@HEADERS
+          }).parsed_response
+          resp = nil if resp["summary"]["stillCounting"]
+        end
+        obj["token_count"] += resp["summary"]["numberOfHits"]
+        obj["token_count_"+corpus] = resp["summary"]["numberOfHits"]
+      end
+      ph["pos_heads"] << obj
+    end
+    ph
+  end
+  
+  def get_pos_tag_by_label(label)
+    reformat_pos_tag({ "label" => label })
+  end
+  
+  def get_pos_tag_features_by_label(label)
+    feats = []
+    label.split(/\(/)[1].sub(/\)^/,"").split(/,/).each do |feat|
+      feats << { "key" => "unknown", "value" => feat }
+    end
+    feats
+  end
+  
+  def get_pos_tag_types_by_label(number, offset, sort, order, label)
+    pid = label.gsub(/\(/,'\(').gsub(/\)/,'\)').gsub(/\-/,'\-')
+    patt = "[pos=\"#{pid}\"]"
+    resp = execute_query({
+      :url => @@BACKEND_URL+"/hits",
+      :query => {  
+        "outputformat" => "json",
+        "patt" => patt, 
+        "group" => "hit:word",
+        "number" => number,
+        "first" => offset,
+        "sort" => "size"
+      },
+      :headers => @@HEADERS
+    }).parsed_response
+    data = []
+    resp["hitGroups"].each do |hit|
+      data << { "word_type" => hit["identityDisplay"], "token_count" => hit["size"]}
+    end
+    data
+  end
+  
+  def get_pos_tags(number, offset, sort, order)
+    resp = nil
+    while resp == nil
+      resp = execute_query({
+        :url => @@BACKEND_URL+"/hits",
+        :query => {  
+          "outputformat" => "json",
+          "patt" => "[\"..*\"]", 
+          "group" => "hit:pos",
+          "number" => number,
+          "first" => offset,
+          "sort" => order.eql?("desc") ? "-identity" : "identity"
+        },
+        :headers => @@HEADERS
+      }).parsed_response
+      resp = nil if resp["summary"]["stillCounting"]
+    end
+    { 'total' => resp["summary"]["numberOfGroups"], 'pos_tags' => resp["hitGroups"].map{|h| reformat_pos_tag(h) } }
   end
   
   def get_query_headers
@@ -587,6 +702,30 @@ module BlacklabHelper
     else
       ""
     end
+  end
+  
+  def reformat_pos_tag(pos)
+    obj = { "label" => pos.has_key?("label") ? pos["label"] : pos["identityDisplay"], "token_count" => 0 }
+    get_corpus_titles.each do |corpus|
+      resp = nil
+      pid = obj["label"].gsub(/\(/,'\(').gsub(/\)/,'\)').gsub(/\-/,'\-')
+      patt = "[pos=\"#{pid}\"]"
+      while resp == nil
+        resp = execute_query({
+          :url => @@BACKEND_URL+"/hits",
+          :query => {  
+            "outputformat" => "json",
+            "patt" => patt,
+            "filter" => "Corpus_title:"+corpus
+          },
+          :headers => @@HEADERS
+        }).parsed_response
+        resp = nil if resp["summary"]["stillCounting"]
+      end
+      obj["token_count"] += resp["summary"]["numberOfHits"]
+      obj["token_count_"+corpus] = resp["summary"]["numberOfHits"]
+    end
+    obj
   end
   
   # Run CQL query on server for set amount of iterations, not implemented for BlackLab

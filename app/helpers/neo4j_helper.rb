@@ -23,6 +23,10 @@ module Neo4jHelper
     get_results("hits/count", query, docpid, w, n, o)
   end
   
+  def db_type
+    'neo4j'
+  end
+  
   # Load list of collection titles in index
   def get_collection_titles
     collections = []

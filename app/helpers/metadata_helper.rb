@@ -1,6 +1,10 @@
 module MetadataHelper
   include ApplicationHelper
   
+  def load_corpora
+    YAML.load_file(Rails.root.join('config', 'metadata_'+@@BACKEND.get_backend_type, 'Corpus.title.yml'))['values'].keys
+  end
+  
   def get_group_options(v, namespace)
     groups = {}
     if v == 8

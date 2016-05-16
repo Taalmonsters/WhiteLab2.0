@@ -102,6 +102,15 @@ module BackendHelper
     return w
   end
   
+  def load_metadata(group, key)
+    file = Rails.root.join('config', 'metadata_'+db_type, group+'.'+key+'.yml')
+    if File.exists?(file)
+      return YAML.load_file(file)['values']
+    else
+      return {}
+    end
+  end
+  
   def post_headers(data)
     HTTParty.post(data[:url], timeout: BACKEND_TIMEOUT_SECONDS,
       :headers => data[:headers]
@@ -167,6 +176,11 @@ module BackendHelper
           obj['document_count_'+doc['corpus']] += 1
         end
       end
+      save_metadata
+    end
+    unless obj.keys.include?('value_count') && obj['value_count'] > 0
+      metadata = load_metadata(group, key)
+      obj['value_count'] = metadata.keys.size
       save_metadata
     end
     return obj
