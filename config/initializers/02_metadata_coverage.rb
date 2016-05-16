@@ -77,11 +77,11 @@ if Dir[metadata_dir+'/*.yml'].length < 2
       if !metadata["Corpus"]["title"].has_key?(doc_data["corpus"])
         metadata["Corpus"]["title"][doc_data["corpus"]] = []
       end
-      metadata["Corpus"]["title"][doc_data["corpus"]] << doc_data["document_xmlid"]
+      metadata["Corpus"]["title"][doc_data["corpus"]] << DOCUMENT_DATA.keys.index(doc_data["document_xmlid"])
       if !metadata["Collection"]["title"].has_key?(doc_data["collection"])
         metadata["Collection"]["title"][doc_data["collection"]] = []
       end
-      metadata["Collection"]["title"][doc_data["collection"]] << doc_data["document_xmlid"]
+      metadata["Collection"]["title"][doc_data["collection"]] << DOCUMENT_DATA.keys.index(doc_data["document_xmlid"])
       
       if backend.get_backend_type.eql?('blacklab')
         doc_data["metadata"]["Metadata"].each do |key, values|
@@ -92,7 +92,7 @@ if Dir[metadata_dir+'/*.yml'].length < 2
             if !metadata["Metadata"][key].has_key?(value)
               metadata["Metadata"][key][value] = []
             end
-            metadata["Metadata"][key][value] << doc_data["document_xmlid"]
+            metadata["Metadata"][key][value] << DOCUMENT_DATA.keys.index(doc_data["document_xmlid"])
           end
         end
       elsif backend.get_backend_type.eql?('neo4j')
@@ -108,7 +108,7 @@ if Dir[metadata_dir+'/*.yml'].length < 2
               if !metadata[group][key].has_key?(value)
                 metadata[group][key][value] = []
               end
-              metadata[group][key][value] << doc_data["document_xmlid"]
+              metadata[group][key][value] << DOCUMENT_DATA.keys.index(doc_data["document_xmlid"])
             end
           end
         end

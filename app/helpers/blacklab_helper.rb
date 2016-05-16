@@ -388,6 +388,10 @@ module BlacklabHelper
     # })
   # end
   
+  def get_metadata_from_server(number, offset, sort, order)
+    
+  end
+  
   def get_query_headers
     return @@HEADERS
   end
@@ -587,6 +591,10 @@ module BlacklabHelper
   
   # Run CQL query on server for set amount of iterations, not implemented for BlackLab
   def run_benchmark_test(cql,iterations)
+  end
+  
+  def save_metadata
+    File.open(Rails.root.join('config','metadata_blacklab.yml'), 'w', external_encoding: 'ASCII-8BIT') { |f| YAML.dump({ "metadata" => DOCUMENT_METADATA }, f) }
   end
   
 end

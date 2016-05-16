@@ -220,6 +220,10 @@ module Neo4jHelper
     })
   end
   
+  def get_metadata_from_server(number, offset, sort, order)
+    get_metadata(number, offset, sort, order)
+  end
+  
   # Load paginated list of metadata in index
   def get_metadata(number, offset, sort, order)
     if number == 0
@@ -474,6 +478,10 @@ module Neo4jHelper
         :method => 'post'
       })
     end
+  end
+  
+  def save_metadata
+    File.open(Rails.root.join('config','metadata_neo4j.yml'), 'w', external_encoding: 'ASCII-8BIT') { |f| YAML.dump({ "metadata" => DOCUMENT_METADATA }, f) }
   end
   
 end

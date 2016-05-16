@@ -3,7 +3,6 @@ require 'uri'
 
 # Main backend helper module.
 module BackendHelper
-  include MetadataHelper
   
   def execute_query(data)
     resp = nil

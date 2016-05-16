@@ -69,10 +69,6 @@ module MetadataHelper
     end
   end
   
-  def save_metadata
-    File.open(Rails.root.join('config','metadata_'+@@BACKEND.get_backend_type+'.yml'), 'w', external_encoding: 'ASCII-8BIT') { |f| YAML.dump({ "metadata" => DOCUMENT_METADATA }, f) }
-  end
-  
   # Get documents matching metadatum grouped by option value
   def get_filtered_group_composition(option, filter)
     docs = get_filtered_documents(filter)
