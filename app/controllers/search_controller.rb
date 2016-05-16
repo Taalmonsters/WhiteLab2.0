@@ -30,6 +30,7 @@ class SearchController < ApplicationController
   
   # Show Search Extended interface
   def extended
+    @pos_heads = @@BACKEND.get_pos_heads(12, 0, "label", "asc")["pos_heads"].map{|x| [t(:"pos_heads.keys.#{x["label"]}").capitalize, x["label"]+".*"]}
     render 'search/page'
   end
   

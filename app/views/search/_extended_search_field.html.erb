@@ -16,7 +16,7 @@
 			<div class="searchinput col-xs-9 col-sm-11">
 				<% if field.eql?('pos') %>
 					<div class="selectpicker padding-bottom-10">
-						<%= select_tag(:"#{field}-text", options_for_select(PosHead.get_list), :class => 'form-control', :include_blank => true) %>
+						<%= select_tag(:"#{field}-text", options_for_select(@pos_heads), :class => 'form-control', :include_blank => true) %>
 						<span class="glyphicon glyphicon-chevron-down select-thingy"></span>
 					</div>
 				<% else %>
