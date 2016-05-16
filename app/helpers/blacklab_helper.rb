@@ -415,7 +415,7 @@ module BlacklabHelper
     return data
   end
   
-  def get_pos_heads(number, offset, sort, order)
+  def get_pos_heads_counted(number, offset, sort, order)
     data = ['ADJ', 'BW', 'LET', 'LID', 'N', 'SPEC', 'TW', 'TSW', 'VG', 'VNW', 'VZ', 'WW']
     ph = {
       "total" => data.size,

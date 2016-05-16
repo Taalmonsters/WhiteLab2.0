@@ -322,7 +322,7 @@ module Neo4jHelper
     })
   end
   
-  def get_pos_heads(number, offset, sort, order)
+  def get_pos_heads_counted(number, offset, sort, order)
     execute_query({
       :url => @@BACKEND_URL+'whitelab/search/pos/heads',
       :query => { 

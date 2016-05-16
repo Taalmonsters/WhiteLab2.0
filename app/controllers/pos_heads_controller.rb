@@ -10,7 +10,7 @@ class PosHeadsController < ApplicationController
       redirect_to 'admin/login'
     end
     set_pagination_params(0, 0, 'label')
-    data = @@BACKEND.get_pos_heads(@number, @offset, @sort, @order)
+    data = @@BACKEND.get_pos_heads_counted(@number, @offset, @sort, @order)
     @posheads = data['pos_heads']
     @total = data['total']
     @corpora = @@BACKEND.get_corpus_titles
