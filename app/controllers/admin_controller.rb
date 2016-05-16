@@ -129,7 +129,7 @@ class AdminController < ApplicationController
       key = params[:key]
       params.each do |p,value|
         if p =~ /.+\..+/
-          lang, field = p.match(/^([a-z]{2})\.?([a-zA-Z_]+)$/).captures
+          lang, field = p.match(/^([a-z]{2})\.?([a-zA-Z_\-]+)$/).captures
           pp = p.split(".")
           if @languages.has_key?(lang)
             if !@languages[lang].has_key?(key)

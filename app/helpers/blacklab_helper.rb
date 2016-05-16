@@ -347,83 +347,24 @@ module BlacklabHelper
     }
   end
   
-  # Load paginated list of metadata in index
-  def get_metadata(number, offset, sort, order)
-    resp = execute_query({
-      :url => @@BACKEND_URL,
-      :query => {
-        "outputformat" => "json"
-      },
-      :headers => { 'Content-Type' => 'application/json' }
-    })
-    fields = resp["fieldInfo"]["metadataFields"]
-    if number == 0
-      wanted = fields
-    else
-      wanted = fields.keys[offset..offset+number]
-    end
-    data = []
-    fields.each do |key, value|
-      if wanted.include?(key)
-        data << value
-      end
-    end
-    return data
-  end
-  
-  # Load metadatum properties by label
-  def get_metadatum_by_label(label)
-    execute_query({
-      :url => @@BACKEND_URL+'fields/'+label,
-      :query => {
-        "outputformat" => "json"
-      },
-      :headers => { 'Content-Type' => 'application/json' }
-    })
-  end
-  
   # Load options for grouping by metadatum
-  def get_metadata_group_options(groups)
-    resp = execute_query({
-      :url => @@BACKEND_URL,
-      :query => {
-        "outputformat" => "json"
-      },
-      :headers => { 'Content-Type' => 'application/json' }
-    })
-    fields = resp["fieldInfo"]["metadataFields"]
-    groups['Metadata'] = []
-    fields.each do |key,field|
-      groups['Metadata'] << [field['displayName'], field['fieldName']]
-    end
-    groups
-  end
+  # def get_metadata_group_options(groups)
+    # resp = execute_query({
+      # :url => @@BACKEND_URL,
+      # :query => {
+        # "outputformat" => "json"
+      # },
+      # :headers => { 'Content-Type' => 'application/json' }
+    # })
+    # fields = resp["fieldInfo"]["metadataFields"]
+    # groups['Metadata'] = []
+    # fields.each do |key,field|
+      # groups['Metadata'] << [field['displayName'], field['fieldName']]
+    # end
+    # groups
+  # end
   
-  # Load metadatum values by group and key
-  def get_metadatum_values_by_group_and_key(number, offset, sort, order, group, key, count)
-    if group.eql?('Metadata')
-      get_metadatum_values_by_label(number, offset, sort, order, key)
-    else
-      get_metadatum_values_by_label(number, offset, sort, order, group+'_'+key)
-    end
-  end
-  
-  # Load metadatum values by label
-  def get_metadatum_values_by_label(number, offset, sort, order, label)
-    resp = execute_query({
-      :url => @@BACKEND_URL+'fields/'+label,
-      :query => {
-        "outputformat" => "json"
-      },
-      :headers => { 'Content-Type' => 'application/json' }
-    })
-    if number == 0
-      return resp["fieldValues"]
-    end
-    resp["fieldValues"][offset..offset+number]
-  end
-  
-  def get_pos_heads(number, offset, sort, order)
+  # def get_pos_heads(number, offset, sort, order)
     # orig_sort = sort
     # if sort.eql?('label')
       # sort = 'identity'
@@ -445,23 +386,7 @@ module BlacklabHelper
       # },
       # :headers => @@HEADERS
     # })
-    data = ['ADJ', 'BW', 'LET', 'LID', 'N', 'SPEC', 'TW', 'TSW', 'VG', 'VNW', 'VZ', 'WW']
-    ph = {
-      "total" => data.size,
-      "number" => number,
-      "offset" => offset,
-      "sort" => sort,
-      "order" => order,
-      "pos_heads" => []
-    }
-    data.each do |group|
-      ph["pos_heads"] << {
-        "label" => group,
-        "token_count" => 0
-      }
-    end
-    ph
-  end
+  # end
   
   def get_query_headers
     return @@HEADERS
@@ -662,10 +587,6 @@ module BlacklabHelper
   
   # Run CQL query on server for set amount of iterations, not implemented for BlackLab
   def run_benchmark_test(cql,iterations)
-  end
-  
-  # Update metadatum in index, not implemented for BlackLab
-  def update_metadatum(label, updates)
   end
   
 end

@@ -24,7 +24,7 @@
 				<div class="panel panel-info hidden">
 					<div class="panel-body"><% if metadatum['explorable'].blank? || metadatum['explorable'] == true %><%= t(:'instructions.keys.metadatum_explorable_description_checked') %><% else %><%= t(:'instructions.keys.metadatum_explorable_description_unchecked') %><% end %></div>
 				</div>
-				<% if metadatum.has_key?('explorable') && metadatum['explorable'].eql?(false) %>
+				<% if metadatum.has_key?('explorable') && (metadatum['explorable'].eql?(false) || metadatum['explorable'].eql?('false')) %>
 					<%= select_tag :explorable, options_for_select([['true', 'true'], ['false', 'false']], 'false'), class: 'form-control' %>
 				<% else %>
 					<%= select_tag :explorable, options_for_select([['true', 'true'], ['false', 'false']], 'true'), class: 'form-control' %>
@@ -45,7 +45,7 @@
 				<div class="panel panel-info hidden">
 					<div class="panel-body"><% if metadatum['searchable'].blank? || metadatum['searchable'] == true %><%= t(:'instructions.keys.metadatum_searchable_description_checked') %><% else %><%= t(:'instructions.keys.metadatum_searchable_description_unchecked') %><% end %></div>
 				</div>
-				<% if metadatum.has_key?('searchable') && metadatum['searchable'].eql?(false) %>
+				<% if metadatum.has_key?('searchable') && (metadatum['searchable'].eql?(false) || metadatum['searchable'].eql?('false')) %>
 					<%= select_tag :searchable, options_for_select([['true', 'true'], ['false', 'false']], 'false'), class: 'form-control' %>
 				<% else %>
 					<%= select_tag :searchable, options_for_select([['true', 'true'], ['false', 'false']], 'true'), class: 'form-control' %>

@@ -135,17 +135,18 @@ if Dir[metadata_dir+'/*.yml'].length < 2
 end
 
 logger.info "Loading metadata"
-metadata = {}
-Dir[metadata_dir+'/*.yml'].each do |file|
-  if !file.end_with?('documents.yml')
-    base = file.sub(metadata_dir+'/','').sub('.yml','')
-    group = base.split('.')[0]
-    key = base.split('.')[1]
-    if !metadata.has_key?(group)
-      metadata[group] = {}
-    end
-    metadata[group][key] = YAML.load_file(file)["values"]
-  end
-end
-::DOCUMENT_METADATA = metadata
+# metadata = {}
+# Dir[metadata_dir+'/*.yml'].each do |file|
+  # if !file.end_with?('documents.yml')
+    # base = file.sub(metadata_dir+'/','').sub('.yml','')
+    # group = base.split('.')[0]
+    # key = base.split('.')[1]
+    # if !metadata.has_key?(group)
+      # metadata[group] = {}
+    # end
+    # metadata[group][key] = YAML.load_file(file)["values"]
+  # end
+# end
+# ::DOCUMENT_METADATA = metadata
+::DOCUMENT_METADATA = YAML.load_file(Rails.root.join('config','metadata_'+backend.get_backend_type+'.yml'))["metadata"]
 logger.info "Finished loading metadata"

@@ -241,52 +241,54 @@ module Neo4jHelper
   
   # Load metadatum properties by label
   def get_metadatum_by_label(label)
-    execute_query({
+    data = execute_query({
       :url => @@BACKEND_URL+'whitelab/search/metadata/'+label,
       :headers => @@HEADERS
     })
+    data[0]
   end
   
-  # Load options for grouping by metadatum
-  def get_metadata_group_options(groups)
-    metadata_nodes = execute_query({
-      :url => @@BACKEND_URL+'db/data/label/Metadatum/nodes',
-      :headers => @@HEADERS
-    })
-    
-    metadata_nodes.each do |node|
-      node_properties = execute_query({
-        :url => node["properties"],
-        :headers => @@HEADERS
-      })
-      if !node_properties.has_key?('searchable') || node_properties['searchable'].blank? || node_properties['searchable'] == true
-        if !groups.has_key?(group_translation_key(node_properties['group']))
-          groups[group_translation_key(node_properties['group'])] = []
-        end
-        groups[group_translation_key(node_properties['group'])] << [key_translation_key(node_properties['key']), node_properties['group']+'_'+node_properties['key']]
-      end
-    end
-    groups
-  end
+  # # Load options for grouping by metadatum
+  # def get_metadata_group_options(groups)
+    # metadata_nodes = execute_query({
+      # :url => @@BACKEND_URL+'db/data/label/Metadatum/nodes',
+      # :headers => @@HEADERS
+    # })
+#     
+    # metadata_nodes.each do |node|
+      # node_properties = execute_query({
+        # :url => node["properties"],
+        # :headers => @@HEADERS
+      # })
+      # if !node_properties.has_key?('searchable') || node_properties['searchable'].blank? || node_properties['searchable'] == true
+        # if !groups.has_key?(group_translation_key(node_properties['group']))
+          # groups[group_translation_key(node_properties['group'])] = []
+        # end
+        # groups[group_translation_key(node_properties['group'])] << [key_translation_key(node_properties['key']), node_properties['group']+'_'+node_properties['key']]
+      # end
+    # end
+    # groups
+  # end
   
   # Load metadatum values by group and key
-  def get_metadatum_values_by_group_and_key(number, offset, sort, order, group, key, count)
-    execute_query({
+  def get_metadatum_values_by_group_and_key(number, offset, sort, order, group, key)
+    data = execute_query({
       :url => @@BACKEND_URL+'whitelab/search/metadata/'+group+'/'+key+'/values',
       :query => { 
         "number" => number,
         "offset" => offset,
         "sort" => sort,
         "order" => order,
-        "count" => count
+        "count" => false
       },
       :headers => @@HEADERS
     })
+    data['values']
   end
   
   # Load metadatum values by label
   def get_metadatum_values_by_label(number, offset, sort, order, label)
-    execute_query({
+    data = execute_query({
       :url => @@BACKEND_URL+'whitelab/search/metadata/'+label+'/values',
       :query => { 
         "number" => number,
@@ -296,6 +298,7 @@ module Neo4jHelper
       },
       :headers => @@HEADERS
     })
+    data['values']
   end
   
   def get_pos_tags(number, offset, sort, order)
@@ -413,7 +416,7 @@ module Neo4jHelper
     elsif v == 16
       count_grouped_docs(query, docpid, w, n, o)
     else
-      p "*** ERROR: view = "+v.to_s
+      logger.error "view = "+v.to_s
     end
   end
   

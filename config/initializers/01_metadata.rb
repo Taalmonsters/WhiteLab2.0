@@ -60,8 +60,8 @@ if !File.exists?(metadata_config)
         "key" => metadatum["fieldName"],
         "label" => metadatum["fieldName"],
         "display_name" => metadatum["displayName"],
-        "values" => mvalues.keys,
-        "value_count" => mvalues.keys.length,
+        "values" => mvalues,
+        "value_count" => mvalues.length,
         "value_type" => metadatum["type"].downcase
       }
     elsif backend.get_backend_type.eql?('neo4j')
@@ -95,7 +95,7 @@ if !File.exists?(metadata_config)
         count = true
       end
       values = backend.get_metadatum_values_by_label(0, 0, sort, order, metadatum["data"]["label"])
-      values['values'].each do |value|
+      values.each do |value|
         metadata[metadatum["data"]["group"]][metadatum["data"]["key"]]["values"].push(value["value"])
       end
     end

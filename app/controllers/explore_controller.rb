@@ -1,5 +1,6 @@
 # Main controller for Explore namespace.
 class ExploreController < ApplicationController
+  include MetadataHelper
   
   before_action :set_explore_namespace
   before_action :set_page, :only => [:corpora, :statistics, :ngrams, :document]
@@ -103,7 +104,7 @@ class ExploreController < ApplicationController
     @view = 8
     if @query && [8,16].include?(@query.query_result.view)
       @view = @query.query_result.view
-      @groups = get_group_options(@query.query_result.view)
+      @groups = get_group_options(@query.query_result.view, 'explore')
       if !@query.query_result.group.blank?
         @group = @query.query_result.group.gsub(/ /,"_")
       end
@@ -169,7 +170,7 @@ class ExploreController < ApplicationController
   
   # Get all grouping options for treemap in explore/corpora
   def set_treemap_options
-    @options = get_group_options(16)
+    @options = get_group_options(16, 'explore')
   end
   
   # Set current explore tab

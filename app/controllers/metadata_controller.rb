@@ -1,5 +1,6 @@
 # Controller for Metadata management from Admin namespace and filtering in other namespaces.
 class MetadataController < ApplicationController
+  include MetadataHelper
   
   before_action :set_logged_in, :only => [:index, :edit, :update]
   before_action :current_metadatum_label, :only => [:edit, :update, :values, :filter_rule]
@@ -23,10 +24,10 @@ class MetadataController < ApplicationController
       redirect_to 'admin/login'
     end
     if @label
-      @metadatum = @@BACKEND.get_metadatum_by_label(@label)[0]
-      @values = @@BACKEND.get_metadatum_values_by_label(5, 0, "document_count", "desc", @label)['values']
+      @metadatum = @@BACKEND.get_metadatum_by_label(@label)
+      @values = @@BACKEND.get_metadatum_values_by_label(5, 0, "document_count", "desc", @label)
     else
-      p "*** WARN: NO LABEL"
+      logger.warn "NO LABEL"
     end
   end
   
@@ -49,17 +50,17 @@ class MetadataController < ApplicationController
   
   # Load metadata filter rule
   def filter_rule
-    @filters = get_group_options(16)
+    @filters = get_group_options(16, 'search')
     @rule_id = 0
     if params[:rule_id]
       @rule_id = params[:rule_id]
     end
     if @group && @key
-      mvalues = @@BACKEND.get_metadatum_values_by_group_and_key(0, 0, "value", "asc", @group, @key, false)
+      mvalues = @@BACKEND.get_metadatum_values_by_group_and_key(0, 0, "value", "asc", @group, @key)
       if @@BACKEND.get_backend_type().eql?('blacklab')
-        @values = mvalues.map{|x,v| x}
+        @values = mvalues
       else
-        @values = mvalues['values'].map{|x| x["value"]}
+        @values = mvalues.map{|x| x["value"]}
       end
       @value = params[:value]
       @operator = params[:operator]
@@ -71,7 +72,12 @@ class MetadataController < ApplicationController
     @values = metadata_values(@group,@key)
     @value_list_incomplete = false
     if @values.blank?
-      @values = @@BACKEND.get_metadatum_values_by_group_and_key(0, 0, "value", "asc", @group, @key, false)['values'].map{|x| x["value"]}
+      mvalues = @@BACKEND.get_metadatum_values_by_group_and_key(0, 0, "value", "asc", @group, @key)
+      if @@BACKEND.get_backend_type().eql?('blacklab')
+        @values = mvalues
+      else
+        @values = mvalues.map{|x| x["value"]}
+      end
     else
       @value_count = metadata_value_count(@group,@key)
       if !@value_count.blank? && @value_count > METADATUM_VALUES_MAX

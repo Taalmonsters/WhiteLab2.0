@@ -1,5 +1,6 @@
 # Main controller for Search namespace.
 class SearchController < ApplicationController
+  include MetadataHelper
   
   before_action :set_search_namespace
   before_action :set_page, :only => [:simple, :extended, :advanced, :expert, :document]
@@ -243,7 +244,7 @@ class SearchController < ApplicationController
   # Get grouping options for grouped hits or documents, depending on selected view
   def set_grouping
     if @query && !@query.query_result.blank? && [8,16].include?(@query.query_result.view)
-      @groups = get_group_options(@query.query_result.view)
+      @groups = get_group_options(@query.query_result.view, 'search')
       if !@query.query_result.group.blank?
         @group = @query.query_result.group.gsub(/ /,"_")
       end
