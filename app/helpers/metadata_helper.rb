@@ -142,6 +142,7 @@ module MetadataHelper
         first_part = parts[0]
         second_part = parts[1]
         group = first_part.split('_')[0]
+        key = first_part.sub(group+'_','')
         has_group = filters.has_key?(group)
         matches = has_group && filters[group].has_key?(key) ? filters[group][key] : { 'positive' => [], 'negative' => []}
         value = strip_value(second_part)
