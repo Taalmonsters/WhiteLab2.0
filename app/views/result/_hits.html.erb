@@ -1,6 +1,6 @@
 <% if @query.query_result.blank? || @query.query_result.is_new || @query.query_result.is_running %>
 	<% if @query.query_result.is_new %>
-		<% @query.query_result.execute(true, "EXECUTING QUERY FROM HITS VIEW") %>
+		<% @query.query_result.execute_threaded("EXECUTING QUERY FROM HITS VIEW") %>
 	<% end %>
 	<div class="row">
 		<div class="col-xs-12">

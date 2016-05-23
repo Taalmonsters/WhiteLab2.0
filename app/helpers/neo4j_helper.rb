@@ -1,26 +1,19 @@
 # Neo4J backend helper methods.
 module Neo4jHelper
-  @@BACKEND_URL = Rails.configuration.x.database_url
-  @@HEADERS = { 'Content-Type' => 'application/json',
-                'Authorization' => 'Basic '+Base64.encode64(NEO4J_USER+':'+NEO4J_PW) }
   
   include BackendHelper
   include DataFormatHelper
   
-  def count_docs(query, docpid, w, n, o)
-    get_results("docs/count", query, docpid, w, n, o)
+  def headers
+    { 'Content-Type' => 'application/json', 'Authorization' => 'Basic '+Base64.encode64(NEO4J_USER+':'+NEO4J_PW) }
   end
   
-  def count_grouped_docs(query, docpid, w, n, o)
-    get_grouped_results("grouped_docs/count", query, docpid, w, n, o)
+  def count_grouped_results(key, count_obj)
+    get_grouped_results("#{key}/count", count_obj)
   end
   
-  def count_grouped_hits(query, docpid, w, n, o)
-    get_grouped_results("grouped_hits/count", query, docpid, w, n, o)
-  end
-  
-  def count_hits(query, docpid, w, n, o)
-    get_results("hits/count", query, docpid, w, n, o)
+  def count_results(key, count_obj)
+    get_results("#{key}/count", count_obj)
   end
   
   def db_type
@@ -29,65 +22,50 @@ module Neo4jHelper
   
   # Load list of collection titles in index
   def get_collection_titles
-    collections = []
-    resp = execute_query({
-      :url => @@BACKEND_URL+'db/data/label/Collection/nodes',
-      :headers => @@HEADERS
-    })
-    resp.each do |node|
-      label_resp = execute_query({
-        :url => node['properties']+'/title',
-        :headers => @@HEADERS
-      })
-      collections << label_resp
-    end
-    collections
+    get_titles('Collection', 'title')
   end
   
   # Load list of corpus titles in index
   def get_corpus_titles
-    corpora = []
+    get_titles('Corpus', 'label')
+  end
+  
+  def get_titles(key, field_key)
+    titles = []
     resp = execute_query({
-      :url => @@BACKEND_URL+'db/data/label/Corpus/nodes',
-      :headers => @@HEADERS
+      :url => "#{backend_url}db/data/label/#{key}/nodes",
+      :headers => headers
     })
     resp.each do |node|
-      label_resp = execute_query({
-        :url => node['properties']+'/label',
-        :headers => @@HEADERS
-      })
-      corpora << label_resp
+      titles << get_node_label(node, field_key)
     end
-    corpora
+    titles
+  end
+  
+  def get_node_label(node, field_key = 'label')
+    execute_query({
+      :url => "#{node['properties']}/#{field_key}",
+      :headers => headers
+    })
   end
   
   # Get node containing total counts for all node labels in index
   def get_counter_node
     resp = execute_query({
-      :url => @@BACKEND_URL+'db/data/label/NodeCounter/nodes',
-      :headers => @@HEADERS
+      :url => backend_url+'db/data/label/NodeCounter/nodes',
+      :headers => headers
     })
     properties = execute_query({
       :url => resp[0]["properties"],
-      :headers => @@HEADERS
+      :headers => headers
     })
     return properties.except('status').sort
   end
   
-  def get_docs(query, docpid, w, n, o)
-    data = get_results("docs", query, docpid, w, n, o)
-    data["docs"]
-  end
-  
   def get_docs_in_group(query,group,offset,number)
-    filter = query.filter
-    if filter.blank?
-      filter = "("+query.group+"=\""+group+"\")"
-    else
-      filter = filter+"AND("+query.group+"=\""+group+"\")"
-    end
+    filter = get_grouped_filter(query.group, group)
     execute_query({
-      :url => @@BACKEND_URL+'whitelab/search/docs',
+      :url => backend_url+'whitelab/search/docs',
       :query => { 
         "pattern" => pattern, 
         "filter" => filter, 
@@ -95,19 +73,19 @@ module Neo4jHelper
         "number" => number, 
         "offset" => offset
       },
-      :headers => @@HEADERS
+      :headers => headers
     })
   end
   
   def get_document_content(xmlid, patt, offset, number)
     data = execute_query({
-      :url => @@BACKEND_URL+'whitelab/search/docs/'+xmlid+'/content',
+      :url => backend_url+'whitelab/search/docs/'+xmlid+'/content',
       :query => { 
         "offset" => offset,
         "number" => number,
         "pattern" => patt
       },
-      :headers => @@HEADERS
+      :headers => headers
     })
     # return data
     return data['content'][0]
@@ -117,89 +95,85 @@ module Neo4jHelper
     data = `curl --header "Authorization: Basic bmVvNGo6Nzc0M21vbnN0ZXJzODE=" -H accept:application/json -H content-type:application/json -d '{"statements": [{ "statement": "MATCH (d:Document)<-[:HAS_DOCUMENT]->(cc:Collection) MATCH (cc)<-[:HAS_COLLECTION]-(c:Corpus) RETURN DISTINCT d.xmlid AS xmlid, d.token_count AS token_count, c.title AS corpus, cc.title AS collection;" }]}' http://localhost:7474/db/data/transaction/commit`;
     data = JSON.parse(data)
     docs = {}
-    data["results"][0]["data"].each do |x|
-      docs[x["row"][0]] = {"token_count" => x["row"][1], "corpus" => x["row"][2], "collection" => x["row"][3]}
+    data["results"][0]["data"].each do |doc_row|
+      doc = doc_row["row"]
+      docs[doc[0]] = {"token_count" => doc[1], "corpus" => doc[2], "collection" => doc[3]}
     end
     docs
   end
   
   def get_document_metadata(xmlid)
-    data = execute_query({
-      :url => @@BACKEND_URL+'whitelab/search/docs/'+xmlid+'/metadata',
-      :headers => @@HEADERS
-    })
-    data['metadata']
+    get_document_data(xmlid, 'metadata')
   end
   
   def get_document_statistics(xmlid)
+    get_document_data(xmlid, 'statistics')
+  end
+  
+  def get_document_data(xmlid, key)
     data = execute_query({
-      :url => @@BACKEND_URL+'whitelab/search/docs/'+xmlid+'/statistics',
-      :headers => @@HEADERS
+      :url => "#{backend_url}whitelab/search/docs/#{xmlid}/#{key}",
+      :headers => headers
     })
-    data['statistics']
+    data[key]
   end
   
   def get_filtered_content(query)
     execute_query({
-      :url => @@BACKEND_URL+'whitelab/search/metadata/content',
+      :url => backend_url+'whitelab/search/metadata/content',
       :query => { 
         "filter" => query.filter,
         "pattern" => query.patt,
         "offset" => query.offset,
         "number" => query.number
       },
-      :headers => @@HEADERS
+      :headers => headers
     })
   end
   
-  def get_grouped_docs(query, docpid, w, n, o)
-    data = get_grouped_results("grouped_docs", query, docpid, w, n, o)
-    data["grouped_docs"]
-  end
-  
-  def get_grouped_hits(query, docpid, w, n, o)
-    data = get_grouped_results("grouped_hits", query, docpid, w, n, o)
-    data["grouped_hits"]
-  end
-  
-  def get_grouped_results(path, query, docpid, w, n, o)
+  def get_grouped_results(path, search_obj)
+    query = search_obj[:query]
     execute_query({
-      :url => @@BACKEND_URL+'whitelab/search/'+path,
+      :url => backend_url+'whitelab/search/'+path,
       :query => {  
         "pattern" => query.patt, 
         "filter" => query.filter, 
-        "within" => w, 
-        "number" => n, 
-        "offset" => o,
-        "docpid" => docpid,
+        "within" => search_obj[:within], 
+        "number" => search_obj[:number], 
+        "offset" => search_obj[:offset],
+        "docpid" => search_obj.has_key?(:docpid) ? search_obj[:docpid] : nil,
         "group" => query.group
       },
-      :headers => @@HEADERS
+      :headers => headers
     })
   end
   
-  def get_hits(query, docpid, w, n, o)
-    data = get_results("hits", query, docpid, w, n, o)
-    data["hits"]
+  def get_grouped_filter(qgroup, group)
+    if filter.blank?
+      filter = "("+qgroup+"=\""+group+"\")"
+    else
+      filter = filter+"AND("+qgroup+"=\""+group+"\")"
+    end
   end
   
   def get_hits_in_group(query,group,offset,number)
     filter = query.filter
     pattern = query.patt
-    if query.group.start_with?('hit')
-      pattern = '['+group_to_label(query.group.split('_')[1])+'="(?c)'+group+'"]'
-    elsif query.group.end_with?('left')
-      pattern = '['+group_to_label(query.group.split('_')[0])+'="(?c)'+group+'"]'+pattern
-    elsif query.group.end_with?('right')
-      pattern = pattern+'['+group_to_label(query.group.split('_')[0])+'="(?c)'+group+'"]'
-    elsif filter.blank?
-      filter = "("+query.group+"=\""+group+"\")"
+    qgroup = query.group
+    qgroup_parts = qgroup.split('_')
+    context_group_label = group_to_label(qgroup_parts[0])
+    if qgroup.start_with?('hit')
+      pattern = '['+group_to_label(qgroup_parts[1])+'="(?c)'+group+'"]'
+    elsif qgroup.end_with?('left')
+      pattern = '['+context_group_label+'="(?c)'+group+'"]'+pattern
+    elsif qgroup.end_with?('right')
+      pattern = pattern+'['+context_group_label+'="(?c)'+group+'"]'
     else
-      filter = filter+"AND("+query.group+"=\""+group+"\")"
+      filter = get_grouped_filter(qgroup, group)
     end
     
     execute_query({
-      :url => @@BACKEND_URL+'whitelab/search/hits',
+      :url => backend_url+'whitelab/search/hits',
       :query => { 
         "pattern" => pattern, 
         "filter" => filter, 
@@ -207,20 +181,20 @@ module Neo4jHelper
         "number" => number, 
         "offset" => offset
       },
-      :headers => @@HEADERS
+      :headers => headers
     })
   end
   
-  def get_kwic(docpid, first_index, last_index, size)
+  def get_kwic(docpid, first_index, last_index, size = 50)
     execute_query({
-      :url => @@BACKEND_URL+'whitelab/search/hits/kwic',
+      :url => backend_url+'whitelab/search/hits/kwic',
       :query => { 
         "docpid" => docpid,
         "first_index" => first_index,
         "last_index" => last_index,
         "size" => size
       },
-      :headers => @@HEADERS
+      :headers => headers
     })
   end
   
@@ -232,17 +206,17 @@ module Neo4jHelper
   def get_metadata(number, offset, sort, order)
     if number == 0
       execute_query({
-        :url => @@BACKEND_URL+'db/data/label/Metadatum/nodes',
-        :headers => @@HEADERS
+        :url => backend_url+'db/data/label/Metadatum/nodes',
+        :headers => headers
       })
     else
       execute_query({
-        :url => @@BACKEND_URL+'whitelab/search/metadata',
+        :url => backend_url+'whitelab/search/metadata',
         :query => {"number" => number,
                    "offset" => offset,
                    "sort" => sort, 
                    "order" => order },
-        :headers => @@HEADERS
+        :headers => headers
       })
     end
   end
@@ -250,8 +224,8 @@ module Neo4jHelper
   # Load metadatum properties by label
   def get_metadatum_by_label(label)
     data = execute_query({
-      :url => @@BACKEND_URL+'whitelab/search/metadata/'+label,
-      :headers => @@HEADERS
+      :url => backend_url+'whitelab/search/metadata/'+label,
+      :headers => headers
     })
     data[0]
   end
@@ -259,14 +233,14 @@ module Neo4jHelper
   # # Load options for grouping by metadatum
   # def get_metadata_group_options(groups)
     # metadata_nodes = execute_query({
-      # :url => @@BACKEND_URL+'db/data/label/Metadatum/nodes',
-      # :headers => @@HEADERS
+      # :url => backend_url+'db/data/label/Metadatum/nodes',
+      # :headers => headers
     # })
 #     
     # metadata_nodes.each do |node|
       # node_properties = execute_query({
         # :url => node["properties"],
-        # :headers => @@HEADERS
+        # :headers => headers
       # })
       # if !node_properties.has_key?('searchable') || node_properties['searchable'].blank? || node_properties['searchable'] == true
         # if !groups.has_key?(group_translation_key(node_properties['group']))
@@ -281,7 +255,7 @@ module Neo4jHelper
   # Load metadatum values by group and key
   def get_metadatum_values_by_group_and_key(number, offset, sort, order, group, key)
     data = execute_query({
-      :url => @@BACKEND_URL+'whitelab/search/metadata/'+group+'/'+key+'/values',
+      :url => backend_url+'whitelab/search/metadata/'+group+'/'+key+'/values',
       :query => { 
         "number" => number,
         "offset" => offset,
@@ -289,7 +263,7 @@ module Neo4jHelper
         "order" => order,
         "count" => false
       },
-      :headers => @@HEADERS
+      :headers => headers
     })
     data['values']
   end
@@ -297,174 +271,153 @@ module Neo4jHelper
   # Load metadatum values by label
   def get_metadatum_values_by_label(number, offset, sort, order, label)
     data = execute_query({
-      :url => @@BACKEND_URL+'whitelab/search/metadata/'+label+'/values',
+      :url => backend_url+'whitelab/search/metadata/'+label+'/values',
       :query => { 
         "number" => number,
         "offset" => offset,
         "sort" => sort,
         "order" => order
       },
-      :headers => @@HEADERS
+      :headers => headers
     })
     data['values']
   end
   
   def get_pos_tags(number, offset, sort, order)
     execute_query({
-      :url => @@BACKEND_URL+'whitelab/search/pos/tags',
+      :url => backend_url+'whitelab/search/pos/tags',
       :query => { 
         "number" => number,
         "offset" => offset,
         "sort" => sort,
         "order" => order
       },
-      :headers => @@HEADERS
+      :headers => headers
     })
   end
   
   def get_pos_heads_counted(number, offset, sort, order)
     execute_query({
-      :url => @@BACKEND_URL+'whitelab/search/pos/heads',
+      :url => backend_url+'whitelab/search/pos/heads',
       :query => { 
         "number" => number,
         "offset" => offset,
         "sort" => sort,
         "order" => order
       },
-      :headers => @@HEADERS
+      :headers => headers
     })
   end
   
   def get_pos_tag_by_label(label)
     execute_query({
-      :url => @@BACKEND_URL+'whitelab/search/pos/tags/'+label,
-      :headers => @@HEADERS
+      :url => backend_url+'whitelab/search/pos/tags/'+label,
+      :headers => headers
     })
   end
   
   def get_pos_head_by_label(label)
     execute_query({
-      :url => @@BACKEND_URL+'whitelab/search/pos/heads/'+label,
-      :headers => @@HEADERS
+      :url => backend_url+'whitelab/search/pos/heads/'+label,
+      :headers => headers
     })
   end
   
   def get_pos_tag_features_by_label(label)
     execute_query({
-      :url => @@BACKEND_URL+'whitelab/search/pos/tags/'+label+'/features',
-      :headers => @@HEADERS
+      :url => backend_url+'whitelab/search/pos/tags/'+label+'/features',
+      :headers => headers
     })
   end
   
   def get_pos_head_features_by_label(label)
     execute_query({
-      :url => @@BACKEND_URL+'whitelab/search/pos/heads/'+label+'/features',
-      :headers => @@HEADERS
+      :url => backend_url+'whitelab/search/pos/heads/'+label+'/features',
+      :headers => headers
     })
   end
   
   def get_pos_tag_types_by_label(number, offset, sort, order, label)
     resp = execute_query({
-      :url => @@BACKEND_URL+'whitelab/search/pos/tags/'+label+'/word_types',
+      :url => backend_url+'whitelab/search/pos/tags/'+label+'/word_types',
       :query => { 
         "number" => number,
         "offset" => offset,
         "sort" => sort,
         "order" => order
       },
-      :headers => @@HEADERS
+      :headers => headers
     })
     resp['word_types']
   end
   
   def get_pos_head_tags_by_label(number, offset, sort, order, label)
     execute_query({
-      :url => @@BACKEND_URL+'whitelab/search/pos/heads/'+label+'/tags',
+      :url => backend_url+'whitelab/search/pos/heads/'+label+'/tags',
       :query => { 
         "number" => number,
         "offset" => offset,
         "sort" => sort,
         "order" => order
       },
-      :headers => @@HEADERS
+      :headers => headers
     })
   end
   
   def get_query_headers
-    return @@HEADERS
+    return headers
   end
   
-  def get_results(path, query, docpid, w, n, o)
+  def get_results(path, search_obj)
+    query = search_obj[:query]
     execute_query({
-      :url => @@BACKEND_URL+'whitelab/search/'+path,
+      :url => backend_url+'whitelab/search/'+path,
       :query => {  
         "pattern" => query.patt, 
         "filter" => query.filter, 
-        "within" => w, 
-        "number" => n, 
-        "offset" => o,
-        "docpid" => docpid
+        "within" => search_obj[:within], 
+        "number" => search_obj[:number], 
+        "offset" => search_obj[:offset],
+        "docpid" => search_obj[:docpid]
       },
-      :headers => @@HEADERS
+      :headers => headers
     })
   end
   
-  def get_search_result_counts_for_query(query, docpid, view, number, offset)
-    v = get_view(query, docpid, view)
-    o = get_offset(query, docpid, offset)
-    n = get_number(query, docpid, number)
-    w = get_within(query, 'document')
-    
-    if v == 1
-      count_hits(query, docpid, w, n, o)
-    elsif v == 2
-      count_docs(query, docpid, w, n, o)
-    elsif v == 8
-      count_grouped_hits(query, docpid, w, n, o)
-    elsif v == 16
-      count_grouped_docs(query, docpid, w, n, o)
-    else
-      logger.error "view = "+v.to_s
-    end
-  end
-  
   def get_search_results_for_query(query, docpid, offset, number)
-    v = get_view(query, docpid, nil)
-    o = get_offset(query, docpid, offset)
-    n = get_number(query, docpid, number)
-    w = get_within(query, 'document')
-    
-    data = nil
-    
-    if v == 1
-      data = get_hits(query, docpid, w, n, o)
-    elsif v == 2
-      data = get_docs(query, docpid, w, n, o)
-    elsif v == 4
-      data = get_filtered_content(query)
-    elsif v == 8
-      data = get_grouped_hits(query, docpid, w, n, o)
-    elsif v == 16
-      data = get_grouped_docs(query, docpid, w, n, o)
+    search_obj = {
+      :query => query,
+      :view => get_view(query, docpid, nil),
+      :offset => get_offset(query, docpid, offset),
+      :number => get_number(query, docpid, number),
+      :within => get_within(query, 'document'),
+      :docpid => docpid
+    }
+    view = search_obj[:view]
+    if [1,2].include?(view)
+      hits = view == 1
+      key = hits ? "hits" : "docs"
+      return { "results" => get_results(key, search_obj)[key] }
+    elsif [8,16].include?(view)
+      hit_groups = view == 8
+      key = hit_groups ? "grouped_hits" : "grouped_docs"
+      return { "results" => get_grouped_results(key, search_obj)[key] }
     end
-    
-    { "results" => data }
   end
   
   def get_url
-    return @@BACKEND_URL
+    return backend_url
   end
   
   # Run CQL query on server for set amount of iterations
   def run_benchmark_test(cql,iterations)
-    url = @@BACKEND_URL+'whitelab/admin/test/query'
     resp = execute_query({
-      :url => @@BACKEND_URL+'whitelab/admin/test/query',
+      :url => backend_url+'whitelab/admin/test/query',
       :query => { 
         "query" => cql, 
         "iter" => iterations
       },
-      :headers => @@HEADERS,
+      :headers => headers,
       :method => 'post'
     })
   end
@@ -473,19 +426,15 @@ module Neo4jHelper
   def update_metadatum(label, updates)
     updates.each do |key, value|
       execute_query({
-        :url => @@BACKEND_URL+'whitelab/search/metadata/'+label+'/update',
+        :url => backend_url+'whitelab/search/metadata/'+label+'/update',
         :query => {
           "property" => key,
           "value" => value.to_s
         },
-        :headers => @@HEADERS,
+        :headers => headers,
         :method => 'post'
       })
     end
-  end
-  
-  def save_metadata
-    File.open(Rails.root.join('config','metadata_neo4j.yml'), 'w', external_encoding: 'ASCII-8BIT') { |f| YAML.dump({ "metadata" => DOCUMENT_METADATA }, f) }
   end
   
 end

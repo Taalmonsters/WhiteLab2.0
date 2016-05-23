@@ -32,7 +32,7 @@
 			<% end %>
 		</tbody>	
 	</table>
-	<% if @has_more_queries %>
+	<% if @user.search_queries.size > @qllimit %>
 		<button id="load-more-queries" type="button" class="btn btn-primary"><%= t(:"button_labels.keys.load_more").capitalize %></button>
 	<% end %>
 	</div>
@@ -69,7 +69,7 @@
 			<% end %>
 		</tbody>	
 	</table>
-	<% if @has_more_export_queries %>
+	<% if @user.export_queries.size > @eqllimit %>
 		<button id="load-more-export-queries" type="button" class="btn btn-primary"><%= t(:"button_labels.keys.load_more").capitalize %></button>
 	<% end %>
 	</div>

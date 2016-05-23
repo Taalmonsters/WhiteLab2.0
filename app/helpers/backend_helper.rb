@@ -4,6 +4,14 @@ require 'uri'
 # Main backend helper module.
 module BackendHelper
   
+  def backend_url
+    Rails.configuration.x.database_url
+  end
+  
+  def headers
+    { 'Content-Type' => 'application/json' }
+  end
+  
   def execute_query(data)
     resp = nil
     if data.has_key?(:method) && data[:method].eql?('post')
@@ -19,7 +27,7 @@ module BackendHelper
         resp = get_headers(data)
       end
     end
-    if WhitelabBackend.instance.get_backend_type.eql?('neo4j')
+    if db_type.eql?('neo4j')
       return resp.parsed_response
     else
       return resp
@@ -69,7 +77,7 @@ module BackendHelper
     else
       request = Net::HTTP::Get.new(uri.path)
     end
-    @@HEADERS.each do |key, value|
+    headers.each do |key, value|
       request.add_field(key, value)
     end
 
@@ -81,6 +89,22 @@ module BackendHelper
           end
         end
       end
+    end
+  end
+  
+  def get_search_result_counts_for_query(query, docpid, view, number, offset)
+    count_obj = {
+      :query => query,
+      :view => get_view(query, docpid, view),
+      :offset => get_offset(query, docpid, offset),
+      :number => get_number(query, docpid, number),
+      :within => get_within(query, 'document')
+    }
+    vview = count_obj[:view]
+    if [1,2].include?(vview)
+      count_results(vview == 1 ? "hits" : "docs", count_obj)
+    elsif [8,16].include?(vview)
+      count_grouped_results(vview == 8 ? "hits" : "docs", count_obj)
     end
   end
   
@@ -102,8 +126,8 @@ module BackendHelper
     return w
   end
   
-  def load_metadata(group, key)
-    file = Rails.root.join('config', 'metadata_'+db_type, group+'.'+key+'.yml')
+  def load_metadata(metadata_obj)
+    file = Rails.root.join('config', 'metadata_'+db_type, metadata_obj[:group]+'.'+metadata_obj[:key]+'.yml')
     if File.exists?(file)
       return YAML.load_file(file)['values']
     else
@@ -145,7 +169,7 @@ module BackendHelper
     DOCUMENT_METADATA.each do |group, gdata|
       gdata.keys.select{|k| !k.include?("\.") }.each{|k| fields << {'group' => group, 'key' => k} }
     end
-    data = fields.uniq[offset..offset+number].map{|f| reformat_metadatum(f['group'], f['key']) }
+    data = fields.uniq[offset..offset+number].map{|f| reformat_metadatum({ :group => f['group'], :key => f['key'] }) }
     return { 'total' => fields.size, 'metadata' => data }
   end
   
@@ -165,13 +189,13 @@ module BackendHelper
     end
   end
   
-  def reformat_metadatum(group, key)
-    obj = DOCUMENT_METADATA[group][key]
-    unless obj.keys.select{|k| k.start_with?('document_count_')}.any?
-      metadata = load_metadata(group, key)
+  def reformat_metadatum(metadata_obj)
+    obj = DOCUMENT_METADATA[metadata_obj[:group]][metadata_obj[:key]]
+    unless obj.keys.select{|key| key.start_with?('document_count_')}.any?
+      metadata = load_metadata(metadata_obj)
       metadata.each do |value, docs|
-        docs.each do |i|
-          doc = DOCUMENT_DATA[DOCUMENT_DATA.keys[i]]
+        docs.each do |index|
+          doc = DOCUMENT_DATA[DOCUMENT_DATA.keys[index]]
           obj['document_count_'+doc['corpus']] = 0 unless obj.has_key?('document_count_'+doc['corpus'])
           obj['document_count_'+doc['corpus']] += 1
         end
@@ -179,7 +203,7 @@ module BackendHelper
       save_metadata
     end
     unless obj.keys.include?('value_count') && obj['value_count'] > 0
-      metadata = load_metadata(group, key)
+      metadata = load_metadata(metadata_obj)
       obj['value_count'] = metadata.keys.size
       save_metadata
     end
@@ -211,7 +235,7 @@ module BackendHelper
   
   # Load metadatum values by group and key
   def get_metadatum_values_by_group_and_key(number, offset, sort, order, group, key)
-    metadata = load_metadata(group, key)
+    metadata = load_metadata({:group => group, :key => key})
     reformat_metadatum_values(group, key, metadata, number == 0 ? metadata.keys : metadata.keys[offset..offset+number])
   end
   
@@ -232,6 +256,10 @@ module BackendHelper
       }
     end
     ph
+  end
+  
+  def save_metadata
+    File.open(Rails.root.join('config',"metadata_#{db_type}.yml"), 'w', external_encoding: 'ASCII-8BIT') { |file| YAML.dump({ "metadata" => DOCUMENT_METADATA }, file) }
   end
   
   def update_metadatum(label, updates)

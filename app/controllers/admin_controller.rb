@@ -15,7 +15,7 @@ class AdminController < ApplicationController
     end
     respond_to do |format|
       format.html do
-        @btype = WhitelabBackend.instance.get_backend_type
+        @btype = @backend.get_backend_type
         if @page.eql?('index') && !@tab
           @tab = 'counts' if @btype.eql?('neo4j')
           @tab = 'metadata' if @btype.eql?('blacklab')
@@ -111,7 +111,7 @@ class AdminController < ApplicationController
   def update_home_page
     @home_pages = load_home_page_data
     if params[:hlang] && params[:home_page]
-      save_home_page(params[:hlang],params[:home_page])
+      save_home_page({ :lang => params[:hlang], :data => params[:home_page] })
     end
     I18n.backend.reload!
     render :json => { response: 'Updated home page translation' }
@@ -121,7 +121,7 @@ class AdminController < ApplicationController
   def update_help_page
     @help_pages = load_help_page_data
     if params[:hlang] && params[:help_page]
-      save_help_page(params[:hlang],params[:help_page])
+      save_help_page({ :lang => params[:hlang], :data => params[:help_page] })
     end
     I18n.backend.reload!
     render :json => { response: 'Updated help page translation' }
@@ -180,7 +180,7 @@ class AdminController < ApplicationController
   def benchmark_test
     @cql_id = params[:id]
     if (params[:cql])
-      result = WhitelabBackend.instance.run_benchmark_test(params[:cql],1000)
+      result = @backend.run_benchmark_test(params[:cql],1000)
       @lines = result.split("\n")
       @lines.reverse.each do |line|
         if line =~ / ([0-9]+(\.[0-9]+)*) ms\./

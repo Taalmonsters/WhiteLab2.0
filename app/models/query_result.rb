@@ -33,8 +33,10 @@ class QueryResult < ActiveRecord::Base
   # Get default parameters
   def self.add_default_params(namespace, query, params, listtype)
     new_params = {}
-    if query && !query.query_result.blank?
-      new_params = query.query_result.attributes.except("id", "result", "status", "created_at", "updated_at")
+    is_explore_namespace = namespace.eql?('explore')
+    result = query.query_result
+    if query && !result.blank?
+      new_params = result.attributes.except("id", "result", "status", "created_at", "updated_at")
     end
     
     ["within", "number", "offset", "view", "group", "patt", "filter"].each do |attr|
@@ -42,57 +44,48 @@ class QueryResult < ActiveRecord::Base
         new_params[attr] = params[:"#{attr}"]
       end
     end
+    has_view = new_params.has_key?("view")
+    if !has_view
+      new_params["view"] = is_explore_namespace ? 8 : 1
+    end
+    new_params["within"] = 'document' if !new_params.has_key?("within")
+    new_params["offset"] = 0 if !new_params.has_key?("offset")
+    new_params["number"] = 50 if !new_params.has_key?("number")
+    new_params["patt"] = query.patt if !new_params.has_key?("patt") && query
+    new_params["filter"] = query.filter if !new_params.has_key?("filter") && query
     
-    if !new_params.has_key?("within")
-      new_params["within"] = 'document'
-    end
-    if !new_params.has_key?("view") && namespace.eql?('search')
-      new_params["view"] = 1
-    elsif !new_params.has_key?("view") && namespace.eql?('explore')
-      new_params["view"] = 8
-    end
-    if !new_params.has_key?("offset")
-      new_params["offset"] = 0
-    end
-    if !new_params.has_key?("number")
-      new_params["number"] = 50
-    end
-    if !new_params.has_key?("patt") && query
-      new_params["patt"] = query.patt
-    end
-    if !new_params.has_key?("filter") && query
-      new_params["filter"] = query.filter
-    end
-    
-    if namespace.eql?('explore')
-      if !listtype.blank? && !listtype.eql?('word')
-        new_params["group"] = 'hit_'+listtype
-      else
-        new_params["group"] = 'hit_text'
-      end
+    if is_explore_namespace
+      new_params["group"] = !listtype.blank? && !listtype.eql?('word') ? 'hit_'+listtype : 'hit_text'
     end
     return new_params
   end
   
   # Execute query
-  def execute(threaded, why)
+  def execute(why)
+    logger.debug("Executing query, because: #{why}")
     if (view == 8 || view == 16) && group.blank?
       errors.add(:group, "has to be defined")
     else
-      if threaded
-        Thread.new do
-          self.run(true, nil, nil)
-        end
-      else
+      self.run(true, nil, nil)
+    end
+  end
+  
+  # Execute query in thread
+  def execute_threaded(why)
+    logger.debug("Executing query, because: #{why}")
+    if (view == 8 || view == 16) && group.blank?
+      errors.add(:group, "has to be defined")
+    else
+      Thread.new do
         self.run(true, nil, nil)
       end
     end
   end
   
   # Run query and store results
-  def run(count, o, n)
+  def run(count, offs, nmb)
     self.update_attribute(:status, 1)
-    data = WhitelabBackend.instance.get_search_results_for_query(self, nil, o, n)
+    data = WhitelabBackend.instance.get_search_results_for_query(self, nil, offs, nmb)
     if self.view == 4
       Thread.new do
         self.update_attribute(:result, format_for_vocabulary_growth(data['content']))
@@ -113,20 +106,18 @@ class QueryResult < ActiveRecord::Base
   # Perform hit, document, and group count for query
   def do_count
     Thread.new do
-      if self.hit_count.blank? && !self.is_counting
+      not_counting = !self.is_counting
+      if self.hit_count.blank? && not_counting
         self.update_attribute(:status, 2)
         get_count('hit_count')
-        self.update_attribute(:status, 1)
       end
-      if self.document_count.blank? && !self.is_counting
+      if self.document_count.blank? && not_counting
         self.update_attribute(:status, 3)
         get_count('document_count')
-        self.update_attribute(:status, 1)
       end
-      if [8, 16].include?(self.view) && self.group_count.blank? && !self.is_counting
+      if [8, 16].include?(self.view) && self.group_count.blank? && not_counting
         self.update_attribute(:status, 4)
         get_count('group_count')
-        self.update_attribute(:status, 1)
       end
       finish_counting
     end
@@ -134,12 +125,12 @@ class QueryResult < ActiveRecord::Base
   
   # Get total result count for query
   def total
-    if [8, 16].include?(self.view)
-      self.group_count || self.number
-    elsif self.view == 2
-      self.document_count || self.number
+    if [8, 16].include?(view)
+      group_count || number
+    elsif view == 2
+      document_count || number
     else
-      self.hit_count || self.number
+      hit_count || number
     end
   end
   
@@ -148,9 +139,9 @@ class QueryResult < ActiveRecord::Base
     if self.read_attribute(attr).blank?
       results = []
       if attr.eql?('group_count')
-        results = QueryResult.where({:patt => self.patt, :filter => self.filter, :within => self.within, :group => self.group, :status => 10}).where.not(:"#{attr}" => nil)
+        results = QueryResult.where({:patt => patt, :filter => filter, :within => within, :group => group, :status => 10}).where.not(:"#{attr}" => nil)
       else
-        results = QueryResult.where("patt = ? AND filter = ? AND within = ? AND #{attr} IS NOT NULL AND status = ?", self.patt, self.filter, self.within, 10)
+        results = QueryResult.where("patt = ? AND filter = ? AND within = ? AND #{attr} IS NOT NULL AND status = ?", patt, filter, within, 10)
       end
       if results.any?
         self.update_attribute(:"#{attr}", results.first.read_attribute(attr))
@@ -158,7 +149,18 @@ class QueryResult < ActiveRecord::Base
         calculate_count(attr)
       end
     end
+    self.update_attribute(:status, 1)
     self.read_attribute(attr)
+  end
+  
+  # Set count in QueryResult
+  def set_count(data, attr, offset)
+    if !data.blank? && data.has_key?(attr)
+      count = offset + data[attr]
+      self.update_attribute(:"#{attr}", count)
+    else
+      self.update_attribute(:status, 5)
+    end
   end
   
   # Calculate count from index
@@ -170,18 +172,6 @@ class QueryResult < ActiveRecord::Base
       view = 2
     end
     set_count(WhitelabBackend.instance.get_search_result_counts_for_query(self, nil, view, 0, 0), attr, 0)
-  end
-  
-  # Set count in QueryResult
-  def set_count(data, attr, offset)
-    if data.blank?
-      self.update_attribute(:status, 5)
-    elsif data.has_key?(attr)
-      count = offset + data[attr]
-      self.update_attribute(:"#{attr}", count)
-    else
-      self.update_attribute(:status, 5)
-    end
   end
   
   # Complete query if QueryResult has finished counting
@@ -200,42 +190,42 @@ class QueryResult < ActiveRecord::Base
   
   # Get QueryResult status string
   def text_status
-    if self.status == 0
+    if status == 0
       'Waiting'
-    elsif self.status == 1
+    elsif status == 1
       'Running'
-    elsif self.status > 1 && self.status < 5
+    elsif status > 1 && status < 5
       'Counting'
-    elsif self.status == 5
+    elsif status == 5
       'Error'
-    elsif self.status == 10
+    elsif status == 10
       'Finished'
     end
   end
   
   # Check if QueryResult is new
   def is_new
-    self.status == 0
+    status == 0
   end
   
   # Check if QueryResult is running
   def is_running
-    self.status == 1
+    status == 1
   end
   
   # Check if QueryResult is counting
   def is_counting
-    self.status > 1 && self.status < 5
+    status > 1 && status < 5
   end
   
   # Check if QueryResult has an error
   def has_error
-    self.status == 5
+    status == 5
   end
   
   # Check if QueryResult has completed
   def is_finished
-    [5,10].include?(self.status)
+    [5,10].include?(status)
   end
   
   # Check if QueryResult is updated

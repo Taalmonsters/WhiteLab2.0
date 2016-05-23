@@ -1,7 +1,5 @@
 # Controller for Metadata management from Admin namespace and filtering in other namespaces.
 class MetadataController < ApplicationController
-  include MetadataHelper
-  
   before_action :set_logged_in, :only => [:index, :edit, :update]
   before_action :current_metadatum_label, :only => [:edit, :update, :values, :filter_rule]
   before_action :set_filtered_amount, :only => [:coverage]
@@ -12,11 +10,10 @@ class MetadataController < ApplicationController
       redirect_to 'admin/login'
     end
     set_pagination_params(0, 10, 'group')
-    backend = WhitelabBackend.instance
-    data = backend.get_metadata(@number, @offset, @sort, @order)
+    data = @backend.get_metadata(@number, @offset, @sort, @order)
     @metadata = data['metadata']
     @total = data['total']
-    @corpora = backend.get_corpus_titles
+    @corpora = @backend.get_corpus_titles
   end
   
   # Show metadatum edit form
@@ -25,9 +22,8 @@ class MetadataController < ApplicationController
       redirect_to 'admin/login'
     end
     if @label
-      backend = WhitelabBackend.instance
-      @metadatum = backend.get_metadatum_by_label(@label)
-      @values = backend.get_metadatum_values_by_label(5, 0, "document_count", "desc", @label)
+      @metadatum = @backend.get_metadatum_by_label(@label)
+      @values = @backend.get_metadatum_values_by_label(5, 0, "document_count", "desc", @label)
     else
       logger.warn "NO LABEL"
     end
@@ -45,23 +41,21 @@ class MetadataController < ApplicationController
           updates[key] = params[key].to_s
         end
       end
-      backend = WhitelabBackend.instance
-      backend.update_metadatum(@label,updates)
-      @metadatum = backend.get_metadatum_by_label(@label)
+      @backend.update_metadatum(@label,updates)
+      @metadatum = @backend.get_metadatum_by_label(@label)
     end
   end
   
   # Load metadata filter rule
   def filter_rule
-    @filters = get_group_options(16, 'search')
+    @filters = @backend.get_group_options(16, 'search')
     @rule_id = 0
     if params[:rule_id]
       @rule_id = params[:rule_id]
     end
     if @group && @key
-      backend = WhitelabBackend.instance
-      mvalues = backend.get_metadatum_values_by_group_and_key(0, 0, "value", "asc", @group, @key)
-      if backend.get_backend_type().eql?('blacklab')
+      mvalues = @backend.get_metadatum_values_by_group_and_key(0, 0, "value", "asc", @group, @key)
+      if @backend.get_backend_type().eql?('blacklab')
         @values = mvalues
       else
         @values = mvalues.map{|x| x["value"]}
@@ -73,18 +67,17 @@ class MetadataController < ApplicationController
   
   # Load metadatum values by group and key
   def values
-    @values = metadata_values(@group,@key)
+    @values = @backend.metadata_values({ :group => @group, :key => @key })
     @value_list_incomplete = false
     if @values.blank?
-      backend = WhitelabBackend.instance
-      mvalues = backend.get_metadatum_values_by_group_and_key(0, 0, "value", "asc", @group, @key)
-      if backend.get_backend_type().eql?('blacklab')
+      mvalues = @backend.get_metadatum_values_by_group_and_key(0, 0, "value", "asc", @group, @key)
+      if @backend.get_backend_type().eql?('blacklab')
         @values = mvalues
       else
         @values = mvalues.map{|x| x["value"]}
       end
     else
-      @value_count = metadata_value_count(@group,@key)
+      @value_count = @backend.metadata_value_count({ :group => @group, :key => @key })
       if !@value_count.blank? && @value_count > METADATUM_VALUES_MAX
         @value_list_incomplete = true
       end

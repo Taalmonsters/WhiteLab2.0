@@ -48,7 +48,7 @@ class DocumentsController < ApplicationController
       @offset = params[:offset].to_i
     end
     @number = 50
-    # @number = WhitelabBackend.instance.get_backend_type.eql?('blacklab') ? 500 : 50
+    # @number = @backend.get_backend_type.eql?('blacklab') ? 500 : 50
     # if params[:number]
       # @number = params[:number].to_i
     # end
@@ -57,7 +57,7 @@ class DocumentsController < ApplicationController
       patt = SearchQuery.find(params[:id].to_i).patt
     end
     @document = {}
-    data = WhitelabBackend.instance.get_document_content(@xmlid,patt,@offset,@number)
+    data = @backend.get_document_content(@xmlid,patt,@offset,@number)
     
     paragraphs = {}
     current_paragraph = 0
@@ -154,11 +154,10 @@ class DocumentsController < ApplicationController
   # Load vocabulary growth for document
   def vocabulary_growth
     n = 0
-    backend = WhitelabBackend.instance
-    if backend.get_backend_type.eql?('blacklab')
-      n = backend.get_document_token_count(@xmlid)
+    if @backend.get_backend_type.eql?('blacklab')
+      n = @backend.get_document_token_count(@xmlid)
     end
-    data = backend.get_document_content(@xmlid,nil,0,n)
+    data = @backend.get_document_content(@xmlid,nil,0,n)
     render json: format_for_vocabulary_growth(data['content'])
   end
   
@@ -166,11 +165,10 @@ class DocumentsController < ApplicationController
   def pos_distribution
     @document = {}
     n = 0
-    backend = WhitelabBackend.instance
-    if backend.get_backend_type.eql?('blacklab')
-      n = backend.get_document_token_count(@xmlid)
+    if @backend.get_backend_type.eql?('blacklab')
+      n = @backend.get_document_token_count(@xmlid)
     end
-    data = backend.get_document_content(@xmlid,nil,0,n)
+    data = @backend.get_document_content(@xmlid,nil,0,n)
     data['content'].each do |token|
       pos_head = token['pos_tag'].split('(')[0]
       if !@document.has_key?(pos_head)
@@ -185,7 +183,7 @@ class DocumentsController < ApplicationController
   def metadata
     @tab = 'metadata'
     @document = {}
-    @document['metadata'] = WhitelabBackend.instance.get_document_metadata(@xmlid)
+    @document['metadata'] = @backend.get_document_metadata(@xmlid)
     respond_to do |format|
       format.js do
         render '/documents/metadata'
@@ -196,7 +194,7 @@ class DocumentsController < ApplicationController
   # Load document statistics
   def statistics
     @tab = 'statistics'
-    @data = WhitelabBackend.instance.get_document_statistics(@xmlid)
+    @data = @backend.get_document_statistics(@xmlid)
     respond_to do |format|
       format.js do
         render '/documents/statistics'

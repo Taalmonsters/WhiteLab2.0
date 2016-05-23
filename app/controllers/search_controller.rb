@@ -1,7 +1,5 @@
 # Main controller for Search namespace.
 class SearchController < ApplicationController
-  include MetadataHelper
-  
   before_action :set_search_namespace
   before_action :set_page, :only => [:simple, :extended, :advanced, :expert, :document]
   before_action :set_tab, :only => [:document]
@@ -30,7 +28,7 @@ class SearchController < ApplicationController
   
   # Show Search Extended interface
   def extended
-    @pos_heads = WhitelabBackend.instance.get_pos_heads(12, 0, "label", "asc")["pos_heads"].map{|x| [t(:"pos_heads.keys.#{x["label"]}").capitalize, x["label"]+".*"]}
+    @pos_heads = get_translated_pos_heads
     render 'search/page'
   end
   
@@ -101,8 +99,9 @@ class SearchController < ApplicationController
   # Load hits for Search Query in selected document
   def doc_hits
     if @query && params.has_key?(:docpid)
-      @target = params[:docpid]
-      @doc_hits = WhitelabBackend.instance.get_search_results_for_query(@query.query_result, params[:docpid], nil, nil)["results"]
+      docpid = params[:docpid]
+      @target = docpid
+      @doc_hits = @backend.get_search_results_for_query(@query.query_result, docpid, nil, nil)["results"]
     end
     respond_to do |format|
       format.js do
@@ -113,12 +112,7 @@ class SearchController < ApplicationController
   
   # Load hits for Search Query in selected group
   def hits_in_group
-    if @query && params.has_key?(:group_id) && params.has_key?(:hits_group)
-      @offset = params[:offset] || 0
-      @group = params[:hits_group]
-      @group_id = params[:group_id]
-      @hits = WhitelabBackend.instance.get_hits_in_group(@query.query_result,@group,@offset,20)['hits']
-    end
+    results_in_group(:hits_group)
     respond_to do |format|
       format.js do
         render '/result/hits_in_group'
@@ -128,12 +122,7 @@ class SearchController < ApplicationController
   
   # Load documents for Search Query in selected group
   def docs_in_group
-    if @query && params.has_key?(:group_id) && params.has_key?(:docs_group)
-      @offset = params[:offset] || 0
-      @group = params[:docs_group]
-      @group_id = params[:group_id]
-      @docs = WhitelabBackend.instance.get_docs_in_group(@query.query_result,@group,@offset,20)['docs']
-    end
+    results_in_group(:docs_group)
     respond_to do |format|
       format.js do
         render '/result/docs_in_group'
@@ -143,9 +132,9 @@ class SearchController < ApplicationController
   
   # Load keywords in context for hit
   def kwic
-    if params.has_key?(:docpid) && params.has_key?(:first_index) && params.has_key?(:last_index) && params.has_key?(:size)
-      @target = params[:docpid]+'_'+params[:first_index].to_s+'_'+params[:last_index].to_s
-      @kwic = WhitelabBackend.instance.get_kwic(params[:docpid], params[:first_index], params[:last_index], params[:size])
+    @target = get_target_from_params
+    if @target
+      @kwic = @backend.get_kwic(params[:docpid], params[:first_index], params[:last_index], params[:size])
     end
     respond_to do |format|
       format.js do
@@ -155,6 +144,14 @@ class SearchController < ApplicationController
   end
   
   protected
+  
+  def get_target_from_params
+    docpid = params[:docpid] || ''
+    first_index = params.has_key?(:first_index) ? params[:first_index].to_s : ''
+    last_index = params.has_key?(:last_index) ? params[:last_index].to_s : ''
+    return docpid+'_'+first_index+'_'+last_index if docpid && first_index && last_index
+    nil
+  end
   
   # Set namespace to 'search'
   def set_search_namespace
@@ -167,14 +164,6 @@ class SearchController < ApplicationController
       @page = params[:page]
     else
       @page = action_name
-    end
-  end
-  
-  # Set current tab
-  def set_tab
-    @tab = 'content'
-    if params.has_key?(:tab) && !params[:tab].blank?
-      @tab = params[:tab]
     end
   end
   
@@ -203,51 +192,34 @@ class SearchController < ApplicationController
   def update_query
     if @query && @query.has_changed(params)
       if @query.update_attributes(query_update_params)
-        @query.query_result.execute(true, "SEARCH QUERY CHANGED")
+        @query.query_result.execute_threaded("SEARCH QUERY CHANGED")
       end
     end
   end
   
   # Load Search Query history
   def load_query_list
-    @qllimit = 5
-    if params[:qllimit]
-      @qllimit = params[:qllimit].to_i
-    end
-    @queries = SearchQuery.where(:user_id => @user.id).order("updated_at DESC").limit(@qllimit)
-    @has_more_queries = SearchQuery.where(:user_id => @user.id).count('id', :distinct => true) > @qllimit
-    @has_unfinished_queries = false
-    @queries.each do |query|
-      if query.query_result.blank? || !query.query_result.is_finished
-        @has_unfinished_queries = true
-        break
-      end
-    end
+    @qllimit, @queries = @user.query_history(params[:qllimit], 'search_queries')
   end
   
   # Load Export Query history
   def load_export_query_list
-    @eqllimit = 5
-    if params[:eqllimit]
-      @eqllimit = params[:eqllimit].to_i
-    end
-    @export_queries = ExportQuery.where(:user_id => @user.id).order("created_at DESC").limit(@eqllimit)
-    @has_more_export_queries = ExportQuery.where(:user_id => @user.id).count('id', :distinct => true) > @eqllimit
-    @has_unfinished_export_queries = false
-    @export_queries.each do |query|
-      if query.status == 0 || query.status == 1
-        @has_unfinished_export_queries = true
-        break
-      end
-    end
+    @eqllimit, @export_queries = @user.query_history(params[:eqllimit], 'export_queries')
   end
   
   # Get grouping options for grouped hits or documents, depending on selected view
   def set_grouping
-    if @query && !@query.query_result.blank? && [8,16].include?(@query.query_result.view)
-      @groups = get_group_options(@query.query_result.view, 'search')
-      if !@query.query_result.group.blank?
-        @group = @query.query_result.group.gsub(/ /,"_")
+    if @query
+      qresult = @query.query_result
+      if !qresult.blank?
+        view = qresult.view
+        group = qresult.group
+        if [8,16].include?(view)
+          @groups = @backend.get_group_options(view, 'search')
+          if !group.blank?
+            @group = group.gsub(/ /,"_")
+          end
+        end
       end
     end
   end
@@ -259,6 +231,21 @@ class SearchController < ApplicationController
     if !@query.blank?
       @query_base_url = '/search/'+@query.page+'?'+@query.assemble_url_params(['patt', 'filter', 'within'])
       @query_params = '?'+@query.assemble_url_params(['patt', 'filter', 'within', 'view', 'group', 'number', 'offset'])
+    end
+  end
+  
+  # Load hits or documents for Search Query in selected group
+  def results_in_group(key)
+    if @query && params.has_key?(:group_id) && params.has_key?(key)
+      qresult = @query.query_result
+      @offset = params[:offset] || 0
+      @group = params[key]
+      @group_id = params[:group_id]
+      if key.eql?(:hits_group)
+        @hits = @backend.get_hits_in_group(qresult,@group,@offset,20)['hits']
+      else
+        @docs = @backend.get_docs_in_group(qresult,@group,@offset,20)['docs']
+      end
     end
   end
   

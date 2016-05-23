@@ -6,7 +6,7 @@ if (queryId != null) {
 	$("tr#"+queryId+" a.remove-query").addClass("hidden");
 }
 
-<% if @has_unfinished_queries || @has_unfinished_export_queries %>
+<% if @user.has_unfinished_search_queries?(@qllimit) || @user.has_unfinished_export_queries?(@eqllimit) %>
 setTimeout(function(){
 	var l = $('#query-list').find("table.query-table").first().data("query-history-limit");
 	var el = $('#query-list').find("table.export-query-table").first().data("export-query-history-limit");
