@@ -1,22 +1,28 @@
 require 'singleton'
 
+# The WhitelabBackend class is a wrapper for the backend helper classes and makes them available in a singleton
 class WhitelabBackend
   include Singleton
-  @@BACKEND_TYPE = Rails.configuration.x.database_type
   
   def initialize
-    mods = self.class.included_modules.map { |x| x.to_s }
-    if @@BACKEND_TYPE.eql?('neo4j') && !mods.include?('Neo4jHelper') && !mods.include?('BlacklabHelper')
-      self.class.send(:include, Neo4jHelper)
-    elsif @@BACKEND_TYPE.eql?('blacklab') && !mods.include?('Neo4jHelper') && !mods.include?('BlacklabHelper')
-      self.class.send(:include, BlacklabHelper)
-    else
-      abort("Unrecognized database type: "+@@BACKEND_TYPE.to_s)
-    end
+    @backend_type = Rails.configuration.x.database_type
+    load_modules
   end
   
   def get_backend_type
-    return @@BACKEND_TYPE
+    return @backend_type
+  end
+  
+  private
+  
+  def load_modules
+    klass = self.class
+    module_name = required_module_name
+    klass.send(:include, module_name.constantize) unless klass.included_modules.map { |mod| mod.to_s }.include?(module_name)
+  end
+  
+  def required_module_name
+    @backend_type.eql?('blacklab') ? 'BlacklabHelper' : 'Neo4jHelper'
   end
   
 end
