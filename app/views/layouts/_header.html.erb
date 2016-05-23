@@ -1,87 +1,92 @@
 <!DOCTYPE HTML>
 <html>
-<head>
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<% if yield(:title).length > 0 %>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<% if yield(:title).length > 0 %>
 		<title><%= t(:'application.keys.page_title') %> - <%= yield(:title) %></title>
-	<% else %>
-  		<title><%= t(:'application.keys.page_title') %></title>
-  	<% end %>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<script src="http://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/highcharts-more.js"></script>
-<script src="http://code.highcharts.com/modules/exporting.js"></script>
-<script src="http://highcharts.github.io/export-csv/export-csv.js"></script>
-<!-- Additional files for the Highslide popup effect -->
-<script src="https://www.highcharts.com/samples/static/highslide-full.min.js"></script>
-<script src="https://www.highcharts.com/samples/static/highslide.config.js" charset="utf-8"></script>
-
-
-  <%= csrf_meta_tags %>
-  <%= render 'layouts/shim' %>
-  <%= favicon_link_tag 'favicon.ico' %>
-</head>
-<body onresize="Whitelab.layout.resize()" id="body">
-	<nav class="navbar navbar-whitelab navbar-fixed-top">
-				<!-- Left Nav Section -->
-				<ul class="left">
-					
-					<% if @interface_languages.length > 3 %>
-						<li class="left-spaced">
-							<a data-url="<%= request.original_url %>" onclick="event.preventDefault();" disabled>Language: <%= select_tag(:default, options_for_select(@interface_languages, [@current_language]), :class => 'lang-select') %></a>
-						</li>
-					<% else %>
-						<% @interface_languages.each do |lang| %>
-							<li class="langli">
-								<a class="langlink" data-language="<%= lang[1] %>" data-url="<%= request.original_url %>">
-									<%= image_tag "lang/"+lang[1]+".svg", :class => @current_language.eql?(lang[1]) ? "lang-icon current" : "lang-icon" %>
-								</a>
-							</li>
-						<% end %>
-					<% end %>
-					
-					<li class="left-spaced">
-						<a id="help-icon"><%= image_tag "info_icon.png" %></a>
-					</li>
-					<li class="left-spaced">
-						<a id="admin-icon" href="/admin/login"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-					</li>
-					<% if @namespace && @namespace.eql?('search') %>
-						<li id="main-search" class="left-spaced active"><a href="#" onclick="event.preventDefault();"><%= t(:"page_titles.keys.search").capitalize %></a></li>
-					<% else %>
-						<li id="main-search" class="left-spaced"><a href="/search/simple"><%= t(:"page_titles.keys.search").capitalize %></a></li>
-					<% end %>
-					<% if @namespace && @namespace.eql?('explore') %>
-						<li id="main-explore" class="left-spaced active"><a href="#" onclick="event.preventDefault();"><%= t(:"page_titles.keys.explore").capitalize %></a></li>
-					<% else %>
-						<li id="main-explore" class="left-spaced"><a href="/explore/corpora"><%= t(:"page_titles.keys.explore").capitalize %></a></li>
-					<% end %>
-					<% if !@namespace || @namespace.eql?('main') %>
-						<li id="main-home" class="left-spaced active"><a href="#" onclick="event.preventDefault();"><%= t(:"page_titles.keys.home").capitalize %></a></li>
-					<% else %>
-						<li id="main-home" class="left-spaced"><a href="/info"><%= t(:"page_titles.keys.home").capitalize %></a></li>
-					<% end %>
-				</ul>
-
-				<!-- Right Nav Section -->
-				<div class="right">
-					<div class="visible-sm visible-md visible-lg">
-						<a href="/">
-							<%= image_tag "logo.png" %>
-						</a>
-					</div>
-					<div class="visible-xs">
-						<a href="/">
-							<%= image_tag "logo.png", :class => "img-xs" %>
-						</a>
-					</div>
-				</div>
-	</nav>
-	<div id="<%= @namespace %>" class="container-fluid main-content" style="margin-top: 65px; padding-top: 40px; padding-bottom: 150px;">
-		<%= render 'cookies_eu/consent_banner' %>
-		<% if @namespace && !@namespace.eql?('main') %>
-			<%= render partial: @namespace+'/sub_nav' %>
+		<% else %>
+		<title><%= t(:'application.keys.page_title') %></title>
 		<% end %>
+		<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+		<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		<script src="http://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/highcharts-more.js"></script>
+		<script src="http://code.highcharts.com/modules/exporting.js"></script>
+		<script src="http://highcharts.github.io/export-csv/export-csv.js"></script>
+		<!-- Additional files for the Highslide popup effect -->
+		<script src="https://www.highcharts.com/samples/static/highslide-full.min.js"></script>
+		<script src="https://www.highcharts.com/samples/static/highslide.config.js" charset="utf-8"></script>
+
+		<%= csrf_meta_tags %>
+		<%= render 'layouts/shim' %>
+		<%= favicon_link_tag 'favicon.ico' %>
+	</head>
+	<body onresize="Whitelab.layout.resize()" id="body">
+		<nav class="navbar navbar-whitelab navbar-fixed-top">
+			<!-- Left Nav Section -->
+			<ul class="left">
+
+				<% if @interface_languages.length > 3 %>
+				<li class="left-spaced">
+					<a data-url="<%= request.original_url %>" onclick="event.preventDefault();" disabled>Language: <%= select_tag(:default, options_for_select(@interface_languages, [@current_language]), :class => 'lang-select') %></a>
+				</li>
+				<% else %>
+				<% @interface_languages.each do |lang| %>
+				<li class="langli">
+					<a class="langlink" data-language="<%= lang[1] %>" data-url="<%= request.original_url %>"> <%= image_tag "lang/"+lang[1]+".svg", :class => @current_language.eql?(lang[1]) ? "lang-icon current" : "lang-icon" %> </a>
+				</li>
+				<% end %>
+				<% end %>
+
+				<li class="left-spaced">
+					<a id="help-icon"><%= image_tag "info_icon.png" %></a>
+				</li>
+				<li class="left-spaced">
+					<a id="admin-icon" href="/admin/login"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+				</li>
+				<% if @namespace && @namespace.eql?('search') %>
+				<li id="main-search" class="left-spaced active">
+					<a href="#" onclick="event.preventDefault();"><%= t(:"page_titles.keys.search").capitalize %></a>
+				</li>
+				<% else %>
+				<li id="main-search" class="left-spaced">
+					<a href="/search/simple"><%= t(:"page_titles.keys.search").capitalize %></a>
+				</li>
+				<% end %>
+				<% if @namespace && @namespace.eql?('explore') %>
+				<li id="main-explore" class="left-spaced active">
+					<a href="#" onclick="event.preventDefault();"><%= t(:"page_titles.keys.explore").capitalize %></a>
+				</li>
+				<% else %>
+				<li id="main-explore" class="left-spaced">
+					<a href="/explore/corpora"><%= t(:"page_titles.keys.explore").capitalize %></a>
+				</li>
+				<% end %>
+				<% if !@namespace || @namespace.eql?('main') %>
+				<li id="main-home" class="left-spaced active">
+					<a href="#" onclick="event.preventDefault();"><%= t(:"page_titles.keys.home").capitalize %></a>
+				</li>
+				<% else %>
+				<li id="main-home" class="left-spaced">
+					<a href="/info"><%= t(:"page_titles.keys.home").capitalize %></a>
+				</li>
+				<% end %>
+			</ul>
+
+			<!-- Right Nav Section -->
+			<div class="right">
+				<div class="visible-sm visible-md visible-lg">
+					<a href="/"> <%= image_tag "logo.png" %> </a>
+				</div>
+				<div class="visible-xs">
+					<a href="/"> <%= image_tag "logo.png", :class => "img-xs" %> </a>
+				</div>
+			</div>
+		</nav>
+		<div id="<%= @namespace %>" class="container-fluid main-content" style="margin-top: 65px; padding-top: 40px; padding-bottom: 150px;">
+			<%= render 'cookies_eu/consent_banner' %>
+			<% if @namespace && !@namespace.eql?('main') %>
+			<%= render partial: @namespace+'/sub_nav' %>
+			<% end %>
