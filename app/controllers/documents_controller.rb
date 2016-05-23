@@ -155,7 +155,7 @@ class DocumentsController < ApplicationController
   def vocabulary_growth
     n = 0
     if @@BACKEND.get_backend_type.eql?('blacklab')
-      n = get_document_token_count(@xmlid)
+      n = @@BACKEND.get_document_token_count(@xmlid)
     end
     data = @@BACKEND.get_document_content(@xmlid,nil,0,n)
     render json: format_for_vocabulary_growth(data['content'])
@@ -166,7 +166,7 @@ class DocumentsController < ApplicationController
     @document = {}
     n = 0
     if @@BACKEND.get_backend_type.eql?('blacklab')
-      n = get_document_token_count(@xmlid)
+      n = @@BACKEND.get_document_token_count(@xmlid)
     end
     data = @@BACKEND.get_document_content(@xmlid,nil,0,n)
     data['content'].each do |token|
