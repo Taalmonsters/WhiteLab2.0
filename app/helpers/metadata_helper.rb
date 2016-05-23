@@ -24,7 +24,7 @@ module MetadataHelper
         groups[group] = []
       end
       data.each do |arr|
-        field = translate(:"#{arr[0]}")
+        field = I18n.translate(:"#{arr[0]}")
         groups[group] << [field, arr[1]]
       end
     end
@@ -70,7 +70,7 @@ module MetadataHelper
     end
     result = {}
     # DOCUMENT_METADATA[group][key]
-    load_metadata(group,key).each do |value, doc_indices|
+    load_metadata({ :group => group, :key => key }).each do |value, doc_indices|
       doc_ids = docs & doc_indices.map{|doc_index| DOCUMENT_DATA.keys[doc_index] }
       docs_included += doc_ids
       result[value] = doc_ids
@@ -113,7 +113,7 @@ module MetadataHelper
       metadata_obj[:group] = "Metadata"
     end
     # DOCUMENT_METADATA[group][key]
-    load_metadata(group,key).keys
+    load_metadata({ :group => group, :key => key }).keys
   end
   
   # Count values for metadatum
@@ -124,7 +124,7 @@ module MetadataHelper
       metadata_obj[:group] = "Metadata"
     end
     # DOCUMENT_METADATA[group][key]
-    load_metadata(group,key).keys.length
+    load_metadata({ :group => group, :key => key }).keys.length
   end
   
   private
