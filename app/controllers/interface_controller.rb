@@ -25,7 +25,7 @@ class InterfaceController < ApplicationController
     @value = params[:value]
     @element = params[:element]
     @element_class = params[:element_class]
-    @pos_heads = @@BACKEND.get_pos_heads(12, 0, "label", "asc")["pos_heads"].map{|x| [t(:"pos_heads.keys.#{x["label"]}").capitalize, x["label"]+".*"]}
+    @pos_heads = WhitelabBackend.instance.get_pos_heads(12, 0, "label", "asc")["pos_heads"].map{|x| [t(:"pos_heads.keys.#{x["label"]}").capitalize, x["label"]+".*"]}
     render '/pos_heads/select'
   end
   

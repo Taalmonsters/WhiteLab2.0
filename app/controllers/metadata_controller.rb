@@ -12,10 +12,11 @@ class MetadataController < ApplicationController
       redirect_to 'admin/login'
     end
     set_pagination_params(0, 10, 'group')
-    data = @@BACKEND.get_metadata(@number, @offset, @sort, @order)
+    backend = WhitelabBackend.instance
+    data = backend.get_metadata(@number, @offset, @sort, @order)
     @metadata = data['metadata']
     @total = data['total']
-    @corpora = @@BACKEND.get_corpus_titles
+    @corpora = backend.get_corpus_titles
   end
   
   # Show metadatum edit form
@@ -24,8 +25,9 @@ class MetadataController < ApplicationController
       redirect_to 'admin/login'
     end
     if @label
-      @metadatum = @@BACKEND.get_metadatum_by_label(@label)
-      @values = @@BACKEND.get_metadatum_values_by_label(5, 0, "document_count", "desc", @label)
+      backend = WhitelabBackend.instance
+      @metadatum = backend.get_metadatum_by_label(@label)
+      @values = backend.get_metadatum_values_by_label(5, 0, "document_count", "desc", @label)
     else
       logger.warn "NO LABEL"
     end
@@ -43,8 +45,9 @@ class MetadataController < ApplicationController
           updates[key] = params[key].to_s
         end
       end
-      @@BACKEND.update_metadatum(@label,updates)
-      @metadatum = @@BACKEND.get_metadatum_by_label(@label)
+      backend = WhitelabBackend.instance
+      backend.update_metadatum(@label,updates)
+      @metadatum = backend.get_metadatum_by_label(@label)
     end
   end
   
@@ -56,8 +59,9 @@ class MetadataController < ApplicationController
       @rule_id = params[:rule_id]
     end
     if @group && @key
-      mvalues = @@BACKEND.get_metadatum_values_by_group_and_key(0, 0, "value", "asc", @group, @key)
-      if @@BACKEND.get_backend_type().eql?('blacklab')
+      backend = WhitelabBackend.instance
+      mvalues = backend.get_metadatum_values_by_group_and_key(0, 0, "value", "asc", @group, @key)
+      if backend.get_backend_type().eql?('blacklab')
         @values = mvalues
       else
         @values = mvalues.map{|x| x["value"]}
@@ -72,8 +76,9 @@ class MetadataController < ApplicationController
     @values = metadata_values(@group,@key)
     @value_list_incomplete = false
     if @values.blank?
-      mvalues = @@BACKEND.get_metadatum_values_by_group_and_key(0, 0, "value", "asc", @group, @key)
-      if @@BACKEND.get_backend_type().eql?('blacklab')
+      backend = WhitelabBackend.instance
+      mvalues = backend.get_metadatum_values_by_group_and_key(0, 0, "value", "asc", @group, @key)
+      if backend.get_backend_type().eql?('blacklab')
         @values = mvalues
       else
         @values = mvalues.map{|x| x["value"]}

@@ -15,7 +15,7 @@ class AdminController < ApplicationController
     end
     respond_to do |format|
       format.html do
-        @btype = @@BACKEND.get_backend_type
+        @btype = WhitelabBackend.instance.get_backend_type
         if @page.eql?('index') && !@tab
           @tab = 'counts' if @btype.eql?('neo4j')
           @tab = 'metadata' if @btype.eql?('blacklab')
@@ -180,7 +180,7 @@ class AdminController < ApplicationController
   def benchmark_test
     @cql_id = params[:id]
     if (params[:cql])
-      result = @@BACKEND.run_benchmark_test(params[:cql],1000)
+      result = WhitelabBackend.instance.run_benchmark_test(params[:cql],1000)
       @lines = result.split("\n")
       @lines.reverse.each do |line|
         if line =~ / ([0-9]+(\.[0-9]+)*) ms\./

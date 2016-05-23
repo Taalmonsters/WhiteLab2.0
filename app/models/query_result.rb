@@ -8,8 +8,6 @@ class QueryResult < ActiveRecord::Base
   
   serialize :result, JSON
   
-  @@BACKEND = WhitelabBackend.instance
-  
   # Find of create QueryResult from parameters
   def self.get_current_query_result(params)
     results = QueryResult.where({
@@ -94,7 +92,7 @@ class QueryResult < ActiveRecord::Base
   # Run query and store results
   def run(count, o, n)
     self.update_attribute(:status, 1)
-    data = @@BACKEND.get_search_results_for_query(self, nil, o, n)
+    data = WhitelabBackend.instance.get_search_results_for_query(self, nil, o, n)
     if self.view == 4
       Thread.new do
         self.update_attribute(:result, format_for_vocabulary_growth(data['content']))
@@ -171,7 +169,7 @@ class QueryResult < ActiveRecord::Base
     elsif attr.eql?('document_count')
       view = 2
     end
-    set_count(@@BACKEND.get_search_result_counts_for_query(self, nil, view, 0, 0), attr, 0)
+    set_count(WhitelabBackend.instance.get_search_result_counts_for_query(self, nil, view, 0, 0), attr, 0)
   end
   
   # Set count in QueryResult

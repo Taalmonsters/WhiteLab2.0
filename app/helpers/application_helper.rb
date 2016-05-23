@@ -1,8 +1,6 @@
 # General helper methods
 module ApplicationHelper
   
-  @@BACKEND = WhitelabBackend.instance
-  
   # Load list of all languages
   def load_all_languages
     data = []
@@ -74,7 +72,7 @@ module ApplicationHelper
       end
     end
     
-    metadata = YAML.load_file(Rails.root.join('config').to_s+'/metadata_'+@@BACKEND.get_backend_type+'.yml')
+    metadata = YAML.load_file(Rails.root.join('config').to_s+'/metadata_'+WhitelabBackend.instance.get_backend_type+'.yml')
     changed = false
     
     metadata['metadata'].each do |group, keys|

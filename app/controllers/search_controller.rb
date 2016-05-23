@@ -30,7 +30,7 @@ class SearchController < ApplicationController
   
   # Show Search Extended interface
   def extended
-    @pos_heads = @@BACKEND.get_pos_heads(12, 0, "label", "asc")["pos_heads"].map{|x| [t(:"pos_heads.keys.#{x["label"]}").capitalize, x["label"]+".*"]}
+    @pos_heads = WhitelabBackend.instance.get_pos_heads(12, 0, "label", "asc")["pos_heads"].map{|x| [t(:"pos_heads.keys.#{x["label"]}").capitalize, x["label"]+".*"]}
     render 'search/page'
   end
   
@@ -102,7 +102,7 @@ class SearchController < ApplicationController
   def doc_hits
     if @query && params.has_key?(:docpid)
       @target = params[:docpid]
-      @doc_hits = @@BACKEND.get_search_results_for_query(@query.query_result, params[:docpid], nil, nil)["results"]
+      @doc_hits = WhitelabBackend.instance.get_search_results_for_query(@query.query_result, params[:docpid], nil, nil)["results"]
     end
     respond_to do |format|
       format.js do
@@ -117,7 +117,7 @@ class SearchController < ApplicationController
       @offset = params[:offset] || 0
       @group = params[:hits_group]
       @group_id = params[:group_id]
-      @hits = @@BACKEND.get_hits_in_group(@query.query_result,@group,@offset,20)['hits']
+      @hits = WhitelabBackend.instance.get_hits_in_group(@query.query_result,@group,@offset,20)['hits']
     end
     respond_to do |format|
       format.js do
@@ -132,7 +132,7 @@ class SearchController < ApplicationController
       @offset = params[:offset] || 0
       @group = params[:docs_group]
       @group_id = params[:group_id]
-      @docs = @@BACKEND.get_docs_in_group(@query.query_result,@group,@offset,20)['docs']
+      @docs = WhitelabBackend.instance.get_docs_in_group(@query.query_result,@group,@offset,20)['docs']
     end
     respond_to do |format|
       format.js do
@@ -145,7 +145,7 @@ class SearchController < ApplicationController
   def kwic
     if params.has_key?(:docpid) && params.has_key?(:first_index) && params.has_key?(:last_index) && params.has_key?(:size)
       @target = params[:docpid]+'_'+params[:first_index].to_s+'_'+params[:last_index].to_s
-      @kwic = @@BACKEND.get_kwic(params[:docpid], params[:first_index], params[:last_index], params[:size])
+      @kwic = WhitelabBackend.instance.get_kwic(params[:docpid], params[:first_index], params[:last_index], params[:size])
     end
     respond_to do |format|
       format.js do

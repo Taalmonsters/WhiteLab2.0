@@ -53,7 +53,7 @@ class ExploreController < ApplicationController
   def vocabulary_growth
     if @query && (@query.query_result.blank? || (@query.query_result.result.blank? && (!@query.query_result.is_running || !@query.query_result.is_finished)))
       @document = { 'types' => [{ name: '', x: 0, y: 0 }], 'lemmas' => [{ name: '', x: 0, y: 0 }] }
-      data = @@BACKEND.get_filtered_content(@query.query_result)
+      data = WhitelabBackend.instance.get_filtered_content(@query.query_result)
       types_seen = []
       t = 0
       lemmas_seen = []

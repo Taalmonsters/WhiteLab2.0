@@ -66,8 +66,9 @@ class ApplicationController < ActionController::Base
   # If Neo4j is used for the backend, then load its counter node
   def set_counter
     @counter = nil
-    if @@BACKEND.get_backend_type.eql?('neo4j')
-      @counter = @@BACKEND.get_counter_node
+    backend = WhitelabBackend.instance
+    if backend.get_backend_type.eql?('neo4j')
+      @counter = backend.get_counter_node
     end
   end
   

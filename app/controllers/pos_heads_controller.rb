@@ -10,10 +10,11 @@ class PosHeadsController < ApplicationController
       redirect_to 'admin/login'
     end
     set_pagination_params(0, 0, 'label')
-    data = @@BACKEND.get_pos_heads_counted(@number, @offset, @sort, @order)
+    backend = WhitelabBackend.instance
+    data = backend.get_pos_heads_counted(@number, @offset, @sort, @order)
     @posheads = data['pos_heads']
     @total = data['total']
-    @corpora = @@BACKEND.get_corpus_titles
+    @corpora = backend.get_corpus_titles
   end
   
   # Show PoS head properties
@@ -22,10 +23,11 @@ class PosHeadsController < ApplicationController
       redirect_to 'admin/login'
     end
     if @label
-      @poshead = @@BACKEND.get_pos_head_by_label(@label)
-      @features = @@BACKEND.get_pos_head_features_by_label(@label)
-      @postags = @@BACKEND.get_pos_head_tags_by_label(0,0,'token_count','desc',@label)
-      @corpora = @@BACKEND.get_corpus_titles
+      backend = WhitelabBackend.instance
+      @poshead = backend.get_pos_head_by_label(@label)
+      @features = backend.get_pos_head_features_by_label(@label)
+      @postags = backend.get_pos_head_tags_by_label(0,0,'token_count','desc',@label)
+      @corpora = backend.get_corpus_titles
     end
   end
   

@@ -2,7 +2,7 @@ module MetadataHelper
   include ApplicationHelper
   
   def load_corpora
-    YAML.load_file(Rails.root.join('config', 'metadata_'+@@BACKEND.get_backend_type, 'Corpus.title.yml'))['values'].keys
+    YAML.load_file(Rails.root.join('config', 'metadata_'+WhitelabBackend.instance.get_backend_type, 'Corpus.title.yml'))['values'].keys
   end
   
   def get_group_options(v, namespace)
@@ -27,7 +27,7 @@ module MetadataHelper
     # groups[translate(:"data_labels.keys.collection").capitalize] = []
     # groups[translate(:"data_labels.keys.collection").capitalize] << [translate(:"data_labels.keys.collection").capitalize+' '+translate(:"navigation.keys.title").capitalize, 'Collection_title']
     
-    @@BACKEND.get_metadata_group_options({}, namespace).each do |group, data|
+    WhitelabBackend.instance.get_metadata_group_options({}, namespace).each do |group, data|
       g = translate(:"#{group}").capitalize
       if !groups.has_key?(g)
         groups[g] = []
@@ -65,7 +65,7 @@ module MetadataHelper
   end
   
   def load_metadata(group, key)
-    file = Rails.root.join('config', 'metadata_'+@@BACKEND.get_backend_type, group+'.'+key+'.yml')
+    file = Rails.root.join('config', 'metadata_'+WhitelabBackend.instance.get_backend_type, group+'.'+key+'.yml')
     if File.exists?(file)
       return YAML.load_file(file)['values']
     else
