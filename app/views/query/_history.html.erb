@@ -18,7 +18,7 @@
 		</thead>
 		<tbody>
 			<% @queries.each do |query| %>
-				<tr id="<%= query.id %>" class="clickable" data-query-id="<%= query.id %>" data-offset="<%= query.query_result.offset %>" data-number="<%= query.query_result.number %>" data-view="<%= query.query_result.view %>" data-query-view-page="<%= query.page %>">
+				<tr id="<%= query.id %>" class="clickable" data-namespace="<%= @namespace %>" data-query-id="<%= query.id %>" data-offset="<%= query.query_result.offset %>" data-number="<%= query.query_result.number %>" data-view="<%= query.query_result.view %>" data-query-view-page="<%= query.page %>">
 					<td class="patt" data-patt="<%= query.patt %>"><%= query.patt %></td>
 					<td class="within" data-within="<%= query.query_result.within %>"><%= query.query_result.within %></td>
 					<td class="filter" data-filter="<%= query.filter %>"><%= query.filter %></td>

@@ -474,7 +474,8 @@ var Whitelab = {
 				e.preventDefault();
 				var id = $(this).data("query-id");
 				var page = $(this).data("query-view-page");
-				window.location = '/search/'+page+'?'+Whitelab.assembleQueryParams({
+				var ns = $(this).data("namespace");
+				window.location = '/'+ns+'/'+page+'?'+Whitelab.assembleQueryParams({
 					'patt': $(this).find("td.patt").first().data('patt'), 
 					'filter': $(this).find("td.filter").first().data('filter'), 
 					'within': $(this).find("td.within").first().data('within'), 
