@@ -55,11 +55,11 @@ class MetadataController < ApplicationController
     end
     if @group && @key
       mvalues = @backend.get_metadatum_values_by_group_and_key(0, 0, "value", "asc", @group, @key)
-      if @backend.get_backend_type().eql?('blacklab')
-        @values = mvalues
-      else
+      # if @backend.get_backend_type().eql?('blacklab')
+        # @values = mvalues
+      # else
         @values = mvalues.map{|x| x["value"]}
-      end
+      # end
       @value = params[:value]
       @operator = params[:operator]
     end
@@ -111,7 +111,7 @@ class MetadataController < ApplicationController
     if params[:label]
       @label = params[:label]
     elsif params[:group] && params[:key]
-      @group = params[:group]
+      @group = params[:group].sub(/\_$/,'')
       @key = params[:key]
     end
   end
