@@ -56,19 +56,24 @@ module MetadataHelper
   # Get total number of tokens from metadata selection
   def get_filtered_token_count(filter)
     docs = get_filtered_documents(filter)
+    set_size = (docs.size / 10).round + 1
+    threads = []
+    docs.each_slice(set_size) do |set|
+      threads << Thread.new do
+        Thread.current[:output] = set.map {|doc| get_document_token_count(doc)}.reduce(0, :+)
+      end
+    end
     count = 0
-    docs.each do |doc|
-      count += get_document_token_count(doc)
+    threads.each do |thread|
+      thread.join
+      count += thread[:output]
     end
     count
   end
   
   # Get documents matching metadatum grouped by option value
   def get_filtered_group_composition(option, filter)
-    start_time = Time.now
     docs_included = get_filtered_documents(filter)
-    duration = (Time.now - start_time) * 1000.0
-    p "get_filtered_documents took "+duration.to_s+" ms"
     set_size = (docs_included.size / 10).round + 1
     threads = []
     docs_with_counts = {}
@@ -106,8 +111,6 @@ module MetadataHelper
       result['Unknown']['hit_count'] += docs_with_counts.select{|doc, count| docs_missing.include?(doc) }.map{|doc, count| count }.reduce(0, :+)
       result['Unknown']['document_count'] += docs_missing.size
     end
-    duration = (Time.now - start_time) * 1000.0
-    p "get_filtered_group_composition took "+duration.to_s+" ms"
     return result.values.flatten.select{|x| x['hit_count'] > 0}
   end
   
