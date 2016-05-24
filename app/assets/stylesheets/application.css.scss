@@ -10,12 +10,9 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *
- *= require jquery.ui.core
- *= require jquery.ui.theme
- *= require cookies_eu
+ * 
  *= require_self
- *= require_tree .
+ *= require cookies_eu
  */
 @import "bootstrap-sprockets";
 @import "variables";
