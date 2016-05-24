@@ -18,12 +18,12 @@
 @import "bootstrap";
 @import "menus";
 @import "header";
-@import "layout";
 @import "advanced";
 @import "legacy";
 @import "static_pages";
 @import "introjs";
 @import "treemap";
+@import "layout";
 
 span.loading {
   &:before {
