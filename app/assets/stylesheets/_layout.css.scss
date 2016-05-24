@@ -348,9 +348,9 @@ button.info-panel-toggle {
   // }
 // }
 
-// .accordion {
-  // @extend .panel-group;
-// }
+.accordion {
+  @extend .panel-group;
+}
 
 .accordion-group {
   @extend .panel;
