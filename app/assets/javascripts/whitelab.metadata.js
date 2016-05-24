@@ -18,6 +18,8 @@ Whitelab.metadata = {
 		}
 		
 		$(document).on('change', '.metadata-key-select', function(e) {
+			e.preventDefault();
+			e.stopPropagation();
 			var vals = $(this).val().split('_');
 			var group = vals[0];
 			var key = $(this).val().replace(group+'_','');
@@ -28,9 +30,13 @@ Whitelab.metadata = {
 				$(this).parent().parent().find('select.metadata-input').first().replaceWith('<input class="metadata-input" type="text">');
 		});
 		$(document).on('change', 'select.metadata-input', function(e) {
+			e.preventDefault();
+			e.stopPropagation();
 			Whitelab.metadata.updateCoverage();
 		});
 		$(document).on('change', 'select.metadata-operator', function(e) {
+			e.preventDefault();
+			e.stopPropagation();
 			Whitelab.metadata.updateCoverage();
 		});
 	},
