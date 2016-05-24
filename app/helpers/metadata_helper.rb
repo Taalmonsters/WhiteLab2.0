@@ -2,7 +2,13 @@
 module MetadataHelper
   
   def load_corpora
-    YAML.load_file(Rails.root.join('config', 'metadata_'+db_type, 'Corpus.title.yml'))['values'].keys
+    values, vcount = load_values({ :group => 'Corpus', :key => 'title' })
+    values
+  end
+  
+  def load_values(metadata_obj)
+    data = YAML.load_file(Rails.root.join('config', "metadata_#{db_type}.yml"))['metadata'][metadata_obj[:group]][metadata_obj[:key]]
+    return data['values'], data['value_count']
   end
   
   def get_group_options(view, namespace)
@@ -103,28 +109,6 @@ module MetadataHelper
     duration = (Time.now - start_time) * 1000.0
     p "get_filtered_group_composition took "+duration.to_s+" ms"
     return result.values.flatten.select{|x| x['hit_count'] > 0}
-  end
-  
-  # Get values for metadatum
-  def metadata_values(metadata_obj)
-    group = metadata_obj[:group]
-    key = metadata_obj[:key]
-    if group.eql?(key)
-      metadata_obj[:group] = "Metadata"
-    end
-    # DOCUMENT_METADATA[group][key]
-    load_metadata(metadata_obj).keys
-  end
-  
-  # Count values for metadatum
-  def metadata_value_count(metadata_obj)
-    group = metadata_obj[:group]
-    key = metadata_obj[:key]
-    if group.eql?(key)
-      metadata_obj[:group] = "Metadata"
-    end
-    # DOCUMENT_METADATA[group][key]
-    load_metadata(metadata_obj).keys.length
   end
   
   private

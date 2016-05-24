@@ -54,12 +54,7 @@ class MetadataController < ApplicationController
       @rule_id = params[:rule_id]
     end
     if @group && @key
-      mvalues = @backend.get_metadatum_values_by_group_and_key(0, 0, "value", "asc", @group, @key)
-      # if @backend.get_backend_type().eql?('blacklab')
-        # @values = mvalues
-      # else
-        @values = mvalues.map{|x| x["value"]}
-      # end
+      @values, value_count = @backend.load_values({ :group => @group, :key => @key })
       @value = params[:value]
       @operator = params[:operator]
     end
@@ -67,18 +62,13 @@ class MetadataController < ApplicationController
   
   # Load metadatum values by group and key
   def values
-    @values = @backend.metadata_values({ :group => @group, :key => @key })
+    @values, @value_count = @backend.load_values({ :group => @group, :key => @key })
     @value_list_incomplete = false
     if @values.blank?
       mvalues = @backend.get_metadatum_values_by_group_and_key(0, 0, "value", "asc", @group, @key)
-      # if @backend.get_backend_type().eql?('blacklab')
-        # @values = mvalues
-      # else
-        @values = mvalues.map{|x| x["value"]}
-      # end
+      @values = mvalues.map{|x| x["value"]}
     else
-      @value_count = @backend.metadata_value_count({ :group => @group, :key => @key })
-      if !@value_count.blank? && @value_count > METADATUM_VALUES_MAX
+      if !@value_count.blank? && @value_count > @values.size
         @value_list_incomplete = true
       end
     end
