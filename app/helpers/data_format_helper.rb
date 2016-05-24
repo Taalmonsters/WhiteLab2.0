@@ -59,57 +59,60 @@ module DataFormatHelper
   
   # Format corpus composition as Highcharts bubble chart
   def format_for_bubble_chart(data, title, filtered_token_count)
-    bubble = {
-      "title" => title,
-      "data" => [],
-      "max_doc_count" => 0
-    }
+    bubble = []
+    max_doc_count = 0
     if data.any?
       has_unknown = false
       found_token_count = 0
       data.each do |row|
-        trow = {}
+        hit_count = row['hit_count']
+        doc_count = row['document_count']
         rtitle = row[title].to_s
         if rtitle.blank? || rtitle.eql?('Unknown')
           has_unknown = true
           rtitle = 'Unknown'
         end
-        found_token_count = found_token_count + row['hit_count']
-        trow['name'] = rtitle
-        trow['x'] = row['hit_count']
-        trow['y'] = row['hit_count'] / row['document_count']
-        trow['z'] = row['document_count']
-        bubble['data'] << trow
-        if row['document_count'] > bubble['max_doc_count']
-          bubble['max_doc_count'] = row['document_count']
+        found_token_count = found_token_count + hit_count
+        bubble << {
+          'name' => rtitle,
+          'x' => hit_count,
+          'y' => hit_count / doc_count,
+          'z' => doc_count
+        }
+        if doc_count > max_doc_count
+          max_doc_count = doc_count
         end
       end
       if found_token_count < filtered_token_count
         rest_count = filtered_token_count - found_token_count
         if has_unknown
-          bubble['data'].each do |child|
+          bubble.each do |child|
             if child['name'].eql?('Unknown')
               child['x'] = child['x'] + rest_count
             end
           end
         else
-          trow = {}
-          trow['name'] = 'Unknown'
-          trow['x'] = rest_count
-          trow['y'] = rest_count
-          trow['z'] = 1
-          bubble['data'] << trow
+          bubble << {
+            'name' => 'Unknown',
+            'x' => rest_count,
+            'y' => rest_count,
+            'z' => 1
+          }
         end
       end
     else
-      trow = {}
-      trow['name'] = 'Unknown'
-      trow['x'] = filtered_token_count
-      trow['y'] = 0
-      trow['z'] = 0
-      bubble['data'] << trow
+      bubble << {
+        'name' => 'Unknown',
+        'x' => filtered_token_count,
+        'y' => 0,
+        'z' => 0
+      }
     end
-    bubble
+    {
+      "title" => title,
+      "data" => bubble,
+      "max_doc_count" => max_doc_count
+    }
   end
   
   # Format corpus composition as Highcharts treemap

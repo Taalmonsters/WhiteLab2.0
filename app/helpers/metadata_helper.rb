@@ -59,50 +59,45 @@ module MetadataHelper
   
   # Get documents matching metadatum grouped by option value
   def get_filtered_group_composition(option, filter)
-    docs = get_filtered_documents(filter)
-    docs_included = []
-    parts = option.split(/\!*=/)[0]
-    group = "Metadata"
-    key = parts
-    if parts.include?("_")
-      group = parts.split('_')[0]
-      key = parts.sub(group+'_','')
-    end
-    result = {}
-    # DOCUMENT_METADATA[group][key]
-    load_metadata({ :group => group, :key => key }).each do |value, doc_indices|
-      doc_ids = docs & doc_indices.map{|doc_index| DOCUMENT_DATA.keys[doc_index] }
-      docs_included += doc_ids
-      result[value] = doc_ids
-    end
-    docs_missing = docs - docs_included
-    if docs_missing.any?
-      if result.has_key?('Unknown')
-        result['Unknown'] = result['Unknown'] + docs_missing
-      else
-        result['Unknown'] = docs_missing
-      end
-    end
-    final = []
+    docs_included = get_filtered_documents(filter)
+    set_size = (docs_included.size / 10).round + 1
     threads = []
-    result.each do |value, ddocs|
-      ddocs = ddocs.uniq
+    docs_with_counts = {}
+    docs_included.each_slice(set_size) do |set|
       threads << Thread.new do
-        count = 0
-        ddocs.each do |doc|
-          count += get_document_token_count(doc)
+        output = {}
+        set.each do |doc|
+          output[doc] = get_document_token_count(doc)
         end
-        Thread.current[:output] = count > 0 ? { option => value, 'hit_count' => count, 'document_count' => ddocs.size } : {}
+        Thread.current[:output] = output
       end
     end
     threads.each do |thread|
       thread.join
-      output = thread[:output]
-      if output.has_key?('hit_count')
-        final << output
-      end
+      docs_with_counts.merge!(thread[:output])
     end
-    final
+    docs_included = []
+    first_part = option.split(/\!*=/)[0]
+    group = "Metadata"
+    key = first_part
+    if first_part.include?("_")
+      group = first_part.split('_')[0]
+      key = first_part.sub(group+'_','')
+    end
+    result = {}
+    load_metadata({ :group => group, :key => key }).each do |value, doc_indices|
+      doc_ids = docs_with_counts.keys & doc_indices.map{|doc_index| DOCUMENT_DATA.keys[doc_index] }
+      docs_included += doc_ids
+      result[value] = { option => value, 'hit_count' => docs_with_counts.select{|doc, count| doc_ids.include?(doc) }.map{|doc, count| count }.reduce(0, :+), 'document_count' => doc_ids.size }
+    end
+    docs_missing = docs_with_counts.keys - docs_included
+    docs = nil
+    if docs_missing.any?
+      result['Unknown'] = { option => 'Unknown', 'hit_count' => 0, 'document_count' => 0 } unless result.has_key?('Unknown')
+      result['Unknown']['hit_count'] += docs_with_counts.select{|doc, count| docs_missing.include?(doc) }.map{|doc, count| count }.reduce(0, :+)
+      result['Unknown']['document_count'] += docs_missing.size
+    end
+    return result.values.flatten
   end
   
   # Get values for metadatum

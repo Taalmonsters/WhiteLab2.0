@@ -114,6 +114,8 @@ GEM
     rack-contrib (1.4.0)
       git-version-bump (~> 0.15)
       rack (~> 1.4)
+    rack-mini-profiler (0.10.1)
+      rack (>= 1.2.0)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.3)
@@ -202,6 +204,7 @@ DEPENDENCIES
   meta_request
   mysql2 (~> 0.3.18)
   os
+  rack-mini-profiler
   rails (= 4.2.3)
   rails-bootstrap-helpers
   ruby-mp3info
@@ -214,3 +217,6 @@ DEPENDENCIES
   whenever
   will_paginate (>= 3.0)
   will_paginate-bootstrap
+
+BUNDLED WITH
+   1.12.4
