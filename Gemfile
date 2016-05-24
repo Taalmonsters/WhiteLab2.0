@@ -21,7 +21,7 @@ gem 'httparty'
 gem 'ruby-mp3info'
 gem 'chartkick'
 gem 'cookies_eu'
-
+gem 'nokogiri', '~> 1.6.7.2'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'whenever', :require => false
