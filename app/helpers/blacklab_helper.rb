@@ -514,7 +514,7 @@ module BlacklabHelper
       else
         token["sentence_start"] = "false"
       end
-    elsif sentence.has_key?(field)
+    elsif obj[:sentence].has_key?(field)
       token[field] = sentence_field
     end
     token

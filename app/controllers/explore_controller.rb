@@ -215,36 +215,7 @@ class ExploreController < ApplicationController
   
   # Load Explore Query history
   def load_query_list
-    @qllimit = 5
-    if params[:qllimit]
-      @qllimit = params[:qllimit].to_i
-    end
-    @queries = ExploreQuery.where(:user_id => @user.id).order("updated_at DESC").limit(@qllimit)
-    @has_more_queries = ExploreQuery.where(:user_id => @user.id).count('id', :distinct => true) > @qllimit
-    @has_unfinished_queries = false
-    @queries.each do |query|
-      if query.query_result.blank? || !query.query_result.is_finished
-        @has_unfinished_queries = true
-        break
-      end
-    end
-  end
-  
-  # Load Export Query history
-  def load_export_query_list
-    @eqllimit = 5
-    if params[:eqllimit]
-      @eqllimit = params[:eqllimit].to_i
-    end
-    @export_queries = ExportQuery.where(:user_id => @user.id).order("created_at DESC").limit(@eqllimit)
-    @has_more_export_queries = ExportQuery.where(:user_id => @user.id).count('id', :distinct => true) > @eqllimit
-    @has_unfinished_export_queries = false
-    @export_queries.each do |query|
-      if query.status == 0 || query.status == 1
-        @has_unfinished_export_queries = true
-        break
-      end
-    end
+    @qllimit, @queries = @user.query_history(params.has_key?(:qllimit) ? params[:qllimit].to_i : nil, 'explore_queries')
   end
   
   # Load current Explore Query

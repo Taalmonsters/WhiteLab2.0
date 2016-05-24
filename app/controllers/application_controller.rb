@@ -7,6 +7,11 @@ class ApplicationController < ActionController::Base
   include ApplicationHelper
   include DataFormatHelper
   
+  # Load Export Query history
+  def load_export_query_list
+    @eqllimit, @export_queries = @user.query_history(params.has_key?(:eqllimit) ? params[:eqllimit].to_i : nil, 'export_queries')
+  end
+  
   # Set the current user
   def set_user
     uname = request.env['HTTP_REMOTE_USER']
