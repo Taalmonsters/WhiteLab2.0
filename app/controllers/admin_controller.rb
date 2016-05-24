@@ -132,10 +132,9 @@ class AdminController < ApplicationController
     @languages = load_translation_data
     if params[:key]
       key = params[:key]
-      params.each do |p,value|
-        if p =~ /.+\..+/
-          lang, field = p.match(/^([a-z]{2})\.?([a-zA-Z_\-]+)$/).captures
-          pp = p.split(".")
+      params.each do |param_key,value|
+        if param_key =~ /.+\..+/
+          lang, field = param_key.match(/^([a-z]{2})\.?(.+)$/).captures
           if @languages.has_key?(lang)
             if !@languages[lang].has_key?(key)
               @languages[lang][key] = {}

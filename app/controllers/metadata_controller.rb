@@ -72,11 +72,11 @@ class MetadataController < ApplicationController
     @value_list_incomplete = false
     if @values.blank?
       mvalues = @backend.get_metadatum_values_by_group_and_key(0, 0, "value", "asc", @group, @key)
-      if @backend.get_backend_type().eql?('blacklab')
-        @values = mvalues
-      else
+      # if @backend.get_backend_type().eql?('blacklab')
+        # @values = mvalues
+      # else
         @values = mvalues.map{|x| x["value"]}
-      end
+      # end
     else
       @value_count = @backend.metadata_value_count({ :group => @group, :key => @key })
       if !@value_count.blank? && @value_count > METADATUM_VALUES_MAX
