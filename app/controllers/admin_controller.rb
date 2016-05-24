@@ -155,7 +155,8 @@ class AdminController < ApplicationController
   # Load login page
   def login
     if @admin_logged_in
-      redirect_to admin_page_path(:page => 'overview')
+      redirect_to admin_page_path(:page => 'overview') if @backend.get_backend_type().eql?('neo4j')
+      redirect_to admin_page_path(:page => 'index')
     end
   end
   
@@ -163,7 +164,8 @@ class AdminController < ApplicationController
   def signin
     if params[:user] && params[:user] == ADMIN_USER && params[:key] && params[:key] == ADMIN_PW
       session[:admin_active] = true
-      redirect_to admin_page_path(:page => 'overview')
+      redirect_to admin_page_path(:page => 'overview') if @backend.get_backend_type().eql?('neo4j')
+      redirect_to admin_page_path(:page => 'index')
     else
       redirect_to action: 'login'
     end

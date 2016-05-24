@@ -203,8 +203,7 @@ en:
         1,000 times after which the average duration is reported.<br/><b>NB:</b> The
         process may take some time to finish. Please do not refresh or leave the page
         until all queries are finished. Queries are not saved across sessions.
-      export_alert: Your export has been added to your search history (<span class="btn
-        btn-info"><span class="glyphicon glyphicon-time"></span></span>). Once it
+      export_alert: Your export has been added to your search history. Once it
         is completed you can download the results from there.
   cql_info:
     title: CQL info

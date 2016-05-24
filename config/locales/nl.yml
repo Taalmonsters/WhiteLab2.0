@@ -204,8 +204,7 @@ nl:
         1,000 times after which the average duration is reported.<br/><b>NB:</b> The
         process may take some time to finish. Please do not refresh or leave the page
         until all queries are finished. Queries are not saved across sessions.
-      export_alert: Uw export is toegevoegd aan uw zoekgeschiedenis (<span class="btn
-        btn-info"><span class="glyphicon glyphicon-time"></span></span>). Wanneer
+      export_alert: Uw export is toegevoegd aan uw zoekgeschiedenis. Wanneer
         de export compleet is, kunt u deze daar downloaden.
   cql_info:
     title: CQL info
