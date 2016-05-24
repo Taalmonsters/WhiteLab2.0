@@ -40,7 +40,7 @@ Rails.application.configure do
       parts = full_path.split(/\//)
       basename = parts[parts.size-1]
       app_assets_path = Rails.root.join('app', 'assets').to_s
-      if full_path.starts_with? app_assets_path && !basename.starts_with?('_')
+      if full_path.starts_with? app_assets_path && !basename.start_with?('_')
         puts "including asset: " + full_path
         true
       else
