@@ -221,11 +221,6 @@ module BlacklabHelper
     }
   end
   
-  def get_document_token_count(xmlid)
-    data = get_document_metadata(xmlid)
-    return data["Metadata"]["lengthInTokens"][0]
-  end
-  
   def get_filtered_content(query)
     contents = []
     get_filtered_documents(query.filter).each do |doc|

@@ -59,7 +59,10 @@ module MetadataHelper
   
   # Get documents matching metadatum grouped by option value
   def get_filtered_group_composition(option, filter)
+    start_time = Time.now
     docs_included = get_filtered_documents(filter)
+    duration = (Time.now - start_time) * 1000.0
+    p "get_filtered_documents took "+duration.to_s+" ms"
     set_size = (docs_included.size / 10).round + 1
     threads = []
     docs_with_counts = {}
@@ -97,7 +100,9 @@ module MetadataHelper
       result['Unknown']['hit_count'] += docs_with_counts.select{|doc, count| docs_missing.include?(doc) }.map{|doc, count| count }.reduce(0, :+)
       result['Unknown']['document_count'] += docs_missing.size
     end
-    return result.values.flatten
+    duration = (Time.now - start_time) * 1000.0
+    p "get_filtered_group_composition took "+duration.to_s+" ms"
+    return result.values.flatten.select{|x| x['hit_count'] > 0}
   end
   
   # Get values for metadatum
@@ -108,7 +113,7 @@ module MetadataHelper
       metadata_obj[:group] = "Metadata"
     end
     # DOCUMENT_METADATA[group][key]
-    load_metadata({ :group => group, :key => key }).keys
+    load_metadata(metadata_obj).keys
   end
   
   # Count values for metadatum
@@ -119,7 +124,7 @@ module MetadataHelper
       metadata_obj[:group] = "Metadata"
     end
     # DOCUMENT_METADATA[group][key]
-    load_metadata({ :group => group, :key => key }).keys.length
+    load_metadata(metadata_obj).keys.length
   end
   
   private

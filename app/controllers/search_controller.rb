@@ -199,12 +199,12 @@ class SearchController < ApplicationController
   
   # Load Search Query history
   def load_query_list
-    @qllimit, @queries = @user.query_history(params[:qllimit], 'search_queries')
+    @qllimit, @queries = @user.query_history(params[:qllimit].to_i, 'search_queries')
   end
   
   # Load Export Query history
   def load_export_query_list
-    @eqllimit, @export_queries = @user.query_history(params[:eqllimit], 'export_queries')
+    @eqllimit, @export_queries = @user.query_history(params[:eqllimit].to_i, 'export_queries')
   end
   
   # Get grouping options for grouped hits or documents, depending on selected view
