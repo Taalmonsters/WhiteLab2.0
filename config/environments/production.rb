@@ -36,8 +36,8 @@ Rails.application.configure do
   config.assets.digest = true
   config.assets.precompile << Proc.new do |path|
     if path =~ /\.(css|js|png|svg|ico)\z/
-      full_path = Rails.application.assets.resolve(path)
-      app_assets_path = Rails.root.join('app', 'assets')
+      full_path = Rails.application.assets.resolve(path).to_s
+      app_assets_path = Rails.root.join('app', 'assets').to_s
       if full_path.starts_with? app_assets_path
         puts "including asset: " + full_path
         true
