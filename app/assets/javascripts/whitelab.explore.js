@@ -39,11 +39,11 @@ Whitelab.explore = {
 			Whitelab.explore.corpora.loadTreemap(option, filter);
 			Whitelab.explore.corpora.loadBubbleChart(option, filter);
 			
-			$(document).on('click', '#corpora-treemap-update', function(e) {
-				$('#display').html('<span class="loading"></span>');
-				var filter = Whitelab.metadata.getFilterString();
-				window.location = '/explore/corpora?option='+$('#corpora-treemap-select').val()+'&filter='+filter;
-			});
+//			$(document).on('click', '#corpora-treemap-update', function(e) {
+//				$('#display').html('<span class="loading"></span>');
+//				var filter = Whitelab.metadata.getFilterString();
+//				window.location = '/explore/corpora?option='+$('#corpora-treemap-select').val()+'&filter='+filter;
+//			});
 		},
 		
 		loadBubbleChart : function(option, filter) {
@@ -59,42 +59,42 @@ Whitelab.explore = {
 	ngrams : {
 		
 		init : function() {
-			$(document).on('click', '#ngrams-submit-form', function(e) {
-			    e.preventDefault();
-			    e.stopPropagation();
-			    Whitelab.explore.ngrams.submitForm();
-			});
-			
-			$(document).on('click', '#ngrams-reset-form', function(e) {
-			    e.preventDefault();
-			    window.location = '/explore/ngrams';
-			});
-			
-			$(document).on('change', '#ngrams #size', function(e) {
-				e.preventDefault();
-				var n = parseInt($(this).val());
-				var i = 1;
-				Whitelab.debug("N: "+n+", I: "+i);
-				for (i; i <= n; i++) {
-					Whitelab.debug("ENABLE "+i);
-					$('#type-'+i).prop("disabled", false);
-					$("#field-"+i+" .field-input").prop("disabled", false);
-				}
-				if (n < 5) {
-					for (i = n; i < 5; i++) {
-						var j = i + 1;
-						Whitelab.debug("DISABLE "+j);
-						$('#type-'+j).prop("disabled", "disabled");
-						$("#field-"+j+" .field-input").val('');
-						$("#field-"+j+" .field-input").prop("disabled", "disabled");
-					}
-				}
-			});
-			
-			$(document).on('change', '#ngrams select.token-type', function(e) {
-				e.preventDefault();
-				Whitelab.explore.ngrams.setTokenInput(this, null);
-			});
+//			$(document).on('click', '#ngrams-submit-form', function(e) {
+//			    e.preventDefault();
+//			    e.stopPropagation();
+//			    Whitelab.explore.ngrams.submitForm();
+//			});
+//			
+//			$(document).on('click', '#ngrams-reset-form', function(e) {
+//			    e.preventDefault();
+//			    window.location = '/explore/ngrams';
+//			});
+//			
+//			$(document).on('change', '#ngrams #size', function(e) {
+//				e.preventDefault();
+//				var n = parseInt($(this).val());
+//				var i = 1;
+//				Whitelab.debug("N: "+n+", I: "+i);
+//				for (i; i <= n; i++) {
+//					Whitelab.debug("ENABLE "+i);
+//					$('#type-'+i).prop("disabled", false);
+//					$("#field-"+i+" .field-input").prop("disabled", false);
+//				}
+//				if (n < 5) {
+//					for (i = n; i < 5; i++) {
+//						var j = i + 1;
+//						Whitelab.debug("DISABLE "+j);
+//						$('#type-'+j).prop("disabled", "disabled");
+//						$("#field-"+j+" .field-input").val('');
+//						$("#field-"+j+" .field-input").prop("disabled", "disabled");
+//					}
+//				}
+//			});
+//			
+//			$(document).on('change', '#ngrams select.token-type', function(e) {
+//				e.preventDefault();
+//				Whitelab.explore.ngrams.setTokenInput(this, null);
+//			});
 			
 			Whitelab.explore.ngrams.parseQueryToInterface($('#ngrams').data('query-pattern'),$('#ngrams').data('ngram-size'),$('#ngrams').data('query-group'));
 		},
@@ -169,32 +169,32 @@ Whitelab.explore = {
 	statistics : {
 		
 		init : function() {
-			$(document).on('click', '#statistics-input-form button.submit', function(e) {
-			    e.preventDefault();
-			    e.stopPropagation();
-			    Whitelab.explore.statistics.submitForm();
-			});
-			
-			$(document).on('click', '#statistics-input-form button.reset', function(e) {
-			    e.preventDefault();
-			    window.location = '/explore/statistics';
-			});
-			
-			$(document).on('click', 'a.explore-statistics-tab', function(e) {
-				e.preventDefault();
-			    e.stopPropagation();
-				if (!$(this).parent().hasClass("active")) {
-					$(this).parent().parent().find("li.active").first().removeClass("active");
-					$(this).parent().addClass("active");
-					$("#document-display div.tab-content").html('<span class="loading"></span>');
-			    	$('#statistics-input-form #view').val($(this).data("view"));
-			    	if ($(this).data("offset") != null) {
-			    		$('#statistics-input-form #offset').val($(this).data("offset"));
-			    		$('#statistics-input-form #number').val($(this).data("number"));
-			    	}
-				    Whitelab.explore.statistics.submitForm();
-				}
-			});
+//			$(document).on('click', '#statistics-input-form button.submit', function(e) {
+//			    e.preventDefault();
+//			    e.stopPropagation();
+//			    Whitelab.explore.statistics.submitForm();
+//			});
+//			
+//			$(document).on('click', '#statistics-input-form button.reset', function(e) {
+//			    e.preventDefault();
+//			    window.location = '/explore/statistics';
+//			});
+//			
+//			$(document).on('click', 'a.explore-statistics-tab', function(e) {
+//				e.preventDefault();
+//			    e.stopPropagation();
+//				if (!$(this).parent().hasClass("active")) {
+//					$(this).parent().parent().find("li.active").first().removeClass("active");
+//					$(this).parent().addClass("active");
+//					$("#document-display div.tab-content").html('<span class="loading"></span>');
+//			    	$('#statistics-input-form #view').val($(this).data("view"));
+//			    	if ($(this).data("offset") != null) {
+//			    		$('#statistics-input-form #offset').val($(this).data("offset"));
+//			    		$('#statistics-input-form #number').val($(this).data("number"));
+//			    	}
+//				    Whitelab.explore.statistics.submitForm();
+//				}
+//			});
 		},
 		
 		submitForm : function() {
@@ -223,36 +223,137 @@ Whitelab.explore = {
 		init : function() {
 			var id = $('div#result-pane').data("query-id");
 			$.getScript('/explore/result/id/'+id+'.js');
-			$(document).on('click', 'button.show-document', function(e) {
-				e.preventDefault();
-				e.stopPropagation();
-				var docpid = $(this).data("docpid");
-				window.location = '/explore/document/'+docpid;
-			});
-			
-			$(document).on('click', 'tr.hit-row', function(e) {
-				e.preventDefault();
-				e.stopPropagation();
-				var docpid = $(this).data("docpid");
-				var f = $(this).data("first-index");
-				var l = $(this).data("last-index");
-				if ($("#"+docpid+"_"+f+"_"+l).html().length == 0) {
-					$.getScript('/explore/kwic.js?docpid='+docpid+'&first_index='+f+'&last_index='+l+'&size=50');
-				}
-				$("#"+docpid+"_"+f+"_"+l).toggleClass("hidden");
-			});
-
-			$(document).on('click', 'tr.doc-row', function(e) {
-				e.preventDefault();
-				e.stopPropagation();
-				var docpid = $(this).data("docpid");
-				var hits = $(this).data("hits");
-				var qid = $("#result-pane").data("query-id");
-				if ($("#"+docpid).html().length == 0) {
-					$.getScript('/explore/doc_hits/id/'+qid+'.js?docpid='+docpid+'&hits='+hits);
-				}
-				$("#"+docpid).toggleClass("hidden");
-			});
+//			$(document).on('click', 'button.show-document', function(e) {
+//				e.preventDefault();
+//				e.stopPropagation();
+//				var docpid = $(this).data("docpid");
+//				window.location = '/explore/document/'+docpid;
+//			});
+//			
+//			$(document).on('click', 'tr.hit-row', function(e) {
+//				e.preventDefault();
+//				e.stopPropagation();
+//				var docpid = $(this).data("docpid");
+//				var f = $(this).data("first-index");
+//				var l = $(this).data("last-index");
+//				if ($("#"+docpid+"_"+f+"_"+l).html().length == 0) {
+//					$.getScript('/explore/kwic.js?docpid='+docpid+'&first_index='+f+'&last_index='+l+'&size=50');
+//				}
+//				$("#"+docpid+"_"+f+"_"+l).toggleClass("hidden");
+//			});
+//
+//			$(document).on('click', 'tr.doc-row', function(e) {
+//				e.preventDefault();
+//				e.stopPropagation();
+//				var docpid = $(this).data("docpid");
+//				var hits = $(this).data("hits");
+//				var qid = $("#result-pane").data("query-id");
+//				if ($("#"+docpid).html().length == 0) {
+//					$.getScript('/explore/doc_hits/id/'+qid+'.js?docpid='+docpid+'&hits='+hits);
+//				}
+//				$("#"+docpid).toggleClass("hidden");
+//			});
 		}
 	}
 };
+
+$(document).on('click', '#corpora-treemap-update', function(e) {
+	$('#display').html('<span class="loading"></span>');
+	var filter = Whitelab.metadata.getFilterString();
+	window.location = '/explore/corpora?option='+$('#corpora-treemap-select').val()+'&filter='+filter;
+});
+
+$(document).on('click', '#ngrams-submit-form', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    Whitelab.explore.ngrams.submitForm();
+});
+
+$(document).on('click', '#ngrams-reset-form', function(e) {
+    e.preventDefault();
+    window.location = '/explore/ngrams';
+});
+
+$(document).on('change', '#ngrams #size', function(e) {
+	e.preventDefault();
+	var n = parseInt($(this).val());
+	var i = 1;
+	Whitelab.debug("N: "+n+", I: "+i);
+	for (i; i <= n; i++) {
+		Whitelab.debug("ENABLE "+i);
+		$('#type-'+i).prop("disabled", false);
+		$("#field-"+i+" .field-input").prop("disabled", false);
+	}
+	if (n < 5) {
+		for (i = n; i < 5; i++) {
+			var j = i + 1;
+			Whitelab.debug("DISABLE "+j);
+			$('#type-'+j).prop("disabled", "disabled");
+			$("#field-"+j+" .field-input").val('');
+			$("#field-"+j+" .field-input").prop("disabled", "disabled");
+		}
+	}
+});
+
+$(document).on('change', '#ngrams select.token-type', function(e) {
+	e.preventDefault();
+	Whitelab.explore.ngrams.setTokenInput(this, null);
+});
+
+$(document).on('click', '#statistics-input-form button.submit', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    Whitelab.explore.statistics.submitForm();
+});
+
+$(document).on('click', '#statistics-input-form button.reset', function(e) {
+    e.preventDefault();
+    window.location = '/explore/statistics';
+});
+
+$(document).on('click', 'a.explore-statistics-tab', function(e) {
+	e.preventDefault();
+    e.stopPropagation();
+	if (!$(this).parent().hasClass("active")) {
+		$(this).parent().parent().find("li.active").first().removeClass("active");
+		$(this).parent().addClass("active");
+		$("#document-display div.tab-content").html('<span class="loading"></span>');
+    	$('#statistics-input-form #view').val($(this).data("view"));
+    	if ($(this).data("offset") != null) {
+    		$('#statistics-input-form #offset').val($(this).data("offset"));
+    		$('#statistics-input-form #number').val($(this).data("number"));
+    	}
+	    Whitelab.explore.statistics.submitForm();
+	}
+});
+
+$(document).on('click', 'button.show-document', function(e) {
+	e.preventDefault();
+	e.stopPropagation();
+	var docpid = $(this).data("docpid");
+	window.location = '/explore/document/'+docpid;
+});
+
+$(document).on('click', 'tr.hit-row', function(e) {
+	e.preventDefault();
+	e.stopPropagation();
+	var docpid = $(this).data("docpid");
+	var f = $(this).data("first-index");
+	var l = $(this).data("last-index");
+	if ($("#"+docpid+"_"+f+"_"+l).html().length == 0) {
+		$.getScript('/explore/kwic.js?docpid='+docpid+'&first_index='+f+'&last_index='+l+'&size=50');
+	}
+	$("#"+docpid+"_"+f+"_"+l).toggleClass("hidden");
+});
+
+$(document).on('click', 'tr.doc-row', function(e) {
+	e.preventDefault();
+	e.stopPropagation();
+	var docpid = $(this).data("docpid");
+	var hits = $(this).data("hits");
+	var qid = $("#result-pane").data("query-id");
+	if ($("#"+docpid).html().length == 0) {
+		$.getScript('/explore/doc_hits/id/'+qid+'.js?docpid='+docpid+'&hits='+hits);
+	}
+	$("#"+docpid).toggleClass("hidden");
+});

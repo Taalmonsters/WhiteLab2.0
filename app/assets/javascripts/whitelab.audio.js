@@ -1,16 +1,3 @@
-$(document).on('click', 'a.playsound', function(e) {
-	e.preventDefault();
-	var url = $(this).data('audio-url');
-	var begin_time = Whitelab.audio.timeToSeconds($(this).data('begin-time'));
-	var end_time = Whitelab.audio.timeToSeconds($(this).data('end-time'));
-	
-	if (!$(this).hasClass('playing')) {
-		Whitelab.audio.stopSegment();
-		Whitelab.audio.playSegment(this,url,begin_time,end_time);
-	} else
-		Whitelab.audio.stopSegment();
-});
-
 Whitelab.audio = {
 	audioLink : null,
 	element : null,
@@ -58,3 +45,16 @@ Whitelab.audio = {
 		return parseFloat(parts[2]) + (60 * parseInt(parts[1])) + (3600 * parseInt(parts[0]));
 	}
 };
+
+$(document).on('click', 'a.playsound', function(e) {
+	e.preventDefault();
+	var url = $(this).data('audio-url');
+	var begin_time = Whitelab.audio.timeToSeconds($(this).data('begin-time'));
+	var end_time = Whitelab.audio.timeToSeconds($(this).data('end-time'));
+	
+	if (!$(this).hasClass('playing')) {
+		Whitelab.audio.stopSegment();
+		Whitelab.audio.playSegment(this,url,begin_time,end_time);
+	} else
+		Whitelab.audio.stopSegment();
+});

@@ -2,34 +2,6 @@ Whitelab.document = {
 	
 	init : function() {
 		Whitelab.document.loadDocument($("#document-display").data("tab"), $("#document-display").data("xmlid"), $("#document-display").data("query-id"));
-		
-		$(document).on('click', 'a.document-tab', function(e) {
-			e.preventDefault();
-			if (!$(this).parent().hasClass("active")) {
-				$(this).parent().parent().find("li.active").first().removeClass("active");
-				$(this).parent().addClass("active");
-				$("#document-display div.tab-content").html('<span class="loading"></span>');
-				Whitelab.document.loadDocument($(this).data("tab"), $("#document-display").data("xmlid"), $("#document-display").data("query-id"));
-			}
-		});
-		
-		$(document).on('mouseover', '#document-content span.t > a', function(e) {
-			e.preventDefault();
-			$(this).parent().parent().find('span.hoverdiv').first().addClass('active');
-			var ww = $(window).innerWidth()-40;
-			var w = $(this).parent().parent().find('span.hoverdiv').first().width();
-			var l = $(this).parent().parent().offset().left + 15;
-			var r = l+w;
-			if (r > ww) {
-				l = l - (r - ww) - $(this).parent().parent().offset().left - 15;
-				$(this).parent().parent().find('span.hoverdiv').first().css({left: l});
-			}
-		});
-	
-		$(document).on('mouseout', '#document-content span.t > a', function(e) {
-			e.preventDefault();
-			$(this).parent().parent().find('span.hoverdiv').first().removeClass('active');
-		});
 	},
 	
 	loadDocument : function(tab, xmlid, qid, offset, number) {
@@ -58,3 +30,31 @@ Whitelab.document = {
 	}
 	
 };
+
+$(document).on('click', 'a.document-tab', function(e) {
+	e.preventDefault();
+	if (!$(this).parent().hasClass("active")) {
+		$(this).parent().parent().find("li.active").first().removeClass("active");
+		$(this).parent().addClass("active");
+		$("#document-display div.tab-content").html('<span class="loading"></span>');
+		Whitelab.document.loadDocument($(this).data("tab"), $("#document-display").data("xmlid"), $("#document-display").data("query-id"));
+	}
+});
+
+$(document).on('mouseover', '#document-content span.t > a', function(e) {
+	e.preventDefault();
+	$(this).parent().parent().find('span.hoverdiv').first().addClass('active');
+	var ww = $(window).innerWidth()-40;
+	var w = $(this).parent().parent().find('span.hoverdiv').first().width();
+	var l = $(this).parent().parent().offset().left + 15;
+	var r = l+w;
+	if (r > ww) {
+		l = l - (r - ww) - $(this).parent().parent().offset().left - 15;
+		$(this).parent().parent().find('span.hoverdiv').first().css({left: l});
+	}
+});
+
+$(document).on('mouseout', '#document-content span.t > a', function(e) {
+	e.preventDefault();
+	$(this).parent().parent().find('span.hoverdiv').first().removeClass('active');
+});
