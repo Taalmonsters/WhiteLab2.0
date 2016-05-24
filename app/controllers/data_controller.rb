@@ -24,8 +24,8 @@ class DataController < ApplicationController
         data.insert(query_result.offset, *query_result.result)
       end
       respond_to do |format|
-        format.csv { send_data aoh_to_csv(data), :filename => @export_query.generate_filename+'.csv' }
-        format.json { send_data data.to_json, :filename => @export_query.generate_filename+'.json' }
+        format.csv { send_data aoh_to_csv(data), :disposition=>"attachment; filename='#{@export_query.generate_filename}.csv'" }
+        format.json { send_data data.to_json, :disposition=>"attachment; filename='#{@export_query.generate_filename}.json'" }
       end
     else
       respond_to do |format|

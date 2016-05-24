@@ -587,7 +587,7 @@ module BlacklabHelper
     reformat = []
     output[:data].each do |group|
       reformat << {
-        "#{query.group}" => group["identityDisplay"],
+        "#{output[:query].group}" => group["identityDisplay"],
         "#{count_key}" => group["size"]
       }
     end
