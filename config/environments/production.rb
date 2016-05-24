@@ -38,9 +38,8 @@ Rails.application.configure do
     if path =~ /\.(css|js|png|svg|ico)\z/
       full_path = Rails.application.assets.resolve(path).to_s
       basename = full_path.split(/\//).reverse[0]
-      p "BASENAME: #{basename}"
       app_assets_path = Rails.root.join('app', 'assets').to_s
-      if full_path.starts_with? app_assets_path && basename !~ /^_/
+      if full_path.starts_with?(app_assets_path) && !basename.start_with?('_')
         puts "including asset: " + full_path
         true
       else
