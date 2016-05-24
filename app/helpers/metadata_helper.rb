@@ -55,7 +55,10 @@ module MetadataHelper
   
   # Get total number of tokens from metadata selection
   def get_filtered_token_count(filter)
+    start_time = Time.now
     docs = get_filtered_documents(filter)
+    duration = (Time.now - start_time) * 1000
+    p "get_filtered_documents took #{duration.to_s} ms"
     set_size = (docs.size / 10).round + 1
     threads = []
     docs.each_slice(set_size) do |set|
@@ -68,6 +71,8 @@ module MetadataHelper
       thread.join
       count += thread[:output]
     end
+    duration = (Time.now - start_time) * 1000
+    p "get_filtered_token_count took #{duration.to_s} ms"
     count
   end
   
