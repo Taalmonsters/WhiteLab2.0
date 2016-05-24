@@ -68,7 +68,6 @@ class MetadataController < ApplicationController
   # Load metadatum values by group and key
   def values
     @values = @backend.metadata_values({ :group => @group, :key => @key })
-    p @values
     @value_list_incomplete = false
     if @values.blank?
       mvalues = @backend.get_metadatum_values_by_group_and_key(0, 0, "value", "asc", @group, @key)
