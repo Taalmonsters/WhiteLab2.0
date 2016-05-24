@@ -24,12 +24,8 @@ Whitelab.admin = {
 					$.getScript(Whitelab.getListPage('#metadata','/metadata/index.js',null,null,null,null));
 				}
 			});
-//			$(document).on( "click", "#metadata tr.metadatum", function() {
-//				Whitelab.admin.meta_dialog.dialog( "open" );
-//				var label = $(this).data("metadatum-label");
-//				$.getScript('/metadata/'+label+'/edit.js');
-//			});
 		}
+		
 		if ($('#pos-tags div.pos-tags-list').length > 0) {
 			$.getScript(Whitelab.getListPage('#pos-tags','/pos/index.js',null,null,null,null));
 			Whitelab.admin.pos_dialog = $( "#pos-tag-dialog" ).dialog({
@@ -48,12 +44,8 @@ Whitelab.admin = {
 					$('#pos-tag-dialog div.word-type-list').html('<span class="loading"></span>');
 				}
 			});
-//			$(document).on( "click", "#pos-tags tr.pos-tag", function() {
-//				Whitelab.admin.pos_dialog.dialog( "open" );
-//				var label = $(this).data("pos-tag-label");
-//				$.getScript('/pos/'+label+'/show.js');
-//			});
 		}
+		
 		if ($('#pos-heads div.pos-heads-list').length > 0) {
 			$.getScript(Whitelab.getListPage('#pos-heads','/poshead/index.js',null,null,null,null));
 			Whitelab.admin.pos_dialog = $( "#pos-head-dialog" ).dialog({
@@ -72,22 +64,11 @@ Whitelab.admin = {
 					$('#pos-head-dialog div.word-type-list').html('<span class="loading"></span>');
 				}
 			});
-//			$(document).on( "click", "#pos-heads tr.pos-head", function() {
-//				Whitelab.admin.pos_dialog.dialog( "open" );
-//				var label = $(this).data("pos-head-label");
-//				$.getScript('/poshead/'+label+'/show.js');
-//			});
-			
 		}
 
 		if ($("tr.benchmark-query.waiting").length > 0) {
 			Whitelab.admin.performBenchmarkTests();
 		}
-
-//		$(document).on('click', 'button.benchmark-report-button', function(e) {
-//			var id = $(this).parent().parent().attr("id");
-//			$("#"+id+"-report").toggleClass("hidden");
-//		});
 		
 	},
 	

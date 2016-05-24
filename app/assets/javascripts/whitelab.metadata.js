@@ -2,6 +2,7 @@ Whitelab.metadata = {
 	filterTokenSafeLimit : 0,
 	
 	init : function() {
+		
 		var filter = $('#metadata-filters').data('filter');
 		if (filter.length > 0) {
 			filter = filter.substr(1,filter.length - 2);
@@ -17,28 +18,6 @@ Whitelab.metadata = {
 			Whitelab.metadata.addMetadataRule(null,null,null,null);
 		}
 		
-//		$(document).on('change', '.metadata-key-select', function(e) {
-//			e.preventDefault();
-//			e.stopPropagation();
-//			var vals = $(this).val().split('_');
-//			var group = vals[0];
-//			var key = $(this).val().replace(group+'_','');
-//			var rule_id = $(this).parent().parent().attr('id');
-//			if (group.length > 0 && key.length > 0 && rule_id.length > 0)
-//				$.getScript('/metadata/'+group+'/'+key+'/values.js?rule_id='+rule_id);
-//			else
-//				$(this).parent().parent().find('select.metadata-input').first().replaceWith('<input class="metadata-input" type="text">');
-//		});
-//		$(document).on('change', 'select.metadata-input', function(e) {
-//			e.preventDefault();
-//			e.stopPropagation();
-//			Whitelab.metadata.updateCoverage();
-//		});
-//		$(document).on('change', 'select.metadata-operator', function(e) {
-//			e.preventDefault();
-//			e.stopPropagation();
-//			Whitelab.metadata.updateCoverage();
-//		});
 	},
 	
 	addMetadataRule : function(group,key,operator,value) {
