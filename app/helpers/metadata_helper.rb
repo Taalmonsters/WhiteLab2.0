@@ -155,7 +155,7 @@ module MetadataHelper
             sett = values[set]
             if sett.length > 0
               set_matches = set.eql?('positive') ? get_positive_filter_value_matches(metadata_obj, sett) : get_negative_filter_value_matches(metadata_obj, sett)
-              set_matches = set_matches.map{|doc_index| doc_ids[doc_index] }
+              set_matches = set_matches.map{|doc_index| doc_ids[doc_index.to_i] } if set_matches.any?
               docs = docs.length == 0 ? set_matches : docs & set_matches
             end
           end
