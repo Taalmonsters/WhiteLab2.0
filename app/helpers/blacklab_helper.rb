@@ -221,20 +221,6 @@ module BlacklabHelper
     }
   end
   
-  def get_documents_for_filters(filters)
-    resp = execute_query({
-      :url => backend_url+'docs',
-      :query => {  
-        "outputformat" => "json",
-        "patt" => "[word=\"..*\"]", 
-        "filter" => reformat_filters(filters),
-        "number" => DOCUMENT_DATA.keys.size
-      },
-      :headers => headers
-    })
-    resp['docs'].map{|doc| doc["docPid"] }
-  end
-  
   def get_filtered_content(query)
     contents = []
     get_filtered_documents(query.filter).each do |doc|

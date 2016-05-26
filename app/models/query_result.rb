@@ -92,8 +92,7 @@ class QueryResult < ActiveRecord::Base
       end
     else
       if !data.has_key?('results')
-        logger.error "QueryResult.run: no results in data:"
-        logger.error data
+        logger.error "QueryResult.run: no results in data"
       end
       self.update_attribute(:result, data['results'])
     end

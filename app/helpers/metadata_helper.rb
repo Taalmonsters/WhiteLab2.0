@@ -123,10 +123,45 @@ module MetadataHelper
   
   # Get documents matching metadata filters
   def get_filtered_documents(filter)
+    doc_ids = DOCUMENT_DATA.keys
     if filter.blank?
-      return DOCUMENT_DATA.keys
+      return doc_ids
     else
-      return get_documents_for_filters(filter)
+      filter = filter[1, filter.length - 2]
+      filters = {}
+      filter.split(')AND(').each do |filter_part|
+        parts = filter_part.split(/\!*=/)
+        first_part = parts[0]
+        second_part = parts[1]
+        group = first_part.split('_')[0]
+        key = first_part.sub(group+'_','')
+        has_group = filters.has_key?(group)
+        matches = has_group && filters[group].has_key?(key) ? filters[group][key] : { 'positive' => [], 'negative' => []}
+        value = strip_value(second_part)
+        if filter_part.eql?(first_part+'!='+second_part)
+          matches['negative'] << value
+        else
+          matches['positive'] << value
+        end
+        filters[group] = {} unless has_group
+        filters[group][key] = matches
+      end
+      
+      docs = []
+      filters.each do |group, keys|
+        keys.each do |key, values|
+          metadata_obj = { :group => group, :key => key }
+          ['positive','negative'].each do |set|
+            sett = values[set]
+            if sett.length > 0
+              set_matches = set.eql?('positive') ? get_positive_filter_value_matches(metadata_obj, sett) : get_negative_filter_value_matches(metadata_obj, sett)
+              set_matches = set_matches.map{|doc_index| doc_ids[doc_index.to_i] } if set_matches.any?
+              docs = docs.length == 0 ? set_matches : docs & set_matches
+            end
+          end
+        end
+      end
+      return docs.uniq
     end
   end
   
