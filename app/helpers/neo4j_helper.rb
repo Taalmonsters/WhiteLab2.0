@@ -118,6 +118,29 @@ module Neo4jHelper
     data[key]
   end
   
+  def get_documents_for_filters(filters)
+    filters = reformat_filters(filter)
+    docs = []
+    filters.each do |group, keys|
+      keys.each do |key, values|
+        ['positive','negative'].each do |set|
+          sett = values[set]
+          if sett.length > 0
+            set_matches = get_filter_value_matches(set, { :group => group, :key => key }, sett)
+            docs = docs.length == 0 ? set_matches : docs & set_matches
+          end
+        end
+      end
+    end
+    return docs.uniq
+  end
+  
+  def get_filter_value_matches(set, metadata_obj, value_set)
+    matches = get_positive_filter_value_matches(metadata_obj, value_set) if set.eql?('positive')
+    matches = get_negative_filter_value_matches(metadata_obj, value_set) if set.eql?('negative')
+    return matches.any? ? matches.map{|doc_index| DOCUMENT_DATA.keys[doc_index.to_i] } : []
+  end
+  
   def get_filtered_content(query)
     execute_query({
       :url => backend_url+'whitelab/search/metadata/content',
@@ -407,6 +430,30 @@ module Neo4jHelper
   
   def get_url
     return backend_url
+  end
+  
+  # Turn filter string into a hash of positive and negative values
+  def reformat_filters(filter)
+    filter = filter[1, filter.length - 2]
+    filters = {}
+    filter.split(')AND(').each do |filter_part|
+      parts = filter_part.split(/\!*=/)
+      first_part = parts[0]
+      second_part = parts[1]
+      group = first_part.split('_')[0]
+      key = first_part.sub(group+'_','')
+      has_group = filters.has_key?(group)
+      matches = has_group && filters[group].has_key?(key) ? filters[group][key] : { 'positive' => [], 'negative' => []}
+      value = strip_value(second_part)
+      if filter_part.eql?(first_part+'!='+second_part)
+        matches['negative'] << value
+      else
+        matches['positive'] << value
+      end
+      filters[group] = {} unless has_group
+      filters[group][key] = matches
+    end
+    filters
   end
   
   # Run CQL query on server for set amount of iterations
