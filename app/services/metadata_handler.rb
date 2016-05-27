@@ -213,6 +213,10 @@ class MetadataHandler
     return data['values'], data['value_count']
   end
   
+  def metadata
+    @metadata
+  end
+  
   def reformat_metadatum_values(metadatum)
     data = []
     metadatum['values'].each do |value|
