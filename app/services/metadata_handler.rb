@@ -180,7 +180,7 @@ class MetadataHandler
   def get_metadatum(metadatum)
     group = metadatum[:group]
     key = metadatum[:key]
-    mgroup = @metadata[group]
+    mgroup = @metadata ? @metadata[group] : nil
     group_exists = mgroup != nil
     if !group_exists || !mgroup.has_key?(key)
       mfile = metadatum_file(metadatum)
@@ -200,7 +200,11 @@ class MetadataHandler
   end
   
   def load_corpora
-    values, vcount = load_values(generate_metadatum_object('Corpus', 'title'))
+    if @documents && @metadata
+      values, vcount = load_values(generate_metadatum_object('Corpus', 'title'))
+    else
+      values = load_values_from_server(0, 0, "label", "asc", 'Corpus', 'title')
+    end
     values
   end
   
@@ -233,7 +237,8 @@ class MetadataHandler
     group = metadatum[:group]
     key = metadatum[:key]
     @whitelab.get_metadatum_values_by_group_and_key(number, 0, "label", "asc", group, key).each do |value|
-      data << value.kind_of?(Hash) ? value['value'] : value
+      value = value.kind_of?(Hash) ? value['value'] : value
+      data << value
     end
     data
   end
@@ -273,7 +278,7 @@ class MetadataHandler
   
   def generate_documents_file(documents_file)
     Rails.logger.info "Generating documents file at #{documents_file}"
-    write_file(documents_file, { "documents" => @whitelab.get_document_list })
+    write_file(documents_file, { "documents" => @whitelab.get_document_list(load_corpora) })
   end
   
   def generate_metadata_file(metadata_file)

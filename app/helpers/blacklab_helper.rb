@@ -91,9 +91,9 @@ module BlacklabHelper
     return data
   end
   
-  def get_document_list
+  def get_document_list(corpora)
     docs = {}
-    MetadataHandler.instance.load_corpora.each do |corpus|
+    corpora.each do |corpus|
       docs.merge!(get_corpus_document_list(corpus))
     end
     docs
