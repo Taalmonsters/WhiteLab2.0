@@ -317,9 +317,11 @@ class MetadataHandler
     d = (Time.now - st) * 1000
     p "data.each took #{d} ms"
     st = Time.now
-    docs = docs.map{|doc_index| @documents.keys[doc_index.to_i] }
+    keys = @documents.keys
+    docs = docs.map{|doc_index| keys[doc_index.to_i] }
     d = (Time.now - st) * 1000
     p "indices to ids took #{d} ms"
+    docs
   end
   
   # Load options for grouping by metadatum
