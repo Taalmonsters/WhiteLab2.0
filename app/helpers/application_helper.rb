@@ -63,10 +63,9 @@ module ApplicationHelper
       data[lang] = lang_data
     end
     
-    metadata = YAML.load_file(rroot.join('config').to_s+'/metadata_'+WhitelabBackend.instance.get_backend_type+'.yml')
     changed = false
     
-    metadata['metadata'].each do |group, keys|
+    MetadataHandler.instance.metadata.each do |group, keys|
       keys.each do |key, kdata|
         data.each do |lang, ldata|
           ldata, changed_group = set_metadata_translation(ldata, 'group', group)
@@ -86,6 +85,7 @@ module ApplicationHelper
   end
   
   def set_metadata_translation(ldata, key, value)
+    ldata["metadata_#{key}s"]['keys'] = {} if !ldata["metadata_#{key}s"]['keys']
     keys = ldata["metadata_#{key}s"]['keys']
     if !keys.has_key?(value)
       keys[value] = value
