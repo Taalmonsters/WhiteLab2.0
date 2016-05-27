@@ -146,7 +146,7 @@ class MetadataHandler
       end
     end
     
-    get_metadata_group_options({}, namespace).each do |group, data|
+    get_metadata_group_options({}, namespace).sort_by {|k, v| [k, v] }.each do |group, data|
       group = I18n.translate(:"#{group}").capitalize
       if !groups.has_key?(group)
         groups[group] = []
@@ -157,7 +157,7 @@ class MetadataHandler
       end
     end
     
-    groups.sort_by {|k, v| [k, v] }
+    groups
   end
   
   # Load paginated list of metadata in index
