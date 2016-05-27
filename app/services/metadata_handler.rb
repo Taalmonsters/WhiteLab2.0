@@ -305,11 +305,21 @@ class MetadataHandler
   def get_documents_matching_values(metadatum, values, inverted = false)
     return [] if !values.any?
     docs = []
-    read_file(metadatum_file(metadatum), 'values').each do |value, doc_indices|
+    st = Time.now
+    data = read_file(metadatum_file(metadatum), 'values')
+    d = (Time.now - st) * 1000
+    p "read_file took #{d} ms"
+    st = Time.now
+    data.each do |value, doc_indices|
       included = values.include?(value)
       doc_indices.each{|doc_index| docs << doc_index if ((!inverted && included) || (inverted && !included)) && !docs.include?(doc_index) }
     end
-    docs.map{|doc_index| @documents.keys[doc_index.to_i] }
+    d = (Time.now - st) * 1000
+    p "data.each took #{d} ms"
+    st = Time.now
+    docs = docs.map{|doc_index| @documents.keys[doc_index.to_i] }
+    d = (Time.now - st) * 1000
+    p "indices to ids took #{d} ms"
   end
   
   # Load options for grouping by metadatum
