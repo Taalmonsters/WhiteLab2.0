@@ -265,7 +265,8 @@ Whitelab.search = {
 			Whitelab.search.advanced.debug("QUERY: "+patt);
 			var filter = Whitelab.metadata.getFilterString();
 			Whitelab.search.advanced.debug("FILTER: "+filter);
-			window.location = '/search/advanced?patt='+encodeURIComponent(patt)+'&filter='+encodeURIComponent(filter)+'#results';
+			var within = $("#within").val();
+			window.location = '/search/advanced?patt='+encodeURIComponent(patt)+'&filter='+encodeURIComponent(filter)+'&within='+within+'#results';
 		},
 		
 		///////////////////////////////////////////////////////////////////////////
@@ -307,7 +308,8 @@ Whitelab.search = {
 		parseQuery : function() {
 			var patt = $("#expert-input").val();
 			var filter = Whitelab.metadata.getFilterString();
-			window.location = '/search/expert?patt='+encodeURIComponent(patt)+'&filter='+encodeURIComponent(filter)+'#results';
+			var within = $("#within").val();
+			window.location = '/search/expert?patt='+encodeURIComponent(patt)+'&filter='+encodeURIComponent(filter)+'&within='+within+'#results';
 		}
 		
 	},
@@ -347,8 +349,9 @@ Whitelab.search = {
 		parseQuery : function() {
 			var patt = Whitelab.cql.extendedQueryStringToCQL();
 			var filter = Whitelab.metadata.getFilterString();
+			var within = $("#within").val();
 			Whitelab.debug("PATTERN: "+patt);
-			window.location = '/search/extended?patt='+encodeURIComponent(patt)+'&filter='+encodeURIComponent(filter)+'#results';
+			window.location = '/search/extended?patt='+encodeURIComponent(patt)+'&filter='+encodeURIComponent(filter)+'&within='+within+'#results';
 		},
 		
 		parseQueryToInterface : function(pattern) {
