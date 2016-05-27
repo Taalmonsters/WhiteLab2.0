@@ -203,8 +203,8 @@ en:
         1,000 times after which the average duration is reported.<br/><b>NB:</b> The
         process may take some time to finish. Please do not refresh or leave the page
         until all queries are finished. Queries are not saved across sessions.
-      export_alert: Your export has been added to your search history. Once it
-        is completed you can download the results from there.
+      export_alert: Your export has been added to your search history. Once it is
+        completed you can download the results from there.
   cql_info:
     title: CQL info
     description: Translations of CQL instructions in Expert Search
@@ -282,113 +282,10 @@ en:
     title: Metadata groups
     description: Translations of metadata group labels
     keys:
-      Session: Session
-      Location: Location
-      Content: Content
-      Text: Text
-      TotalSize: TotalSize
-      Language: Language
-      License: License
-      Source: Source
-      Publication: Publication
-      Translation: Translation
-      Actor: Actor
-      Corpus: Corpus
-      Collection: Collection
-      Metadata: Metadata
   metadata_keys:
     title: Metadata keys
     description: Translations of metadata key labels
     keys:
-      Name: Name
-      Title: Title
-      Date: Date
-      Continent: Continent
-      Country: Country
-      Task: Task
-      Description: Description
-      Region: Region
-      Address: Address
-      ProjectName: ProjectName
-      CollectionName: CollectionName
-      CollectionCode: CollectionCode
-      Type: Type
-      Number: Number
-      SizeUnit: SizeUnit
-      Code: code
-      Details: Details
-      Publisher: Publisher
-      CollectionDescription: CollectionDescription
-      Translated: Translated
-      Age: age
-      Anonymized: anonymized
-      Education: education
-      FirstLanguage: first_language
-      FirstLanguageId: first_language_id
-      HomeLanguage: home_language
-      HomeLanguageId: home_language_id
-      MotherTongue: mother_tongue
-      Pseudonym: pseudonym
-      Sex: sex
-      Town: town
-      WorkLanguage: work_language
-      WorkLanguageId: work_language_id
-      title: title
-      AuthorName: AuthorName
-      AuthorNameOrPseudonym: AuthorNameOrPseudonym
-      AuthorNameOrPseudonymSearch: AuthorNameOrPseudonymSearch
-      BirthDate: BirthDate
-      Derivation: Derivation
-      EventStructure: EventStructure
-      FamilySocialRole: FamilySocialRole
-      Genre: Genre
-      Language-iso-code: Language-iso-code
-      LanguageName: LanguageName
-      LicenseCode: LicenseCode
-      LicenseDate: LicenseDate
-      LicenseDetails: LicenseDetails
-      Location_Country: Location_Country
-      Methodology: Methodology
-      Modalities: Modalities
-      Organisation: Organisation
-      PlanningType: PlanningType
-      Quality: Quality
-      Role: Role
-      SocialContext: SocialContext
-      SubGenre: SubGenre
-      SubType: SubType
-      TextTitle: TextTitle
-      TextType: TextType
-      AnnotationType-SoNaR: AnnotationType-SoNaR
-      AudioExportFormat: AudioExportFormat
-      AudioWebPlayFormat: AudioWebPlayFormat
-      CGN.availability: CGN.availability
-      CGN.byteCount: CGN.byteCount
-      CGN.secCount: CGN.secCount
-      CGN.tempoAv: CGN.tempoAv
-      CGN.wordCount: CGN.wordCount
-      Channel: Channel
-      CharacterEncoding: CharacterEncoding
-      Collection_title: Collection_title
-      Corpus_title: Corpus_title
-      End: End
-      Format: Format
-      History: History
-      Id: Id
-      Interactivity: Interactivity
-      Involvement: Involvement
-      Key: Key
-      Level: Level
-      MediaResourceLink: MediaResourceLink
-      RecordingConditions: RecordingConditions
-      ResourceLink: ResourceLink
-      Size: Size
-      Start: Start
-      fromInputFile: fromInputFile
-      generator: generator
-      id: id
-      metadataCid: metadataCid
-      version: version
   pos_heads:
     title: PoS heads
     description: Translations of part of speech heads
