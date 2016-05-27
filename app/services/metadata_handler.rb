@@ -83,9 +83,6 @@ class MetadataHandler
     start_time = Time.now
     docs_with_counts = filter_documents(filter, 2)
     doc_keys = docs_with_counts.keys
-    duration = (Time.now - start_time) * 1000
-    p "filter_documents in get_filtered_group_composition took #{duration.to_s} ms and returned #{docs_with_counts.size} documents"
-    start_time = Time.now
     first_part = option.split(/\!*=/)[0]
     group = first_part.split('_')[0]
     key = first_part.sub(/#{group}_/,'')
@@ -103,20 +100,11 @@ class MetadataHandler
     end
     duration = (Time.now - start_time) * 1000
     p "get_filtered_group_composition took #{duration.to_s} ms"
-    p "test"
     return result.values.flatten.select{|x| x['hit_count'] > 0}
   end
   
   def get_filtered_word_count(filter)
-    start_time = Time.now
-    docs = filter_documents(filter, 1)
-    duration = (Time.now - start_time) * 1000
-    p "filter_documents in get_filtered_word_count took #{duration.to_s} ms and returned #{docs.size} documents"
-    start_time = Time.now
-    count = docs.sum
-    duration = (Time.now - start_time) * 1000
-    p "get_filtered_word_count took #{duration.to_s} ms and counted #{count} words"
-    count
+    filter_documents(filter, 1).sum
   end
   
   def get_group_options(view, namespace)
@@ -305,23 +293,13 @@ class MetadataHandler
   def get_documents_matching_values(metadatum, values, inverted = false)
     return [] if !values.any?
     docs = []
-    st = Time.now
     data = read_file(metadatum_file(metadatum), 'values')
-    d = (Time.now - st) * 1000
-    p "read_file took #{d} ms"
-    st = Time.now
     data.each do |value, doc_indices|
       included = values.include?(value)
       doc_indices.each{|doc_index| docs << doc_index if ((!inverted && included) || (inverted && !included)) && !docs.include?(doc_index) }
     end
-    d = (Time.now - st) * 1000
-    p "data.each took #{d} ms"
-    st = Time.now
     keys = @documents.keys
-    docs = docs.map{|doc_index| keys[doc_index.to_i] }
-    d = (Time.now - st) * 1000
-    p "indices to ids took #{d} ms"
-    docs
+    docs.map{|doc_index| keys[doc_index.to_i] }
   end
   
   # Load options for grouping by metadatum

@@ -26,7 +26,6 @@ class InterfaceController < ApplicationController
     @element = params[:element]
     @element_class = params[:element_class]
     @pos_heads = get_translated_pos_heads
-    p @pos_heads
     render '/pos_heads/select'
   end
   
