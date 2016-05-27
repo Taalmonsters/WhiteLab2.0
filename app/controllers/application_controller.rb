@@ -85,7 +85,12 @@ class ApplicationController < ActionController::Base
   end
   
   def get_translated_pos_heads
-    @whitelab.get_pos_heads(12, 0, "label", "asc")["pos_heads"].map{|pos_head| label = pos_head["label"]; return [t(:"pos_heads.keys.#{label}").capitalize, label+".*"]}
+    data = []
+    @whitelab.get_pos_heads(12, 0, "label", "asc")["pos_heads"].each do |pos_head|
+      label = pos_head["label"]
+      data << [t(:"pos_heads.keys.#{label}").capitalize || label, label+".*"]
+    end
+    data
   end
   
 end
