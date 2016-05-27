@@ -28,9 +28,14 @@ class MetadataHandler
     indices.map{|index| @documents.keys[index] }
   end
   
-  def filter_documents(filter_str, return_counts = false)
+  # Filter document list
+  # return_counts = 0: returns document ids in array
+  # return_counts = 1: returns token counts in array
+  # return_counts = 2: returns document ids and token counts in hash
+  def filter_documents(filter_str, return_counts = 0)
     if !filter_str || filter_str.blank?
-      return return_counts ? @documents.map{|doc_id, doc_data| doc_data['token_count'] } : @documents.keys
+      return @documents.keys if return_counts == 0
+      return return_counts == 1 ? @documents.map{|doc_id, doc_data| doc_data['token_count'] } : @documents
     end
     docs = []
     filter_to_hash(filter_str).each do |group, keys|
@@ -44,7 +49,8 @@ class MetadataHandler
         end
       end
     end
-    return return_counts ? docs.uniq.map{|id| @documents[id]['token_count'] } : docs.uniq
+    return docs.uniq if return_counts == 0
+    return return_counts == 1 ? docs.uniq.map{|id| @documents[id]['token_count'] } : @documents.select{|doc_id, doc_data| docs.include?(doc_id) }
   end
   
   def generate_metadatum_object(group, key)
@@ -75,46 +81,25 @@ class MetadataHandler
   # Get documents matching metadatum grouped by option value
   def get_filtered_group_composition(option, filter)
     start_time = Time.now
-    docs_included = filter_documents(filter)
+    docs_with_counts = filter_documents(filter, 2)
+    doc_keys = docs_with_counts.keys
     duration = (Time.now - start_time) * 1000
-    p "filter_documents in get_filtered_group_composition took #{duration.to_s} ms and returned #{docs_included.size} documents"
+    p "filter_documents in get_filtered_group_composition took #{duration.to_s} ms and returned #{docs_with_counts.size} documents"
     start_time = Time.now
-    set_size = (docs_included.size / 10).round + 1
-    threads = []
-    docs_with_counts = {}
-    docs_included.each_slice(set_size) do |set|
-      threads << Thread.new do
-        output = {}
-        set.each do |doc|
-          output[doc] = get_document_token_count(doc)
-        end
-        Thread.current[:output] = output
-      end
-    end
-    threads.each do |thread|
-      thread.join
-      docs_with_counts.merge!(thread[:output])
-    end
-    docs_included = []
     first_part = option.split(/\!*=/)[0]
-    group = "Metadata"
-    key = first_part
-    if first_part.include?("_")
-      group = first_part.split('_')[0]
-      key = first_part.sub(group+'_','')
-    end
+    group = first_part.split('_')[0]
+    key = first_part.sub(/#{group}_/,'')
+    metadatum = get_metadatum(generate_metadatum_object(group, key))
     result = {}
-    read_file(metadatum_file({ :group => group, :key => key }), 'values').each do |value, doc_indices|
-      doc_ids = docs_with_counts.keys & doc_indices.map{|doc_index| @documents.keys[doc_index] }
-      docs_included += doc_ids
-      result[value] = { option => value, 'hit_count' => docs_with_counts.select{|doc, count| doc_ids.include?(doc) }.map{|doc, count| count }.reduce(0, :+), 'document_count' => doc_ids.size }
+    metadatum['values'].each do |value|
+      value_docs = doc_keys & get_documents_matching_values(metadatum, [value])
+      doc_keys -= value_docs
+      result[value] = { option => value, 'hit_count' => value_docs.map{|doc_id| docs_with_counts[doc_id]['token_count']}.reduce(:+), 'document_count' => value_docs.size }
     end
-    docs_missing = docs_with_counts.keys - docs_included
-    docs = nil
-    if docs_missing.any?
+    if doc_keys.size > 0
       result['Unknown'] = { option => 'Unknown', 'hit_count' => 0, 'document_count' => 0 } unless result.has_key?('Unknown')
-      result['Unknown']['hit_count'] += docs_with_counts.select{|doc, count| docs_missing.include?(doc) }.map{|doc, count| count }.reduce(0, :+)
-      result['Unknown']['document_count'] += docs_missing.size
+      result['Unknown']['hit_count'] += doc_keys.map{|doc_id| docs_with_counts[doc_id]['token_count']}.reduce(:+)
+      result['Unknown']['document_count'] += doc_keys.size
     end
     duration = (Time.now - start_time) * 1000
     p "get_filtered_group_composition took #{duration.to_s} ms"
@@ -123,7 +108,7 @@ class MetadataHandler
   
   def get_filtered_word_count(filter)
     start_time = Time.now
-    docs = filter_documents(filter, true)
+    docs = filter_documents(filter, 1)
     duration = (Time.now - start_time) * 1000
     p "filter_documents in get_filtered_word_count took #{duration.to_s} ms and returned #{docs.size} documents"
     start_time = Time.now
@@ -319,8 +304,8 @@ class MetadataHandler
   def get_documents_matching_values(metadatum, values, inverted = false)
     return [] if !values.any?
     docs = []
-    read_file(metadatum_file(metadatum), 'values').each do |opt, doc_indices|
-      included = values.include?(opt)
+    read_file(metadatum_file(metadatum), 'values').each do |value, doc_indices|
+      included = values.include?(value)
       doc_indices.each{|doc_index| docs << doc_index if ((!inverted && included) || (inverted && !included)) && !docs.include?(doc_index) }
     end
     docs.map{|doc_index| @documents.keys[doc_index.to_i] }
