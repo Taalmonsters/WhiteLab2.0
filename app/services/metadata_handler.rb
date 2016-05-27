@@ -103,6 +103,7 @@ class MetadataHandler
     end
     duration = (Time.now - start_time) * 1000
     p "get_filtered_group_composition took #{duration.to_s} ms"
+    p "test"
     return result.values.flatten.select{|x| x['hit_count'] > 0}
   end
   
