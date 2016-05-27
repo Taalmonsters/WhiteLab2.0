@@ -28,9 +28,9 @@ class MetadataHandler
     indices.map{|index| @documents.keys[index] }
   end
   
-  def filter_documents(filter_str)
+  def filter_documents(filter_str, return_counts = false)
     if !filter_str || filter_str.blank?
-      return @documents.keys
+      return return_counts ? @documents.map{|doc_id, doc_data| doc_data['token_count'] } : @documents.keys
     end
     docs = []
     filter_to_hash(filter_str).each do |group, keys|
@@ -44,7 +44,7 @@ class MetadataHandler
         end
       end
     end
-    docs.uniq
+    return return_counts ? docs.uniq.map{|id| @documents[id]['token_count'] } : docs.uniq
   end
   
   def generate_metadatum_object(group, key)
@@ -74,7 +74,11 @@ class MetadataHandler
   
   # Get documents matching metadatum grouped by option value
   def get_filtered_group_composition(option, filter)
+    start_time = Time.now
     docs_included = filter_documents(filter)
+    duration = (Time.now - start_time) * 1000
+    p "filter_documents in get_filtered_group_composition took #{duration.to_s} ms and returned #{docs_included.size} documents"
+    start_time = Time.now
     set_size = (docs_included.size / 10).round + 1
     threads = []
     docs_with_counts = {}
@@ -112,22 +116,18 @@ class MetadataHandler
       result['Unknown']['hit_count'] += docs_with_counts.select{|doc, count| docs_missing.include?(doc) }.map{|doc, count| count }.reduce(0, :+)
       result['Unknown']['document_count'] += docs_missing.size
     end
+    duration = (Time.now - start_time) * 1000
+    p "get_filtered_group_composition took #{duration.to_s} ms"
     return result.values.flatten.select{|x| x['hit_count'] > 0}
   end
   
   def get_filtered_word_count(filter)
     start_time = Time.now
-    docs = filter_documents(filter)
+    docs = filter_documents(filter, true)
     duration = (Time.now - start_time) * 1000
-    p "filter_documents took #{duration.to_s} ms and returned #{docs.size} documents"
-    set_size = (docs.size / 10).round + 1
-    threads = []
-    docs.each_slice(set_size) do |set|
-      threads << Thread.new do
-        Thread.current[:output] = set.map {|doc| get_document_token_count(doc)}.reduce(0, :+)
-      end
-    end
-    count = threads.each{ |thread| thread.join }.map{ |thread| thread[:output] }.reduce(0, :+)
+    p "filter_documents in get_filtered_word_count took #{duration.to_s} ms and returned #{docs.size} documents"
+    start_time = Time.now
+    count = docs.sum
     duration = (Time.now - start_time) * 1000
     p "get_filtered_word_count took #{duration.to_s} ms and counted #{count} words"
     count
