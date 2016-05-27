@@ -321,9 +321,9 @@ class MetadataHandler
     docs = []
     read_file(metadatum_file(metadatum), 'values').each do |opt, doc_indices|
       included = values.include?(opt)
-      docs.push(*doc_indices) if (!inverted && included) || (inverted && !included)
+      doc_indices.each{|doc_index| docs << doc_index if ((!inverted && included) || (inverted && !included)) && !docs.include?(doc_index) }
     end
-    docs.uniq.map{|doc_index| @documents.keys[doc_index.to_i] }
+    docs.map{|doc_index| @documents.keys[doc_index.to_i] }
   end
   
   # Load options for grouping by metadatum
