@@ -92,18 +92,9 @@ class MetadataHandler
     metadatum = get_metadatum(generate_metadatum_object(group, key))
     result = {}
     metadatum['values'].each do |value|
-      st = Time.now
       value_docs = doc_keys & get_documents_matching_values(metadatum, [value])
-      duration = (Time.now - st) * 1000
-      p "value_docs took #{duration.to_s} ms and returned #{docs_with_counts.size} documents"
-      st = Time.now
       doc_keys -= value_docs
-      duration = (Time.now - st) * 1000
-      p "doc_keys -= value_docs took #{duration.to_s} ms and returned #{docs_with_counts.size} documents"
-      st = Time.now
       result[value] = { option => value, 'hit_count' => value_docs.map{|doc_id| docs_with_counts[doc_id]['token_count']}.reduce(:+), 'document_count' => value_docs.size }
-      duration = (Time.now - st) * 1000
-      p "hit_count took #{duration.to_s} ms and returned #{docs_with_counts.size} documents"
     end
     if doc_keys.size > 0
       result['Unknown'] = { option => 'Unknown', 'hit_count' => 0, 'document_count' => 0 } unless result.has_key?('Unknown')
