@@ -8,7 +8,7 @@ Whitelab.metadata = {
 			filter = filter.substr(1,filter.length - 2);
 			var parts = filter.split(')AND(');
 			for (var i = 0; i < parts.length; i++) {
-				var match = parts[i].match(/^(([A-Za-z0-9]+)_)*([A-Za-z0-9_]+)(\!*=|\>=*|\<=*)(.+)$/);
+				var match = parts[i].match(/^(([A-Za-z0-9]+)_)*([A-Za-z0-9_\-]+)(\!*=|\>=*|\<=*)(.+)$/);
 				var group = "Metadata";
 				if (match[1] != null)
 					group = match[1];

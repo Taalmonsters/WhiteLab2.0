@@ -101,7 +101,7 @@ class SearchController < ApplicationController
     if @query && params.has_key?(:docpid)
       docpid = params[:docpid]
       @target = docpid
-      @doc_hits = @backend.get_search_results_for_query(@query.query_result, docpid, nil, nil)["results"]
+      @doc_hits = @whitelab.get_search_results_for_query(@query.query_result, docpid, nil, nil)["results"]
     end
     respond_to do |format|
       format.js do
@@ -134,7 +134,7 @@ class SearchController < ApplicationController
   def kwic
     @target = get_target_from_params
     if @target
-      @kwic = @backend.get_kwic(params[:docpid], params[:first_index], params[:last_index], params[:size])
+      @kwic = @whitelab.get_kwic(params[:docpid], params[:first_index], params[:last_index], params[:size])
     end
     respond_to do |format|
       format.js do
@@ -210,7 +210,7 @@ class SearchController < ApplicationController
         view = qresult.view
         group = qresult.group
         if [8,16].include?(view)
-          @groups = @backend.get_group_options(view, 'search')
+          @groups = @metadata_handler.get_group_options(view, 'search')
           if !group.blank?
             @group = group.gsub(/ /,"_")
           end
@@ -237,9 +237,9 @@ class SearchController < ApplicationController
       @group = params[key]
       @group_id = params[:group_id]
       if key.eql?(:hits_group)
-        @hits = @backend.get_hits_in_group(qresult,@group,@offset,20)['hits']
+        @hits = @whitelab.get_hits_in_group(qresult,@group,@offset,20)['hits']
       else
-        @docs = @backend.get_docs_in_group(qresult,@group,@offset,20)['docs']
+        @docs = @whitelab.get_docs_in_group(qresult,@group,@offset,20)['docs']
       end
     end
   end

@@ -3,7 +3,6 @@ require 'singleton'
 # The WhitelabBackend class is a wrapper for the backend helper classes and makes them available in a singleton
 class WhitelabBackend
   include Singleton
-  include MetadataHelper
   
   def initialize
     @backend_type = Rails.configuration.x.database_type

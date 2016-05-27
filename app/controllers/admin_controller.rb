@@ -15,7 +15,7 @@ class AdminController < ApplicationController
     end
     respond_to do |format|
       format.html do
-        @btype = @backend.get_backend_type
+        @btype = @whitelab.get_backend_type
         if @page.eql?('index') && !@tab
           @tab = 'counts' if @btype.eql?('neo4j')
           @tab = 'metadata' if @btype.eql?('blacklab')
@@ -155,7 +155,7 @@ class AdminController < ApplicationController
   # Load login page
   def login
     if @admin_logged_in
-      redirect_to admin_page_path(:page => 'overview') if @backend.get_backend_type().eql?('neo4j')
+      redirect_to admin_page_path(:page => 'overview') if @whitelab.get_backend_type().eql?('neo4j')
       redirect_to admin_page_path(:page => 'index')
     end
   end
@@ -164,7 +164,7 @@ class AdminController < ApplicationController
   def signin
     if params[:user] && params[:user] == ADMIN_USER && params[:key] && params[:key] == ADMIN_PW
       session[:admin_active] = true
-      redirect_to admin_page_path(:page => 'overview') if @backend.get_backend_type().eql?('neo4j')
+      redirect_to admin_page_path(:page => 'overview') if @whitelab.get_backend_type().eql?('neo4j')
       redirect_to admin_page_path(:page => 'index')
     else
       redirect_to action: 'login'
@@ -181,7 +181,7 @@ class AdminController < ApplicationController
   def benchmark_test
     @cql_id = params[:id]
     if (params[:cql])
-      result = @backend.run_benchmark_test(params[:cql],1000)
+      result = @whitelab.run_benchmark_test(params[:cql],1000)
       @lines = result.split("\n")
       @lines.reverse.each do |line|
         if line =~ / ([0-9]+(\.[0-9]+)*) ms\./

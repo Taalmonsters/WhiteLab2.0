@@ -53,7 +53,7 @@ class TourController < ApplicationController
     
     if @namespace.eql?('explore') && @page.eql?('corpora')
       @option = 'Corpus_title'
-      @options = @backend.get_group_options(16, 'explore')
+      @options = @metadata_handler.get_group_options(16, 'explore')
     elsif @namespace.eql?('explore') && ['statistics', 'ngrams'].include?(@page)
       @listtype_options = []
       ['word', 'lemma', 'pos', 'phonetic'].each do |type|

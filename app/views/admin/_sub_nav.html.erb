@@ -2,7 +2,7 @@
 	<ul id="admin-nav">
 		<li id="settings_link" class="active permanent"><b><%= t(:"page_titles.keys.settings").upcase %></b></li>
 		<% if @admin_logged_in %>
-			<% if @backend.get_backend_type().eql?('neo4j') %>
+			<% if @whitelab.get_backend_type().eql?('neo4j') %>
 			<% if !@page || @page.eql?('overview') %>
 				<li id="overview_link" class="active"><a class="tablink" onclick="event.preventDefault();"><%= t(:"page_titles.keys.overview").capitalize %></a></li>
 			<% else %>

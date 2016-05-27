@@ -10,10 +10,10 @@ class MetadataController < ApplicationController
       redirect_to 'admin/login'
     end
     set_pagination_params(0, 10, 'group')
-    data = @backend.get_metadata(@number, @offset, @sort, @order)
+    data = @metadata_handler.get_metadata(@number, @offset, @sort, @order)
     @metadata = data['metadata']
     @total = data['total']
-    @corpora = @backend.get_corpus_titles
+    @corpora = @metadata_handler.load_corpora
   end
   
   # Show metadatum edit form
@@ -21,9 +21,8 @@ class MetadataController < ApplicationController
     if !@admin_logged_in
       redirect_to 'admin/login'
     end
-    if @label
-      @metadatum = @backend.get_metadatum_by_label(@label)
-      @values = @backend.get_metadatum_values_by_label(5, 0, "document_count", "desc", @label)
+    if @metadatum
+      @values = @metadata_handler.reformat_metadatum_values(@metadatum)
     else
       logger.warn "NO LABEL"
     end
@@ -34,27 +33,26 @@ class MetadataController < ApplicationController
     if !@admin_logged_in
       redirect_to 'admin/login'
     end
-    if @label
+    if @metadatum
       updates = {}
       ['group','key','value_type','explorable','searchable'].each do |key|
         if params[key]
           updates[key] = params[key].to_s
         end
       end
-      @backend.update_metadatum(@label,updates)
-      @metadatum = @backend.get_metadatum_by_label(@label)
+      @metadata_handler.update_metadatum(@metadatum,updates)
     end
   end
   
   # Load metadata filter rule
   def filter_rule
-    @filters = @backend.get_group_options(16, 'search')
+    @filters = @metadata_handler.get_group_options(16, 'search')
     @rule_id = 0
     if params[:rule_id]
       @rule_id = params[:rule_id]
     end
     if @group && @key
-      @values, value_count = @backend.load_values({ :group => @group, :key => @key })
+      @values, value_count = @metadata_handler.load_values(@metadata_handler.generate_metadatum_object(@group,@key))
       @value = params[:value]
       @operator = params[:operator]
     end
@@ -62,10 +60,10 @@ class MetadataController < ApplicationController
   
   # Load metadatum values by group and key
   def values
-    @values, @value_count = @backend.load_values({ :group => @group, :key => @key })
+    @values, @value_count = @metadata_handler.load_values(@metadata_handler.generate_metadatum_object(@group,@key))
     @value_list_incomplete = false
     if @values.blank?
-      mvalues = @backend.get_metadatum_values_by_group_and_key(0, 0, "value", "asc", @group, @key)
+      mvalues = @metadata_handler.load_values_from_server(0, 0, "value", "asc", @group, @key)
       @values = mvalues.map{|x| x["value"]}
     else
       if !@value_count.blank? && @value_count > @values.size
@@ -99,9 +97,14 @@ class MetadataController < ApplicationController
   def current_metadatum_label
     if params[:label]
       @label = params[:label]
+      @group = @label.split('_')[0]
+      @key = @label.sub(/#{@group}_/,'')
+      @metadatum = @metadata_handler.get_metadatum(@metadata_handler.generate_metadatum_object(@group,@key))
     elsif params[:group] && params[:key]
       @group = params[:group].sub(/\_$/,'')
       @key = params[:key]
+      @label = "#{@group}_#{@key}"
+      @metadatum = @metadata_handler.get_metadatum(@metadata_handler.generate_metadatum_object(@group,@key))
     end
   end
   

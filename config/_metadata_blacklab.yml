@@ -1,0 +1,688 @@
+---
+metadata:
+  Corpus:
+    title:
+      group: Corpus
+      key: title
+      label: Corpus_title
+      value_count: 2
+      values:
+      - SoNaR
+      - CGN
+      document_count_CGN: 248
+      document_count_SoNaR: 9
+  Collection:
+    title:
+      group: Collection
+      key: title
+      label: Collection_title
+      value_count: 3
+      values:
+      - WR-P-P-D_newsletters
+      - CGN-comp-g_discussions_debates_and_meetings_non-broadcast
+      - WR-P-E-E_newsletters
+      document_count_CGN: 248
+      document_count_SoNaR: 9
+  Metadata:
+    Address:
+      group: Metadata
+      key: Address
+      label: Address
+      display_name: Address
+      values: []
+      value_count: 4
+      value_type: text
+      document_count_CGN: 248
+    Age:
+      group: Metadata
+      key: Age
+      label: Age
+      display_name: Age
+      values: []
+      value_count: 33
+      value_type: text
+      document_count_CGN: 248
+      document_count_SoNaR: 9
+    AnnotationType-SoNaR:
+      group: Metadata
+      key: AnnotationType-SoNaR
+      label: AnnotationType-SoNaR
+      display_name: Annotation type so na r
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_SoNaR: 9
+    Anonymized:
+      group: Metadata
+      key: Anonymized
+      label: Anonymized
+      display_name: Anonymized
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_CGN: 248
+    AudioExportFormat:
+      group: Metadata
+      key: AudioExportFormat
+      label: AudioExportFormat
+      display_name: Audio export format
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_CGN: 248
+    AudioWebPlayFormat:
+      group: Metadata
+      key: AudioWebPlayFormat
+      label: AudioWebPlayFormat
+      display_name: Audio web play format
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_CGN: 248
+    AuthorName:
+      group: Metadata
+      key: AuthorName
+      label: AuthorName
+      display_name: Author name
+      values: []
+      value_count: 248
+      value_type: text
+      document_count_CGN: 248
+    AuthorNameOrPseudonym:
+      group: Metadata
+      key: AuthorNameOrPseudonym
+      label: AuthorNameOrPseudonym
+      display_name: Author name or pseudonym
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_SoNaR: 9
+    AuthorNameOrPseudonymSearch:
+      group: Metadata
+      key: AuthorNameOrPseudonymSearch
+      label: AuthorNameOrPseudonymSearch
+      display_name: Author name or pseudonym search
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_SoNaR: 9
+    BirthDate:
+      group: Metadata
+      key: BirthDate
+      label: BirthDate
+      display_name: Birth date
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_CGN: 248
+    CGN.availability:
+      group: Metadata
+      key: CGN.availability
+      label: CGN.availability
+      display_name: CGN.availability
+      values: []
+      value_count: 0
+      value_type: text
+    CGN.byteCount:
+      group: Metadata
+      key: CGN.byteCount
+      label: CGN.byteCount
+      display_name: CGN.byteCount
+      values: []
+      value_count: 0
+      value_type: text
+    CGN.secCount:
+      group: Metadata
+      key: CGN.secCount
+      label: CGN.secCount
+      display_name: CGN.secCount
+      values: []
+      value_count: 0
+      value_type: text
+    CGN.tempoAv:
+      group: Metadata
+      key: CGN.tempoAv
+      label: CGN.tempoAv
+      display_name: CGN.tempoAv
+      values: []
+      value_count: 0
+      value_type: text
+    CGN.wordCount:
+      group: Metadata
+      key: CGN.wordCount
+      label: CGN.wordCount
+      display_name: CGN.wordCount
+      values: []
+      value_count: 0
+      value_type: text
+    Channel:
+      group: Metadata
+      key: Channel
+      label: Channel
+      display_name: Channel
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_CGN: 248
+    CharacterEncoding:
+      group: Metadata
+      key: CharacterEncoding
+      label: CharacterEncoding
+      display_name: Character encoding
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_CGN: 248
+    Code:
+      group: Metadata
+      key: Code
+      label: Code
+      display_name: Code
+      values: []
+      value_count: 65
+      value_type: text
+      document_count_CGN: 248
+    CollectionCode:
+      group: Metadata
+      key: CollectionCode
+      label: CollectionCode
+      display_name: Collection code
+      values: []
+      value_count: 9
+      value_type: text
+      document_count_SoNaR: 9
+    CollectionName:
+      group: Metadata
+      key: CollectionName
+      label: CollectionName
+      display_name: Collection name
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_SoNaR: 9
+    Collection_title:
+      group: Metadata
+      key: Collection_title
+      label: Collection_title
+      display_name: Collection_title
+      values: []
+      value_count: 3
+      value_type: text
+      document_count_CGN: 248
+      document_count_SoNaR: 9
+    Continent:
+      group: Metadata
+      key: Continent
+      label: Continent
+      display_name: Continent
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_CGN: 248
+      document_count_SoNaR: 9
+    Corpus_title:
+      group: Metadata
+      key: Corpus_title
+      label: Corpus_title
+      display_name: Corpus_title
+      values: []
+      value_count: 2
+      value_type: text
+      document_count_CGN: 248
+      document_count_SoNaR: 9
+    Country:
+      group: Metadata
+      key: Country
+      label: Country
+      display_name: Country
+      values: []
+      value_count: 2
+      value_type: text
+      document_count_SoNaR: 9
+    Date:
+      group: Metadata
+      key: Date
+      label: Date
+      display_name: Date
+      values: []
+      value_count: 6
+      value_type: text
+      document_count_CGN: 248
+    Derivation:
+      group: Metadata
+      key: Derivation
+      label: Derivation
+      display_name: Derivation
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_CGN: 248
+    Description:
+      group: Metadata
+      key: Description
+      label: Description
+      display_name: Description
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_CGN: 248
+    Education:
+      group: Metadata
+      key: Education
+      label: Education
+      display_name: Education
+      values: []
+      value_count: 3
+      value_type: text
+      document_count_CGN: 248
+    End:
+      group: Metadata
+      key: End
+      label: End
+      display_name: End
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_CGN: 248
+    EventStructure:
+      group: Metadata
+      key: EventStructure
+      label: EventStructure
+      display_name: Event structure
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_CGN: 248
+    FamilySocialRole:
+      group: Metadata
+      key: FamilySocialRole
+      label: FamilySocialRole
+      display_name: Family social role
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_CGN: 248
+    Format:
+      group: Metadata
+      key: Format
+      label: Format
+      display_name: Format
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_CGN: 248
+    Genre:
+      group: Metadata
+      key: Genre
+      label: Genre
+      display_name: Genre
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_CGN: 248
+    History:
+      group: Metadata
+      key: History
+      label: History
+      display_name: History
+      values: []
+      value_count: 174
+      value_type: text
+      document_count_CGN: 248
+    Id:
+      group: Metadata
+      key: Id
+      label: Id
+      display_name: Id
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_CGN: 248
+    Interactivity:
+      group: Metadata
+      key: Interactivity
+      label: Interactivity
+      display_name: Interactivity
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_CGN: 248
+    Involvement:
+      group: Metadata
+      key: Involvement
+      label: Involvement
+      display_name: Involvement
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_CGN: 248
+    Key:
+      group: Metadata
+      key: Key
+      label: Key
+      display_name: Key
+      values: []
+      value_count: 239
+      value_type: text
+      document_count_CGN: 248
+    Language-iso-code:
+      group: Metadata
+      key: Language-iso-code
+      label: Language-iso-code
+      display_name: Language iso code
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_SoNaR: 9
+    LanguageName:
+      group: Metadata
+      key: LanguageName
+      label: LanguageName
+      display_name: Language name
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_SoNaR: 9
+    Level:
+      group: Metadata
+      key: Level
+      label: Level
+      display_name: Level
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_CGN: 248
+    LicenseCode:
+      group: Metadata
+      key: LicenseCode
+      label: LicenseCode
+      display_name: LicenseCode
+      values: []
+      value_count: 2
+      value_type: text
+      document_count_SoNaR: 9
+    LicenseDate:
+      group: Metadata
+      key: LicenseDate
+      label: LicenseDate
+      display_name: License date
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_SoNaR: 9
+    LicenseDetails:
+      group: Metadata
+      key: LicenseDetails
+      label: LicenseDetails
+      display_name: License details
+      values: []
+      value_count: 2
+      value_type: text
+      document_count_SoNaR: 9
+    Location_Country:
+      group: Metadata
+      key: Location_Country
+      label: Location_Country
+      display_name: Location_country
+      values: []
+      value_count: 2
+      value_type: text
+      document_count_CGN: 248
+    MediaResourceLink:
+      group: Metadata
+      key: MediaResourceLink
+      label: MediaResourceLink
+      display_name: Media resource link
+      values: []
+      value_count: 248
+      value_type: text
+      document_count_CGN: 248
+    Methodology:
+      group: Metadata
+      key: Methodology
+      label: Methodology
+      display_name: Methodology
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_CGN: 248
+    Modalities:
+      group: Metadata
+      key: Modalities
+      label: Modalities
+      display_name: Modalities
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_CGN: 248
+    Number:
+      group: Metadata
+      key: Number
+      label: Number
+      display_name: Number
+      values: []
+      value_count: 9
+      value_type: text
+      document_count_SoNaR: 9
+    Organisation:
+      group: Metadata
+      key: Organisation
+      label: Organisation
+      display_name: Organisation
+      values: []
+      value_count: 2
+      value_type: text
+      document_count_CGN: 248
+    PlanningType:
+      group: Metadata
+      key: PlanningType
+      label: PlanningType
+      display_name: Planning type
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_CGN: 248
+    ProjectName:
+      group: Metadata
+      key: ProjectName
+      label: ProjectName
+      display_name: Project name
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_SoNaR: 9
+    Publisher:
+      group: Metadata
+      key: Publisher
+      label: Publisher
+      display_name: Publisher
+      values: []
+      value_count: 3
+      value_type: text
+      document_count_CGN: 248
+      document_count_SoNaR: 9
+    Quality:
+      group: Metadata
+      key: Quality
+      label: Quality
+      display_name: Quality
+      values: []
+      value_count: 1
+      value_type: text
+      document_count_CGN: 248
+    RecordingConditions:
+      group: Metadata
+      key: RecordingConditions
+      label: RecordingConditions
+      display_name: Recording conditions
+      values: []
+      value_count: 0
+      value_type: text
+    Region:
+      group: Metadata
+      key: Region
+      label: Region
+      display_name: Region
+      values: []
+      value_count: 0
+      value_type: text
+    ResourceLink:
+      group: Metadata
+      key: ResourceLink
+      label: ResourceLink
+      display_name: Resource link
+      values: []
+      value_count: 0
+      value_type: text
+    Role:
+      group: Metadata
+      key: Role
+      label: Role
+      display_name: Role
+      values: []
+      value_count: 0
+      value_type: text
+    Sex:
+      group: Metadata
+      key: Sex
+      label: Sex
+      display_name: Sex
+      values: []
+      value_count: 0
+      value_type: text
+    Size:
+      group: Metadata
+      key: Size
+      label: Size
+      display_name: Size
+      values: []
+      value_count: 0
+      value_type: text
+    SizeUnit:
+      group: Metadata
+      key: SizeUnit
+      label: SizeUnit
+      display_name: Size unit
+      values: []
+      value_count: 0
+      value_type: text
+    SocialContext:
+      group: Metadata
+      key: SocialContext
+      label: SocialContext
+      display_name: Social context
+      values: []
+      value_count: 0
+      value_type: text
+    Start:
+      group: Metadata
+      key: Start
+      label: Start
+      display_name: Start
+      values: []
+      value_count: 0
+      value_type: text
+    SubGenre:
+      group: Metadata
+      key: SubGenre
+      label: SubGenre
+      display_name: Sub genre
+      values: []
+      value_count: 0
+      value_type: text
+    SubType:
+      group: Metadata
+      key: SubType
+      label: SubType
+      display_name: Sub type
+      values: []
+      value_count: 0
+      value_type: text
+    Task:
+      group: Metadata
+      key: Task
+      label: Task
+      display_name: Task
+      values: []
+      value_count: 0
+      value_type: text
+    TextTitle:
+      group: Metadata
+      key: TextTitle
+      label: TextTitle
+      display_name: Text title
+      values: []
+      value_count: 0
+      value_type: text
+    TextType:
+      group: Metadata
+      key: TextType
+      label: TextType
+      display_name: Text type
+      values: []
+      value_count: 0
+      value_type: text
+    Title:
+      group: Metadata
+      key: Title
+      label: Title
+      display_name: Title
+      values: []
+      value_count: 0
+      value_type: text
+    Translated:
+      group: Metadata
+      key: Translated
+      label: Translated
+      display_name: Translated
+      values: []
+      value_count: 0
+      value_type: text
+    Type:
+      group: Metadata
+      key: Type
+      label: Type
+      display_name: Type
+      values: []
+      value_count: 0
+      value_type: text
+    fromInputFile:
+      group: Metadata
+      key: fromInputFile
+      label: fromInputFile
+      display_name: From input file
+      values: []
+      value_count: 0
+      value_type: text
+    generator:
+      group: Metadata
+      key: generator
+      label: generator
+      display_name: Generator
+      values: []
+      value_count: 0
+      value_type: text
+    id:
+      group: Metadata
+      key: id
+      label: id
+      display_name: id
+      values: []
+      value_count: 0
+      value_type: text
+    metadataCid:
+      group: Metadata
+      key: metadataCid
+      label: metadataCid
+      display_name: Metadata cid
+      values: []
+      value_count: 0
+      value_type: text
+    version:
+      group: Metadata
+      key: version
+      label: version
+      display_name: Version
+      values: []
+      value_count: 0
+      value_type: text

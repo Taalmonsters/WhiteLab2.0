@@ -20,28 +20,6 @@ module Neo4jHelper
     'neo4j'
   end
   
-  # Load list of collection titles in index
-  def get_collection_titles
-    get_titles('Collection', 'title')
-  end
-  
-  # Load list of corpus titles in index
-  def get_corpus_titles
-    get_titles('Corpus', 'label')
-  end
-  
-  def get_titles(key, field_key)
-    titles = []
-    resp = execute_query({
-      :url => "#{backend_url}db/data/label/#{key}/nodes",
-      :headers => headers
-    })
-    resp.each do |node|
-      titles << get_node_label(node, field_key)
-    end
-    titles
-  end
-  
   def get_node_label(node, field_key = 'label')
     execute_query({
       :url => "#{node['properties']}/#{field_key}",
@@ -100,6 +78,10 @@ module Neo4jHelper
       docs[doc[0]] = {"token_count" => doc[1], "corpus" => doc[2], "collection" => doc[3]}
     end
     docs
+  end
+  
+  def get_document_id_list(filter)
+    []
   end
   
   def get_document_metadata(xmlid)
@@ -221,14 +203,14 @@ module Neo4jHelper
     end
   end
   
-  # Load metadatum properties by label
-  def get_metadatum_by_label(label)
-    data = execute_query({
-      :url => backend_url+'whitelab/search/metadata/'+label,
-      :headers => headers
-    })
-    data[0]
-  end
+  # # Load metadatum properties by label
+  # def get_metadatum_by_label(label)
+    # data = execute_query({
+      # :url => backend_url+'whitelab/search/metadata/'+label,
+      # :headers => headers
+    # })
+    # data[0]
+  # end
   
   # # Load options for grouping by metadatum
   # def get_metadata_group_options(groups)
@@ -423,7 +405,8 @@ module Neo4jHelper
   end
   
   # Update metadatum in index
-  def update_metadatum(label, updates)
+  def update_metadatum(metadatum, updates)
+    label = "#{metadatum[:group]}_#{metadatum[:key]}"
     updates.each do |key, value|
       execute_query({
         :url => backend_url+'whitelab/search/metadata/'+label+'/update',

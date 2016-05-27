@@ -34,7 +34,8 @@ class ApplicationController < ActionController::Base
   end
   
   def set_backend
-    @backend = WhitelabBackend.instance
+    @whitelab = WhitelabBackend.instance
+    @metadata_handler = MetadataHandler.instance
   end
   
   # Set current tab
@@ -63,7 +64,7 @@ class ApplicationController < ActionController::Base
   # If Neo4j is used for the backend, then load its counter node
   def set_counter
     @counter = nil
-    if @backend.get_backend_type.eql?('neo4j')
+    if @whitelab.get_backend_type.eql?('neo4j')
       @counter = backend.get_counter_node
     end
   end
@@ -72,19 +73,19 @@ class ApplicationController < ActionController::Base
   def set_filtered_amount
     @filter = params.has_key?(:filter) ? params[:filter] : ''
     if !@filter.blank?
-      @total_tokens = @backend.get_total_word_token_count
-      @filtered_total_abs = @backend.get_filtered_token_count(@filter)
+      @total_tokens = @metadata_handler.get_total_word_count
+      @filtered_total_abs = @metadata_handler.get_filtered_word_count(@filter)
       perc = (@filtered_total_abs * 1.0) / @total_tokens
       @filtered_total_perc = format_percentage(perc * 100,1)
     else
-      @total_tokens = @backend.get_total_word_token_count
+      @total_tokens = @metadata_handler.get_total_word_count
       @filtered_total_abs = @total_tokens
       @filtered_total_perc = format_percentage(100.0,1)
     end
   end
   
   def get_translated_pos_heads
-    @backend.get_pos_heads(12, 0, "label", "asc")["pos_heads"].map{|pos_head| label = pos_head["label"]; return [t(:"pos_heads.keys.#{label}").capitalize, label+".*"]}
+    @whitelab.get_pos_heads(12, 0, "label", "asc")["pos_heads"].map{|pos_head| label = pos_head["label"]; return [t(:"pos_heads.keys.#{label}").capitalize, label+".*"]}
   end
   
 end

@@ -10,10 +10,10 @@ class PosTagsController < ApplicationController
       redirect_to 'admin/login'
     end
     set_pagination_params(0, 10, 'label')
-    data = @backend.get_pos_tags(@number, @offset, @sort, @order)
+    data = @whitelab.get_pos_tags(@number, @offset, @sort, @order)
     @postags = data['pos_tags']
     @total = data['total']
-    @corpora = @backend.get_corpus_titles
+    @corpora = @metadata_handler.load_corpora
   end
   
   # Show PoS tag properties
@@ -22,9 +22,9 @@ class PosTagsController < ApplicationController
       redirect_to 'admin/login'
     end
     if @label
-      @postag = @backend.get_pos_tag_by_label(@label)
-      @features = @backend.get_pos_tag_features_by_label(@label)
-      @types = @backend.get_pos_tag_types_by_label(10,0,'token_count','desc',@label)
+      @postag = @whitelab.get_pos_tag_by_label(@label)
+      @features = @whitelab.get_pos_tag_features_by_label(@label)
+      @types = @whitelab.get_pos_tag_types_by_label(10,0,'token_count','desc',@label)
     end
   end
   

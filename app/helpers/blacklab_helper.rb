@@ -33,27 +33,6 @@ module BlacklabHelper
     'blacklab'
   end
   
-  # Load list of collection titles in index
-  def get_collection_titles
-    get_titles('Collection')
-  end
-  
-  # Load list of corpus titles in index
-  def get_corpus_titles
-    get_titles('Corpus')
-  end
-  
-  def get_titles(key)
-    resp = execute_query({
-      :url => backend_url+"fields/#{key}_title",
-      :query => {
-        "outputformat" => "json"
-      },
-      :headers => { 'Content-Type' => 'application/json' }
-    })
-    resp["fieldValues"].keys
-  end
-  
   # Get node containing total counts for all node labels in index, not implemented for BlackLab
   def get_counter_node
   end
@@ -100,7 +79,7 @@ module BlacklabHelper
       if sentence_count > next_index
         snippet_length = sentences[next_index]["start"]
       else
-        snippet_length = get_document_token_count(xmlid)
+        snippet_length = MetadataHandler.instance.get_document_token_count(xmlid)
       end
       if sentence_count > index
         sentence = get_document_snippet(xmlid, sentences[index]["start"], snippet_length)
@@ -114,7 +93,7 @@ module BlacklabHelper
   
   def get_document_list
     docs = {}
-    get_corpus_titles.each do |corpus|
+    MetadataHandler.instance.load_corpora.each do |corpus|
       docs.merge!(get_corpus_document_list(corpus))
     end
     docs
@@ -139,6 +118,28 @@ module BlacklabHelper
         doc_info = doc["docInfo"]
         docs[doc["docPid"]] = {"token_count" => doc_info["lengthInTokens"], "corpus" => corpus, "collection" => doc_info["Collection_title"]}
       end
+      break unless resp["summary"]["windowHasNext"]
+      offset = offset + number
+    end
+    docs
+  end
+  
+  def get_document_id_list(filter)
+    docs = []
+    offset = 0
+    number = 500
+    while true do
+      resp = execute_query({
+        :url => backend_url+'docs',
+        :query => {
+          "outputformat" => "json",
+          "filter" => reformat_filters(filter),
+          "first" => offset,
+          "number" => number
+        },
+        :headers => headers
+      })
+      resp["docs"].each{ |doc| docs << doc["docPid"] }
       break unless resp["summary"]["windowHasNext"]
       offset = offset + number
     end
@@ -209,7 +210,7 @@ module BlacklabHelper
   end
   
   def get_document_statistics(xmlid)
-    token_count = get_document_token_count(xmlid)
+    token_count = MetadataHandler.instance.get_document_token_count(xmlid)
     contents = get_document_snippet(xmlid, 0, token_count)["match"]
     type_count = contents["word"].uniq.count
     lemma_count = contents["lemma"].uniq.count
@@ -223,7 +224,7 @@ module BlacklabHelper
   
   def get_filtered_content(query)
     contents = []
-    get_filtered_documents(query.filter).each do |doc|
+    MetadataHandler.instance.filter_documents(query.filter).each do |doc|
       contents = contents + get_document_content(doc, query.patt, 0, get_document_sentence_count(doc))
     end
     contents
@@ -306,10 +307,33 @@ module BlacklabHelper
     fields = resp["fieldInfo"]["metadataFields"]
     wanted = number == 0 ? fields : fields.keys[offset..offset+number]
     data = []
-    fields.each do |key, value|
-      data << value if wanted.include?(key)
+    fields.each do |label, field_data|
+      group = label.split('_')[0]
+      data << { :label => label, :group => group, :key => label.sub(/#{group}_/,'') } if wanted.include?(label)
     end
     return data
+  end
+  
+  # Load metadatum values by group and key
+  def get_metadatum_values_by_group_and_key(number, offset, sort, order, group, key)
+    if group.eql?('Metadata') || group.eql?(key)
+      get_metadatum_values_by_label(number, offset, sort, order, key)
+    else
+      get_metadatum_values_by_label(number, offset, sort, order, group+'_'+key)
+    end
+  end
+  
+  # Load metadatum values by label
+  def get_metadatum_values_by_label(number, offset, sort, order, label)
+    return nil if !label
+    resp = execute_query({
+      :url => backend_url+'fields/'+label,
+      :query => {
+        "outputformat" => "json"
+      },
+      :headers => { 'Content-Type' => 'application/json' }
+    })
+    return number == 0 ? resp["fieldValues"].keys : resp["fieldValues"].keys[offset..offset+number]
   end
   
   def get_pos_heads_counted(number, offset, sort, order)
@@ -333,7 +357,7 @@ module BlacklabHelper
       "label" => head,
       "token_count" => 0
     }
-    get_corpus_titles.each do |corpus|
+    MetadataHandler.instance.load_corpora.each do |corpus|
       while true do
         resp = execute_query({
           :url => backend_url+"/hits",
@@ -622,7 +646,7 @@ module BlacklabHelper
   
   def reformat_pos_tag(pos)
     obj = { "label" => pos.has_key?("label") ? pos["label"] : pos["identityDisplay"], "token_count" => 0 }
-    get_corpus_titles.each do |corpus|
+    MetadataHandler.instance.load_corpora.each do |corpus|
       pid = obj["label"].gsub(/\(/,'\(').gsub(/\)/,'\)').gsub(/\-/,'\-')
       patt = "[pos=\"#{pid}\"]"
       while true do

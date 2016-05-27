@@ -1,0 +1,498 @@
+---
+values:
+  "$AUDIOROOT/comp-g/nl/fn000007.wav":
+  - 9
+  "$AUDIOROOT/comp-g/nl/fn000008.wav":
+  - 10
+  "$AUDIOROOT/comp-g/nl/fn000069.wav":
+  - 11
+  "$AUDIOROOT/comp-g/nl/fn000076.wav":
+  - 12
+  "$AUDIOROOT/comp-g/nl/fn000079.wav":
+  - 13
+  "$AUDIOROOT/comp-g/nl/fn000115.wav":
+  - 14
+  "$AUDIOROOT/comp-g/nl/fn000141.wav":
+  - 15
+  "$AUDIOROOT/comp-g/nl/fn000142.wav":
+  - 16
+  "$AUDIOROOT/comp-g/nl/fn000143.wav":
+  - 17
+  "$AUDIOROOT/comp-g/nl/fn000144.wav":
+  - 18
+  "$AUDIOROOT/comp-g/nl/fn000145.wav":
+  - 19
+  "$AUDIOROOT/comp-g/nl/fn000146.wav":
+  - 20
+  "$AUDIOROOT/comp-g/nl/fn000147.wav":
+  - 21
+  "$AUDIOROOT/comp-g/nl/fn000148.wav":
+  - 22
+  "$AUDIOROOT/comp-g/nl/fn000149.wav":
+  - 23
+  "$AUDIOROOT/comp-g/nl/fn000150.wav":
+  - 24
+  "$AUDIOROOT/comp-g/nl/fn000151.wav":
+  - 25
+  "$AUDIOROOT/comp-g/nl/fn000152.wav":
+  - 26
+  "$AUDIOROOT/comp-g/nl/fn000153.wav":
+  - 27
+  "$AUDIOROOT/comp-g/nl/fn000154.wav":
+  - 28
+  "$AUDIOROOT/comp-g/nl/fn000155.wav":
+  - 29
+  "$AUDIOROOT/comp-g/nl/fn000156.wav":
+  - 30
+  "$AUDIOROOT/comp-g/nl/fn000157.wav":
+  - 31
+  "$AUDIOROOT/comp-g/nl/fn000158.wav":
+  - 32
+  "$AUDIOROOT/comp-g/nl/fn000159.wav":
+  - 33
+  "$AUDIOROOT/comp-g/nl/fn000160.wav":
+  - 34
+  "$AUDIOROOT/comp-g/nl/fn000161.wav":
+  - 35
+  "$AUDIOROOT/comp-g/nl/fn000162.wav":
+  - 36
+  "$AUDIOROOT/comp-g/nl/fn000163.wav":
+  - 37
+  "$AUDIOROOT/comp-g/nl/fn000164.wav":
+  - 38
+  "$AUDIOROOT/comp-g/nl/fn000165.wav":
+  - 39
+  "$AUDIOROOT/comp-g/nl/fn000166.wav":
+  - 40
+  "$AUDIOROOT/comp-g/nl/fn000167.wav":
+  - 41
+  "$AUDIOROOT/comp-g/nl/fn000168.wav":
+  - 42
+  "$AUDIOROOT/comp-g/nl/fn000169.wav":
+  - 43
+  "$AUDIOROOT/comp-g/nl/fn000170.wav":
+  - 44
+  "$AUDIOROOT/comp-g/nl/fn000171.wav":
+  - 45
+  "$AUDIOROOT/comp-g/nl/fn000172.wav":
+  - 46
+  "$AUDIOROOT/comp-g/nl/fn000173.wav":
+  - 47
+  "$AUDIOROOT/comp-g/nl/fn000174.wav":
+  - 48
+  "$AUDIOROOT/comp-g/nl/fn000175.wav":
+  - 49
+  "$AUDIOROOT/comp-g/nl/fn000176.wav":
+  - 50
+  "$AUDIOROOT/comp-g/nl/fn000177.wav":
+  - 51
+  "$AUDIOROOT/comp-g/nl/fn000178.wav":
+  - 52
+  "$AUDIOROOT/comp-g/nl/fn000191.wav":
+  - 53
+  "$AUDIOROOT/comp-g/nl/fn000192.wav":
+  - 54
+  "$AUDIOROOT/comp-g/nl/fn000193.wav":
+  - 55
+  "$AUDIOROOT/comp-g/nl/fn000194.wav":
+  - 56
+  "$AUDIOROOT/comp-g/nl/fn000195.wav":
+  - 57
+  "$AUDIOROOT/comp-g/nl/fn000196.wav":
+  - 58
+  "$AUDIOROOT/comp-g/nl/fn000197.wav":
+  - 59
+  "$AUDIOROOT/comp-g/nl/fn000198.wav":
+  - 60
+  "$AUDIOROOT/comp-g/nl/fn000199.wav":
+  - 61
+  "$AUDIOROOT/comp-g/nl/fn000200.wav":
+  - 62
+  "$AUDIOROOT/comp-g/nl/fn000201.wav":
+  - 63
+  "$AUDIOROOT/comp-g/nl/fn000202.wav":
+  - 64
+  "$AUDIOROOT/comp-g/nl/fn000203.wav":
+  - 65
+  "$AUDIOROOT/comp-g/nl/fn000204.wav":
+  - 66
+  "$AUDIOROOT/comp-g/nl/fn000208.wav":
+  - 67
+  "$AUDIOROOT/comp-g/nl/fn000211.wav":
+  - 68
+  "$AUDIOROOT/comp-g/nl/fn000212.wav":
+  - 69
+  "$AUDIOROOT/comp-g/nl/fn000213.wav":
+  - 70
+  "$AUDIOROOT/comp-g/nl/fn000214.wav":
+  - 71
+  "$AUDIOROOT/comp-g/nl/fn000215.wav":
+  - 72
+  "$AUDIOROOT/comp-g/nl/fn000216.wav":
+  - 73
+  "$AUDIOROOT/comp-g/nl/fn000217.wav":
+  - 74
+  "$AUDIOROOT/comp-g/nl/fn000218.wav":
+  - 75
+  "$AUDIOROOT/comp-g/nl/fn000219.wav":
+  - 76
+  "$AUDIOROOT/comp-g/nl/fn000220.wav":
+  - 77
+  "$AUDIOROOT/comp-g/nl/fn000221.wav":
+  - 78
+  "$AUDIOROOT/comp-g/nl/fn000222.wav":
+  - 79
+  "$AUDIOROOT/comp-g/nl/fn000226.wav":
+  - 80
+  "$AUDIOROOT/comp-g/nl/fn000227.wav":
+  - 81
+  "$AUDIOROOT/comp-g/nl/fn000228.wav":
+  - 82
+  "$AUDIOROOT/comp-g/nl/fn000229.wav":
+  - 83
+  "$AUDIOROOT/comp-g/nl/fn000230.wav":
+  - 84
+  "$AUDIOROOT/comp-g/nl/fn000231.wav":
+  - 85
+  "$AUDIOROOT/comp-g/nl/fn000232.wav":
+  - 86
+  "$AUDIOROOT/comp-g/nl/fn000233.wav":
+  - 87
+  "$AUDIOROOT/comp-g/nl/fn000234.wav":
+  - 88
+  "$AUDIOROOT/comp-g/nl/fn000235.wav":
+  - 89
+  "$AUDIOROOT/comp-g/nl/fn000236.wav":
+  - 90
+  "$AUDIOROOT/comp-g/nl/fn000237.wav":
+  - 91
+  "$AUDIOROOT/comp-g/nl/fn000238.wav":
+  - 92
+  "$AUDIOROOT/comp-g/nl/fn000241.wav":
+  - 93
+  "$AUDIOROOT/comp-g/nl/fn000242.wav":
+  - 94
+  "$AUDIOROOT/comp-g/nl/fn000243.wav":
+  - 95
+  "$AUDIOROOT/comp-g/nl/fn000244.wav":
+  - 96
+  "$AUDIOROOT/comp-g/nl/fn000245.wav":
+  - 97
+  "$AUDIOROOT/comp-g/nl/fn000246.wav":
+  - 98
+  "$AUDIOROOT/comp-g/vl/fv400017.wav":
+  - 99
+  "$AUDIOROOT/comp-g/vl/fv400059.wav":
+  - 100
+  "$AUDIOROOT/comp-g/vl/fv400060.wav":
+  - 101
+  "$AUDIOROOT/comp-g/vl/fv600001.wav":
+  - 102
+  "$AUDIOROOT/comp-g/vl/fv600002.wav":
+  - 103
+  "$AUDIOROOT/comp-g/vl/fv600003.wav":
+  - 104
+  "$AUDIOROOT/comp-g/vl/fv600004.wav":
+  - 105
+  "$AUDIOROOT/comp-g/vl/fv600005.wav":
+  - 106
+  "$AUDIOROOT/comp-g/vl/fv600006.wav":
+  - 107
+  "$AUDIOROOT/comp-g/vl/fv600007.wav":
+  - 108
+  "$AUDIOROOT/comp-g/vl/fv600008.wav":
+  - 109
+  "$AUDIOROOT/comp-g/vl/fv600009.wav":
+  - 110
+  "$AUDIOROOT/comp-g/vl/fv600010.wav":
+  - 111
+  "$AUDIOROOT/comp-g/vl/fv600011.wav":
+  - 112
+  "$AUDIOROOT/comp-g/vl/fv600012.wav":
+  - 113
+  "$AUDIOROOT/comp-g/vl/fv600013.wav":
+  - 114
+  "$AUDIOROOT/comp-g/vl/fv600014.wav":
+  - 115
+  "$AUDIOROOT/comp-g/vl/fv600015.wav":
+  - 116
+  "$AUDIOROOT/comp-g/vl/fv600016.wav":
+  - 117
+  "$AUDIOROOT/comp-g/vl/fv600017.wav":
+  - 118
+  "$AUDIOROOT/comp-g/vl/fv600018.wav":
+  - 119
+  "$AUDIOROOT/comp-g/vl/fv600019.wav":
+  - 120
+  "$AUDIOROOT/comp-g/vl/fv600020.wav":
+  - 121
+  "$AUDIOROOT/comp-g/vl/fv600021.wav":
+  - 122
+  "$AUDIOROOT/comp-g/vl/fv600331.wav":
+  - 123
+  "$AUDIOROOT/comp-g/vl/fv600332.wav":
+  - 124
+  "$AUDIOROOT/comp-g/vl/fv600333.wav":
+  - 125
+  "$AUDIOROOT/comp-g/vl/fv600334.wav":
+  - 126
+  "$AUDIOROOT/comp-g/vl/fv600335.wav":
+  - 127
+  "$AUDIOROOT/comp-g/vl/fv600336.wav":
+  - 128
+  "$AUDIOROOT/comp-g/vl/fv600337.wav":
+  - 129
+  "$AUDIOROOT/comp-g/vl/fv600338.wav":
+  - 130
+  "$AUDIOROOT/comp-g/vl/fv600572.wav":
+  - 131
+  "$AUDIOROOT/comp-g/vl/fv600573.wav":
+  - 132
+  "$AUDIOROOT/comp-g/vl/fv600574.wav":
+  - 133
+  "$AUDIOROOT/comp-g/vl/fv600575.wav":
+  - 134
+  "$AUDIOROOT/comp-g/vl/fv600576.wav":
+  - 135
+  "$AUDIOROOT/comp-g/vl/fv600577.wav":
+  - 136
+  "$AUDIOROOT/comp-g/vl/fv600578.wav":
+  - 137
+  "$AUDIOROOT/comp-g/vl/fv600579.wav":
+  - 138
+  "$AUDIOROOT/comp-g/vl/fv600580.wav":
+  - 139
+  "$AUDIOROOT/comp-g/vl/fv600581.wav":
+  - 140
+  "$AUDIOROOT/comp-g/vl/fv600582.wav":
+  - 141
+  "$AUDIOROOT/comp-g/vl/fv600583.wav":
+  - 142
+  "$AUDIOROOT/comp-g/vl/fv600588.wav":
+  - 143
+  "$AUDIOROOT/comp-g/vl/fv600589.wav":
+  - 144
+  "$AUDIOROOT/comp-g/vl/fv600590.wav":
+  - 145
+  "$AUDIOROOT/comp-g/vl/fv600591.wav":
+  - 146
+  "$AUDIOROOT/comp-g/vl/fv600592.wav":
+  - 147
+  "$AUDIOROOT/comp-g/vl/fv600593.wav":
+  - 148
+  "$AUDIOROOT/comp-g/vl/fv600594.wav":
+  - 149
+  "$AUDIOROOT/comp-g/vl/fv600595.wav":
+  - 150
+  "$AUDIOROOT/comp-g/vl/fv600596.wav":
+  - 151
+  "$AUDIOROOT/comp-g/vl/fv600597.wav":
+  - 152
+  "$AUDIOROOT/comp-g/vl/fv600598.wav":
+  - 153
+  "$AUDIOROOT/comp-g/vl/fv600623.wav":
+  - 154
+  "$AUDIOROOT/comp-g/vl/fv600624.wav":
+  - 155
+  "$AUDIOROOT/comp-g/vl/fv600625.wav":
+  - 156
+  "$AUDIOROOT/comp-g/vl/fv600626.wav":
+  - 157
+  "$AUDIOROOT/comp-g/vl/fv600627.wav":
+  - 158
+  "$AUDIOROOT/comp-g/vl/fv600628.wav":
+  - 159
+  "$AUDIOROOT/comp-g/vl/fv600629.wav":
+  - 160
+  "$AUDIOROOT/comp-g/vl/fv600630.wav":
+  - 161
+  "$AUDIOROOT/comp-g/vl/fv600631.wav":
+  - 162
+  "$AUDIOROOT/comp-g/vl/fv600632.wav":
+  - 163
+  "$AUDIOROOT/comp-g/vl/fv600633.wav":
+  - 164
+  "$AUDIOROOT/comp-g/vl/fv600634.wav":
+  - 165
+  "$AUDIOROOT/comp-g/vl/fv600635.wav":
+  - 166
+  "$AUDIOROOT/comp-g/vl/fv600636.wav":
+  - 167
+  "$AUDIOROOT/comp-g/vl/fv600637.wav":
+  - 168
+  "$AUDIOROOT/comp-g/vl/fv600638.wav":
+  - 169
+  "$AUDIOROOT/comp-g/vl/fv600639.wav":
+  - 170
+  "$AUDIOROOT/comp-g/vl/fv600640.wav":
+  - 171
+  "$AUDIOROOT/comp-g/vl/fv600641.wav":
+  - 172
+  "$AUDIOROOT/comp-g/vl/fv600642.wav":
+  - 173
+  "$AUDIOROOT/comp-g/vl/fv600643.wav":
+  - 174
+  "$AUDIOROOT/comp-g/vl/fv600644.wav":
+  - 175
+  "$AUDIOROOT/comp-g/vl/fv600645.wav":
+  - 176
+  "$AUDIOROOT/comp-g/vl/fv600646.wav":
+  - 177
+  "$AUDIOROOT/comp-g/vl/fv600647.wav":
+  - 178
+  "$AUDIOROOT/comp-g/vl/fv600648.wav":
+  - 179
+  "$AUDIOROOT/comp-g/vl/fv600649.wav":
+  - 180
+  "$AUDIOROOT/comp-g/vl/fv600650.wav":
+  - 181
+  "$AUDIOROOT/comp-g/vl/fv600651.wav":
+  - 182
+  "$AUDIOROOT/comp-g/vl/fv600652.wav":
+  - 183
+  "$AUDIOROOT/comp-g/vl/fv600653.wav":
+  - 184
+  "$AUDIOROOT/comp-g/vl/fv600654.wav":
+  - 185
+  "$AUDIOROOT/comp-g/vl/fv600655.wav":
+  - 186
+  "$AUDIOROOT/comp-g/vl/fv600656.wav":
+  - 187
+  "$AUDIOROOT/comp-g/vl/fv600657.wav":
+  - 188
+  "$AUDIOROOT/comp-g/vl/fv600658.wav":
+  - 189
+  "$AUDIOROOT/comp-g/vl/fv600659.wav":
+  - 190
+  "$AUDIOROOT/comp-g/vl/fv600660.wav":
+  - 191
+  "$AUDIOROOT/comp-g/vl/fv600667.wav":
+  - 192
+  "$AUDIOROOT/comp-g/vl/fv600668.wav":
+  - 193
+  "$AUDIOROOT/comp-g/vl/fv600669.wav":
+  - 194
+  "$AUDIOROOT/comp-g/vl/fv600670.wav":
+  - 195
+  "$AUDIOROOT/comp-g/vl/fv600671.wav":
+  - 196
+  "$AUDIOROOT/comp-g/vl/fv600672.wav":
+  - 197
+  "$AUDIOROOT/comp-g/vl/fv600673.wav":
+  - 198
+  "$AUDIOROOT/comp-g/vl/fv600674.wav":
+  - 199
+  "$AUDIOROOT/comp-g/vl/fv600675.wav":
+  - 200
+  "$AUDIOROOT/comp-g/vl/fv600676.wav":
+  - 201
+  "$AUDIOROOT/comp-g/vl/fv600677.wav":
+  - 202
+  "$AUDIOROOT/comp-g/vl/fv600678.wav":
+  - 203
+  "$AUDIOROOT/comp-g/vl/fv600679.wav":
+  - 204
+  "$AUDIOROOT/comp-g/vl/fv600680.wav":
+  - 205
+  "$AUDIOROOT/comp-g/vl/fv600681.wav":
+  - 206
+  "$AUDIOROOT/comp-g/vl/fv600682.wav":
+  - 207
+  "$AUDIOROOT/comp-g/vl/fv600683.wav":
+  - 208
+  "$AUDIOROOT/comp-g/vl/fv600684.wav":
+  - 209
+  "$AUDIOROOT/comp-g/vl/fv600685.wav":
+  - 210
+  "$AUDIOROOT/comp-g/vl/fv600686.wav":
+  - 211
+  "$AUDIOROOT/comp-g/vl/fv600687.wav":
+  - 212
+  "$AUDIOROOT/comp-g/vl/fv600688.wav":
+  - 213
+  "$AUDIOROOT/comp-g/vl/fv600689.wav":
+  - 214
+  "$AUDIOROOT/comp-g/vl/fv600690.wav":
+  - 215
+  "$AUDIOROOT/comp-g/vl/fv600691.wav":
+  - 216
+  "$AUDIOROOT/comp-g/vl/fv600692.wav":
+  - 217
+  "$AUDIOROOT/comp-g/vl/fv600693.wav":
+  - 218
+  "$AUDIOROOT/comp-g/vl/fv600694.wav":
+  - 219
+  "$AUDIOROOT/comp-g/vl/fv600695.wav":
+  - 220
+  "$AUDIOROOT/comp-g/vl/fv600696.wav":
+  - 221
+  "$AUDIOROOT/comp-g/vl/fv600697.wav":
+  - 222
+  "$AUDIOROOT/comp-g/vl/fv600698.wav":
+  - 223
+  "$AUDIOROOT/comp-g/vl/fv600699.wav":
+  - 224
+  "$AUDIOROOT/comp-g/vl/fv600700.wav":
+  - 225
+  "$AUDIOROOT/comp-g/vl/fv600701.wav":
+  - 226
+  "$AUDIOROOT/comp-g/vl/fv600702.wav":
+  - 227
+  "$AUDIOROOT/comp-g/vl/fv600703.wav":
+  - 228
+  "$AUDIOROOT/comp-g/vl/fv600704.wav":
+  - 229
+  "$AUDIOROOT/comp-g/vl/fv600705.wav":
+  - 230
+  "$AUDIOROOT/comp-g/vl/fv600706.wav":
+  - 231
+  "$AUDIOROOT/comp-g/vl/fv600707.wav":
+  - 232
+  "$AUDIOROOT/comp-g/vl/fv600708.wav":
+  - 233
+  "$AUDIOROOT/comp-g/vl/fv600709.wav":
+  - 234
+  "$AUDIOROOT/comp-g/vl/fv600710.wav":
+  - 235
+  "$AUDIOROOT/comp-g/vl/fv600711.wav":
+  - 236
+  "$AUDIOROOT/comp-g/vl/fv600712.wav":
+  - 237
+  "$AUDIOROOT/comp-g/vl/fv600713.wav":
+  - 238
+  "$AUDIOROOT/comp-g/vl/fv600714.wav":
+  - 239
+  "$AUDIOROOT/comp-g/vl/fv600715.wav":
+  - 240
+  "$AUDIOROOT/comp-g/vl/fv600716.wav":
+  - 241
+  "$AUDIOROOT/comp-g/vl/fv600717.wav":
+  - 242
+  "$AUDIOROOT/comp-g/vl/fv600718.wav":
+  - 243
+  "$AUDIOROOT/comp-g/vl/fv600719.wav":
+  - 244
+  "$AUDIOROOT/comp-g/vl/fv600720.wav":
+  - 245
+  "$AUDIOROOT/comp-g/vl/fv601203.wav":
+  - 246
+  "$AUDIOROOT/comp-g/vl/fv601204.wav":
+  - 247
+  "$AUDIOROOT/comp-g/vl/fv601205.wav":
+  - 248
+  "$AUDIOROOT/comp-g/vl/fv601206.wav":
+  - 249
+  "$AUDIOROOT/comp-g/vl/fv601207.wav":
+  - 250
+  "$AUDIOROOT/comp-g/vl/fv601208.wav":
+  - 251
+  "$AUDIOROOT/comp-g/vl/fv601209.wav":
+  - 252
+  "$AUDIOROOT/comp-g/vl/fv601210.wav":
+  - 253
+  "$AUDIOROOT/comp-g/vl/fv601211.wav":
+  - 254
+  "$AUDIOROOT/comp-g/vl/fv601212.wav":
+  - 255
+  "$AUDIOROOT/comp-g/vl/fv601213.wav":
+  - 256

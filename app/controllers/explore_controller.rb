@@ -27,13 +27,13 @@ class ExploreController < ApplicationController
   
   # Load treemap data for Explore Corpora interface
   def treemap
-    res = @backend.get_filtered_group_composition(@option, @filter)
+    res = @metadata_handler.get_filtered_group_composition(@option, @filter)
     @data = format_for_treemap(res, @option, @filtered_total_abs)
   end
   
   # Load bubble chart data for Explore Corpora interface
   def bubble
-    res = @backend.get_filtered_group_composition(@option, @filter)
+    res = @metadata_handler.get_filtered_group_composition(@option, @filter)
     @data = format_for_bubble_chart(res, @option, @filtered_total_abs)
   end
   
@@ -51,7 +51,7 @@ class ExploreController < ApplicationController
   def vocabulary_growth
     if @query && (@query.query_result.blank? || (@query.query_result.result.blank? && (!@query.query_result.is_running || !@query.query_result.is_finished)))
       @document = { 'types' => [{ name: '', x: 0, y: 0 }], 'lemmas' => [{ name: '', x: 0, y: 0 }] }
-      data = @backend.get_filtered_content(@query.query_result)
+      data = @whitelab.get_filtered_content(@query.query_result)
       types_seen = []
       t = 0
       lemmas_seen = []
@@ -102,7 +102,7 @@ class ExploreController < ApplicationController
     @view = 8
     if @query && [8,16].include?(@query.query_result.view)
       @view = @query.query_result.view
-      @groups = @backend.get_group_options(@query.query_result.view, 'explore')
+      @groups = @metadata_handler.get_group_options(@query.query_result.view, 'explore')
       if !@query.query_result.group.blank?
         @group = @query.query_result.group.gsub(/ /,"_")
       end
@@ -168,7 +168,7 @@ class ExploreController < ApplicationController
   
   # Get all grouping options for treemap in explore/corpora
   def set_treemap_options
-    @options = @backend.get_group_options(16, 'explore')
+    @options = @metadata_handler.get_group_options(16, 'explore')
   end
   
   # Get document id from parameters
