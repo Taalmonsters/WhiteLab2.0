@@ -141,7 +141,7 @@ class MetadataHandler
       groups['right'] = []
       ['hit','left','right'].each do |position|
         ['text','lemma','pos','phonetic'].each do |annotation|
-          groups[position] << [annotation, position.eql?('hit') ? position+'_'+annotation : annotation+'_'+position]
+          groups[position] << [annotation, position+'_'+annotation]
         end
       end
     end
