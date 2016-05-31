@@ -328,7 +328,7 @@ class MetadataHandler
   end
   
   def read_file(file, key)
-    @format.eql?(:json) ? JSON.parse(File.read(file))[key] : YAML.load_file(file)[key]
+    @format.eql?(:json) ? Yajl::Parser.parse(File.read(file))[key] : YAML.load_file(file)[key]
   end
   
   def reformat_metadatum(metadatum_obj)

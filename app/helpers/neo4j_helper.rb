@@ -71,7 +71,7 @@ module Neo4jHelper
   
   def get_document_list
     data = `curl --header "Authorization: Basic bmVvNGo6Nzc0M21vbnN0ZXJzODE=" -H accept:application/json -H content-type:application/json -d '{"statements": [{ "statement": "MATCH (d:Document)<-[:HAS_DOCUMENT]->(cc:Collection) MATCH (cc)<-[:HAS_COLLECTION]-(c:Corpus) RETURN DISTINCT d.xmlid AS xmlid, d.token_count AS token_count, c.title AS corpus, cc.title AS collection;" }]}' http://localhost:7474/db/data/transaction/commit`;
-    data = JSON.parse(data)
+    data = Yajl::Parser.parse(data)
     docs = {}
     data["results"][0]["data"].each do |doc_row|
       doc = doc_row["row"]

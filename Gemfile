@@ -12,6 +12,7 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'json'
+gem 'yajl-ruby', require: 'yajl'
 gem 'bootstrap-sass', '~> 3.2.0'
 gem "rails-bootstrap-helpers"
 gem 'autoprefixer-rails'

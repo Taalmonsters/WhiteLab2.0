@@ -53,7 +53,7 @@ class AdminController < ApplicationController
               params[:page] = 'cql'
               @cql_query = Query::SearchQuery.new(params)
               @cql_query.result = get_hits_for_cql_query(params[:query], 'document', 5, 0)
-              @cql_query.json = JSON.parse(@cql_query.result['json'])
+              @cql_query.json = Yajl::Parser.parse(@cql_query.result['json'])
               @cql_query.hits_json = @cql_query.result['hits']
               @cql_query.cypher = @cql_query.result['cypher']
             rescue JSON::ParserError
