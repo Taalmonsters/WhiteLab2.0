@@ -66,11 +66,11 @@ class MetadataHandler
     list = @fields[label]
     field_values = @metadata[label]['values']
     if no_filter
-      return list.each_index.group_by{|i| list[i] }.map{|value,doc_indices| { option => field_values[value], 'hit_count' => doc_indices.map{|d| @token_counts[d] }.reduce(:+), 'document_count' => doc_indices.size } }
+      return list.each_index.group_by{|i| list[i] }.map{|value,doc_indices| { option => field_values[value], 'hit_count' => doc_indices.map{|d| @token_counts[d] }.reduce(:+), 'document_count' => doc_indices.size } if value }
     else
       filtered_doc_indices = filter_documents(filter)
       grouped = filtered_doc_indices.group_by{|i| list[i] }
-      return grouped.map{|value,doc_indices| { option => field_values[value], 'hit_count' => doc_indices.map{|d| @token_counts[d] }.reduce(:+), 'document_count' => doc_indices.size } }
+      return grouped.map{|value,doc_indices| { option => field_values[value], 'hit_count' => doc_indices.map{|d| @token_counts[d] }.reduce(:+), 'document_count' => doc_indices.size } if value }
     end
   end
   
