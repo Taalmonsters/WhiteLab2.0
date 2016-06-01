@@ -10,6 +10,8 @@ class MetadataHandler
     @total_word_count = config.total_token_count
     backend = @whitelab.get_backend_type
     rroot = Rails.root
+    documents_file = rroot.join("config", "metadata_#{@whitelab.get_backend_type}", "documents.#{@format}")
+    metadata_file = rroot.join("config", "metadata_#{@whitelab.get_backend_type}", "metadata.#{@format}")
     generate_metadata_files(backend) if !File.exists?(documents_file) || !File.exists?(metadata_file)
     @documents = read_file(documents_file)
     @metadata = read_file(metadata_file)
