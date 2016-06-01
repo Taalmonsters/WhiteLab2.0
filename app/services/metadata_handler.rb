@@ -1,8 +1,5 @@
-require 'singleton'
-
 # The MetadataHandler class handles all document metadata
 class MetadataHandler
-  include Singleton
   include DataFormatHelper
   
   def initialize
@@ -22,6 +19,12 @@ class MetadataHandler
     @limit = @doc_ids.size - 1
     set_total_word_count if @total_word_count <= 0
     Rails.logger.info "Metadata handler initialized."
+  end
+
+  @@instance = MetadataHandler.new
+
+  def self.instance
+    return @@instance
   end
   
   # Filter document list
@@ -324,4 +327,5 @@ class MetadataHandler
     end
   end
   
+  private_class_method :new
 end
