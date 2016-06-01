@@ -19,9 +19,7 @@ logger.info "Checking server connection..."
 check = backend.execute_query(data)
 if (backend.get_backend_type.eql?('neo4j') && check.has_key?("neo4j_version")) || (backend.get_backend_type.eql?('blacklab') && check.has_key?("status") && check["status"].eql?("available"))
   logger.info "Server is up."
-  logger.info "Initializing metadata handler..."
   metadata_handler = MetadataHandler.instance
-  logger.info "Metadata handler initialized."
 else
   logger.error "Failed to connect to server!"
 end

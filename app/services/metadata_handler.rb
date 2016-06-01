@@ -6,6 +6,7 @@ class MetadataHandler
   include DataFormatHelper
   
   def initialize
+    Rails.logger.info "Initializing metadata handler..."
     @whitelab = WhitelabBackend.instance
     config = Rails.configuration.x
     @format = config.metadata_file_format
@@ -20,6 +21,7 @@ class MetadataHandler
     @token_counts = @documents["token_counts"]
     @limit = @doc_ids.size - 1
     set_total_word_count if @total_word_count == 0
+    Rails.logger.info "Metadata handler initialized."
   end
   
   # Filter document list
