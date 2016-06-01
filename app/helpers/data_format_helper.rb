@@ -59,104 +59,25 @@ module DataFormatHelper
   
   # Format corpus composition as Highcharts bubble chart
   def format_for_bubble_chart(data, title, filtered_token_count)
-    bubble = []
     max_doc_count = 0
     if data.any?
-      has_unknown = false
-      found_token_count = 0
-      data.each do |row|
-        hit_count = row['hit_count']
-        doc_count = row['document_count']
-        rtitle = row[title].to_s
-        if rtitle.blank? || rtitle.eql?('Unknown')
-          has_unknown = true
-          rtitle = 'Unknown'
-        end
-        found_token_count = found_token_count + hit_count
-        bubble << {
-          'name' => rtitle,
-          'x' => hit_count,
-          'y' => hit_count / doc_count,
-          'z' => doc_count
-        }
-        if doc_count > max_doc_count
-          max_doc_count = doc_count
-        end
-      end
-      if found_token_count < filtered_token_count
-        rest_count = filtered_token_count - found_token_count
-        if has_unknown
-          bubble.each do |child|
-            if child['name'].eql?('Unknown')
-              child['x'] = child['x'] + rest_count
-            end
-          end
-        else
-          bubble << {
-            'name' => 'Unknown',
-            'x' => rest_count,
-            'y' => rest_count,
-            'z' => 1
-          }
-        end
-      end
+      data.sort!{|group| x['document_count'] }.reverse!
+      max_doc_count = data[0]['document_count']
+      data.map!{|group| { 'name' => group[title], 'x' => group['hit_count'], 'y' => group['hit_count'] / group['document_count'], 'z' => group['document_count'] } }
     else
-      bubble << {
-        'name' => 'Unknown',
-        'x' => filtered_token_count,
-        'y' => 0,
-        'z' => 0
-      }
+      data = [{ 'name' => 'Unknown', 'x' => filtered_token_count, 'y' => 0, 'z' => 0 }]
     end
-    {
-      "title" => title,
-      "data" => bubble,
-      "max_doc_count" => max_doc_count
-    }
+    return { "title" => title, "data" => data, "max_doc_count" => max_doc_count }
   end
   
   # Format corpus composition as Highcharts treemap
   def format_for_treemap(data, title, filtered_token_count)
-    treemap = {}
-    treemap['name'] = title
-    treemap['children'] = []
     if data.any?
-      has_unknown = false
-      found_token_count = 0
-      data.each do |row|
-        trow = {}
-        rtitle = row[title].to_s
-        if rtitle.blank? || rtitle.eql?('Unknown')
-          has_unknown = true
-          rtitle = 'Unknown'
-        end
-        found_token_count = found_token_count + row['hit_count']
-        trow['name'] = rtitle
-        trow['size'] = row['hit_count']
-        treemap['children'] << trow
-      end
-      if found_token_count < filtered_token_count
-        rest_count = filtered_token_count - found_token_count
-        if has_unknown
-          treemap['children'].each do |child|
-            if child['name'].eql?('Unknown')
-              child['size'] = child['size'] + rest_count
-            end
-          end
-        else
-          trow = {}
-          trow['name'] = 'Unknown'
-          trow['size'] = rest_count
-          treemap['children'] << trow
-        end
-      end
+      data.map!{|group| { 'name' => group[title], 'size' => group['hit_count'] } }
     else
-      trow = {}
-      trow['name'] = 'Unknown'
-      trow['size'] = filtered_token_count
-      treemap['children'] << trow
+      data = [{ 'name' => 'Unknown', 'size' => 0 }]
     end
-    treemap
+    return { 'name' => title, 'size' => filtered_token_count, 'children' => data }
   end
   
   # Convert timestamp to seconds
