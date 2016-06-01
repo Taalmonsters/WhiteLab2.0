@@ -1,5 +1,8 @@
+require 'singleton'
+
 # The MetadataHandler class handles all document metadata
 class MetadataHandler
+  include Singleton
   include DataFormatHelper
   
   def initialize
@@ -10,8 +13,6 @@ class MetadataHandler
     @total_word_count = config.total_token_count
     backend = @whitelab.get_backend_type
     rroot = Rails.root
-    documents_file = rroot.join("config", "metadata_#{@whitelab.get_backend_type}", "documents.#{@format}")
-    metadata_file = rroot.join("config", "metadata_#{@whitelab.get_backend_type}", "metadata.#{@format}")
     generate_metadata_files(backend) if !File.exists?(documents_file) || !File.exists?(metadata_file)
     @documents = read_file(documents_file)
     @metadata = read_file(metadata_file)
@@ -21,12 +22,6 @@ class MetadataHandler
     @limit = @doc_ids.size - 1
     set_total_word_count if @total_word_count <= 0
     Rails.logger.info "Metadata handler initialized."
-  end
-
-  @@instance = MetadataHandler.new
-
-  def self.instance
-    return @@instance
   end
   
   # Filter document list
@@ -329,5 +324,4 @@ class MetadataHandler
     end
   end
   
-  private_class_method :new
 end
