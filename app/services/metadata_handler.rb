@@ -35,7 +35,7 @@ class MetadataHandler
     docs = []
     filter_to_hash(filter_str).each do |group, keys|
       keys.each do |key, mdata|
-        metadatum = {'group' => group, 'key' => key}
+        metadatum = get_metadatum(group, key)
         mdata.each do |set, values|
           if values.any?
             set_matches = get_documents_matching_values(metadatum, values, set.eql?(:negative))
