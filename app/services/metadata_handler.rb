@@ -107,6 +107,7 @@ class MetadataHandler
         field = I18n.translate(:"#{arr[0]}")
         groups[group] << [field, arr[1]]
       end
+      groups[group].sort!
     end
     return groups
   end
