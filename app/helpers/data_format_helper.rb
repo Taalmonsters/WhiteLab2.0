@@ -61,7 +61,7 @@ module DataFormatHelper
   def format_for_bubble_chart(data, title, filtered_token_count)
     max_doc_count = 0
     if data.any?
-      data.sort!{|group| x['document_count'] }.reverse!
+      data.sort!{|group| group['document_count'] }.reverse!
       max_doc_count = data[0]['document_count']
       data.map!{|group| { 'name' => group[title], 'x' => group['hit_count'], 'y' => group['hit_count'] / group['document_count'], 'z' => group['document_count'] } }
     else
