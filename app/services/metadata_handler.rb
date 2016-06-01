@@ -20,7 +20,7 @@ class MetadataHandler
     @doc_ids = @documents["document_ids"]
     @token_counts = @documents["token_counts"]
     @limit = @doc_ids.size - 1
-    set_total_word_count if @total_word_count == 0
+    set_total_word_count if @total_word_count <= 0
     Rails.logger.info "Metadata handler initialized."
   end
   
