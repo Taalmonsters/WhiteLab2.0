@@ -65,15 +65,12 @@ module ApplicationHelper
     
     changed = false
     
-    MetadataHandler.instance.metadata.each do |group, keys|
-      keys.each do |key, kdata|
-        data.each do |lang, ldata|
-          ldata, changed_group = set_metadata_translation(ldata, 'group', group)
-          ldata, changed_key = set_metadata_translation(ldata, 'key', key)
-          changed = changed ? changed : changed_group || changed_key
-        end
+    MetadataHandler.instance.metadata.each do |label, metadatum|
+      data.each do |lang, ldata|
+        ldata, changed_group = set_metadata_translation(ldata, 'group', metadatum['group'])
+        ldata, changed_key = set_metadata_translation(ldata, 'key', metadatum['key'])
+        changed = changed ? changed : changed_group || changed_key
       end
-      
     end
     
     if changed

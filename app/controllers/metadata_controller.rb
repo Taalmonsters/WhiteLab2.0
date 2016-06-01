@@ -52,7 +52,7 @@ class MetadataController < ApplicationController
       @rule_id = params[:rule_id]
     end
     if @group && @key
-      @values, value_count = @metadata_handler.load_values(@metadata_handler.generate_metadatum_object(@group,@key))
+      @values = @metadatum['values']
       @value = params[:value]
       @operator = params[:operator]
     end
@@ -60,16 +60,17 @@ class MetadataController < ApplicationController
   
   # Load metadatum values by group and key
   def values
-    @values, @value_count = @metadata_handler.load_values(@metadata_handler.generate_metadatum_object(@group,@key))
+    @values = @metadatum['values']
+    @value_count = @metadatum['value_count']
     @value_list_incomplete = false
-    if @values.blank?
-      mvalues = @metadata_handler.load_values_from_server(0, 0, "value", "asc", @group, @key)
-      @values = mvalues.map{|x| x["value"]}
-    else
-      if !@value_count.blank? && @value_count > @values.size
-        @value_list_incomplete = true
-      end
-    end
+    # if @values.blank?
+      # mvalues = @metadata_handler.load_values_from_server(0, 0, "value", "asc", @group, @key)
+      # @values = mvalues.map{|x| x["value"]}
+    # else
+      # if !@value_count.blank? && @value_count > @values.size
+        # @value_list_incomplete = true
+      # end
+    # end
     @rule_id = 'rule0'
     if params[:rule_id]
       @rule_id = params[:rule_id]
@@ -99,12 +100,12 @@ class MetadataController < ApplicationController
       @label = params[:label]
       @group = @label.split('_')[0]
       @key = @label.sub(/#{@group}_/,'')
-      @metadatum = @metadata_handler.get_metadatum(@metadata_handler.generate_metadatum_object(@group,@key))
+      @metadatum = @metadata_handler.get_metadatum(@group,@key)
     elsif params[:group] && params[:key]
       @group = params[:group].sub(/\_$/,'')
       @key = params[:key]
       @label = "#{@group}_#{@key}"
-      @metadatum = @metadata_handler.get_metadatum(@metadata_handler.generate_metadatum_object(@group,@key))
+      @metadatum = @metadata_handler.get_metadatum(@group,@key)
     end
   end
   

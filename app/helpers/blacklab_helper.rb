@@ -225,7 +225,8 @@ module BlacklabHelper
   def get_filtered_content(query)
     contents = []
     MetadataHandler.instance.filter_documents(query.filter).each do |doc|
-      contents = contents + get_document_content(doc, query.patt, 0, get_document_sentence_count(doc))
+      doc_id = MetadataHandler.instance.get_document_id(doc)
+      contents = contents + get_document_content(doc_id, query.patt, 0, get_document_sentence_count(doc_id))
     end
     contents
   end
@@ -315,13 +316,13 @@ module BlacklabHelper
   end
   
   # Load metadatum values by group and key
-  def get_metadatum_values_by_group_and_key(number, offset, sort, order, group, key)
-    if group.eql?('Metadata') || group.eql?(key)
-      get_metadatum_values_by_label(number, offset, sort, order, key)
-    else
-      get_metadatum_values_by_label(number, offset, sort, order, group+'_'+key)
-    end
-  end
+  # def get_metadatum_values_by_group_and_key(number, offset, sort, order, group, key)
+    # if group.eql?('Metadata') || group.eql?(key)
+      # get_metadatum_values_by_label(number, offset, sort, order, key)
+    # else
+      # get_metadatum_values_by_label(number, offset, sort, order, group+'_'+key)
+    # end
+  # end
   
   # Load metadatum values by label
   def get_metadatum_values_by_label(number, offset, sort, order, label)

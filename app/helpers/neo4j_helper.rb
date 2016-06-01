@@ -234,21 +234,21 @@ module Neo4jHelper
     # groups
   # end
   
-  # Load metadatum values by group and key
-  def get_metadatum_values_by_group_and_key(number, offset, sort, order, group, key)
-    data = execute_query({
-      :url => backend_url+'whitelab/search/metadata/'+group+'/'+key+'/values',
-      :query => { 
-        "number" => number,
-        "offset" => offset,
-        "sort" => sort,
-        "order" => order,
-        "count" => false
-      },
-      :headers => headers
-    })
-    data['values']
-  end
+  # # Load metadatum values by group and key
+  # def get_metadatum_values_by_group_and_key(number, offset, sort, order, group, key)
+    # data = execute_query({
+      # :url => backend_url+'whitelab/search/metadata/'+group+'/'+key+'/values',
+      # :query => { 
+        # "number" => number,
+        # "offset" => offset,
+        # "sort" => sort,
+        # "order" => order,
+        # "count" => false
+      # },
+      # :headers => headers
+    # })
+    # data['values']
+  # end
   
   # Load metadatum values by label
   def get_metadatum_values_by_label(number, offset, sort, order, label)
