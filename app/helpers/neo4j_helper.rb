@@ -100,6 +100,16 @@ module Neo4jHelper
     data[key]
   end
   
+  def get_document_snippet(xmlid, offset, snippet_size)
+    #TODO
+    return {}
+  end
+  
+  def get_document_xml_content(xmlid)
+    #TODO
+    return ''
+  end
+  
   def get_filtered_content(query)
     execute_query({
       :url => backend_url+'whitelab/search/metadata/content',
