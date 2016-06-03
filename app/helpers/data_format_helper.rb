@@ -35,28 +35,6 @@ module DataFormatHelper
     pro.round(d).to_s+" %"
   end
   
-  # Format Neo4j vocabulary growth output as Highcharts line chart
-  def format_for_vocabulary_growth(data)
-    growth = { 'types' => [{ name: '', x: 0, y: 0 }], 'lemmas' => [{ name: '', x: 0, y: 0 }] }
-    types_seen = []
-    t = 0
-    lemmas_seen = []
-    l = 0
-    data.each do |token|
-      t = t + 1
-      if !types_seen.include?(token['word_type'])
-        types_seen << token['word_type']
-      end
-      l = l + 1
-      if !lemmas_seen.include?(token['lemma'])
-        lemmas_seen << token['lemma']
-      end
-      growth['types'] << { name: token['word_type'], x: t, y: types_seen.size }
-      growth['lemmas'] << { name: token['lemma'], x: l, y: lemmas_seen.size }
-    end
-    { title: 'Vocabulary growth', data: [{ name: 'word_types', color: '#A90C28', data: growth['types'] }, { name: 'lemmas', color: '#53c4c3', data: growth['lemmas'] }] }
-  end
-  
   # Format corpus composition as Highcharts bubble chart
   def format_for_bubble_chart(data, title, filtered_token_count)
     max_doc_count = 0
