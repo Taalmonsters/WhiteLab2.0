@@ -1,41 +1,41 @@
-<div id="column<%= @column %>-box<%= @box %>-field<%= @field %>" class="advanced-field">
+<div id="column<%= @field[:column] %>-box<%= @field[:box] %>-field<%= @field[:field] %>" class="advanced-field">
 	<div class="field-left inline top-aligned">
-		<div class="field-remove hidden"><a href="#" class="remove-field" data-column="<%= @column %>" data-box="<%= @box %>" data-field="<%= @field %>"><%= image_tag 'minus.png' %></a></div>
+		<div class="field-remove hidden"><a href="#" class="remove-field" data-column="<%= @field[:column] %>" data-box="<%= @field[:box] %>" data-field="<%= @field[:field] %>"><%= image_tag 'minus.png' %></a></div>
 	</div>
 	<div class="inline">
 		<div>
 			<div class="inline type-select">
-				<select class="token-type" data-column="<%= @column %>" data-box="<%= @box %>" data-field="<%= @field %>">
-					<option value="word" <%= @token_type.eql?('word') ? 'selected="true"' : '' %>><%= t(:"data_labels.keys.word") %></option>
-					<option value="lemma" <%= @token_type.eql?('lemma') ? 'selected="true"' : '' %>><%= t(:"data_labels.keys.lemma") %></option>
-					<option value="pos" <%= @token_type.eql?('pos') ? 'selected="true"' : '' %>><%= t(:"data_labels.keys.pos") %></option>
-					<option value="phonetic" <%= @token_type.eql?('phonetic') ? 'selected="true"' : '' %>><%= t(:"data_labels.keys.phonetic") %></option>
+				<select class="token-type" data-column="<%= @field[:column] %>" data-box="<%= @field[:box] %>" data-field="<%= @field[:field] %>">
+					<option value="word" <%= @field_values[:token_type].eql?('word') ? 'selected="true"' : '' %>><%= t(:"data_labels.keys.word") %></option>
+					<option value="lemma" <%= @field_values[:token_type].eql?('lemma') ? 'selected="true"' : '' %>><%= t(:"data_labels.keys.lemma") %></option>
+					<option value="pos" <%= @field_values[:token_type].eql?('pos') ? 'selected="true"' : '' %>><%= t(:"data_labels.keys.pos") %></option>
+					<option value="phonetic" <%= @field_values[:token_type].eql?('phonetic') ? 'selected="true"' : '' %>><%= t(:"data_labels.keys.phonetic") %></option>
 				</select>
 			</div>
 			<div class="inline operator-select">
 				<select class="token-operator">
-					<option value="is" <%= @operator.eql?('is') ? 'selected="true"' : '' %>><%= t(:"operators.keys.is") %></option>
-					<option value="not" <%= @operator.eql?('not') ? 'selected="true"' : '' %>><%= t(:"operators.keys.not") %></option>
-					<option value="contains" <%= @operator.eql?('contains') ? 'selected="true"' : '' %>><%= t(:"operators.keys.contains") %></option>
-					<option value="starts" <%= @operator.eql?('starts') ? 'selected="true"' : '' %>><%= t(:"operators.keys.starts") %></option>
-					<option value="ends" <%= @operator.eql?('ends') ? 'selected="true"' : '' %>><%= t(:"operators.keys.ends") %></option>
-					<option value="regex" <%= @operator.eql?('regex') ? 'selected="true"' : '' %>><%= t(:"operators.keys.regex") %></option>
+					<option value="is" <%= @field_values[:operator].eql?('is') ? 'selected="true"' : '' %>><%= t(:"operators.keys.is") %></option>
+					<option value="not" <%= @field_values[:operator].eql?('not') ? 'selected="true"' : '' %>><%= t(:"operators.keys.not") %></option>
+					<option value="contains" <%= @field_values[:operator].eql?('contains') ? 'selected="true"' : '' %>><%= t(:"operators.keys.contains") %></option>
+					<option value="starts" <%= @field_values[:operator].eql?('starts') ? 'selected="true"' : '' %>><%= t(:"operators.keys.starts") %></option>
+					<option value="ends" <%= @field_values[:operator].eql?('ends') ? 'selected="true"' : '' %>><%= t(:"operators.keys.ends") %></option>
+					<option value="regex" <%= @field_values[:operator].eql?('regex') ? 'selected="true"' : '' %>><%= t(:"operators.keys.regex") %></option>
 				</select>
 			</div>
 		</div>
 		<div>
-			<div class="batchrow <%= @batch ? 'active' : '' %>">
+			<div class="batchrow <%= @field_values[:batch] ? 'active' : '' %>">
 				<div class="token-batch-input inline">
-					<textarea class="batchlist form-control"><%= @batch ? @input : '' %></textarea>
+					<textarea class="batchlist form-control"><%= @field_values[:batch] ? @field_values[:input] : '' %></textarea>
 					<div class="collapse textchecks"></div>
 				</div>
 				<div class="token-batch-erase inline">
 					<button class="erase small-erase" alt="Erase list"></button>
 				</div>
 			</div>
-			<div class="inputrow <%= !@batch ? 'active' : '' %>">
+			<div class="inputrow <%= @field_values[:batch] ? '' : 'active' %>">
 				<div class="token-input-field inline">
-					<input placeholder="<any>" type="text" value="<%= !@batch ? @input : '' %>">
+					<input placeholder="<any>" type="text" value="<%= @field_values[:batch] ? '' : @field_values[:input] %>">
 				</div>
 				<div class="loadbutton inline">
 					<div class="batchWordListBtn">
@@ -48,7 +48,7 @@
 		<div>
 			<div class="field-controls">
 				<div class="token-case">
-					<input type="checkbox" <%= @sensitive ? 'checked="true"' : '' %>> <%= t(:"data_labels.keys.case_sensitive").capitalize %>
+					<input type="checkbox" <%= @field_values[:sensitive] ? 'checked="true"' : '' %>> <%= t(:"data_labels.keys.case_sensitive").capitalize %>
 				</div>
 			</div>
 		</div>
