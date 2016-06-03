@@ -99,6 +99,13 @@ module BlacklabHelper
     docs
   end
   
+  def get_document_xml_content(xmlid)
+    return execute_query({
+      :url => "#{backend_url}docs/#{xmlid}",
+      :headers => headers
+    })
+  end
+  
   def get_corpus_document_list(corpus)
     docs = {}
     offset = 0
