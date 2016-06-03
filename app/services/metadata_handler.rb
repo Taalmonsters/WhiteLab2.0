@@ -48,10 +48,6 @@ class MetadataHandler
     return docs.map{|index| @token_counts[index] }
   end
   
-  def get_document(id)
-    return @documents[id]
-  end
-  
   def get_document_id(index)
     return @doc_ids[index]
   end
