@@ -1,8 +1,8 @@
 # Module for users, identified by HTTP_REMOTE_USER or IP
 class User < ActiveRecord::Base
-  has_many :search_queries
-  has_many :explore_queries
-  has_many :export_queries
+  has_many :search_queries, :class_name => Search::Query
+  has_many :explore_queries, :class_name => Explore::Query
+  has_many :export_queries, :class_name => Export::Query
   
   # Load query history
   def query_history(limit, query_method)
