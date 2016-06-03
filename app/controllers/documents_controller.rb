@@ -1,38 +1,38 @@
 # Controller for retrieval of document data.
 class DocumentsController < ApplicationController
-  include DataFormatHelper
-  
-  before_action :set_xmlid
+  before_action :set_limits
   
   # Load document audio
   def audio
-    if @xmlid && params[:format]
-      audio_file_path = "#{Rails.configuration.x.audio_dir+"/"+params[:format]+"/"+@xmlid+"."+params[:format]}"
+    if @document
+      format = params[:format] || 'mp3'
+      audio_file = @document.audio_file(format)
       file_begin = 0
-      file_size = File.size(audio_file_path) 
+      file_size = File.size(audio_file) 
       file_end = file_size - 1
+      req_headers = request.headers
+      resp_header = response.header
     
-      if !request.headers["Range"]
+      if !req_headers["Range"]
         status_code = "200 OK"
       else
         status_code = "206 Partial Content"
-        
-        match = request.headers['range'].match(/bytes=(\d+)-(\d*)/)
+        match = req_headers['range'].match(/bytes=(\d+)-(\d*)/)
         if match
           file_begin = match[1]
-          file_end = match[1] if match[2] && !match[2].empty?
+          file_end = file_begin if match[2] && !match[2].empty?
         end
-        response.header["Content-Range"] = "bytes " + file_begin.to_s + "-" + file_end.to_s + "/" + file_size.to_s
+        resp_header["Content-Range"] = "bytes #{file_begin}-#{file_end}/#{file_size}"
       end
-      response.header["Content-Length"] = (file_end.to_i - file_begin.to_i + 1).to_s
+      resp_header["Content-Length"] = (file_end.to_i - file_begin.to_i + 1).to_s
     
-      response.header["Cache-Control"] = "public, must-revalidate, max-age=0"
-      response.header["Pragma"] = "no-cache"
-      response.header["Accept-Ranges"]=  "bytes"
-      response.header["Content-Transfer-Encoding"] = "binary"
-      send_file(audio_file_path, 
-        :filename => "#{params[:xmlid]+"."+params[:format]}",
-        :type => "audio/#{params[:format]}", 
+      resp_header["Cache-Control"] = "public, must-revalidate, max-age=0"
+      resp_header["Pragma"] = "no-cache"
+      resp_header["Accept-Ranges"]=  "bytes"
+      resp_header["Content-Transfer-Encoding"] = "binary"
+      send_file(audio_file, 
+        :filename => "#{@document.xmlid}.#{format}",
+        :type => "audio/#{format}", 
         :disposition => "inline",
         :status => status_code,
         :stream =>  'true',
@@ -43,150 +43,46 @@ class DocumentsController < ApplicationController
   # Load document content
   def content
     @tab = 'content'
-    @offset = 0
-    if params[:offset]
-      @offset = params[:offset].to_i
-    end
-    @number = 50
-    # @number = @whitelab.get_backend_type.eql?('blacklab') ? 500 : 50
-    # if params[:number]
-      # @number = params[:number].to_i
-    # end
-    patt = nil
-    if params[:id]
-      patt = SearchQuery.find(params[:id].to_i).patt
-    end
-    @document = {}
-    data = @whitelab.get_document_content(@xmlid,patt,@offset,@number)
-    
-    paragraphs = {}
-    current_paragraph = 0
-    current_sentence = 0
-    page_begin_time = nil
-    page_end_time = nil
-    current_end_time = nil
-    data['content'].each do |token|
-      if token.has_key?('paragraph_start') && token['paragraph_start'].eql?('true')
-        current_paragraph = current_paragraph + 1
-        current_sentence = 1
-        paragraphs[current_paragraph] = {
-          'sentences' => {},
-          'paragraph_type' => 'p'
-        }
-        if token.has_key?('paragraph_type') && !token['paragraph_type'].blank?
-          paragraphs[current_paragraph]['paragraph_type'] = token['paragraph_type']
-        end
-        paragraphs[current_paragraph]['sentences'][current_sentence] = {
-          'tokens' => [],
-          'sentence_speaker' => nil,
-          'begin_time' => token['begin_time'],
-          'end_time' => nil
-        }
-        if !token['begin_time'].eql?('Unknown') && page_begin_time.blank?
-          page_begin_time = token['begin_time']
-        end
-        if token.has_key?('sentence_speaker') && !token['sentence_speaker'].blank?
-          paragraphs[current_paragraph]['sentences'][current_sentence]['sentence_speaker'] = token['sentence_speaker']
-        end
-      elsif token.has_key?('sentence_start') && token['sentence_start'].eql?('true')
-        if current_paragraph == 0
-          current_paragraph = 1
-        end
-        if !paragraphs.has_key?(current_paragraph)
-          paragraphs[current_paragraph] = {
-            'sentences' => {},
-            'paragraph_type' => 'p'
-          }
-        end
-        if current_sentence >= 1
-          paragraphs[current_paragraph]['sentences'][current_sentence]['end_time'] = current_end_time
-        end
-        current_sentence = current_sentence + 1
-        paragraphs[current_paragraph]['sentences'][current_sentence] = {
-          'tokens' => [],
-          'sentence_speaker' => nil,
-          'begin_time' => token['begin_time'],
-          'end_time' => nil
-        }
-        if !token['begin_time'].eql?('Unknown') && page_begin_time.blank?
-          page_begin_time = token['begin_time']
-        end
-        if token.has_key?('sentence_speaker') && !token['sentence_speaker'].blank?
-          paragraphs[current_paragraph]['sentences'][current_sentence]['sentence_speaker'] = token['sentence_speaker']
-        end
-      end
-      if current_paragraph == 0
-        current_paragraph = 1
-      end
-      if !paragraphs.has_key?(current_paragraph)
-        paragraphs[current_paragraph] = {
-          'sentences' => {},
-          'paragraph_type' => 'p'
-        }
-      end
-      if current_sentence == 0
-        current_sentence = 1
-      end
-      if !paragraphs[current_paragraph]['sentences'].has_key?(current_sentence)
-        paragraphs[current_paragraph]['sentences'][current_sentence] = {
-          'tokens' => [],
-          'sentence_speaker' => nil,
-          'begin_time' => token['begin_time'],
-          'end_time' => nil
-        }
-      end
-      paragraphs[current_paragraph]['sentences'][current_sentence]['tokens'] << token
-      paragraphs[current_paragraph]['sentences'][current_sentence]['end_time'] = token['end_time']
-      if token.has_key?('end_time') && !token['end_time'].blank? && !token['end_time'].eql?('Unknown')
-        current_end_time = token['end_time']
-      end
-    end
-    paragraphs[current_paragraph]['sentences'][current_sentence]['end_time'] = current_end_time
-    @document['content'] = { 'paragraphs' => paragraphs, 'audio_file' => data['audio_file'], 'total_sentence_count' => data['total_sentence_count'], 'begin_time' => page_begin_time, 'end_time' => current_end_time }
-    
     respond_to do |format|
-      format.js do
-        render '/documents/content'
+      if @document
+        format.js { render '/documents/content' }
+        format.json { render json: @document.content }
+        format.xml { render xml: @document.xml_content }
+      else
+        format.js { render '/documents/error' }
+        format.json { render json: { error: 'Document not found', xmlid: params[:xmlid] } }
+        format.xml { render xml: { error: 'Document not found', xmlid: params[:xmlid] } }
       end
     end
-  end
-  
-  # Load vocabulary growth for document
-  def vocabulary_growth
-    n = 0
-    if @whitelab.get_backend_type.eql?('blacklab')
-      n = @metadata_handler.get_document_token_count(@xmlid)
-    end
-    data = @whitelab.get_document_content(@xmlid,nil,0,n)
-    render json: format_for_vocabulary_growth(data['content'])
-  end
-  
-  # Load distribution of PoS tags in document
-  def pos_distribution
-    @document = {}
-    n = 0
-    if @whitelab.get_backend_type.eql?('blacklab')
-      n = @metadata_handler.get_document_token_count(@xmlid)
-    end
-    data = @whitelab.get_document_content(@xmlid,nil,0,n)
-    data['content'].each do |token|
-      pos_head = token['pos_tag'].split('(')[0]
-      if !@document.has_key?(pos_head)
-        @document[pos_head] = 0
-      end
-      @document[pos_head] = @document[pos_head] + 1
-    end
-    render json: { title: 'Token/POS Distribution', data: @document.sort_by {|k2, v2| v2 }.reverse.map{|k,v| { name: k, y: v} } }
   end
   
   # Load document metadata
   def metadata
     @tab = 'metadata'
-    @document = {}
-    @document['metadata'] = @whitelab.get_document_metadata(@xmlid)
     respond_to do |format|
-      format.js do
-        render '/documents/metadata'
+      if @document
+        metadata = @document.metadata
+        format.js { render '/documents/metadata' }
+        format.json { render json: metadata }
+        format.xml { render xml: metadata }
+      else
+        format.js { render '/documents/error' }
+        format.json { render json: { error: 'Document not found', xmlid: params[:xmlid] } }
+        format.xml { render xml: { error: 'Document not found', xmlid: params[:xmlid] } }
+      end
+    end
+  end
+  
+  # Load distribution of PoS tags in document
+  def pos_distribution
+    respond_to do |format|
+      if @document
+        pos_distribution = @document.pos_distribution
+        format.json { render json: pos_distribution }
+        format.xml { render xml: pos_distribution }
+      else
+        format.json { render json: { error: 'Document not found', xmlid: params[:xmlid] } }
+        format.xml { render xml: { error: 'Document not found', xmlid: params[:xmlid] } }
       end
     end
   end
@@ -194,21 +90,38 @@ class DocumentsController < ApplicationController
   # Load document statistics
   def statistics
     @tab = 'statistics'
-    @data = @whitelab.get_document_statistics(@xmlid)
     respond_to do |format|
-      format.js do
-        render '/documents/statistics'
+      if @document
+        statistics = @document.statistics
+        format.js { render '/documents/statistics' }
+        format.json { render json: statistics }
+        format.xml { render xml: statistics }
+      else
+        format.js { render '/documents/error' }
+        format.json { render json: { error: 'Document not found', xmlid: params[:xmlid] } }
+        format.xml { render xml: { error: 'Document not found', xmlid: params[:xmlid] } }
+      end
+    end
+  end
+  
+  # Load vocabulary growth for document
+  def vocabulary_growth
+    respond_to do |format|
+      if @document
+        growth = @document.growth
+        format.json { render json: growth }
+        format.xml { render xml: growth }
+      else
+        format.json { render json: { error: 'Document not found', xmlid: params[:xmlid] } }
+        format.xml { render xml: { error: 'Document not found', xmlid: params[:xmlid] } }
       end
     end
   end
   
   protected
   
-  # Get current document id from parameters
-  def set_xmlid
-    if params[:xmlid]
-      @xmlid = params[:xmlid]
-    end
+  def set_limits
+    @offset = !params[:offset].blank? ? params[:offset] : 0
+    @number = !params[:number].blank? ? params[:number] : 50
   end
-  
 end
