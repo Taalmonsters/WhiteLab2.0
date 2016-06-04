@@ -1,6 +1,0 @@
-<div id="<%= @page %>" class="search-input-display" data-query-pattern="<%= @query && !@query.patt.blank? ? @query.patt : "" %>" data-query-filter="<%= @query && !@query.filter.blank? ? @query.filter : "" %>" data-query-input-page="<%= @query && !@query.input_page.blank? ? @query.input_page : "" %>"><%= render partial: "search/"+@page %></div>
-<% if !@page.eql?('document') && (@query || @queries) %>
-	<div class="row" id="query">
-		<div class="col-xs-10 col-xs-offset-1" id="result"><%= render partial: "search/query" %></div>
-	</div>
-<% end %>

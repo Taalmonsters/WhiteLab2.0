@@ -1,0 +1,20 @@
+<% provide(:title, t(:'page_titles.keys.search').capitalize+" "+t(:'page_titles.keys.simple').capitalize) %>
+<div id="simple" class="search-input-display" data-query-pattern="<%= @query && !@query.patt.blank? ? @query.patt : "" %>" data-query-filter="<%= @query && !@query.filter.blank? ? @query.filter : "" %>" data-query-input-page="<%= @query && !@query.input_page.blank? ? @query.input_page : "" %>">
+	<div class="row padding-top-20">
+		<div class="col-xs-10 col-sm-8 col-xs-offset-1 col-sm-offset-2">
+			<%= text_field_tag :patt, nil, placeholder: t(:'instructions.keys.search_for_word'), class: 'full-width-minus-siblings form-control' %>
+			<div class="btn-group" role="group">
+				<button type="button" class="btn btn-primary btn-submit"><%= t('button_labels.keys.search').capitalize %></button>
+				<button type="button" class="btn btn-default btn-reset" data-url="/search/simple"><%= t('button_labels.keys.reset').capitalize %></button>
+			</div>
+		</div>
+	</div>
+</div>
+<%= render partial: "search/queries/index" %>
+<% if @query %>
+	<div class="row" id="query" data-query-id="<%= @query.id %>">
+		<div class="col-xs-10 col-xs-offset-1" id="result">
+			<%= render partial: "search/queries/result" %>
+		</div>
+	</div>
+<% end %>
