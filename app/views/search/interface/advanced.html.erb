@@ -20,6 +20,7 @@
 		<div class="inline top-aligned"><a href="#" class="add-column"><%= image_tag 'plus.png' %></a></div>
 	</div>
 </div>
+<%= render partial: "search/queries/index", :locals => { :query => @query, :queries => @user.query_history('search_queries'), :export_queries => @user.query_history('export_queries') } %>
 <% if @query %>
 	<div class="row" id="query" data-query-id="<%= @query.id %>">
 		<div class="col-xs-10 col-xs-offset-1" id="result">

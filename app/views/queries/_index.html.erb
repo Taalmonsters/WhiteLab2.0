@@ -1,27 +1,5 @@
-<a id="history-toggle" href="#" class="show-history btn btn-info <%= 'hidden' unless @user.query_history('search_queries').any? || @user.query_history('export_queries').any? %>" data-query-id="<%= @query.id if @query %>"><span class="glyphicon glyphicon-time"></span></a>
-<% if @query %>
-<div class="row">
-	<div class="col-xs-12">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<label><%= t(:"queries.keys.query") %></label>
-			</div>
-			<div class="panel-body">
-				<div id="query-details" class="tab-content contrast" data-query-id="<%= @query.id %>"></div>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="row">
-	<div class="col-xs-12">
-		<div id="results" class="panel panel-default">
-			<div class="panel-heading">
-				<label><%= t(:"page_titles.keys.results").capitalize %></label>
-			</div>
-			<div class="panel-body">
-				<div id="result-pane" class="row" data-query-id="<%= @query.id %>" data-query-page="<%= @query.page %>" data-query-patt="<%= @query.patt %>" data-query-filter="<%= @query.filter %>" data-query-within="<%= @query.within %>" data-query-view="<%= @query.view %>"></div>
-			</div>
-		</div>
-	</div>
-</div>
+<a id="history-toggle" href="#" class="show-history btn btn-info <%= 'hidden' unless queries.any? || export_queries.any? %>" data-query-id="<%= query.id if query %>"><span class="glyphicon glyphicon-time"></span></a>
+<% if query %>
+	<%= render partial: '/queries/details', :locals => { :query => query } %>
+	<%= render partial: '/queries/results', :locals => { :query => query } %>
 <% end %>
