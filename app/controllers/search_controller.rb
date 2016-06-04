@@ -165,16 +165,6 @@ class SearchController < ApplicationController
     end
   end
   
-  # Set base URL and parameters for links in result displays
-  def set_urls
-    @query_base_url = ''
-    @query_params = ''
-    if !@query.blank?
-      @query_base_url = '/search/'+@query.page+'?'+@query.assemble_url_params(['patt', 'filter', 'within'])
-      @query_params = '?'+@query.assemble_url_params(['patt', 'filter', 'within', 'view', 'group', 'number', 'offset'])
-    end
-  end
-  
   # Load hits or documents for Search Query in selected group
   def results_in_group(key)
     if @query && params.has_key?(:group_id) && params.has_key?(key)
