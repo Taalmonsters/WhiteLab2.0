@@ -30,7 +30,7 @@ class Explore::InterfaceController < InterfaceController
   
   def document
     respond_to do |format|
-      flash[:error] = "Document not found" if params.has_key?(:xmlid) && !params[:xmlid].blank? && !@document
+      flash[:error] = "Document '#{params[:xmlid]}' not found" if params.has_key?(:xmlid) && !params[:xmlid].blank? && !@document
       format.html
     end
   end
