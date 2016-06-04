@@ -91,7 +91,7 @@ en:
     title: Page titles
     description: Translations of page titles
     keys:
-      home: info
+      info: info
       help: help
       search: search
       simple: simple
@@ -118,7 +118,7 @@ en:
       pos_tags: part of speech tags
       languages: languages
       translations: translations
-      home_page: home page
+      info_page: info page
   results:
     title: Results
     description: Translations of labels in query results

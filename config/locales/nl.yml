@@ -91,7 +91,7 @@ nl:
     title: Pagina titels
     description: Vertalingen van pagina titels
     keys:
-      home: info
+      info: info
       help: help
       search: zoek
       simple: simpel
@@ -118,7 +118,7 @@ nl:
       pos_tags: woordsoort annotaties
       languages: talen
       translations: vertalingen
-      home_page: home page
+      info_page: info page
   results:
     title: Resultaten
     description: Vertalingen van labels in query resultaten

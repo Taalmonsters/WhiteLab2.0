@@ -1,6 +1,6 @@
 ---
 nl:
-  home_page: "<h2>Welkom bij OpenSoNaR</h2><p></p><p><b>Credits:</b></p><p>Als het gebruik van OpenSoNaR bijgedragen heeft aan uw werk, verleent u dan alstublieft erkenning aan de makers van het STEVIN SoNaR referentie corpus van hedendaags, geschreven Nederlands door het volgende paper te citeren:</p><p><b>Titel:</b> The Construction of a 500-Million-Word Reference Corpus of Contemporary Written Dutch<br /><b>Auteurs:</b> 
+  info_page: "<h2>Welkom bij OpenSoNaR</h2><p></p><p><b>Credits:</b></p><p>Als het gebruik van OpenSoNaR bijgedragen heeft aan uw werk, verleent u dan alstublieft erkenning aan de makers van het STEVIN SoNaR referentie corpus van hedendaags, geschreven Nederlands door het volgende paper te citeren:</p><p><b>Titel:</b> The Construction of a 500-Million-Word Reference Corpus of Contemporary Written Dutch<br /><b>Auteurs:</b> 
   Nelleke Oostdijk, Martin Reynaert, V&eacute;ronique Hoste and Ineke Schuurman</p><p>Dit is hoofdstuk 13 van het STEVIN boek &quot;Essential Speech and Language Technology for Dutch: Results by the STEVIN-programme&quot;, redactie: Peter Spyns, Jan Odijk.</p><p><b>Bibtex referentie:</b></p><p><span class=&quot;bibtex&quot;>@incollection{StevinSONAR2013,<br />
       booktitle = {Essential Speech and Language Technology for Dutch: Results by the STEVIN-programme},<br />
       chapter = {13},<br />
