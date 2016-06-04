@@ -5,9 +5,8 @@ class User < ActiveRecord::Base
   has_many :export_queries, :class_name => Export::Query
   
   # Load query history
-  def query_history(limit, query_method)
-    ql = limit || 5
-    return ql, self.send(query_method).order("created_at DESC").limit(ql)
+  def query_history(query_method, ql = 5)
+    return self.send(query_method).order("updated_at DESC").limit(ql), ql
   end
   
   # Check if user has unfinished explore queries
