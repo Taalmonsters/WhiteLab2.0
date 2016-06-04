@@ -1,13 +1,13 @@
 Rails.application.routes.draw do
   
-  root 'search#search'
+  get '/', :controller => 'search/interface', :action => 'search'
   
   namespace :search do
-    get '/' => 'interface#search'
-    get '/simple' => 'interface#simple', as: 'simple_search'
-    get '/extended' => 'interface#extended', as: 'extended_search'
-    get '/advanced' => 'interface#advanced', as: 'advanced_search'
-    get '/expert' => 'interface#expert', as: 'expert_search'
+    root :to => 'interface#search'
+    get '/simple' => 'interface#simple'
+    get '/extended' => 'interface#extended'
+    get '/advanced' => 'interface#advanced'
+    get '/expert' => 'interface#expert'
     scope '/advanced' do
       get '/column' => 'interface#advanced_column'
       get '/box' => 'interface#advanced_box'
@@ -28,11 +28,11 @@ Rails.application.routes.draw do
   end
   
   namespace :explore do
-    get '/' => 'interface#explore'
-    get '/corpora' => 'explore#corpora', as: 'explore_corpora'
-    get '/statistics' => 'explore#statistics', as: 'explore_statistics'
-    get '/ngrams' => 'explore#ngrams', as: 'explore_ngrams'
-    get '/document' => 'explore#document', as: 'explore_document'
+    root :to => 'interface#explore'
+    get '/corpora' => 'explore#corpora'
+    get '/statistics' => 'explore#statistics'
+    get '/ngrams' => 'explore#ngrams'
+    get '/document' => 'explore#document'
     get '/pos/select' => 'interface#pos_select_options'
     scope '/document' do
       get '/:xmlid' => 'interface#document'
@@ -47,7 +47,7 @@ Rails.application.routes.draw do
     end
   end
   
-  get '/info' => 'static_pages#home'
+  get '/info' => 'static_pages#info'
   
   get '/cql/validate' => 'admin#cql', as: 'cql_tester'
   get '/test' => 'static_pages#test'
@@ -132,7 +132,7 @@ Rails.application.routes.draw do
   
   post '/admin/interface/language' => 'admin#update_language_settings'
   post '/admin/interface/translate' => 'admin#update_translation'
-  post '/admin/interface/home_page' => 'admin#update_home_page'
+  post '/admin/interface/info_page' => 'admin#update_info_page'
   post '/admin/interface/help_page' => 'admin#update_help_page'
   get '/admin/:page' => 'admin#page', as: 'admin_page'
   post '/admin/:page' => 'admin#page'
