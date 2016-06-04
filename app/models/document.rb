@@ -1,6 +1,6 @@
 class Document
   include ActiveModel::Model
-  include ActionView::Helpers::DataFormatHelper
+  include DataFormatHelper
   
   attr_accessor :xmlid, :patt, :content
   
