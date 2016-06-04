@@ -1,5 +1,9 @@
 module Explore
   extend ActiveSupport::Concern
+
+  included do
+    before_filter :set_document
+  end
   
   protected
   
