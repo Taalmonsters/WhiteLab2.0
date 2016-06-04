@@ -22,9 +22,9 @@ module ApplicationHelper
     data
   end
   
-  # Load translated home page content from configuration file
-  def load_home_page_data
-    load_page_data('home')
+  # Load translated info page content from configuration file
+  def load_info_page_data
+    load_page_data('info')
   end
   
   # Load translated help page content from configuration file
@@ -107,9 +107,9 @@ module ApplicationHelper
     File.open(Rails.root.join('config', 'locales').to_s+"/"+lang+".yml", 'w', external_encoding: 'utf-8') { |file| YAML.dump(new_data, file) }
   end
   
-  # Save home page translation to configuration file
-  def save_home_page(lang_obj)
-    save_page('home', lang_obj)
+  # Save info page translation to configuration file
+  def save_info_page(lang_obj)
+    save_page('info', lang_obj)
   end
   
   # Save help page translation to configuration file
