@@ -1,6 +1,6 @@
 # Interface controller for pages under Search namespace
 class Search::InterfaceController < InterfaceController
-  include Search
+  include WhitelabSearch
   before_action :set_query
   before_action :set_advanced_field, :only => [:advanced_column, :advanced_box, :advanced_field]
   before_action :set_field_values, :only => [:advanced_column, :advanced_box, :advanced_field]

@@ -1,4 +1,4 @@
-module Explore
+module WhitelabExplore
   extend ActiveSupport::Concern
 
   included do

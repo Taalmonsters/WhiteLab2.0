@@ -1,4 +1,4 @@
-module Search
+module WhitelabSearch
   extend ActiveSupport::Concern
 
   included do

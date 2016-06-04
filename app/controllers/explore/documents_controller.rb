@@ -1,4 +1,4 @@
 class Explore::DocumentsController < DocumentsController
-  include Explore
+  include WhitelabExplore
   before_action :set_document
 end

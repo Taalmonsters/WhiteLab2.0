@@ -1,6 +1,6 @@
 # Interface controller for pages under Explore namespace
 class Explore::InterfaceController < InterfaceController
-  include Explore
+  include WhitelabExplore
   before_action :set_page
   before_action :set_query
   before_action :set_document, :only => :document

@@ -1,3 +1,3 @@
 class Search::DocumentsController < DocumentsController
-  include Search
+  include WhitelabSearch
 end
