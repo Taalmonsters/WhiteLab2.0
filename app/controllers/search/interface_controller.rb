@@ -1,18 +1,16 @@
 # Interface controller for pages under Search namespace
 class Search::InterfaceController < InterfaceController
   include Search
-  before_action :set_page
   before_action :set_query
-  before_action :set_document, :only => :document
   before_action :set_advanced_field, :only => [:advanced_column, :advanced_box, :advanced_field]
   before_action :set_field_values, :only => [:advanced_column, :advanced_box, :advanced_field]
   
   # Redirect from /search to /search/expert (with CQL query) or /search/simple (without CQL query)
   def search
     if params.has_key?(:patt)
-      redirect_to expert_search_path, :params => params
+      redirect_to search_expert_path, :params => params
     else
-      redirect_to simple_search_path
+      redirect_to search_simple_path
     end
   end
   
@@ -37,21 +35,21 @@ class Search::InterfaceController < InterfaceController
   # Load column for Search Advanced interface
   def advanced_column
     respond_to do |format|
-      format.js { render '/search/advanced/column' }
+      format.js { render '/search/interface/advanced/column' }
     end
   end
   
   # Load box for Search Advanced interface
   def advanced_box
     respond_to do |format|
-      format.js { render '/search/advanced/box' }
+      format.js { render '/search/interface/advanced/box' }
     end
   end
   
   # Load field for Search Advanced interface
   def advanced_field
     respond_to do |format|
-      format.js { render '/search/advanced/field' }
+      format.js { render '/search/interface/advanced/field' }
     end
   end
   
@@ -69,14 +67,9 @@ class Search::InterfaceController < InterfaceController
   
   protected
   
-  # Set current page
-  def set_page
-    @page = action_name
-  end
-  
   # Set current query
   def set_query
-    @query = Search::Query.find_from_params(@page, @user.id, params) if params.has_key?(:patt)
+    @query = Search::Query.find_from_params(action_name, @user.id, params) if params.has_key?(:patt)
     @result = @query.execute if @query && !@query.finished? && !@query.failed?
   end
   
