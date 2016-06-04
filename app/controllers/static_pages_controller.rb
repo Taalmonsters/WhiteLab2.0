@@ -2,9 +2,9 @@
 class StaticPagesController < ApplicationController
   before_action :set_main_namespace
   
-  # Load home page
-  def home
-    @tab = 'home'
+  # Load info page
+  def info
+    @tab = 'info'
   end
   
   # Set namespace to 'main'

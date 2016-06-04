@@ -40,8 +40,8 @@ class AdminController < ApplicationController
           else
             @trpage = 'general'
           end
-        elsif @page.eql?('interface') && @tab.eql?('home_page')
-          @home_pages = load_home_page_data
+        elsif @page.eql?('interface') && @tab.eql?('info_page')
+          @info_pages = load_info_page_data
           @hlang = params[:hlang]
         elsif @page.eql?('interface') && @tab.eql?('help_page')
           @help_pages = load_help_page_data
@@ -107,14 +107,14 @@ class AdminController < ApplicationController
     redirect_to admin_page_path(:page => 'interface', :tab => 'language')
   end
   
-  # Save home page translation to configuration file
-  def update_home_page
-    @home_pages = load_home_page_data
-    if params[:hlang] && params[:home_page]
-      save_home_page({ :lang => params[:hlang], :data => params[:home_page] })
+  # Save info page translation to configuration file
+  def update_info_page
+    @info_pages = load_info_page_data
+    if params[:hlang] && params[:info_page]
+      save_info_page({ :lang => params[:hlang], :data => params[:info_page] })
     end
     I18n.backend.reload!
-    render :json => { response: 'Updated home page translation' }
+    render :json => { response: 'Updated info page translation' }
   end
   
   # Save help page translation to configuration file
@@ -222,7 +222,7 @@ class AdminController < ApplicationController
         @tab = params[:tab]
       end
     elsif @page && @page.eql?('interface')
-      if params[:tab] && ['language','home_page','help_page','translate'].include?(params[:tab])
+      if params[:tab] && ['language','info_page','help_page','translate'].include?(params[:tab])
         @tab = params[:tab]
       end
     end
