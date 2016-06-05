@@ -2,7 +2,6 @@
 class Search::InterfaceController < InterfaceController
   include WhitelabSearch
   before_action :set_query
-  before_action :set_advanced_field, :only => [:advanced_column, :advanced_box, :advanced_field]
   before_action :set_field_values, :only => [:advanced_column, :advanced_box, :advanced_field]
   
   # Redirect from /search to /search/expert (with CQL query) or /search/simple (without CQL query)
@@ -76,6 +75,11 @@ class Search::InterfaceController < InterfaceController
   
   # Get field values from parameters
   def set_field_values
+    @field = {
+      :column => params[:column] ? params[:column].to_i : 0,
+      :box => params[:box] ? params[:box].to_i : 0,
+      :field => params[:field] ? params[:field].to_i : 0
+    }
     @field_values = {
       :token_type => !params[:token_type] || !['word', 'lemma', 'pos', 'phonetic'].include?(params[:token_type]) ? 'word' : params[:token_type],
       :operator => !params[:operator] || !['is', 'not', 'starts', 'ends', 'contains', 'regex'].include?(params[:operator]) ? 'is' : params[:operator],
@@ -87,13 +91,7 @@ class Search::InterfaceController < InterfaceController
       :repeat_from => params[:repeat_from] ? params[:repeat_from].to_i : 1,
       :repeat_to => params[:repeat_to] ? params[:repeat_to].to_i : 1
     }
+    p @field_values
   end
   
-  def set_advanced_field
-    @field = {
-      :column => params[:column] ? params[:column].to_i : 0,
-      :box => params[:box] ? params[:box].to_i : 0,
-      :field => params[:field] ? params[:field].to_i : 0
-    }
-  end
 end
