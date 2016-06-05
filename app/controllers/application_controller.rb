@@ -7,10 +7,7 @@ class ApplicationController < ActionController::Base
   include ApplicationHelper
   include DataFormatHelper
   
-  # Load Export Query history
-  def load_export_query_list
-    @eqllimit, @export_queries = @user.query_history(params.has_key?(:eqllimit) ? params[:eqllimit].to_i : nil, 'export_queries')
-  end
+  helper_method :get_translated_pos_heads
   
   # Set the current user
   def set_user
@@ -90,7 +87,7 @@ class ApplicationController < ActionController::Base
       label = pos_head["label"]
       data << [t(:"pos_heads.keys.#{label}").capitalize || label, label+".*"]
     end
-    data
+    return data
   end
   
 end
