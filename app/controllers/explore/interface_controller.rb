@@ -4,6 +4,7 @@ class Explore::InterfaceController < InterfaceController
   before_action :set_page
   before_action :set_query
   before_action :set_document, :only => :document
+  before_action :set_listtype_options, :only => [:statistics, :ngrams]
   
   # Redirect from /explore to /explore/corpora
   def explore
@@ -11,6 +12,7 @@ class Explore::InterfaceController < InterfaceController
   end
   
   def corpora
+    @option = params[:option] || 'Corpus_title'
     respond_to do |format|
       format.html
     end
@@ -23,6 +25,7 @@ class Explore::InterfaceController < InterfaceController
   end
   
   def ngrams
+    @size = params[:size] || 5
     respond_to do |format|
       format.html
     end
@@ -36,6 +39,15 @@ class Explore::InterfaceController < InterfaceController
   end
   
   protected
+  
+  # Get translated list type options
+  def set_listtype_options
+    @listtype = params[:listtype] || 'word'
+    @listtype_options = []
+    ['word', 'lemma', 'pos', 'phonetic'].each do |type|
+      @listtype_options << [t(:"data_labels.keys.#{type}").capitalize, type]
+    end
+  end
   
   # Set current page
   def set_page
