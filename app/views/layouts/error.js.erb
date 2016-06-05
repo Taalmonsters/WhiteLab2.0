@@ -1,0 +1,1 @@
+$("#<%= @element %>").html("<%= escape_javascript(raw render partial: "/layouts/messages", layout: false, locals: { flash: @msg }) %>");
