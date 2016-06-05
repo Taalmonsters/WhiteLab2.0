@@ -8,8 +8,6 @@ class ExploreController < ApplicationController
   before_action :set_list_type, :only => [:statistics, :ngrams]
   before_action :set_ngram_size, :only => [:ngrams]
   before_action :set_current_query, :only => [:statistics, :ngrams, :result, :result_pagination, :details, :vocabulary_growth, :export]
-  before_action :set_filter, :only => [:corpora, :statistics, :ngrams, :treemap, :bubble, :vocabulary_growth]
-  before_action :set_filtered_amount, :only => [:corpora, :statistics, :ngrams, :treemap, :bubble]
   before_action :load_query_list, :only => [:corpora, :statistics, :ngrams, :document, :history]
   before_action :load_export_query_list, :only => [:corpora, :statistics, :ngrams, :document, :history]
   before_action :set_listtype_options, :only => [:statistics, :ngrams]
@@ -186,16 +184,6 @@ class ExploreController < ApplicationController
     @size = 5
     if params.has_key?(:size)
       @size = params[:size].to_i
-    end
-  end
-  
-  # Get selected metadata filter from parameters
-  def set_filter
-    @filter = ''
-    if @query && !@query.filter.blank?
-      @filter = @query.filter
-    elsif params[:filter] && !params[:filter].blank?
-      @filter = params[:filter]
     end
   end
   
