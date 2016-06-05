@@ -49,9 +49,11 @@ class DocumentsController < ApplicationController
         format.json { render json: @document.content }
         format.xml { render xml: @document.xml_content }
       else
-        format.js { render '/documents/error' }
-        format.json { render json: { error: 'Document not found', xmlid: params[:xmlid] } }
-        format.xml { render xml: { error: 'Document not found', xmlid: params[:xmlid] } }
+        @msg = {}
+        @msg[:error] = "Document '#{params[:xmlid]}' not found"
+        format.js { render '/layouts/error' }
+        format.json { render json: @msg }
+        format.xml { render xml: @msg }
       end
     end
   end
@@ -66,9 +68,11 @@ class DocumentsController < ApplicationController
         format.json { render json: metadata }
         format.xml { render xml: metadata }
       else
-        format.js { render '/documents/error' }
-        format.json { render json: { error: 'Document not found', xmlid: params[:xmlid] } }
-        format.xml { render xml: { error: 'Document not found', xmlid: params[:xmlid] } }
+        @msg = {}
+        @msg[:error] = "Document '#{params[:xmlid]}' not found"
+        format.js { render '/layouts/error' }
+        format.json { render json: @msg }
+        format.xml { render xml: @msg }
       end
     end
   end
@@ -81,8 +85,9 @@ class DocumentsController < ApplicationController
         format.json { render json: pos_distribution }
         format.xml { render xml: pos_distribution }
       else
-        format.json { render json: { error: 'Document not found', xmlid: params[:xmlid] } }
-        format.xml { render xml: { error: 'Document not found', xmlid: params[:xmlid] } }
+        flash[:error] = "Document '#{params[:xmlid]}' not found"
+        format.json { render json: flash }
+        format.xml { render xml: flash }
       end
     end
   end
@@ -97,9 +102,11 @@ class DocumentsController < ApplicationController
         format.json { render json: statistics }
         format.xml { render xml: statistics }
       else
-        format.js { render '/documents/error' }
-        format.json { render json: { error: 'Document not found', xmlid: params[:xmlid] } }
-        format.xml { render xml: { error: 'Document not found', xmlid: params[:xmlid] } }
+        @msg = {}
+        @msg[:error] = "Document '#{params[:xmlid]}' not found"
+        format.js { render '/layouts/error' }
+        format.json { render json: @msg }
+        format.xml { render xml: @msg }
       end
     end
   end
@@ -112,8 +119,9 @@ class DocumentsController < ApplicationController
         format.json { render json: growth }
         format.xml { render xml: growth }
       else
-        format.json { render json: { error: 'Document not found', xmlid: params[:xmlid] } }
-        format.xml { render xml: { error: 'Document not found', xmlid: params[:xmlid] } }
+        flash[:error] = "Document '#{params[:xmlid]}' not found"
+        format.json { render json: flash }
+        format.xml { render xml: flash }
       end
     end
   end
@@ -121,7 +129,7 @@ class DocumentsController < ApplicationController
   protected
   
   def set_limits
-    @offset = !params[:offset].blank? ? params[:offset] : 0
-    @number = !params[:number].blank? ? params[:number] : 50
+    @offset = !params[:offset].blank? ? params[:offset].to_i : 0
+    @number = !params[:number].blank? ? params[:number].to_i : 50
   end
 end
