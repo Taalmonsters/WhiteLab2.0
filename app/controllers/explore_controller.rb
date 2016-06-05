@@ -1,6 +1,5 @@
 # Main controller for Explore namespace.
 class ExploreController < ApplicationController
-  before_action :set_explore_namespace
   before_action :set_page, :only => [:corpora, :statistics, :ngrams, :document]
   before_action :set_treemap_option, :only => [:corpora, :treemap, :bubble]
   before_action :set_treemap_options, :only => [:corpora]
@@ -146,11 +145,6 @@ class ExploreController < ApplicationController
   end
   
   protected
-  
-  # Set namespace to 'explore'
-  def set_explore_namespace
-    @namespace = 'explore'
-  end
   
   # Set current page
   def set_page

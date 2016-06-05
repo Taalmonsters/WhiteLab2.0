@@ -1,7 +1,6 @@
 # Controller for pages in Admin namespace.
 class AdminController < ApplicationController
   
-  before_action :set_admin_namespace
   before_action :set_logged_in, :only => [:page, :login]
   before_action :set_counter, :only => [:page]
   before_action :set_current_page, :only => :page
@@ -202,11 +201,6 @@ class AdminController < ApplicationController
   end
   
   protected
-  
-  # Set namespace to 'admin'
-  def set_admin_namespace
-    @namespace = 'admin'
-  end
   
   # Set current active page
   def set_current_page

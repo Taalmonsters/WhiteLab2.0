@@ -1,4 +1,3 @@
-<% namespace = params[:controller].split("/").first %>
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -47,7 +46,7 @@
 				<li class="left-spaced">
 					<a id="admin-icon" href="/admin/login"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
 				</li>
-				<% if namespace && namespace.eql?('search') %>
+				<% if @namespace.eql?('search') %>
 				<li id="main-search" class="left-spaced active">
 					<a href="#" onclick="event.preventDefault();"><%= t(:"page_titles.keys.search").capitalize %></a>
 				</li>
@@ -56,7 +55,7 @@
 					<a href="/search/simple"><%= t(:"page_titles.keys.search").capitalize %></a>
 				</li>
 				<% end %>
-				<% if namespace && namespace.eql?('explore') %>
+				<% if @namespace.eql?('explore') %>
 				<li id="main-explore" class="left-spaced active">
 					<a href="#" onclick="event.preventDefault();"><%= t(:"page_titles.keys.explore").capitalize %></a>
 				</li>
@@ -65,7 +64,7 @@
 					<a href="/explore/corpora"><%= t(:"page_titles.keys.explore").capitalize %></a>
 				</li>
 				<% end %>
-				<% if !namespace || namespace.eql?('static_pages') %>
+				<% if @namespace.eql?('static_pages') %>
 				<li id="main-info" class="left-spaced active">
 					<a href="#" onclick="event.preventDefault();"><%= t(:"page_titles.keys.info").capitalize %></a>
 				</li>
@@ -86,8 +85,8 @@
 				</div>
 			</div>
 		</nav>
-		<div id="main-div" data-namespace="<%= namespace ? namespace : '' %>" class="container-fluid main-content" style="margin-top: 65px; padding-top: 40px; padding-bottom: 150px;">
+		<div id="main-div" data-namespace="<%= @namespace %>" class="container-fluid main-content" style="margin-top: 65px; padding-top: 40px; padding-bottom: 150px;">
 			<%= render 'cookies_eu/consent_banner' %>
-			<% if namespace && !namespace.eql?('static_pages') %>
-			<%= render partial: namespace+'/interface/sub_nav', :locals => { :query => @query ? @query : nil, :query_params => @query ? "?#{query.assemble_url_params(['patt', 'filter', 'within', 'view', 'group', 'number', 'offset'])}" : '' } %>
+			<% if !@namespace.eql?('static_pages') %>
+			<%= render partial: @namespace+'/interface/sub_nav', :locals => { :query => @query ? @query : nil, :query_params => @query ? "?#{query.assemble_url_params(['patt', 'filter', 'within', 'view', 'group', 'number', 'offset'])}" : '' } %>
 			<% end %>

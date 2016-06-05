@@ -1,6 +1,5 @@
 # Main controller for Search namespace.
 class SearchController < ApplicationController
-  before_action :set_search_namespace
   before_action :set_tab, :only => [:document]
   before_action :set_filter, :only => [:extended, :advanced, :expert]
   before_action :set_filtered_amount, :only => [:extended, :advanced, :expert]
@@ -114,11 +113,6 @@ class SearchController < ApplicationController
     last_index = params.has_key?(:last_index) ? params[:last_index].to_s : ''
     return docpid+'_'+first_index+'_'+last_index if docpid && first_index && last_index
     nil
-  end
-  
-  # Set namespace to 'search'
-  def set_search_namespace
-    @namespace = 'search'
   end
   
   # Get selected metadata filter from Search Query

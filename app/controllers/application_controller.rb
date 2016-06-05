@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   before_action :set_user
   before_action :set_locale
   before_action :set_backend
+  before_action :set_namespace
   include ApplicationHelper
   include DataFormatHelper
   
@@ -33,6 +34,10 @@ class ApplicationController < ActionController::Base
   def set_backend
     @whitelab = WhitelabBackend.instance
     @metadata_handler = MetadataHandler.instance
+  end
+  
+  def set_namespace
+    @namespace = params[:controller].split("/").first
   end
   
   # Set current tab

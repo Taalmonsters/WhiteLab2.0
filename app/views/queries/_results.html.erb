@@ -7,13 +7,9 @@
 			<div class="panel-body">
 				<div id="result-pane" class="row" data-query-id="<%= query.id %>" data-query-status="<%= query.status %>" data-query-page="<%= query.page %>" data-query-patt="<%= query.patt %>" data-query-filter="<%= query.filter %>" data-query-within="<%= query.within %>" data-query-view="<%= query.view %>">
 					<% if query.finished? %>
-						<% if @namespace %>
 						<%= render partial: "/#{@namespace}/queries/result", :locals => { :query => query } %>
-						<% else %>
-						<%= render partial: "/queries/result", :locals => { :query => query } %>
-						<% end %>
 					<% elsif query.failed? %>
-					<p>Failed to execute query.</p>
+						<%= render partial: "/layouts/messages", :locals => { :flash => { :error => "Failed to execute query" } } %>
 					<% else %>
 					<span class="loading"></span>
 					<% end %>

@@ -1,15 +1,9 @@
 # Controller for all static public pages.
 class StaticPagesController < ApplicationController
-  before_action :set_main_namespace
   
   # Load info page
   def info
     @tab = 'info'
-  end
-  
-  # Set namespace to 'main'
-  def set_main_namespace
-    @namespace = 'main'
   end
   
   # Load test page

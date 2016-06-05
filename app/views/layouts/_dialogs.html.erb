@@ -1,4 +1,4 @@
-<% if @namespace && @namespace.eql?('admin') && @page && @page.eql?('index') %>
+<% if @namespace && @namespace.eql?('admin') && action_name.eql?('index') %>
 	<% if @tab && @tab.eql?('actors') %>
 		<%= render partial: "actors/dialog" %>
 	<% elsif @tab && @tab.eql?('metadata') %>
