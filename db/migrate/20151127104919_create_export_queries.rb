@@ -1,8 +1,7 @@
 class CreateExportQueries < ActiveRecord::Migration
   def change
     create_table :export_queries do |t|
-      t.integer :user_id
-      t.string :input_page
+      t.integer :user_id, :null => false
       t.string :patt
       t.string :filter
       t.string :within, :default => 'document'
@@ -13,6 +12,10 @@ class CreateExportQueries < ActiveRecord::Migration
       t.integer :status, :default => 0
       t.integer :offset, :default => 0
       t.integer :number, :default => 1000
+      t.string :input_page
+      t.integer :hit_count
+      t.integer :document_count
+      t.integer :group_count
 
       t.timestamps null: false
     end

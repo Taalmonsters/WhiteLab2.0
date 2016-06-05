@@ -2,12 +2,21 @@ class CreateSearchQueries < ActiveRecord::Migration
   def change
     create_table :search_queries do |t|
       t.string :query_id
+      t.integer :user_id, :null => false
       t.string :patt, :null => false
       t.string :filter
+      t.string :within, :default => 'document'
+      t.integer :view, :default => 1
+      t.string :group
+      t.string :sort
+      t.string :order
+      t.integer :status, :default => 0
+      t.integer :offset, :default => 0
+      t.integer :number, :default => 50
       t.string :input_page, :default => 'expert'
-      t.string :view_page, :default => 'expert'
-      t.integer :user_id, :null => false
-      t.integer :query_result_id
+      t.integer :hit_count
+      t.integer :document_count
+      t.integer :group_count
 
       t.timestamps null: false
     end
