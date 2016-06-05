@@ -3,7 +3,7 @@
 		<div class="hidden"><%= t(:"instructions.keys.advanced_search_box_header").html_safe %>:</div>
 	</div>
 	<div class="box-body">
-		<%= render partial: "/search/advanced/field", layout: false %>
+		<%= render partial: "/search/interface/advanced/field", layout: false %>
 	</div>
 	<div class="box-footer right-aligned">
 		<a class="add-field" data-column="<%= @field[:column] %>" data-box="<%= @field[:box] %>">OR</a>

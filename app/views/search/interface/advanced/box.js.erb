@@ -1,2 +1,2 @@
-$("#column<%= @column %> div.panel-body").append('<%= escape_javascript(raw render partial: "/search/advanced/box", layout: false) %>');
-Whitelab.search.advanced.resetButtonsOnColumn(<%= @column %>);
+$("#column<%= @field[:column] %> div.panel-body").append('<%= escape_javascript(raw render partial: "/search/interface/advanced/box", layout: false) %>');
+Whitelab.search.advanced.resetButtonsOnColumn(<%= @field[:column] %>);

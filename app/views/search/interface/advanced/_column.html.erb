@@ -3,14 +3,14 @@
 		<div class="close hidden"><a href="#" class="remove-column" data-column="<%= @field[:column] %>"><span class="glyphicon glyphicon-remove"></span></a></div>
 	</div>
 	<div class="panel-body">
-		<%= render partial: "/search/advanced/box", layout: false %>
+		<%= render partial: "/search/interface/advanced/box", layout: false %>
 	</div>
 	<div class="panel-footer">
 		<div class="inline left-aligned">
 			<a class="add-box" data-column="<%= @field[:column] %>"><%= image_tag 'plus.png' %></a>
 		</div>
 		<div class="inline right-aligned">
-			<div class="repeat switch <%= !@field_values[:repeat_from].to_s.eql?('1') || !@repeat_to.to_s.eql?('1') ? 'active' : '' %>">
+			<div class="repeat switch <%= !@field_values[:repeat_from].to_s.eql?('1') || !@field_values[:repeat_to].to_s.eql?('1') ? 'active' : '' %>">
 				<span><%= t(:"operators.keys.repeat") %></span>
 				<input type="number" class="from" min="0" value="<%= @field_values[:repeat_from] %>">
 				<span><%= t(:"operators.keys.to") %></span>

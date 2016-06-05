@@ -1,12 +1,12 @@
-var box = document.getElementById('column<%= @column %>-box<%= @box %>');
+var box = document.getElementById('column<%= @field[:column] %>-box<%= @field[:box] %>');
 if (box == null) {
-	var column = document.getElementById('column<%= @column %>');
+	var column = document.getElementById('column<%= @field[:column] %>');
 	if (column == null)
-		$("#advanced-canvas").append('<%= escape_javascript(raw render partial: "/search/advanced/column", layout: false) %>');
+		$("#advanced-canvas").append('<%= escape_javascript(raw render partial: "/search/interface/advanced/column", layout: false) %>');
 	else
-		$(column).find("div.panel-body").first().append('<%= escape_javascript(raw render partial: "/search/advanced/box", layout: false) %>');
+		$(column).find("div.panel-body").first().append('<%= escape_javascript(raw render partial: "/search/interface/advanced/box", layout: false) %>');
 } else {
-	$(box).find("div.box-body").first().append('<%= escape_javascript(raw render partial: "/search/advanced/field", layout: false) %>');
-	Whitelab.search.advanced.resetBoxHeader(<%= @box %>, <%= @column %>);
-	Whitelab.search.advanced.resetButtonsOnColumn(<%= @column %>);
+	$(box).find("div.box-body").first().append('<%= escape_javascript(raw render partial: "/search/interface/advanced/field", layout: false) %>');
+	Whitelab.search.advanced.resetBoxHeader(<%= @field[:box] %>, <%= @field[:column] %>);
+	Whitelab.search.advanced.resetButtonsOnColumn(<%= @field[:column] %>);
 }
