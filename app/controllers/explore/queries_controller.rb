@@ -1,11 +1,12 @@
 class Explore::QueriesController < ApplicationController
+  include WhitelabExplore
   before_action :set_option
   
   # Load treemap data for Explore Corpora interface
   def treemap
     @data = format_for_treemap(@metadata_handler.get_filtered_group_composition(@option, @filter), @option, @filtered_total_abs)
     respond_to do |format|
-      if @data['size'].nil?
+      if @data['children'].size == 1 && @data['children'][0]['size'] == 0
         @element = 'display'
         @msg = {}
         @msg[:error] = "Failed to load treemap"
@@ -23,7 +24,6 @@ class Explore::QueriesController < ApplicationController
   # Load bubble chart data for Explore Corpora interface
   def bubble
     @data = format_for_bubble_chart(@metadata_handler.get_filtered_group_composition(@option, @filter), @option, @filtered_total_abs)
-    p @data
     respond_to do |format|
       if @data['max_doc_count'] == 0
         @element = 'bubble-chart'
