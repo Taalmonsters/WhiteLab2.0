@@ -61,6 +61,7 @@ class MetadataHandler
     no_filter = !filter || filter.eql?("")
     group, key = get_group_and_key_from_label(option)
     label = "#{group}_#{key}"
+    return [] if !@fields.has_key?(label)
     list = @fields[label]
     field_values = @metadata[label]['values']
     if no_filter
