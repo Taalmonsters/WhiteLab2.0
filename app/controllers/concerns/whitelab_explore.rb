@@ -24,4 +24,11 @@ module WhitelabExplore
     end
   end
   
+  private
+  
+  # Check allowed parameters for query creation
+  def query_create_params
+    params.permit(:id, :patt, :filter, :within, :view, :group, :offset, :number, :input_page)
+  end
+  
 end
