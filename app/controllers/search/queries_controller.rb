@@ -34,6 +34,26 @@ class Search::QueriesController < ApplicationController
     end
   end
   
+  # Download Explore Query export
+  def download_export
+    @export_query = @user.export_queries.find(params[:id])
+    respond_to do |format|
+      format.csv { send_data @export_query.result.to_csv }
+    end
+  end
+  
+  # Start Explore Query export
+  def export
+    if !@query.blank?
+      @export_query = Search::Query.export(@query)
+    end
+    respond_to do |format|
+      format.js do
+        render '/query/export'
+      end
+    end
+  end
+  
   # Load hits for Search Query in selected group
   def hits_in_group
     results_in_group(:hits_group)
