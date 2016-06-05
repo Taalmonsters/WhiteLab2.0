@@ -12,7 +12,7 @@ module WhitelabSearch
   
   # Set current query
   def set_query
-    @query = Search::Query.find_from_params(action_name, @user.id, params) if params.has_key?(:patt)
+    @query = Search::Query.find_from_params(action_name, @user.id, query_create_params) if params.has_key?(:patt)
     @result = @query.execute if @query && !@query.finished? && !@query.failed?
   end
   
@@ -22,6 +22,13 @@ module WhitelabSearch
     patt = @user.search_queries.find(params[:id]).patt if !patt && params.has_key?(:id)
     @document = Document.new({ :xmlid => params[:xmlid], :patt => patt }) if params.has_key?(:xmlid)
     @document = nil if @document && @document.token_count.blank?
+  end
+  
+  private
+  
+  # Check allowed parameters for query creation
+  def query_create_params
+    params.permit(:patt, :id, :within, :filter, :view, :group, :sort, :order, :offset, :number, :input_page)
   end
   
 end
