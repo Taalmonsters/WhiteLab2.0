@@ -1,8 +1,8 @@
 # Interface controller for pages under Search namespace
 class Search::InterfaceController < InterfaceController
   include WhitelabSearch
-  before_action :set_query
   before_action :set_field_values, :only => [:advanced_column, :advanced_box, :advanced_field]
+  before_action :set_tab, :only => [:document]
   
   # Redirect from /search to /search/expert (with CQL query) or /search/simple (without CQL query)
   def search
@@ -66,12 +66,6 @@ class Search::InterfaceController < InterfaceController
   end
   
   protected
-  
-  # Set current query
-  def set_query
-    @query = Search::Query.find_from_params(action_name, @user.id, params) if params.has_key?(:patt)
-    @result = @query.execute if @query && !@query.finished? && !@query.failed?
-  end
   
   # Get field values from parameters
   def set_field_values
