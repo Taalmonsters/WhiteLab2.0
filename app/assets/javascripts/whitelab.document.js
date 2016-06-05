@@ -1,30 +1,32 @@
 Whitelab.document = {
 	
 	init : function() {
-		Whitelab.document.loadDocument($("#document-display").data("tab"), $("#document-display").data("xmlid"), $("#document-display").data("query-id"));
+		Whitelab.document.loadDocument($("#main-div").data("namespace"), $("#document-display").data("tab"), $("#document-display").data("xmlid"), $("#document-display").data("query-id"));
 	},
 	
-	loadDocument : function(tab, xmlid, qid, offset, number) {
+	loadDocument : function(namespace, tab, xmlid, qid, offset, number) {
 		Whitelab.debug('QID: '+qid);
+		if (tab === '')
+			tab = 'content';
 		if (tab === 'content' && offset == null)
 			offset = 0;
 		if (tab === 'content' && number == null)
 			number = 50;
 		if (tab === 'content') {
 			if (qid != null && qid !== '') {
-				Whitelab.debug('A: /document/'+xmlid+'/query/'+qid+'/'+tab+'.js?offset='+offset+'&number='+number);
-				$.getScript('/document/'+xmlid+'/query/'+qid+'/'+tab+'.js?offset='+offset+'&number='+number);
+				Whitelab.debug('A: /'+namespace+'/document/'+xmlid+'/query/'+qid+'/'+tab+'.js?offset='+offset+'&number='+number);
+				$.getScript('/'+namespace+'/document/'+xmlid+'/query/'+qid+'/'+tab+'.js?offset='+offset+'&number='+number);
 			} else {
-				Whitelab.debug('B: /document/'+xmlid+'/'+tab+'.js?offset='+offset+'&number='+number);
-				$.getScript('/document/'+xmlid+'/'+tab+'.js?offset='+offset+'&number='+number);
+				Whitelab.debug('B: /'+namespace+'/document/'+xmlid+'/'+tab+'.js?offset='+offset+'&number='+number);
+				$.getScript('/'+namespace+'/document/'+xmlid+'/'+tab+'.js?offset='+offset+'&number='+number);
 			}
 		} else {
 			if (qid != null && qid !== '') {
-				Whitelab.debug('C: /document/'+xmlid+'/query/'+qid+'/'+tab+'.js');
-				$.getScript('/document/'+xmlid+'/query/'+qid+'/'+tab+'.js');
+				Whitelab.debug('C: /'+namespace+'/document/'+xmlid+'/query/'+qid+'/'+tab+'.js');
+				$.getScript('/'+namespace+'/document/'+xmlid+'/query/'+qid+'/'+tab+'.js');
 			} else {
-				Whitelab.debug('D: /document/'+xmlid+'/'+tab+'.js');
-				$.getScript('/document/'+xmlid+'/'+tab+'.js');
+				Whitelab.debug('D: /'+namespace+'/document/'+xmlid+'/'+tab+'.js');
+				$.getScript('/'+namespace+'/document/'+xmlid+'/'+tab+'.js');
 			}
 		}
 	}

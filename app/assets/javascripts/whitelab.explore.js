@@ -5,7 +5,7 @@ Whitelab.explore = {
 		if ($('#metadata-filters').length > 0)
 			Whitelab.metadata.init();
 
-		if ($('#explore #query-details').length > 0) {
+		if ($("#main-div[data-namespace='explore'] #query-details").length > 0) {
 			var id = $('#query-details').data("query-id");
 			$.getScript('/explore/details/id/'+id+'.js');
 		}
@@ -13,13 +13,13 @@ Whitelab.explore = {
 		if ($("#document-display").length > 0)
 			Whitelab.document.init();
 		
-		if ($('#explore div#ngrams').length > 0)
+		if ($("#main-div[data-namespace='explore'] div#ngrams").length > 0)
 			Whitelab.explore.ngrams.init();
 		
-		if ($('#explore div#statistics').length > 0)
+		if ($("#main-div[data-namespace='explore'] div#statistics").length > 0)
 			Whitelab.explore.statistics.init();
 		
-		if ($('#explore div#results').length > 0)
+		if ($("#main-div[data-namespace='explore'] div#results").length > 0)
 			Whitelab.explore.result.init();
 		
 		if ($('#corpora div#display').length > 0)

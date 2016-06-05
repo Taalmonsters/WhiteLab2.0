@@ -5,12 +5,12 @@ Whitelab.search = {
 		if ($('#metadata-filters').length > 0)
 			Whitelab.metadata.init();
 		
-		if ($('#search #query-details').length > 0) {
+		if ($("#main-div[data-namespace='search'] #query-details").length > 0) {
 			var id = $('#query-details').data("query-id");
 			$.getScript('/search/details/id/'+id+'.js');
 		}
 		
-		if ($('#search div#results').length > 0)
+		if ($("#main-div[data-namespace='search'] div#results").length > 0)
 			Whitelab.search.result.init();
 
 		if ($('div#expert').length > 0)
@@ -78,19 +78,19 @@ Whitelab.search = {
 		addColumn : function() {
 			Whitelab.search.advanced.debug("Whitelab.search.advanced.addColumn");
 			var c = document.getElementsByClassName("advanced-column").length;
-			$.getScript('/interface/search/advanced/column.js?column='+c);
+			$.getScript('/search/advanced/column.js?column='+c);
 		},
 		
 		addBoxToColumn : function(c) {
 			Whitelab.search.advanced.debug("Whitelab.search.advanced.addBoxToColumn");
 			var b = $("#column"+c).find('div.advanced-box').length;
-			$.getScript('/interface/search/advanced/box.js?column='+c+'&box='+b);
+			$.getScript('/search/advanced/box.js?column='+c+'&box='+b);
 		},
 		
 		addFieldToBoxInColumn : function(b, c, token_type, operator, input, batch, sensitive, startsen, endsen, repeat_from, repeat_to) {
 			Whitelab.search.advanced.debug("Whitelab.search.advanced.addFieldToBoxInColumn");
 			var f = $("#column"+c+"-box"+b).find('div.advanced-field').length;
-			var url = '/interface/search/advanced/field.js?column='+c+'&box='+b+'&field='+f;
+			var url = '/search/advanced/field.js?column='+c+'&box='+b+'&field='+f;
 			if (token_type != null)
 				url = url + '&token_type='+token_type;
 			if (operator != null)
