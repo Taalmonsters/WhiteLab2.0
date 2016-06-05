@@ -1,7 +1,6 @@
 class CreateSearchQueries < ActiveRecord::Migration
   def change
     create_table :search_queries do |t|
-      t.string :query_id
       t.integer :user_id, :null => false
       t.string :patt, :null => false
       t.string :filter
@@ -21,7 +20,6 @@ class CreateSearchQueries < ActiveRecord::Migration
       t.timestamps null: false
     end
 
-    add_index :search_queries, :query_id
     add_index :search_queries, :patt
     add_index :search_queries, :user_id
     add_index :search_queries, :filter
