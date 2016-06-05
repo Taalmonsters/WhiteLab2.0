@@ -3,6 +3,7 @@ module WhitelabSearch
 
   included do
     before_filter :set_document
+    before_filter :set_filtered_amount
   end
   
   protected
