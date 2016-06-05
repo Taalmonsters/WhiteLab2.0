@@ -71,9 +71,18 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  # Get selected metadata filter from parameters
+  def set_filter
+    @filter = ''
+    if @query && !@query.filter.blank?
+      @filter = @query.filter
+    elsif params[:filter] && !params[:filter].blank?
+      @filter = params[:filter]
+    end
+  end
+  
   # Calculate the number of tokens based on the selected metadata filter
   def set_filtered_amount
-    @filter = params.has_key?(:filter) ? params[:filter] : ''
     if !@filter.blank?
       @total_tokens = @metadata_handler.get_total_word_count
       @filtered_total_abs = @metadata_handler.get_filtered_word_count(@filter)
