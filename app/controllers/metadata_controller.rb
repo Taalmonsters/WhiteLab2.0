@@ -2,6 +2,7 @@
 class MetadataController < ApplicationController
   before_action :set_logged_in, :only => [:index, :edit, :update]
   before_action :current_metadatum_label, :only => [:edit, :update, :values, :filter_rule]
+  before_action :set_filter, :only => [:coverage]
   before_action :set_filtered_amount, :only => [:coverage]
   
   # Show list of available metadata
