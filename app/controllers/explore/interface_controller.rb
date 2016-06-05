@@ -4,6 +4,7 @@ class Explore::InterfaceController < InterfaceController
   before_action :set_page
   before_action :set_query
   before_action :set_document, :only => :document
+  before_action :set_tab, :only => [:document]
   before_action :set_listtype_options, :only => [:statistics, :ngrams]
   
   # Redirect from /explore to /explore/corpora
