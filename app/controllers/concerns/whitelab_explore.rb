@@ -15,14 +15,4 @@ module WhitelabExplore
     @document = nil if @document && @document.token_count.blank?
   end
   
-  # Get selected metadata filter from parameters
-  def set_filter
-    @filter = ''
-    if @query && !@query.filter.blank?
-      @filter = @query.filter
-    elsif params[:filter] && !params[:filter].blank?
-      @filter = params[:filter]
-    end
-  end
-  
 end
