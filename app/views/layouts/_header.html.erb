@@ -86,7 +86,7 @@
 				</div>
 			</div>
 		</nav>
-		<div id="<%= namespace ? namespace : '' %>" class="container-fluid main-content" style="margin-top: 65px; padding-top: 40px; padding-bottom: 150px;">
+		<div id="main-div" data-namespace="<%= namespace ? namespace : '' %>" class="container-fluid main-content" style="margin-top: 65px; padding-top: 40px; padding-bottom: 150px;">
 			<%= render 'cookies_eu/consent_banner' %>
 			<% if namespace && !namespace.eql?('static_pages') %>
 			<%= render partial: namespace+'/interface/sub_nav', :locals => { :query => @query ? @query : nil, :query_params => @query ? "?#{query.assemble_url_params(['patt', 'filter', 'within', 'view', 'group', 'number', 'offset'])}" : '' } %>

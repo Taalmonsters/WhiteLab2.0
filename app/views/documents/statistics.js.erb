@@ -1,1 +1,1 @@
-$('#document-display div.tab-content').html('<%= escape_javascript(raw render partial: "/documents/statistics", layout: false) %>');
+$('#document-display div.tab-content').html('<%= escape_javascript(raw render partial: "/documents/statistics", layout: false, locals: { xmlid: @document.xmlid, data: @document.statistics }) %>');

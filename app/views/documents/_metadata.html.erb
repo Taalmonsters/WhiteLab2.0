@@ -1,6 +1,6 @@
 <div class="row" id="document-metadata">
 	<div class="col-xs-12">
-		<% @document['metadata'].each do |group, keys| %>
+		<% metadata.each do |group, keys| %>
 			<table class="table">
 				<thead><tr><th colspan="2"><%= t(:"metadata_groups.keys.#{group}") %></th></tr></thead>
 				<tbody>
