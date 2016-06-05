@@ -70,18 +70,23 @@ class Document
     return { title: 'Token/POS Distribution', data: self.get_content['pos'].group_by{|pos| pos.split('(')[0] }.each{|_,list| list.size }.sort_by{|_, freq| freq }.reverse.map{|pos_head,freq| { name: pos_head, y: freq } } }
   end
   
-  def content
+  def content(offset = 0, number = 50)
     total = self.token_count
     contents = self.get_content
-    paragraphs = (0..total-1).to_a.group_by{|i| contents['xmlid'][i].split(/\.s\./)[0].sub(/^.*p\./,'').to_i }.map{|par, words|
+    allowed_indices = contents['xmlid'].select{|id| id =~ /\.1$/ }.map{|id| contents['xmlid'].index(id) }.slice(offset,number+1)
+    paragraphs = (allowed_indices.first..allowed_indices.last-1).to_a.group_by{|i| contents['xmlid'][i].split(/\.s\./)[0].sub(/^.*p\./,'').to_i }.map{|par, words|
       {
         par => {
-          'sentences' => words.group_by{|i| data['xmlid'][i].split(/\.w\./)[0].sub(/^.*s\./,'').to_i}.map{|sen, tokens|
+          'paragraph_type' => contents.has_key?('paragraph_type') ? contents['paragraph_type'] : 'p',
+          'sentences' => words.group_by{|i| contents['xmlid'][i].split(/\.w\./)[0].sub(/^.*s\./,'').to_i}.map{|sen, tokens|
             {
               sen => {
+                'sentence_speaker' => contents['speaker'][tokens[0]],
+                'begin_time' => contents['begin_time'][tokens[0]],
+                'end_time' => contents['end_time'][tokens.last-1],
                 'tokens' => tokens.map{|i|
                   {
-                    'xmlid' => "WR-P-P-D-0000000005.#{data['xmlid'][i]}",
+                    'xmlid' => "#{self.xmlid}.#{contents['xmlid'][i]}",
                     'word_type' => contents['word'][i],
                     'lemma' => contents['lemma'][i],
                     'pos_tag' => contents['pos'][i],
@@ -91,18 +96,14 @@ class Document
                     'end_time' => contents['end_time'][i],
                     'sentence_speaker' => contents['speaker'][i]
                   }
-                },
-                'sentence_speaker' => contents['speaker'][tokens[0]],
-                'begin_time' => contents['begin_time'][tokens[0]],
-                'end_time' => contents['end_time'][tokens[tokens.size-1]]
+                }
               }
             }
-          },
-          'paragraph_type' => contents.has_key?('paragraph_type') ? contents['paragraph_type'] : 'p'
+          }.reduce(Hash.new, :merge)
         }
       }
-    }
-    return { 'paragraphs' => paragraphs, 'audio_file' => self.audio_file, 'total_sentence_count' => contents['xmlid'].select{|x| x =~ /w\.1$/ }.size, 'begin_time' => contents['begin_time'][0], 'end_time' => contents['end_time'][total-1] }
+    }.reduce Hash.new, :merge
+    return { 'paragraphs' => paragraphs, 'audio_file' => self.audio_file, 'total_sentence_count' => contents['xmlid'].select{|x| x =~ /\.1$/ }.size, 'begin_time' => contents['begin_time'][0], 'end_time' => contents['end_time'][total-1] }
   end
   
   def xml_content
@@ -113,7 +114,7 @@ class Document
     return MetadataHandler.instance.get_document_token_count(xmlid)
   end
   
-  private
+  protected
   
   def get_content
     return WhitelabBackend.instance.get_document_snippet(self.xmlid, 0, self.token_count)['match']
