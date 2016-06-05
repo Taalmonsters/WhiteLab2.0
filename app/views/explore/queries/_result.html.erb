@@ -1,0 +1,16 @@
+<% if action_name.eql?('statistics') %>
+<%= render partial: "/explore/queries/result_tabs", layout: false, locals: { view: query.view } %>
+<% end %>
+<div id="query-result" class="tab-content">
+	<% if query.view == 1 %>
+		<%= render partial: "/result/hits" %>
+	<% elsif query.view == 2 %>
+		<%= render partial: "/result/docs" %>
+	<% elsif query.view == 4 %>
+		<%= render partial: "/result/vocabulary_growth" %>
+	<% elsif query.view == 8 %>
+		<%= render partial: "/result/grouped_hits" %>
+	<% elsif query.view == 16 %>
+		<%= render partial: "/result/grouped_docs" %>
+	<% end %>
+</div>

@@ -1,0 +1,18 @@
+<% provide(:title, t(:'page_titles.keys.explore').capitalize+" "+t(:'page_titles.keys.document').capitalize) %>
+<div id="document" class="explore-input-display" data-query-filter="<%= @query && !@query.filter.blank? ? @query.filter : "" %>" data-query-group="<%= @query && !@query.group.blank? ? @query.group : '' %>" data-query-pattern="<%= @query ? @query.patt : '' %>">
+	<div class="row small-form">
+		<div class="col-xs-10 col-sm-8 col-xs-offset-1 col-sm-offset-2">
+			<%= form_tag("/explore/document", id: "document-input-form", method: "get") do %>
+				<%= text_field_tag :xmlid, @document ? @document.xmlid : nil, :class => "full-width-minus-siblings form-control" %>
+				<div class="btn-group" role="group" id="submit-group">
+					<button class="btn btn-primary submit"><%= t('button_labels.keys.search').capitalize %></button>
+					<button type="button" class="btn btn-default btn-reset" data-url="/explore/document"><%= t('button_labels.keys.reset').capitalize %></button>
+				</div>
+			<% end %>
+		</div>
+	</div>
+	<% if @document %>
+		<%= render partial: "/documents/display" %>
+	<% end %>
+</div>
+<%= render partial: "/queries/index", :locals => { :query => nil, :queries => @user.query_history('explore_queries'), :export_queries => @user.query_history('export_queries') } %>

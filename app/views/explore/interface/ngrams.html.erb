@@ -1,0 +1,63 @@
+<% provide(:title, t(:'page_titles.keys.explore').capitalize+" "+t(:'page_titles.keys.ngrams').capitalize) %>
+<div id="ngrams" class="explore-input-display" data-ngram-size="<%= @size ? @size : 0 %>" data-query-filter="<%= @query && !@query.filter.blank? ? @query.filter : "" %>" data-query-group="<%= @query && !@query.group.blank? ? @query.group : '' %>" data-query-pattern="<%= @query ? @query.patt : '' %>">
+	<div class="row padding-top-20">
+		<div class="col-xs-10 col-xs-offset-1">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<%= form_tag("/explore/ngrams", id: "ngrams-input-form", method: "get", :class => "full-height form-horizontal") do %>
+						<div class="row">
+							<%= hidden_field_tag :patt, "" %>
+							<%= hidden_field_tag :filter, "" %>
+							<div class="form-group col-xs-12">
+								<label for="size" class="col-xs-6 col-md-2"><%= t(:"form_labels.keys.ngram_size") %></label>
+								<div class="col-xs-6 col-md-2">
+									<%= number_field_tag(:"size", value = @size, options = { :max => 5, :min => 1}) %>
+								</div>
+							</div>
+							<div class="form-group col-xs-12">
+								<label for="listtype" class="col-xs-6 col-md-2"><%= t(:"form_labels.keys.ngram_type") %></label>
+								<div class="col-xs-6 col-md-2">
+									<%= select_tag(:"listtype", options_for_select(@listtype_options,@listtype), :include_blank => true) %>
+								</div>
+							</div>
+						</div>
+					<% end %>
+					<div class="row">
+						<div class="col-xs-12">
+							<table id="ngrams-input-table" class="table">
+								<tbody>
+									<tr>
+										<% (1..5).each do |n| %>
+											<% if n > @size %>
+												<td><%= select_tag(:"type-#{n}", options_for_select(@listtype_options), {:class => "token-type", :data => { "field" => n }, :include_blank => false, :disabled => true}) %></td>
+											<% else %>
+												<td><%= select_tag(:"type-#{n}", options_for_select(@listtype_options), {:class => "token-type", :data => { "field" => n }, :include_blank => false}) %></td>
+											<% end %>
+										<% end %>
+									</tr>
+									<tr>
+										<% (1..5).each do |n| %>
+											<% if n > @size %>
+												<td id="field-<%= n %>"><input class="field-input" type="text" disabled></td>
+											<% else %>
+												<td id="field-<%= n %>"><input class="field-input" type="text"></td>
+											<% end %>
+										<% end %>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="col-xs-12 right-aligned">
+						<div class="btn-group" role="group">
+							<button id="ngrams-submit-form" class="btn btn-primary submit"><%= t('button_labels.keys.go').capitalize %></button>
+							<button id="ngrams-reset-form" class="btn btn-default btn-reset" data-url="/explore/ngrams"><%= t('button_labels.keys.reset').capitalize %></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<%= render partial: "/queries/index", :locals => { :query => @query, :queries => @user.query_history('explore_queries'), :export_queries => @user.query_history('export_queries') } %>
+
