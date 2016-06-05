@@ -29,10 +29,12 @@ Rails.application.routes.draw do
   
   namespace :explore do
     root :to => 'interface#explore'
-    get '/corpora' => 'explore#corpora'
-    get '/statistics' => 'explore#statistics'
-    get '/ngrams' => 'explore#ngrams'
-    get '/document' => 'explore#document'
+    get '/corpora' => 'interface#corpora'
+    get '/treemap/option/:option' => 'queries#treemap'
+    get '/bubble/option/:option' => 'queries#bubble'
+    get '/statistics' => 'interface#statistics'
+    get '/ngrams' => 'interface#ngrams'
+    get '/document' => 'interface#document'
     get '/pos/select' => 'interface#pos_select_options'
     scope '/document' do
       get '/:xmlid' => 'interface#document'
