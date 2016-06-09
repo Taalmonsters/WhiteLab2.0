@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 20151127104919) do
     t.integer  "hit_count",      limit: 4
     t.integer  "document_count", limit: 4
     t.integer  "group_count",    limit: 4
+    t.string   "docpid",         limit: 255
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
   end

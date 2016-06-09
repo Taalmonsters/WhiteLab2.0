@@ -16,6 +16,7 @@ class CreateSearchQueries < ActiveRecord::Migration
       t.integer :hit_count
       t.integer :document_count
       t.integer :group_count
+      t.string :docpid
 
       t.timestamps null: false
     end
