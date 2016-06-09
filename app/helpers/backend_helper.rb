@@ -9,34 +9,28 @@ module BackendHelper
   end
   
   def headers
-    { 'Content-Type' => 'application/json' }
+    return { 'Content-Type' => 'application/json' }
+  end
+  
+  def search(query, url)
+    data = { 
+      :query => reformat_query_attributes(query),
+      :url => url
+    }
+    return finish_query(query, get_query(data).parsed_response)
   end
   
   def execute_query(data)
-    resp = nil
-    if data.has_key?(:method) && data[:method].eql?('post')
-      if data.has_key?(:query)
-        resp = post_query(data)
-      else
-        resp = post_headers(data)
-      end
-    else
-      if data.has_key?(:query)
-        resp = get_query(data)
-      else
-        resp = get_headers(data)
-      end
+    has_query = data.has_key?(:query)
+    unless data.has_key?(:method) && data[:method].eql?('post')
+      return has_query ? get_query(data).parsed_response : get_headers(data).parsed_response
     end
-    if db_type.eql?('neo4j')
-      return resp.parsed_response
-    else
-      return resp
-    end
+    return has_query ? post_query(data).parsed_response : get_headers(data).parsed_response
   end
   
   def get_headers(data)
     HTTParty.get(data[:url], timeout: BACKEND_TIMEOUT_SECONDS,
-      :headers => data[:headers]
+      :headers => headers
     )
   end
   
@@ -63,7 +57,7 @@ module BackendHelper
   def get_query(data)
     HTTParty.get(data[:url], timeout: BACKEND_TIMEOUT_SECONDS,
       :query => data[:query],
-      :headers => data[:headers]
+      :headers => headers
     )
   end
   
@@ -128,14 +122,14 @@ module BackendHelper
   
   def post_headers(data)
     HTTParty.post(data[:url], timeout: BACKEND_TIMEOUT_SECONDS,
-      :headers => data[:headers]
+      :headers => headers
     )
   end
   
   def post_query(data)
     HTTParty.post(data[:url], timeout: BACKEND_TIMEOUT_SECONDS,
       :query => data[:query],
-      :headers => data[:headers]
+      :headers => headers
     )
   end
   

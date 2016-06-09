@@ -1,5 +1,5 @@
-$('#query div#query-details').html("<%= escape_javascript(raw render partial: "/query/details", layout: false) %>");
-<% if !@query.query_result.is_finished && (@query.query_result.view < 8 || !@query.query_result.group.blank? ) %>
+$('div#query-details').html("<%= escape_javascript(raw render partial: "/query/details", layout: false) %>");
+<% if !@query.finished? && (@query.view < 8 || !@query.group.blank? ) %>
 setTimeout(function(){
 	$.getScript('/<%= @namespace %>/details/id/<%= @query.id %>.js');
 }, 2000);

@@ -5,7 +5,7 @@ module Neo4jHelper
   include DataFormatHelper
   
   def headers
-    { 'Content-Type' => 'application/json', 'Authorization' => 'Basic '+Base64.encode64(NEO4J_USER+':'+NEO4J_PW) }
+    return { 'Content-Type' => 'application/json', 'Authorization' => 'Basic '+Base64.encode64(NEO4J_USER+':'+NEO4J_PW) }
   end
   
   def count_grouped_results(key, count_obj)
@@ -356,10 +356,6 @@ module Neo4jHelper
     })
   end
   
-  def get_query_headers
-    return headers
-  end
-  
   def get_results(path, search_obj)
     query = search_obj[:query]
     execute_query({
@@ -395,10 +391,6 @@ module Neo4jHelper
       key = hit_groups ? "grouped_hits" : "grouped_docs"
       return { "results" => get_grouped_results(key, search_obj)[key] }
     end
-  end
-  
-  def get_url
-    return backend_url
   end
   
   # Run CQL query on server for set amount of iterations

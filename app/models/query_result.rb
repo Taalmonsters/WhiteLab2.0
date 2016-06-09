@@ -34,7 +34,7 @@ class QueryResult < ActiveRecord::Base
   def self.add_default_params(namespace, query, params, listtype)
     new_params = {}
     is_explore_namespace = namespace.eql?('explore')
-    result = query.query_result
+    result = query
     if query && !result.blank?
       new_params = result.attributes.except("id", "result", "status", "created_at", "updated_at")
     end

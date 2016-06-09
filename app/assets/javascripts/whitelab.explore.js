@@ -229,14 +229,14 @@ $(document).on('click', 'a.explore-statistics-tab', function(e) {
 	}
 });
 
-$(document).on('click', 'button.show-document', function(e) {
+$(document).on('click', '#main-div[data-namespace="explore"] button.show-document', function(e) {
 	e.preventDefault();
 	e.stopPropagation();
 	var docpid = $(this).data("docpid");
 	window.location = '/explore/document/'+docpid;
 });
 
-$(document).on('click', 'tr.hit-row', function(e) {
+$(document).on('click', '#main-div[data-namespace="explore"] tr.hit-row', function(e) {
 	e.preventDefault();
 	e.stopPropagation();
 	var docpid = $(this).data("docpid");
@@ -248,14 +248,14 @@ $(document).on('click', 'tr.hit-row', function(e) {
 	$("#"+docpid+"_"+f+"_"+l).toggleClass("hidden");
 });
 
-$(document).on('click', 'tr.doc-row', function(e) {
+$(document).on('click', '#main-div[data-namespace="explore"] tr.doc-row', function(e) {
 	e.preventDefault();
 	e.stopPropagation();
 	var docpid = $(this).data("docpid");
 	var hits = $(this).data("hits");
 	var qid = $("#result-pane").data("query-id");
 	if ($("#"+docpid).html().length == 0) {
-		$.getScript('/explore/doc_hits/id/'+qid+'.js?docpid='+docpid+'&hits='+hits);
+		$.getScript('/explore/doc_hits/id/'+qid+'.js?view=1&docpid='+docpid+'&hits='+hits);
 	}
 	$("#"+docpid).toggleClass("hidden");
 });

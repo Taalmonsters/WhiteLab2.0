@@ -1,27 +1,30 @@
-<% if @query.query_result.blank? || @query.query_result.is_new || @query.query_result.is_running %>
-	<% if @query.query_result.is_new %>
-		<% @query.query_result.execute_threaded("EXECUTING QUERY FROM VOCABULARY GROWTH VIEW") %>
+<% if @query.blank? || @query.waiting? || @query.running? %>
+	<% if @query.waiting? %>
+		<% @query.execute_threaded("EXECUTING QUERY FROM VOCABULARY GROWTH VIEW") %>
 	<% end %>
 	<div class="row">
 		<div class="col-xs-12">
 			<h5 class="warn"><span class="loading"></span></h5>
 		</div>
 	</div>
-<% elsif @query.query_result.is_finished && (@query.query_result.result.blank? || @query.query_result.result.length == 0) %>
-	<div class="row">
-		<div class="col-xs-12">
-			<% if @error && !@error.blank? %>
-				<h5 class="error"><%= @error.to_s.html_safe %></h5>
-			<% else %>
-				<h5 class="warn"><%= t(:"instructions.keys.no_results").html_safe %></h5>
-			<% end %>
+<% else %>
+	<% result = @query.result %>
+	<% if @query.finished? && (result.blank? || result.length == 0) %>
+		<div class="row">
+			<div class="col-xs-12">
+				<% if @error && !@error.blank? %>
+					<h5 class="error"><%= @error.to_s.html_safe %></h5>
+				<% else %>
+					<h5 class="warn"><%= t(:"instructions.keys.no_results").html_safe %></h5>
+				<% end %>
+			</div>
 		</div>
-	</div>
-<% elsif !@query.query_result.result.blank? && @query.query_result.result.length > 0 %>
-	<div class="row">
-		<div id="vocabulary-growth-display" class="col-xs-12" style="height: 350px; margin: 25px auto;"><span class="loading"></span></div>
-	</div>
-	<script>
-		Whitelab.statistics.displayVocabularyGrowth(<%= @query.query_result.result.to_json.html_safe %>);
-	</script>
+	<% elsif !result.blank? && result.length > 0 %>
+		<div class="row">
+			<div id="vocabulary-growth-display" class="col-xs-12" style="height: 350px; margin: 25px auto;"><span class="loading"></span></div>
+		</div>
+		<script>
+			Whitelab.statistics.displayVocabularyGrowth(<%= result.to_json.html_safe %>);
+		</script>
+	<% end %>
 <% end %>

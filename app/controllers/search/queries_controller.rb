@@ -1,5 +1,6 @@
 class Search::QueriesController < ApplicationController
   include WhitelabSearch
+  before_action :set_limits_and_queries, :only => [:history]
   before_action :set_grouping, :only => [:result]
   
   # Show Search Query details
@@ -15,7 +16,9 @@ class Search::QueriesController < ApplicationController
   def doc_hits
     if @query && params.has_key?(:docpid)
       @target = params[:docpid]
-      @doc_hits = @whitelab.get_search_results_for_query(@query, @target, nil, nil)["results"]
+      @doc_hits = @query.result["results"]
+      p "DOC HITS"
+      p @doc_hits
     end
     respond_to do |format|
       format.js do
@@ -38,7 +41,7 @@ class Search::QueriesController < ApplicationController
   def download_export
     @export_query = @user.export_queries.find(params[:id])
     respond_to do |format|
-      format.csv { send_data @export_query.result.to_csv }
+      format.csv { send_data @export_query.result['results'].to_csv }
     end
   end
   
@@ -155,6 +158,13 @@ class Search::QueriesController < ApplicationController
         @docs = @whitelab.get_docs_in_group(@query,@group,@offset,20)['docs']
       end
     end
+  end
+  
+  def set_limits_and_queries
+    @qllimit = params.has_key?(:qllimit) && !params[:qllimit].blank? ? params[:qllimit].to_i : 5
+    @eqllimit = params.has_key?(:eqllimit) && !params[:eqllimit].blank? ? params[:eqllimit].to_i : 5
+    @queries = @user.search_queries.limit(@qllimit)
+    @export_queries = @user.export_queries.limit(@eqllimit)
   end
   
 end

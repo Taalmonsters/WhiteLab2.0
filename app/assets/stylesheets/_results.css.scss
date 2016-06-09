@@ -1,0 +1,26 @@
+ul.nav-tabs {
+  li {
+    > a {
+      background-color: #f5f5f5;
+      &:hover {
+        background-color: #dedede;
+      }
+    }
+    &.active {
+      -webkit-border-top-left-radius: 4px;
+      -webkit-border-top-right-radius: 4px;
+      -moz-border-radius-topleft: 4px;
+      -moz-border-radius-topright: 4px;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      border: 1px solid #ddd;
+      border-bottom: 0;
+      background-color: $brand-info;
+      > a {
+        margin-top: 3px;
+        background-color: #fff;
+        border: 0;
+      }
+    }
+  }
+}

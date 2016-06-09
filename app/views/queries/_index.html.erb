@@ -1,4 +1,4 @@
-<a id="history-toggle" href="#" class="show-history btn btn-info <%= 'hidden' unless queries.any? || export_queries.any? %>" data-query-id="<%= query.id if query %>"><span class="glyphicon glyphicon-time"></span></a>
+<a id="history-toggle" href="#" class="show-history btn btn-info <%= @user.has_queries? ? '' : 'hidden' %>" data-query-id="<%= query.id if query %>"><span class="glyphicon glyphicon-time"></span></a>
 <% if query %>
 	<%= render partial: '/queries/details', :locals => { :query => query } %>
 	<%= render partial: '/queries/results', :locals => { :query => query } %>

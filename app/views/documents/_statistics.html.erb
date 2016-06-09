@@ -17,6 +17,6 @@
 <div class="row"><div id="vocabulary-growth-display" class="col-xs-12" style="height: 350px; margin: 25px auto;"><span class="loading"></span></div></div>
 
 <script>
-	Whitelab.statistics.loadPosDistribution('/document/<%= xmlid %>/pos_distribution');
-	Whitelab.statistics.loadVocabularyGrowth('/document/<%= xmlid %>/vocabulary_growth');
+	Whitelab.statistics.loadPosDistribution('/<%= @namespace %>/document/<%= xmlid %>/pos_distribution');
+	Whitelab.statistics.loadVocabularyGrowth('/<%= @namespace %>/document/<%= xmlid %>/vocabulary_growth');
 </script>

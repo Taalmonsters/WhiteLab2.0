@@ -29,13 +29,15 @@ Rails.application.routes.draw do
     scope '/document' do
       get '/:xmlid' => 'interface#document'
       get '/:xmlid/query/:id' => 'interface#document'
-      get '/:xmlid/content' => 'documents#content', as: 'document_content'
-      get '/:xmlid/vocabulary_growth' => 'documents#vocabulary_growth', as: 'document_vocabulary_growth_data'
-      get '/:xmlid/pos_distribution' => 'documents#pos_distribution', as: 'document_pos_distribution_data'
-      get '/:xmlid/query/:id/content' => 'documents#content', as: 'document_content_with_id'
-      get '/:xmlid/metadata' => 'documents#metadata', as: 'document_metadata'
-      get '/:xmlid/query/:id/metadata' => 'documents#metadata', as: 'document_metadata_with_id'
-      get '/:xmlid/statistics' => 'documents#statistics', as: 'document_statistics'
+      get '/:xmlid/content' => 'documents#content', as: 'search_document_content'
+      get '/:xmlid/vocabulary_growth' => 'documents#vocabulary_growth', as: 'search_document_vocabulary_growth_data'
+      get '/:xmlid/pos_distribution' => 'documents#pos_distribution', as: 'search_document_pos_distribution_data'
+      get '/:xmlid/query/:id/content' => 'documents#content', as: 'search_document_content_with_id'
+      get '/:xmlid/metadata' => 'documents#metadata', as: 'search_document_metadata'
+      get '/:xmlid/query/:id/metadata' => 'documents#metadata', as: 'search_document_metadata_with_id'
+      get '/:xmlid/statistics' => 'documents#statistics', as: 'search_document_statistics'
+      get '/:xmlid/query/:id/statistics' => 'documents#statistics', as: 'search_document_statistics_with_id'
+      get '/:xmlid/audio' => 'documents#audio'
     end
   end
   
@@ -50,14 +52,12 @@ Rails.application.routes.draw do
     get '/pos/select' => 'interface#pos_select_options'
     scope '/document' do
       get '/:xmlid' => 'interface#document'
-      get '/:xmlid/query/:id' => 'interface#document'
       get '/:xmlid/content' => 'documents#content', as: 'document_content'
       get '/:xmlid/vocabulary_growth' => 'documents#vocabulary_growth', as: 'document_vocabulary_growth_data'
       get '/:xmlid/pos_distribution' => 'documents#pos_distribution', as: 'document_pos_distribution_data'
-      get '/:xmlid/query/:id/content' => 'documents#content', as: 'document_content_with_id'
       get '/:xmlid/metadata' => 'documents#metadata', as: 'document_metadata'
-      get '/:xmlid/query/:id/metadata' => 'documents#metadata', as: 'document_metadata_with_id'
       get '/:xmlid/statistics' => 'documents#statistics', as: 'document_statistics'
+      get '/:xmlid/audio' => 'documents#audio'
     end
   end
   
@@ -67,53 +67,11 @@ Rails.application.routes.draw do
   get '/test' => 'static_pages#test'
   get '/translate' => 'static_pages#translate'
   
-  # get '/interface/search/advanced/column' => 'interface#advanced_column'
-  # get '/interface/search/advanced/box' => 'interface#advanced_box'
-  # get '/interface/search/advanced/field' => 'interface#advanced_field'
-  # get '/interface/pos/select' => 'interface#pos_select_options'
-  
   get '/help' => 'static_pages#help'
   get '/tour/start' => 'tour#start'
   get '/tour/step/:step' => 'tour#step'
   get '/tour/end' => 'tour#end'
   
-  # get '/document/:xmlid/content' => 'documents#content', as: 'document_content'
-  # get '/document/:xmlid/vocabulary_growth' => 'documents#vocabulary_growth', as: 'document_vocabulary_growth_data'
-  # get '/document/:xmlid/pos_distribution' => 'documents#pos_distribution', as: 'document_pos_distribution_data'
-  # get '/document/:xmlid/query/:id/content' => 'documents#content', as: 'document_content_with_id'
-  # get '/document/:xmlid/metadata' => 'documents#metadata', as: 'document_metadata'
-  # get '/document/:xmlid/query/:id/metadata' => 'documents#metadata', as: 'document_metadata_with_id'
-  # get '/document/:xmlid/statistics' => 'documents#statistics', as: 'document_statistics'
-  # get '/document/:xmlid/query/:id/statistics' => 'documents#statistics', as: 'document_statistics_with_id'
-  
-  # get '/search' => 'search#search'
-  # get '/search/kwic' => 'search#kwic'
-  # get '/search/history' => 'search#history'
-  # get '/search/doc_hits/id/:id' => 'search#doc_hits'
-  # get '/search/history/id/:id' => 'search#history'
-  # get '/search/remove/id/:id' => 'search#remove'
-  # get '/search/details/id/:id' => 'search#details'
-  # get '/search/result/id/:id' => 'search#result', as: 'search_result'
-  # get '/search/result/id/:id/pagination' => 'search#result_pagination'
-  # get '/search/result/id/:id/grouphits' => 'search#hits_in_group'
-  # get '/search/result/id/:id/groupdocs' => 'search#docs_in_group'
-  # get '/search/simple' => 'search#simple', as: 'simple_search'
-  # get '/search/simple/id/:id' => 'search#simple', as: 'simple_search_with_id'
-  # get '/search/extended' => 'search#extended', as: 'extended_search'
-  # get '/search/extended/id/:id' => 'search#extended', as: 'extended_search_with_id'
-  # get '/search/advanced' => 'search#advanced', as: 'advanced_search'
-  # get '/search/advanced/id/:id' => 'search#advanced', as: 'advanced_search_with_id'
-  # get '/search/expert' => 'search#expert', as: 'expert_search'
-  # get '/search/expert/id/:id' => 'search#expert', as: 'expert_search_with_id'
-  # get '/search/document/:xmlid' => 'search#document', as: 'search_document'
-  # get '/search/document/:xmlid/id/:id' => 'search#document', as: 'search_document'
-  # get '/search/:page' => 'search#page', as: 'search_page'
-  # get '/search/:page/id/:id' => 'search#page', as: 'search_page_with_id'
-  
-  # get '/explore/corpora' => 'explore#corpora', as: 'explore_corpora'
-  # get '/explore/statistics' => 'explore#statistics', as: 'explore_statistics'
-  # get '/explore/ngrams' => 'explore#ngrams', as: 'explore_ngrams'
-  # get '/explore/document' => 'explore#document', as: 'explore_document'
   get '/explore/statistics/vocabulary_growth' => 'explore#vocabulary_growth', as: 'explore_vocabulary_growth'
   get '/explore/history' => 'explore#history'
   get '/explore/treemap/option/:option' => 'explore#treemap'
@@ -150,7 +108,5 @@ Rails.application.routes.draw do
   post '/admin/interface/help_page' => 'admin#update_help_page'
   get '/admin/:page' => 'admin#page', as: 'admin_page'
   post '/admin/:page' => 'admin#page'
-  
-  get '/documents/:xmlid/audio' => 'documents#audio'
   
 end

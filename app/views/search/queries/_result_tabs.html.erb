@@ -3,28 +3,28 @@
 		<li role="presentation" class="active"><a href="#"><%= t(:"results.keys.hits").capitalize %></a></li>
 	<% else %>
 		<li role="presentation">
-			<a href="<%= "#{base_url}&view=1&offset=0&number=50" %>"><%= t(:"results.keys.hits").capitalize %></a>
+			<a href="#" data-params="<%= "#{url_params}&view=1&offset=0&number=50" %>"><%= t(:"results.keys.hits").capitalize %></a>
 		</li>
 	<% end %>
 	<% if view == 2 %>
 		<li role="presentation" class="active"><a href="#"><%= t(:"results.keys.documents").capitalize %></a></li>
 	<% else %>
 		<li role="presentation">
-			<a href="<%= "#{base_url}&view=2&offset=0&number=50" %>"><%= t(:"results.keys.documents").capitalize %></a>
+			<a href="#" data-params="<%= "#{url_params}&view=2&offset=0&number=50" %>"><%= t(:"results.keys.documents").capitalize %></a>
 		</li>
 	<% end %>
 	<% if view == 8 %>
 		<li role="presentation" class="active"><a href="#"><%= t(:"results.keys.grouped_hits").capitalize %></a></li>
 	<% else %>
 		<li role="presentation">
-			<a href="<%= "#{base_url}&view=8&offset=0&number=50&group=" %>"><%= t(:"results.keys.grouped_hits").capitalize %></a>
+			<a href="#" data-params="<%= "#{url_params}&view=8&offset=0&number=50&group=" %>"><%= t(:"results.keys.grouped_hits").capitalize %></a>
 		</li>
 	<% end %>
 	<% if view == 16 %>
 		<li role="presentation" class="active"><a href="#"><%= t(:"results.keys.grouped_documents").capitalize %></a></li>
 	<% else %>
 		<li role="presentation">
-			<a href="<%= "#{base_url}&view=16&offset=0&number=50&group=" %>"><%= t(:"results.keys.grouped_documents").capitalize %></a>
+			<a href="#" data-params="<%= "#{url_params}&view=16&offset=0&number=50&group=" %>"><%= t(:"results.keys.grouped_documents").capitalize %></a>
 		</li>
 	<% end %>
 </ul>

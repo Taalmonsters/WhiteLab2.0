@@ -20,8 +20,8 @@ module WhitelabSearch
   
   # Set current query
   def set_query
-    @query = Search::Query.find_from_params(action_name, @user.id, query_create_params) if params.has_key?(:patt)
-    @result = @query.execute if @query && !@query.finished? && !@query.failed?
+    @query = Search::Query.find_from_params(action_name, @user.id, query_create_params) if params.has_key?(:patt) || params.has_key?(:id)
+    @query.execute if @query && @query.waiting?
   end
   
   private

@@ -1,32 +1,22 @@
 <% if @namespace && @namespace.eql?('search') %>
 	<div class="row">
 		<div class="col-xs-12">
-			<%= select_tag(:"group", grouped_options_for_select(@groups, @query.query_result.group), :class => "group-by-select", :include_blank => true) %>
+			<%= select_tag(:"group", grouped_options_for_select(@groups, @query.group), :class => "group-by-select", :include_blank => true) %>
 		</div>
 	</div>
 <% end %>
-<% if !@query.query_result.blank? && ((@query.query_result.is_new && !@query.query_result.group.blank?) || @query.query_result.is_running) %>
-	<% if @query.query_result.is_new && !@query.query_result.group.blank? %>
-		<% @query.query_result.execute_threaded("EXECUTING QUERY FROM GROUPED HITS VIEW") %>
+<% if !@query.blank? && ((@query.waiting? && !@query.group.blank?) || @query.running?) %>
+	<% if @query.waiting? && !@query.group.blank? %>
+		<% @query.execute_threaded("EXECUTING QUERY FROM GROUPED HITS VIEW") %>
 	<% end %>
 	<div class="row">
 		<div class="col-xs-12">
 			<h5 class="warn"><span class="loading"></span></h5>
 		</div>
 	</div>
-<% elsif @query.query_result.is_finished && (@query.query_result.result.blank? || @query.query_result.result.length == 0) %>
-	<div class="row">
-		<div class="col-xs-12">
-			<% if @error && !@error.blank? %>
-				<h5 class="error"><%= @error.to_s.html_safe %></h5>
-			<% else %>
-				<h5 class="warn"><%= t(:"instructions.keys.no_results").html_safe %></h5>
-			<% end %>
-		</div>
-	</div>
-<% elsif !@query.query_result.result.blank? && @query.query_result.result.length > 0 %>
+<% elsif @query.finished? %>
 	<div class="row pagination-row pagination-top">
-		<%= render partial: "/layouts/pagination", layout: false, locals: { numbarr: [50, 100, 200], url: '/'+@namespace+'/result/id/'+@query.id.to_s+'.js', total: @query.query_result.total, offset: @query.query_result.offset, number: @query.query_result.number } %>
+		<%= render partial: "/layouts/pagination", layout: false, locals: { numbarr: [50, 100, 200], url: '/'+@namespace+'/result/id/'+@query.id.to_s+'.js', total: @query.total, offset: @query.offset, number: @query.number } %>
 	</div>
 	<div class="row">
 		<table class="table table-hover table-striped">
@@ -37,17 +27,17 @@
 				</tr>
 			</thead>
 			<tbody>
-				<% @query.query_result.result.each_with_index do |group,i| %>
-					<tr class="clickable grouped-hit-row" data-group-value="<%= group[@group] %>" data-group-id="<%= @query.query_result.group+i.to_s %>">
+				<% @query.result['results'].each_with_index do |group,i| %>
+					<tr class="clickable grouped-hit-row" data-group-value="<%= group[@group] %>" data-group-id="<%= @query.group+i.to_s %>">
 						<td><%= group[@group].kind_of?(Array) ? group[@group][0].html_safe : group[@group].html_safe %></td>
 						<td class="progress-field">
 							<div class="progress">
-								<div class="progress-bar" role="progressbar" aria-valuenow="<%= group['hit_count'] %>" aria-valuemin="1" aria-valuemax="<%= @query.query_result.hit_count %>" style="width: <%= [group['hit_count'],100].min %>%; min-width: 4em;"><%= group['hit_count'] %></div>
+								<div class="progress-bar" role="progressbar" aria-valuenow="<%= group['hit_count'] %>" aria-valuemin="1" aria-valuemax="<%= @query.hit_count %>" style="width: <%= [group['hit_count'],100].min %>%; min-width: 4em;"><%= group['hit_count'] %></div>
 							</div>
 						</td>
 					</tr>
 					<% if @namespace.eql?('search') %>
-						<tr class="group-hits-row hidden" id="<%= @query.query_result.group+i.to_s %>" data-offset="0">
+						<tr class="group-hits-row hidden" id="<%= @query.group+i.to_s %>" data-offset="0">
 							<td></td>
 							<td>
 								<div class="hits"><table class="table">
@@ -59,7 +49,7 @@
 									</thead>
 									<tbody></tbody>
 								</table></div>
-								<div><button class="btn btn-xs btn-info show-grouped-hits" data-group-value="<%= group[@group] %>"><%= t(:"button_labels.keys.show_detailed").capitalize+" "+t(:"data_labels.keys.hit").pluralize %></button> <button class="btn btn-xs btn-default load-grouped-hits" data-group-id="<%= @query.query_result.group+i.to_s %>" data-group-value="<%= group[@group] %>"><%= t(:"button_labels.keys.load_more").capitalize %></button></div>
+								<div><button class="btn btn-xs btn-info show-grouped-hits" data-group-value="<%= group[@group] %>"><%= t(:"button_labels.keys.show_detailed").capitalize+" "+t(:"data_labels.keys.hit").pluralize %></button> <button class="btn btn-xs btn-default load-grouped-hits" data-group-id="<%= @query.group+i.to_s %>" data-group-value="<%= group[@group] %>"><%= t(:"button_labels.keys.load_more").capitalize %></button></div>
 							</td>
 						</tr>
 					<% end %>
@@ -68,6 +58,6 @@
 		</table>
 	</div>
 	<div class="row pagination-row">
-		<%= render partial: "/layouts/pagination", layout: false, locals: { numbarr: [50, 100, 200], url: '/'+@namespace+'/result/id/'+@query.id.to_s+'.js', total: @query.query_result.total, offset: @query.query_result.offset, number: @query.query_result.number } %>
+		<%= render partial: "/layouts/pagination", layout: false, locals: { numbarr: [50, 100, 200], url: '/'+@namespace+'/result/id/'+@query.id.to_s+'.js', total: @query.total, offset: @query.offset, number: @query.number } %>
 	</div>
 <% end %>

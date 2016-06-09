@@ -19,6 +19,7 @@ module WhitelabExplore
   # Set current query
   def set_query
     if ['ngrams','statistics'].include?(action_name)
+      @query = @user.explore_queries.find(params[:id]) if params.has_key?(:id)
       @query = Explore::Query.find_from_params(action_name, @user.id, query_create_params) if params.has_key?(:patt)
       @result = @query.execute if @query && !@query.finished? && !@query.failed?
     end

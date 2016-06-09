@@ -5,8 +5,8 @@ logger.formatter = Logger::Formatter.new
 logger.info "Using backend '"+backend.get_backend_type+"'"
 
 data = {
-  :url => backend.get_backend_type.eql?('neo4j') ? backend.get_url+'db/data/' : backend.get_url,
-  :headers => backend.get_query_headers
+  :url => backend.get_backend_type.eql?('neo4j') ? backend.backend_url+'db/data/' : backend.backend_url,
+  :headers => backend.headers
 }
 
 if backend.get_backend_type.eql?('blacklab')

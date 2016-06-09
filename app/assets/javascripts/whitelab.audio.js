@@ -40,9 +40,10 @@ Whitelab.audio = {
 	},
 	
 	timeToSeconds : function(t) {
-		Whitelab.debug("Whitelab.audio.timeToSeconds");
+		Whitelab.debug("Whitelab.audio.timeToSeconds("+t+")");
+		var i = t === '00:00:00.000' ? 1 : 0;
 		var parts = t.split(":");
-		return parseFloat(parts[2]) + (60 * parseInt(parts[1])) + (3600 * parseInt(parts[0]));
+		return parseFloat(parts[2]) + (60 * parseInt(parts[1])) + (3600 * parseInt(parts[0]) + i);
 	}
 };
 

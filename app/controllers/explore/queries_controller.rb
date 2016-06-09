@@ -1,5 +1,6 @@
 class Explore::QueriesController < ApplicationController
   include WhitelabExplore
+  before_action :set_limits_and_queries, :only => [:history]
   before_action :set_option
   
   # Load bubble chart data for Explore Corpora interface
@@ -34,7 +35,7 @@ class Explore::QueriesController < ApplicationController
   def download_export
     @export_query = @user.export_queries.find(params[:id])
     respond_to do |format|
-      format.csv { send_data @export_query.result.to_csv }
+      format.csv { send_data @export_query.result['results'].to_csv }
     end
   end
   
@@ -62,14 +63,14 @@ class Explore::QueriesController < ApplicationController
   # Show Explore Query result
   def result
     @view = 8
-    if @query && [8,16].include?(@query.query_result.view)
-      @view = @query.query_result.view
-      @groups = @metadata_handler.get_group_options(@query.query_result.view, 'explore')
-      if !@query.query_result.group.blank?
-        @group = @query.query_result.group.gsub(/ /,"_")
+    if @query && [8,16].include?(@query.view)
+      @view = @query.view
+      @groups = @metadata_handler.get_group_options(@query.view, 'explore')
+      if !@query.group.blank?
+        @group = @query.group.gsub(/ /,"_")
       end
     elsif @query
-      @view = @query.query_result.view
+      @view = @query.view
     end
     respond_to do |format|
       format.js do
@@ -108,9 +109,10 @@ class Explore::QueriesController < ApplicationController
   
   # Load vocabulary growth data for Explore Statistics interface
   def vocabulary_growth
-    if @query && (@query.query_result.blank? || (@query.query_result.result.blank? && (!@query.query_result.is_running || !@query.query_result.is_finished)))
+#     TODO: This makes no sense
+    if @query && (@query.blank? || (@query.result.blank? && (!@query.running? || !@query.finished?)))
       @document = { 'types' => [{ name: '', x: 0, y: 0 }], 'lemmas' => [{ name: '', x: 0, y: 0 }] }
-      data = @whitelab.get_filtered_content(@query.query_result)
+      data = @whitelab.get_filtered_content(@query)
       types_seen = []
       t = 0
       lemmas_seen = []
@@ -127,16 +129,23 @@ class Explore::QueriesController < ApplicationController
         @document['types'] << { name: token['hit_text'], x: t, y: types_seen.size }
         @document['lemmas'] << { name: token['hit_lemma'], x: l, y: lemmas_seen.size }
       end
-      @query.query_result.update_attribute(:result, { title: 'Vocabulary growth', data: [{ name: 'word_types', color: '#A90C28', data: @document['types'] }, { name: 'lemmas', color: '#53c4c3', data: @document['lemmas'] }] })
-      @query.query_result.update_attribute(:status, 10)
+      @query.update_attribute(:result, { title: 'Vocabulary growth', data: [{ name: 'word_types', color: '#A90C28', data: @document['types'] }, { name: 'lemmas', color: '#53c4c3', data: @document['lemmas'] }] })
+      @query.update_attribute(:status, 10)
     end
-    render json: @query.query_result.result
+    render json: @query.result
   end
   
   protected
   
   def set_option
     @option = params[:option] || 'Corpus_title'
+  end
+  
+  def set_limits_and_queries
+    @qllimit = params.has_key?(:qllimit) && !params[:qllimit].blank? ? params[:qllimit].to_i : 5
+    @eqllimit = params.has_key?(:eqllimit) && !params[:eqllimit].blank? ? params[:eqllimit].to_i : 5
+    @queries = @user.explore_queries.limit(@qllimit)
+    @export_queries = @user.export_queries.limit(@eqllimit)
   end
   
 end

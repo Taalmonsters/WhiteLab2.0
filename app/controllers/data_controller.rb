@@ -6,7 +6,7 @@ class DataController < ApplicationController
   # Start query export
   def export
     if !@query.blank?
-      @export_query = ExportQuery.get_current_query(@user.id, @page, QueryResult.find(@query.query_result_id))
+      @export_query = ExportQuery.get_current_query(@user.id, @page, QueryResult.find(@query_id))
     end
     respond_to do |format|
       format.js do
@@ -20,7 +20,7 @@ class DataController < ApplicationController
     @export_query = ExportQuery.find(params[:id])
     if @export_query
       data = []
-      @export_query.query_results.sort_by { |x| x.offset }.each do |query_result|
+      @export_querys.sort_by { |x| x.offset }.each do |query_result|
         data.insert(query_result.offset, *query_result.result)
       end
       respond_to do |format|

@@ -45,7 +45,8 @@ class Document
     lemmas = contents['lemma']
     lemma_growth = Array.new(total, 0)
     lemmas.uniq.each{|x| lemma_growth[lemmas.index(x)] = 1 }
-    t = 0, l = 0
+    t = 0
+    l = 0
     (0..total-1).to_a.each do |i|
       t += type_growth[i]
       l += lemma_growth[i]
@@ -67,7 +68,7 @@ class Document
   end
   
   def pos_distribution
-    return { title: 'Token/POS Distribution', data: self.get_content['pos'].group_by{|pos| pos.split('(')[0] }.each{|_,list| list.size }.sort_by{|_, freq| freq }.reverse.map{|pos_head,freq| { name: pos_head, y: freq } } }
+    return { title: 'Token/POS Distribution', data: self.get_content['pos'].group_by{|pos| pos.split('(')[0] }.each{|_,list| list.size }.sort_by{|_, freq| freq }.reverse.map{|pos_head,freq| { name: pos_head, y: freq.size } } }
   end
   
   def content(offset = 0, number = 50)

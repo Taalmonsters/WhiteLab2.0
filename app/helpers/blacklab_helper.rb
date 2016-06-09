@@ -4,29 +4,98 @@ module BlacklabHelper
   include BackendHelper
   include DataFormatHelper
   
-  def count_grouped_results(key, count_obj)
-    data = get_grouped_results(key, count_obj)["summary"]
-    if !data["stillCounting"]
-      return {
-        "hit_count" => data["numberOfHits"],
-        "document_count" => data["numberOfDocs"],
-        "group_count" => data["numberOfGroups"]
-      }
-    else
-      count_grouped_results(key, count_obj)
-    end
+  def query_to_url(query)
+    page = [1,8].include?(query.view) ? "hits" : "docs"
+    return "#{backend_url}#{page}"
   end
   
-  def count_results(key, count_obj)
-    data = get_results(key, count_obj)["summary"]
-    if !data["stillCounting"]
-      return {
-        "hit_count" => data["numberOfHits"],
-        "document_count" => data["numberOfDocs"]
-      }
-    else
-      count_results(key, count_obj)
+  def reformat_query_attributes(query)
+    attrs = { 'outputformat' => 'json' }
+    query.as_json.select{|key,_| ['patt', 'filter', 'group', 'sort', 'order', 'offset', 'number', 'docpid'].include?(key) }.each do |key, value|
+      unless value.blank?
+        if ['filter', 'group'].include?(key)
+          attrs[key] = reformat_filters(value) if key.eql?('filter')
+          attrs[key] = reformat_group(value) if key.eql?('group')
+        else
+          key = 'first' if key.eql?('offset')
+          value = combine_patt_and_within(query) if key.eql?('patt')
+          attrs[key] = value
+        end
+      end
     end
+    return attrs
+  end
+  
+  def combine_patt_and_within(query)
+    within = query.within
+    patt = query.patt
+    return patt if within.blank? || within.eql?('document')
+    return "#{patt} within (<p/> | <event/>)" if within.eql?('paragraph')
+    return "#{patt} within <s/>" if within.eql?('sentence')
+  end
+  
+  def finish_query(query, response)
+    view = query.view
+    grouped = [8,16].include?(view)
+    hits = [1,8].include?(view)
+    key = hits ? "hit" : "doc"
+    key = grouped ? "#{key}Groups" : "#{key}s"
+    return {}, 3 if !response.has_key?(key)
+    summary = response['summary']
+    output = reformat_output(response, key, view)
+    return output, 1 if summary['stillCounting']
+    return output, 2
+  end
+  
+  def reformat_output(response, key, view)
+    summary = response['summary']
+    hits = summary['numberOfHits']
+    docs = summary['numberOfDocs']
+    data = response[key]
+    return {
+      'hit_count' => hits,
+      'document_count' => docs,
+      'results' => data.map { |hit|
+        {
+          "text_left" => hit["left"]["word"].join(" "),
+          "corpus" => response['docInfos'][hit["docPid"]]["Corpus_title"],
+          "collection" => response['docInfos'][hit["docPid"]]["Collection_title"],
+          "hit_text"=> hit["match"]["word"].join(" "),
+          "last_index" => hit["end"]-1,
+          "text_right" => hit["right"]["word"].join(" "),
+          "docpid" => hit["docPid"],
+          "end_time" => hit["match"]["end_time"].select{|et| !et.blank? }.sort.last,
+          "begin_time" => hit["match"]["begin_time"].select{|bt| !bt.blank? }.sort.first,
+          "hit_pos" => hit["match"]["pos"].join(" "),
+          "hit_phonetic" => reformat_phonetic(hit["match"]["phonetic"]),
+          "first_index" => hit["start"],
+          "hit_lemma" => hit["match"]["lemma"].join(" ")
+        }
+      }
+    } if view == 1
+    return {
+      'hit_count' => hits,
+      'document_count' => docs,
+      'results' => data.map { |doc|
+        {
+          "corpus" => doc["docInfo"]["Corpus_title"],
+          "docpid" => doc["docPid"],
+          "collection" => doc["docInfo"]["Collection_title"],
+          "hit_count" => doc["numberOfHits"]
+        }
+      }
+    } if view == 2
+    return {
+      'hit_count' => hits,
+      'document_count' => docs,
+      'group_count' => summary['numberOfGroups'],
+      'results' => data.map { |group|
+        {
+          "#{query.group}" => group["identityDisplay"],
+          "#{view == 8 ? 'hit_count' : 'document_count'}" => group["size"]
+        }
+      }
+    } if [8,16].include?(view)
   end
   
   def db_type
@@ -51,8 +120,7 @@ module BlacklabHelper
         "within" => within, 
         "number" => number, 
         "first" => offset
-      },
-      :headers => headers
+      }
     })
   end
   
@@ -101,8 +169,7 @@ module BlacklabHelper
   
   def get_document_xml_content(xmlid)
     return execute_query({
-      :url => "#{backend_url}docs/#{xmlid}",
-      :headers => headers
+      :url => "#{backend_url}docs/#{xmlid}"
     })
   end
   
@@ -118,8 +185,7 @@ module BlacklabHelper
           "first" => offset,
           "number" => number,
           "outputformat" => "json"
-        },
-        :headers => { 'Content-Type' => 'application/json' }
+        }
       })
       resp["docs"].each do |doc|
         doc_info = doc["docInfo"]
@@ -143,8 +209,7 @@ module BlacklabHelper
           "filter" => reformat_filters(filter),
           "first" => offset,
           "number" => number
-        },
-        :headers => headers
+        }
       })
       resp["docs"].each{ |doc| docs << doc["docPid"] }
       break unless resp["summary"]["windowHasNext"]
@@ -158,8 +223,7 @@ module BlacklabHelper
       :url => backend_url+'docs/'+xmlid,
       :query => {
         "outputformat" => "json"
-      },
-      :headers => headers
+      }
     })
     metadata = {
       "Metadata" => {}
@@ -179,8 +243,7 @@ module BlacklabHelper
         "filter" => "id:"+xmlid,
         "first" => 0,
         "number" => 1
-      },
-      :headers => headers
+      }
     })["summary"]
     if data["stillCounting"].to_s.eql?('true')
       get_document_sentence_count(xmlid)
@@ -198,8 +261,7 @@ module BlacklabHelper
         "filter" => "id:"+xmlid,
         "first" => offset,
         "number" => number
-      },
-      :headers => headers
+      }
     })
   end
   
@@ -211,8 +273,7 @@ module BlacklabHelper
         "hitstart" => hitstart,
         "hitend" => hitend,
         "wordsaroundhit" => 0
-      },
-      :headers => headers
+      }
     })
   end
   
@@ -236,22 +297,6 @@ module BlacklabHelper
       contents = contents + get_document_content(doc_id, query.patt, 0, get_document_sentence_count(doc_id))
     end
     contents
-  end
-  
-  def get_grouped_results(path, search_obj)
-    query = search_obj[:query]
-    execute_query({
-      :url => backend_url+path,
-      :query => {  
-        "outputformat" => "json",
-        "patt" => reformat_pattern(query.patt, search_obj[:within]), 
-        "filter" => reformat_filters(query.filter),
-        "number" => search_obj[:number], 
-        "first" => search_obj[:offset],
-        "group" => reformat_group(query.group)
-      },
-      :headers => headers
-    })
   end
   
   def get_hits_in_group(query,group,offset,number)
@@ -281,8 +326,7 @@ module BlacklabHelper
         "within" => query.within, 
         "number" => number, 
         "first" => offset
-      },
-      :headers => headers
+      }
     })
   end
   
@@ -292,12 +336,11 @@ module BlacklabHelper
       :query => {
         "outputformat" => "json",
         "hitstart" => first_index,
-        "hitend" => last_index+1,
+        "hitend" => last_index.to_i+1,
         "wordsaroundhit" => size
-      },
-      :headers => headers
+      }
     })
-    kwic = {
+    return {
       "left_context" => data["left"]["word"].join(" "),
       "hit_text" => data["match"]["word"].join(" "),
       "right_context" => data["right"]["word"].join(" ")
@@ -309,8 +352,7 @@ module BlacklabHelper
       :url => backend_url,
       :query => {
         "outputformat" => "json"
-      },
-      :headers => { 'Content-Type' => 'application/json' }
+      }
     })
     fields = resp["fieldInfo"]["metadataFields"]
     wanted = number == 0 ? fields : fields.keys[offset..offset+number]
@@ -322,15 +364,6 @@ module BlacklabHelper
     return data
   end
   
-  # Load metadatum values by group and key
-  # def get_metadatum_values_by_group_and_key(number, offset, sort, order, group, key)
-    # if group.eql?('Metadata') || group.eql?(key)
-      # get_metadatum_values_by_label(number, offset, sort, order, key)
-    # else
-      # get_metadatum_values_by_label(number, offset, sort, order, group+'_'+key)
-    # end
-  # end
-  
   # Load metadatum values by label
   def get_metadatum_values_by_label(number, offset, sort, order, label)
     return nil if !label
@@ -338,8 +371,7 @@ module BlacklabHelper
       :url => backend_url+'fields/'+label,
       :query => {
         "outputformat" => "json"
-      },
-      :headers => { 'Content-Type' => 'application/json' }
+      }
     })
     return number == 0 ? resp["fieldValues"].keys : resp["fieldValues"].keys[offset..offset+number]
   end
@@ -374,8 +406,7 @@ module BlacklabHelper
             "patt" => "[pos=\"#{head}.*\"]", 
             "group" => "hit:pos",
             "filter" => "Corpus_title:"+corpus
-          },
-          :headers => headers
+          }
         })["summary"]
         break unless resp["stillCounting"]
       end
@@ -387,15 +418,13 @@ module BlacklabHelper
   end
   
   def get_pos_tag_by_label(label)
-    reformat_pos_tag({ "label" => label })
+    return reformat_pos_tag({ "label" => label })
   end
   
   def get_pos_tag_features_by_label(label)
-    feats = []
-    label.split(/\(/)[1].sub(/\)^/,"").split(/,/).each do |feat|
-      feats << { "key" => "unknown", "value" => feat }
+    return label.split(/\(/)[1].sub(/\)^/,"").split(/,/).map do |feat|
+      { "key" => "unknown", "value" => feat }
     end
-    feats
   end
   
   def get_pos_tag_types_by_label(number, offset, sort, order, label)
@@ -410,14 +439,11 @@ module BlacklabHelper
         "number" => number,
         "first" => offset,
         "sort" => "size"
-      },
-      :headers => headers
+      }
     })
-    data = []
-    resp["hitGroups"].each do |hit|
-      data << { "word_type" => hit["identityDisplay"], "token_count" => hit["size"]}
+    return resp["hitGroups"].map do |hit|
+      { "word_type" => hit["identityDisplay"], "token_count" => hit["size"]}
     end
-    data
   end
   
   def get_pos_tags(number, offset, sort, order)
@@ -431,66 +457,12 @@ module BlacklabHelper
           "number" => number,
           "first" => offset,
           "sort" => order.eql?("desc") ? "-identity" : "identity"
-        },
-        :headers => headers
+        }
       })
       summary = resp["summary"]
       break unless summary["stillCounting"]
     end
-    { 'total' => summary["numberOfGroups"], 'pos_tags' => resp["hitGroups"].map{|hit_group| reformat_pos_tag(hit_group) } }
-  end
-  
-  def get_query_headers
-    return headers
-  end
-  
-  def get_results(path, search_obj)
-    query = search_obj[:query]
-    execute_query({
-      :url => backend_url+path,
-      :query => {  
-        "outputformat" => "json",
-        "patt" => reformat_pattern(query.patt, search_obj[:within]), 
-        "filter" => reformat_filters(query.filter),
-        "number" => search_obj[:number], 
-        "first" => search_obj[:offset]
-      },
-      :headers => headers
-    })
-  end
-  
-  def get_search_results_for_query(query, docpid, offset, number)
-    search_obj = {
-      :query => query,
-      :view => get_view(query, docpid, nil),
-      :offset => get_offset(query, docpid, offset),
-      :number => get_number(query, docpid, number),
-      :within => get_within(query, 'document'),
-      :docpid => docpid
-    }
-    view = search_obj[:view]
-    if [1,2].include?(view)
-      hits = view == 1
-      key = hits ? "hits" : "docs"
-      output = {
-        :query => query,
-        :data => get_results(key, search_obj)[key]
-      }
-      return { "results" => hits ? reformat_hits_output(output) : reformat_docs_output(output) }
-    elsif [8,16].include?(view)
-      hit_groups = view == 8
-      search_key = hit_groups ? "hits" : "docs"
-      result_key = hit_groups ? "hitGroups" : "docGroups"
-      output = {
-        :query => query,
-        :data => get_grouped_results(search_key, search_obj)[result_key]
-      }
-      return { "results" => reformat_grouped_output(output, hit_groups ? 'hit_count' : 'document_count') }
-    end
-  end
-  
-  def get_url
-    return backend_url
+    return { 'total' => summary["numberOfGroups"], 'pos_tags' => resp["hitGroups"].map{|hit_group| reformat_pos_tag(hit_group) } }
   end
   
   # Reformat BlackLab content output to same format as Neo4J
@@ -561,78 +533,14 @@ module BlacklabHelper
   end
   
   def reformat_group(group)
-    if group.start_with?('hit_') || group.end_with?('_left') || group.end_with?('_right')
-      group.gsub('_',':').gsub('left','leftword').gsub('right','rightword').gsub('hit:text','hit:word')
-    else
-      'field:'+group
-    end
-  end
-  
-  def reformat_hits_output(output)
-    reformat = []
-    docs = {}
-    output[:data].each do |hit|
-      doc_pid = hit["docPid"]
-      if !docs.has_key?(doc_pid)
-        metadata = get_document_metadata(doc_pid)["Metadata"]
-        docs[doc_pid] = {
-          "corpus" => metadata["Corpus_title"],
-          "collection" => metadata["Collection_title"]
-        }
+    if !group.blank?
+      if group.start_with?('hit_') || group.end_with?('_left') || group.end_with?('_right')
+        return group.gsub('_',':').gsub('left','leftword').gsub('right','rightword').gsub('hit:text','hit:word')
+      else
+        return 'field:'+group
       end
-      doc = docs[doc_pid]
-      match = hit["match"]
-      reformat << {
-        "text_left" => hit["left"]["word"].join(" "),
-        "corpus" => doc["corpus"],
-        "collection" => doc["collection"],
-        "hit_text"=> match["word"].join(" "),
-        "last_index" => hit["end"]-1,
-        "text_right" => hit["right"]["word"].join(" "),
-        "docpid" => doc_pid,
-        "end_time" => "Unknown",
-        "begin_time" => "Unknown",
-        "hit_pos" => match["pos"].join(" "),
-        "hit_phonetic" => reformat_phonetic(match["phonetic"]),
-        "first_index" => hit["start"],
-        "hit_lemma" => match["lemma"].join(" ")
-      }
     end
-    reformat
-  end
-  
-  def reformat_docs_output(output)
-    reformat = []
-    output[:data].each do |doc|
-      doc_info = doc["docInfo"]
-      reformat << {
-        "corpus" => doc_info["Corpus_title"],
-        "docpid" => doc["docPid"],
-        "collection" => doc_info["Collection_title"],
-        "hit_count" => doc["numberOfHits"]
-      }
-    end
-    reformat
-  end
-  
-  def reformat_grouped_output(output, count_key)
-    reformat = []
-    output[:data].each do |group|
-      reformat << {
-        "#{output[:query].group}" => group["identityDisplay"],
-        "#{count_key}" => group["size"]
-      }
-    end
-    reformat
-  end
-  
-  def reformat_pattern(patt, within)
-    if within.eql?('paragraph')
-      patt + ' within (<p/> | <event/>)'
-    elsif within.eql?('sentence')
-      patt + ' within <s/>'
-    end
-    patt
+    return ''
   end
   
   def reformat_phonetic(phonetic)
@@ -673,7 +581,7 @@ module BlacklabHelper
       obj["token_count"] += hits
       obj["token_count_#{corpus}"] = hits
     end
-    obj
+    return obj
   end
   
   # Run CQL query on server for set amount of iterations, not implemented for BlackLab

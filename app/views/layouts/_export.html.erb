@@ -1,4 +1,4 @@
-<% if ['explore', 'search'].include?(@namespace) && !@query.blank? && @query.query_result.is_finished && !@query.query_result.has_error %>
+<% if ['explore', 'search'].include?(@namespace) && !@query.blank? && @query.finished? && !@query.failed? %>
 	<div class="col-xs-12 right-aligned">
 		<button type="button" class="btn btn-info btn-export" data-query-id="<%= @query.id %>"><span class="glyphicon glyphicon-download"></span> <%= t('button_labels.keys.export').capitalize %></button>
 	</div>

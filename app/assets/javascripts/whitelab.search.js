@@ -391,70 +391,70 @@ Whitelab.search = {
 		
 };
 
-$(document).on('click', 'a.add-column', function(e) {
+$(document).on('click', '#advanced a.add-column', function(e) {
 	e.preventDefault();
 	Whitelab.search.advanced.addColumn();
 });
 
-$(document).on('click', 'a.add-box', function(e) {
+$(document).on('click', '#advanced a.add-box', function(e) {
 	e.preventDefault();
 	Whitelab.search.advanced.addBoxToColumn($(this).data('column'));
 });
 
-$(document).on('click', 'a.add-field', function(e) {
+$(document).on('click', '#advanced a.add-field', function(e) {
 	e.preventDefault();
 	Whitelab.search.advanced.addFieldToBoxInColumn($(this).data('box'),$(this).data('column'));
 });
 
-$(document).on('click', 'a.remove-column', function(e) {
+$(document).on('click', '#advanced a.remove-column', function(e) {
 	e.preventDefault();
 	Whitelab.search.advanced.removeColumn($(this).data('column'));
 });
 
-$(document).on('click', 'a.remove-field', function(e) {
+$(document).on('click', '#advanced a.remove-field', function(e) {
 	e.preventDefault();
 	Whitelab.search.advanced.removeFieldFromBoxInColumn($(this).data('field'),$(this).data('box'),$(this).data('column'));
 });
 
-$(document).on('click', 'a.toggle-settings', function(e) {
+$(document).on('click', '#advanced a.toggle-settings', function(e) {
 	e.preventDefault();
 	Whitelab.search.advanced.toggleSettingsOnColumn($(this).data('column'));
 });
 
-$(document).on('click', 'a.repeat', function(e) {
+$(document).on('click', '#advanced a.repeat', function(e) {
 	e.preventDefault();
 	var column = document.getElementById("column"+$(this).data('column'));
 	$(column).find('div.repeat').first().toggleClass('active');
 });
 
-$(document).on('click', 'a.startsen', function(e) {
+$(document).on('click', '#advanced a.startsen', function(e) {
 	e.preventDefault();
 	var column = document.getElementById("column"+$(this).data('column'));
 	$(column).find('span.startsen').first().toggleClass('active');
 });
 
-$(document).on('click', 'a.endsen', function(e) {
+$(document).on('click', '#advanced a.endsen', function(e) {
 	e.preventDefault();
 	var column = document.getElementById("column"+$(this).data('column'));
 	$(column).find('span.endsen').first().toggleClass('active');
 });
 
-$(document).on('change', 'select.token-type', function(e) {
+$(document).on('change', '#advanced select.token-type', function(e) {
 	e.preventDefault();
 	Whitelab.search.advanced.setTokenInput(this);
 });
 
-$(document).on('change', 'select.token-operator', function(e) {
+$(document).on('change', '#advanced select.token-operator', function(e) {
 	e.preventDefault();
 	Whitelab.search.advanced.setTokenInput(this);
 });
 
-$(document).on('click', 'div.batchrow .erase', function(e) {
+$(document).on('click', '#advanced div.batchrow .erase', function(e) {
 	e.preventDefault();
 	Whitelab.search.advanced.eraseBatchList(this);
 });
 
-$(document).on('change', 'input.small-loadlist', function(e) {
+$(document).on('change', '#advanced input.small-loadlist', function(e) {
 	e.preventDefault();
 	Whitelab.search.advanced.loadBatchList(this);
 });
@@ -466,8 +466,16 @@ $(document).on('click', '#advanced button.btn-submit', function(e) {
 });
 
 $(document).keypress(function(e) {
-	if (e.which == 13)
-		Whitelab.search.advanced.parseQuery();
+	if (e.which == 13) {
+		if ($("#advanced").length > 0)
+			Whitelab.search.advanced.parseQuery();
+		if ($("#extended").length > 0)
+			Whitelab.search.extended.parseQuery();
+		if ($("#expert").length > 0)
+			Whitelab.search.expert.parseQuery();
+		if ($("#simple").length > 0)
+			Whitelab.search.simple.parseQuery();
+	}
 });
 
 $(document).on('click', '#expert button.btn-submit', function(e) {
@@ -476,15 +484,10 @@ $(document).on('click', '#expert button.btn-submit', function(e) {
 	Whitelab.search.expert.parseQuery();
 });
 
-$(document).on('click', 'a.expert-info-icon', function(e) {
+$(document).on('click', '#expert a.expert-info-icon', function(e) {
 	e.preventDefault();
     e.stopPropagation();
 	$('.expert-info').toggleClass('active');
-});
-
-$(document).keypress(function(e) {
-	if (e.which == 13)
-		Whitelab.search.expert.parseQuery();
 });
 
 $(document).on('click', '#extended button.btn-submit', function(e) {
@@ -493,19 +496,15 @@ $(document).on('click', '#extended button.btn-submit', function(e) {
 	Whitelab.search.extended.parseQuery();
 });
 
-$(document).keypress(function(e) {
-	if (e.which == 13)
-		Whitelab.search.extended.parseQuery();
-});
-$(document).on('click', 'button.show-document', function(e) {
+$(document).on('click', '#main-div[data-namespace="search"] button.show-document', function(e) {
 	e.preventDefault();
 	e.stopPropagation();
 	var docpid = $(this).data("docpid");
 	var qid = $("#result-pane").data("query-id");
-	window.location = '/search/document/'+docpid+'/id/'+qid;
+	window.location = '/search/document/'+docpid+'/query/'+qid;
 });
 
-$(document).on('change', 'select.group-by-select', function(e) {
+$(document).on('change', '#main-div[data-namespace="search"] select.group-by-select', function(e) {
 	var group = $(this).val();
 	if (group != null && group.length > 0) {
 		var page = $("#result-pane").data('query-page');
@@ -521,7 +520,7 @@ $(document).on('change', 'select.group-by-select', function(e) {
 	}
 });
 
-$(document).on('click', 'tr.hit-row', function(e) {
+$(document).on('click', '#main-div[data-namespace="search"] tr.hit-row', function(e) {
 	e.preventDefault();
 	e.stopPropagation();
 	var docpid = $(this).data("docpid");
@@ -534,7 +533,7 @@ $(document).on('click', 'tr.hit-row', function(e) {
 	$("#"+docpid+"_"+f+"_"+l).toggleClass("hidden");
 });
 
-$(document).on('click', 'tr.doc-row', function(e) {
+$(document).on('click', '#main-div[data-namespace="search"] tr.doc-row', function(e) {
 	e.preventDefault();
 	e.stopPropagation();
 	var docpid = $(this).data("docpid");
@@ -542,7 +541,7 @@ $(document).on('click', 'tr.doc-row', function(e) {
 	var qid = $("#result-pane").data("query-id");
 	if ($("#"+docpid).html().length == 0) {
 		$("#"+docpid).html('<span class="loading"></span>');
-		$.getScript('/search/doc_hits/id/'+qid+'.js?docpid='+docpid+'&hits='+hits);
+		$.getScript('/search/doc_hits/id/'+qid+'.js?view=1&docpid='+docpid+'&hits='+hits);
 	}
 	$("#"+docpid).toggleClass("hidden");
 });
@@ -554,7 +553,27 @@ $(document).on('click', '#simple button.btn-submit', function(e) {
 	Whitelab.search.simple.parseQuery();
 });
 
-$(document).keypress(function(e) {
-	if (e.which == 13)
-		Whitelab.search.simple.parseQuery();
+$(document).on('change', 'div.search-input-display input, div.search-input-display select', function(e) {
+	var func = $("#main-div[data-namespace='search'] div.search-input-display").attr("id")+"QueryStringToCQL";
+	var patt = window["Whitelab"]["cql"][func]();
+	$('.tablink').each(function(i, item) {
+		$(item).attr('data-patt', patt);
+	});
+});
+
+$(document).on('click', 'a.tablink', function(e) {
+	e.preventDefault();
+	e.stopPropagation();
+	var url = "/search/"+$(this).data('page');
+	var params = $(this).data("params");
+	var patt = $(this).data("patt");
+	if (params.length > 0)
+		url = url+"?"+params;
+	if (patt.length > 0)
+		if (params.length > 0)
+			url = url+"&patt="+patt;
+		else
+			url = url+"?patt="+patt;
+		
+	window.location = url;
 });

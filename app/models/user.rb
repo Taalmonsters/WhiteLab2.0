@@ -9,6 +9,10 @@ class User < ActiveRecord::Base
     return self.send(query_method).order("updated_at DESC").limit(ql), ql
   end
   
+  def has_queries?
+    self.search_queries.any? || self.explore_queries.any? || self.export_queries.any?
+  end
+  
   # Check if user has unfinished explore queries
   def has_unfinished_explore_queries?(limit = 0)
     limit > 0 ? self.explore_queries.where("status = ? OR status = ?", 0, 1).order("created_at DESC").limit(limit).any? : self.explore_queries.where("status = ? OR status = ?", 0, 1).any?

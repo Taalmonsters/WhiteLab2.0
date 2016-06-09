@@ -10,7 +10,7 @@
 		<% if @namespace.eql?('search') %>
 			<tr>
 				<th><%= t(:"queries.keys.within").capitalize %></th>
-				<td class="within"><%= @query.query_result.within %></td>
+				<td class="within"><%= @query.within.blank? ? 'document' : @query.within %></td>
 			</tr>
 		<% end %>
 		<% if !@query.filter.blank? %>
@@ -19,39 +19,39 @@
 			<td class="filter"><%= @query.filter %></td>
 		</tr>
 		<% end %>
-		<% if !@query.query_result.sort.blank? %>
+		<% if !@query.sort.blank? %>
 		<tr>
 			<th><%= t(:"queries.keys.sort").capitalize %></th>
 			<td>
-				<% if !@query.query_result.sort.blank? && @query.query_result.sort.length > 0 %>
-					<%= @query.query_result.sort %> (<%= @query.query_result.order %>)
+				<% if !@query.sort.blank? && @query.sort.length > 0 %>
+					<%= @query.sort %> (<%= @query.order %>)
 				<% end %>
 			</td>
 		</tr>
 		<% end %>
-		<% if !@query.query_result.group.blank? %>
+		<% if !@query.group.blank? %>
 		<tr>
 			<th><%= t(:"queries.keys.group").capitalize %></th>
-			<td class="group"><%= @query.query_result.group %></td>
+			<td class="group"><%= @query.group %></td>
 		</tr>
 		<% end %>
 		<tr>
 			<th><%= t(:"queries.keys.hit_count").capitalize %></th>
-			<td><%= @query.query_result.hit_count.blank? || @query.query_result.hit_count == -1 ? '-' : @query.query_result.hit_count %></td>
+			<td><%= @query.hit_count.blank? || @query.hit_count == -1 ? '-' : @query.hit_count %></td>
 		</tr>
 		<tr>
 			<th><%= t(:"queries.keys.document_count").capitalize %></th>
-			<td><%= @query.query_result.document_count.blank? || @query.query_result.document_count == -1 ? '-' : @query.query_result.document_count %></td>
+			<td><%= @query.document_count.blank? || @query.document_count == -1 ? '-' : @query.document_count %></td>
 		</tr>
-		<% if [8,16].include?(@query.query_result.view) %>
+		<% if [8,16].include?(@query.view) %>
 		<tr>
 			<th><%= t(:"queries.keys.group_count").capitalize %></th>
-			<td><%= @query.query_result.group_count.blank? || @query.query_result.group_count == -1 ? '-' : @query.query_result.group_count %></td>
+			<td><%= @query.group_count.blank? || @query.group_count == -1 ? '-' : @query.group_count %></td>
 		</tr>
 		<% end %>
 		<tr>
 			<th><%= t(:"queries.keys.status").capitalize %></th>
-			<td><%= @query.query_result.text_status %></td>
+			<td><%= @query.status %></td>
 		</tr>
 	</tbody>	
 </table>

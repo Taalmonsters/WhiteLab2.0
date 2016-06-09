@@ -25,7 +25,7 @@ Whitelab.document = {
 				Whitelab.debug('C: /'+namespace+'/document/'+xmlid+'/query/'+qid+'/'+tab+'.js');
 				$.getScript('/'+namespace+'/document/'+xmlid+'/query/'+qid+'/'+tab+'.js');
 			} else {
-				Whitelab.debug('D: /'+namespace+'/document/'+xmlid+'/'+tab+'.js');
+				Whitelab.debug('ddddD: /'+namespace+'/document/'+xmlid+'/'+tab+'.js');
 				$.getScript('/'+namespace+'/document/'+xmlid+'/'+tab+'.js');
 			}
 		}
@@ -39,7 +39,7 @@ $(document).on('click', 'a.document-tab', function(e) {
 		$(this).parent().parent().find("li.active").first().removeClass("active");
 		$(this).parent().addClass("active");
 		$("#document-display div.tab-content").html('<span class="loading"></span>');
-		Whitelab.document.loadDocument($(this).data("tab"), $("#document-display").data("xmlid"), $("#document-display").data("query-id"));
+		Whitelab.document.loadDocument($("#main-div").data("namespace"),$(this).data("tab"), $("#document-display").data("xmlid"), $("#document-display").data("query-id"));
 	}
 });
 
