@@ -104,7 +104,8 @@ a {
 }
 
 div.search-input-display {
-  margin: 50px auto;
+  margin: 50px;
+  margin-top: 0;
   margin-bottom: 100px;
 }
 
@@ -736,4 +737,8 @@ a.show-history {
 
 .introjs-bullets {
   display: none !important;
+}
+
+#main-div > div.row:nth-child(2) {
+    margin-top: -60px;
 }

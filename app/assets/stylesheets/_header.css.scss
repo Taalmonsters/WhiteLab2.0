@@ -85,11 +85,10 @@
 }
 
 .subnav {
-  padding-top: 25px;
+  // padding-top: 25px;
   border-bottom: 1px solid #E3E3E3;
-  position: absolute;
-  top: 45px;
-  width: 100%;
+  position: relative;
+  top: -85px;
   z-index: 1000;
   background: #fff;
   
