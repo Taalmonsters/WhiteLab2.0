@@ -47,16 +47,25 @@ Rails.application.routes.draw do
     get '/treemap/option/:option' => 'queries#treemap'
     get '/bubble/option/:option' => 'queries#bubble'
     get '/statistics' => 'interface#statistics'
+    scope '/statistics' do
+      get '/vocabulary_growth' => 'queries#vocabulary_growth', as: 'explore_vocabulary_growth'
+    end
     get '/ngrams' => 'interface#ngrams'
     get '/document' => 'interface#document'
     get '/pos/select' => 'interface#pos_select_options'
+    get '/history' => 'queries#history'
+    get '/details/id/:id' => 'queries#details'
+    scope '/result/id' do
+      get '/:id' => 'queries#result', as: 'explore_result'
+      get '/:id/pagination' => 'queries#result_pagination'
+    end
     scope '/document' do
       get '/:xmlid' => 'interface#document'
-      get '/:xmlid/content' => 'documents#content', as: 'document_content'
-      get '/:xmlid/vocabulary_growth' => 'documents#vocabulary_growth', as: 'document_vocabulary_growth_data'
-      get '/:xmlid/pos_distribution' => 'documents#pos_distribution', as: 'document_pos_distribution_data'
-      get '/:xmlid/metadata' => 'documents#metadata', as: 'document_metadata'
-      get '/:xmlid/statistics' => 'documents#statistics', as: 'document_statistics'
+      get '/:xmlid/content' => 'documents#content', as: 'explore_document_content'
+      get '/:xmlid/vocabulary_growth' => 'documents#vocabulary_growth', as: 'explore_document_vocabulary_growth_data'
+      get '/:xmlid/pos_distribution' => 'documents#pos_distribution', as: 'explore_document_pos_distribution_data'
+      get '/:xmlid/metadata' => 'documents#metadata', as: 'explore_document_metadata'
+      get '/:xmlid/statistics' => 'documents#statistics', as: 'explore_document_statistics'
       get '/:xmlid/audio' => 'documents#audio'
     end
   end
@@ -72,13 +81,13 @@ Rails.application.routes.draw do
   get '/tour/step/:step' => 'tour#step'
   get '/tour/end' => 'tour#end'
   
-  get '/explore/statistics/vocabulary_growth' => 'explore#vocabulary_growth', as: 'explore_vocabulary_growth'
-  get '/explore/history' => 'explore#history'
-  get '/explore/treemap/option/:option' => 'explore#treemap'
-  get '/explore/bubble/option/:option' => 'explore#bubble'
-  get '/explore/details/id/:id' => 'explore#details'
-  get '/explore/result/id/:id' => 'explore#result'
-  get '/explore/result/id/:id/pagination' => 'explore#result_pagination'
+  # get '/explore/statistics/vocabulary_growth' => 'explore#vocabulary_growth', as: 'explore_vocabulary_growth'
+  # get '/explore/history' => 'explore#history'
+  # get '/explore/treemap/option/:option' => 'explore#treemap'
+  # get '/explore/bubble/option/:option' => 'explore#bubble'
+  # get '/explore/details/id/:id' => 'explore#details'
+  # get '/explore/result/id/:id' => 'explore#result'
+  # get '/explore/result/id/:id/pagination' => 'explore#result_pagination'
   
   get '/admin/benchmark' => 'admin#benchmark_test'
   get    '/admin'                     => 'admin#index'
