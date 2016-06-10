@@ -32,7 +32,7 @@
 						<td><%= group[@group].html_safe %></td>
 						<td class="progress-field">
 							<div class="progress">
-								<div class="progress-bar" role="progressbar" aria-valuenow="<%= group['document_count'] %>" aria-valuemin="1" aria-valuemax="<%= @query.document_count %>" style="width: <%= ((group['document_count'].to_f / @query.document_count) * 100).to_i %>%; min-width: 2em;"><%= group['document_count'] %></div>
+								<div class="progress-bar" role="progressbar" aria-valuenow="<%= group['document_count'] %>" aria-valuemin="1" aria-valuemax="<%= @query.document_count %>" style="width: <%= ((group['document_count'].to_f / @query.document_count) * 100).to_i %>%; min-width: 2em;"><%= number_with_delimiter(group['document_count'], :delimiter => t(:'other.keys.numeric_delimiter')) %></div>
 							</div>
 						</td>
 					</tr>

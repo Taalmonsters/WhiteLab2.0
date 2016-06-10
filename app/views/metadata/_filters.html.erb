@@ -1,4 +1,4 @@
-<div id="metadata-filters" data-filter="<%= !@filter.blank? ? @filter : "" %>" data-total-tokens="<%= @total_tokens %>">
+<div id="metadata-filters" data-filter="<%= !@filter.blank? ? @filter : "" %>" data-total-tokens="<%= @total_tokens %>" data-total-tokens-delimited="<%= number_with_delimiter(@total_tokens, :delimiter => t(:'other.keys.numeric_delimiter')) %>">
 	<%= accordion "metadata-accordion" do |a| %>
 	<% a.group image_tag('plus.png')+" "+t(:'metadata_filters.keys.metadata_filters').capitalize+" "+
 	content_tag(:label, content_tag(:span, @filtered_total_perc.to_s, :class => "metadata-selected-percentage")+" "+t(:'metadata_filters.keys.selected')+" ("+

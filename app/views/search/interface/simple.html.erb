@@ -1,6 +1,6 @@
 <% provide(:title, t(:'page_titles.keys.search').capitalize+" "+t(:'page_titles.keys.simple').capitalize) %>
 <div id="simple" class="search-input-display" data-query-pattern="<%= @query && !@query.patt.blank? ? @query.patt : "" %>" data-query-filter="<%= @query && !@query.filter.blank? ? @query.filter : "" %>" data-query-input-page="<%= @query && !@query.input_page.blank? ? @query.input_page : "" %>">
-	<div class="row padding-top-20">
+	<div class="row small-form">
 		<div class="col-xs-10 col-sm-8 col-xs-offset-1 col-sm-offset-2">
 			<%= text_field_tag :patt, nil, placeholder: t(:'instructions.keys.search_for_word'), class: 'full-width-minus-siblings form-control' %>
 			<div class="btn-group" role="group">

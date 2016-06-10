@@ -32,7 +32,7 @@
 						<td><%= group[@group].kind_of?(Array) ? group[@group][0].html_safe : group[@group].html_safe %></td>
 						<td class="progress-field">
 							<div class="progress">
-								<div class="progress-bar" role="progressbar" aria-valuenow="<%= group['hit_count'] %>" aria-valuemin="1" aria-valuemax="<%= @query.hit_count %>" style="width: <%= [group['hit_count'],100].min %>%; min-width: 4em;"><%= group['hit_count'] %></div>
+								<div class="progress-bar" role="progressbar" aria-valuenow="<%= group['hit_count'] %>" aria-valuemin="1" aria-valuemax="<%= @query.hit_count %>" style="width: <%= [group['hit_count'],100].min %>%; min-width: 4em;"><%= number_with_delimiter(group['hit_count'], :delimiter => t(:'other.keys.numeric_delimiter')) %></div>
 							</div>
 						</td>
 					</tr>

@@ -37,16 +37,16 @@
 		<% end %>
 		<tr>
 			<th><%= t(:"queries.keys.hit_count").capitalize %></th>
-			<td><%= @query.hit_count.blank? || @query.hit_count == -1 ? '-' : @query.hit_count %></td>
+			<td><%= @query.hit_count.blank? || @query.hit_count == -1 ? '-' : number_with_delimiter(@query.hit_count, :delimiter => t(:'other.keys.numeric_delimiter')) %></td>
 		</tr>
 		<tr>
 			<th><%= t(:"queries.keys.document_count").capitalize %></th>
-			<td><%= @query.document_count.blank? || @query.document_count == -1 ? '-' : @query.document_count %></td>
+			<td><%= @query.document_count.blank? || @query.document_count == -1 ? '-' : number_with_delimiter(@query.document_count, :delimiter => t(:'other.keys.numeric_delimiter')) %></td>
 		</tr>
 		<% if [8,16].include?(@query.view) %>
 		<tr>
 			<th><%= t(:"queries.keys.group_count").capitalize %></th>
-			<td><%= @query.group_count.blank? || @query.group_count == -1 ? '-' : @query.group_count %></td>
+			<td><%= @query.group_count.blank? || @query.group_count == -1 ? '-' : number_with_delimiter(@query.group_count, :delimiter => t(:'other.keys.numeric_delimiter')) %></td>
 		</tr>
 		<% end %>
 		<tr>
