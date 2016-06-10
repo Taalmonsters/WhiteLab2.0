@@ -23,7 +23,11 @@ module WhitelabQuery
         :filter => params.has_key?(:filter) ? params[:filter] : nil, 
         :docpid => params.has_key?(:docpid) ? params[:docpid] : nil, 
         :input_page => page,
-        :status => 0 }) unless query
+        :status => 0 })
+      if klass.column_names.include? 'docpid' && params.has_key?(:docpid) && !params[:docpid].blank?
+        query.docpid = params[:docpid]
+        query.save
+      end
     end
     return query.update_from_params(params)
   end
@@ -104,26 +108,30 @@ module WhitelabQuery
   end
   
   def update_from_params(params)
+    has_docpid = self.has_attribute?(:docpid)
     if attribute_is_changed?(view,params[:view])
-      self.update_attributes({ :view => params[:view], :group => nil, :order => nil, :sort => nil, :offset => 0, :group_count => nil, :status => 0, :docpid => nil })
+      self.update_attributes({ :view => params[:view], :group => nil, :order => nil, :sort => nil, :offset => 0, :group_count => nil, :status => 0 })
+      self.update_attribute(:docpid, nil) if has_docpid
     elsif attribute_is_changed?(group,params[:group])
-      self.update_attributes({ :group => params[:group], :order => nil, :sort => nil, :offset => 0, :group_count => nil, :status => 0, :docpid => nil })
+      self.update_attributes({ :group => params[:group], :order => nil, :sort => nil, :offset => 0, :group_count => nil, :status => 0 })
+      self.update_attribute(:docpid, nil) if has_docpid
     else
-      changed = attributes_are_changed?(params.slice(:order, :sort, :number, :offset, :docpid))
+      changed = attributes_are_changed?(params.slice(:order, :sort, :number, :offset))
+      changed = attributes_are_changed?(params.slice(:docpid)) if has_docpid && !changed
       if changed
         status = "waiting"
         order = params[:order] if attribute_is_changed?(order,params[:order])
         sort = params[:sort] if attribute_is_changed?(sort,params[:sort])
         number = params[:number] if attribute_is_changed?(number,params[:number])
         offset = params[:offset] if attribute_is_changed?(offset,params[:offset])
-        docpid = params[:docpid] if attribute_is_changed?(docpid,params[:docpid])
+        docpid = params[:docpid] if has_docpid && attribute_is_changed?(docpid,params[:docpid])
         self.save!
       end
-      if docpid.nil? && params.has_key?(:docpid) && !params[:docpid].blank?
+      if has_docpid && docpid.nil? && params.has_key?(:docpid) && !params[:docpid].blank?
         status = "waiting"
         docpid = params[:docpid]
         self.save!
-      elsif !docpid.blank? && (!params.has_key?(:docpid) || params[:docpid].blank?)
+      elsif has_docpid && !docpid.blank? && (!params.has_key?(:docpid) || params[:docpid].blank?)
         status = "waiting"
         docpid = nil
         self.save!
