@@ -80,7 +80,8 @@ function buildTreemap(data){
 		} else {
 			var p = (d.size / total) * 100;
 			p = Math.round(p * 100) / 100;
-			return d.size + "  (" + p + " %)";
+			var locale = $("#main-div").data("locale");
+			return d.size.toLocaleString(locale) + "  (" + p.toLocaleString(locale) + " %)";
 		}
 	});
 

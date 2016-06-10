@@ -1,6 +1,7 @@
 Whitelab.statistics = {
 	
 	displayDocumentSizeBubbleChart : function(json) {
+		var locale = $("#main-div").data("locale");
 		var bubbleColors = d3.scale.linear()
 		.domain([0,json.max_doc_count])
 		.range(["#53c4c3", "#9b0122"]);
@@ -29,7 +30,7 @@ Whitelab.statistics = {
 	                text: 'Total size (tokens)'
 	            },
 	            labels: {
-	                format: '{value}'
+	                format: '{value:,.0f}'
 	            }
 	        },
 
@@ -41,7 +42,7 @@ Whitelab.statistics = {
 	                text: 'Avg. document size (tokens)'
 	            },
 	            labels: {
-	                format: '{value}'
+	                format: '{value:,.0f}'
 	            },
 	            maxPadding: 0.2
 	        },
@@ -51,9 +52,9 @@ Whitelab.statistics = {
 	            useHTML: true,
 	            headerFormat: '<table class="table">',
 	            pointFormat: '<tr><th colspan="2"><h3>{point.name}</h3></th></tr>' +
-	            	'<tr><th>Document count:</th><td>{point.z}</td></tr>' +
-	                '<tr><th>Total size:</th><td>{point.x} tokens</td></tr>' +
-	                '<tr><th>Average document size:</th><td>{point.y} tokens</td></tr>',
+	            	'<tr><th>Document count:</th><td>{point.z:,.0f}</td></tr>' +
+	                '<tr><th>Total size:</th><td>{point.x:,.0f} tokens</td></tr>' +
+	                '<tr><th>Average document size:</th><td>{point.y:,.0f} tokens</td></tr>',
 	            footerFormat: '</table>',
 	            followPointer: false
 	        },
@@ -110,7 +111,7 @@ Whitelab.statistics = {
             },
 
             tooltip: {
-                pointFormat: '<b>{point.y} ({point.percentage:.1f}%)</b>'
+                pointFormat: '<b>{point.y:,.0f} ({point.percentage:.1f}%)</b>'
             },
 
             plotOptions: {
@@ -156,8 +157,9 @@ Whitelab.statistics = {
                 labels: {
                     align: 'left',
                     x: 3,
-                    y: -3
-                }
+                    y: -3,
+	                format: '{value:,.0f}'
+	            }
             },
 
             yAxis: [{ // left y axis
@@ -167,7 +169,8 @@ Whitelab.statistics = {
                 labels: {
                     align: 'left',
                     x: 3,
-                    y: 16
+                    y: 16,
+	                format: '{value:,.0f}'
                 },
                 showFirstLabel: false
             }, { // right y axis
@@ -180,7 +183,8 @@ Whitelab.statistics = {
                 labels: {
                     align: 'right',
                     x: -3,
-                    y: 16
+                    y: 16,
+	                format: '{value:,.0f}'
                 },
                 showFirstLabel: false
             }],

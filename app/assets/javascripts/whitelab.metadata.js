@@ -62,8 +62,8 @@ Whitelab.metadata = {
 			$('span.metadata-selected-absolute').html('<div class="tiny-loading-icon"></div>');
 			$.getScript('/metadata/coverage.js?filter='+filterString);
 		} else {
-			$('span.metadata-selected-percentage').html('100');
-			$('span.metadata-selected-absolute').html($('#metadata-filters').data('total-tokens'));
+			$('span.metadata-selected-percentage').html('100.0 %');
+			$('span.metadata-selected-absolute').html($('#metadata-filters').data('total-tokens-delimited'));
 		}
 		Whitelab.metadata.updateTabLinks(filterString);
 	},
@@ -93,8 +93,10 @@ $(document).on('change', '.metadata-key-select', function(e) {
 	var rule_id = $(this).parent().parent().attr('id');
 	if (group.length > 0 && key.length > 0 && rule_id.length > 0)
 		$.getScript('/metadata/'+group+'/'+key+'/values.js?rule_id='+rule_id);
-	else
+	else {
 		$(this).parent().parent().find('select.metadata-input').first().replaceWith('<input class="metadata-input" type="text">');
+		Whitelab.metadata.updateCoverage();
+	}
 });
 
 $(document).on('change', 'select.metadata-input', function(e) {

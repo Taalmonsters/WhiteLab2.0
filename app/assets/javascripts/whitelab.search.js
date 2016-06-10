@@ -561,7 +561,7 @@ $(document).on('change', 'div.search-input-display input, div.search-input-displ
 	});
 });
 
-$(document).on('click', 'a.tablink', function(e) {
+$(document).on('click', '#main-div[data-namespace="search"] a.tablink', function(e) {
 	e.preventDefault();
 	e.stopPropagation();
 	var url = "/search/"+$(this).data('page');
