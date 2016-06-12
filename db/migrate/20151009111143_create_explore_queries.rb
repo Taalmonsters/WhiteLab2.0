@@ -6,6 +6,8 @@ class CreateExploreQueries < ActiveRecord::Migration
       t.string :filter
       t.string :within, :default => 'document'
       t.integer :view, :default => 1
+      t.string :listtype, :default => 'word'
+      t.integer :ngram_size, :default => 1
       t.string :group
       t.string :sort
       t.string :order
@@ -25,5 +27,12 @@ class CreateExploreQueries < ActiveRecord::Migration
     add_index :explore_queries, :input_page
     add_index :explore_queries, :created_at
     add_index :explore_queries, :updated_at
+    
+    reversible do |dir|                                                         
+      dir.up {                                                                  
+        change_column :search_queries, :patt, "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin"
+        change_column :search_queries, :filter, "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin"
+      }                                                            
+    end
   end
 end

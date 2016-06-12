@@ -1,5 +1,5 @@
 $('div#query-details').html("<%= escape_javascript(raw render partial: "/query/details", layout: false) %>");
-<% if !@query.finished? && (@query.view < 8 || !@query.group.blank? ) %>
+<% if !@query.finished? && !@query.failed? && (@query.view < 8 || !@query.group.blank? ) %>
 setTimeout(function(){
 	$.getScript('/<%= @namespace %>/details/id/<%= @query.id %>.js');
 }, 2000);

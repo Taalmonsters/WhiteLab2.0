@@ -2,8 +2,6 @@
 class Explore::InterfaceController < InterfaceController
   include WhitelabExplore
   before_action :set_page
-  before_action :set_query
-  before_action :set_document, :only => :document
   before_action :set_tab, :only => [:document]
   before_action :set_listtype_options, :only => [:statistics, :ngrams]
   
@@ -26,7 +24,7 @@ class Explore::InterfaceController < InterfaceController
   end
   
   def ngrams
-    @size = params[:size] || 5
+    @size = params.has_key?(:size) ? params[:size].to_i : 5
     respond_to do |format|
       format.html
     end
@@ -53,11 +51,5 @@ class Explore::InterfaceController < InterfaceController
   # Set current page
   def set_page
     @page = action_name
-  end
-  
-  # Set current query
-  def set_query
-    @query = Explore::Query.find_from_params(@page, @user.id, params) if params.has_key?(:patt)
-    @result = @query.execute if @query && !@query.finished? && !@query.failed?
   end
 end

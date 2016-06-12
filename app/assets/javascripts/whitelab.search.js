@@ -57,6 +57,10 @@ Whitelab.search = {
 		$.getScript('/search/remove/id/'+queryId+'.js');
 	},
 	
+	removeExportQuery : function(queryId) {
+		$.getScript('/export/remove/id/'+queryId+'.js');
+	},
+	
 	advanced : {
 		
 		doDebug : true,
@@ -255,7 +259,7 @@ Whitelab.search = {
 			var typeValue = $(row).find(".token-type").find(":selected").val();
 			var operatorValue = $(row).find(".token-operator").find(":selected").val();
 			if (typeValue == "pos" && (operatorValue == "is" || operatorValue == "not"))
-				$.getScript('/interface/pos/select.js?element_class=advanced-pos-select&element=%23column'+c+'-box'+b+'-field'+f+'%20div.token-input-field');
+				$.getScript('/search/pos/select.js?element_class=advanced-pos-select&element=%23column'+c+'-box'+b+'-field'+f+'%20div.token-input-field');
 			else
 				$("#column"+c+"-box"+b+"-field"+f+" div.token-input-field").html('<input placeholder="<any>" type="text">');
 		},
@@ -321,6 +325,8 @@ Whitelab.search = {
 			var input_page = $('#extended').data('query-input-page');
 			if (input_page === 'simple' || input_page === 'extended')
 				Whitelab.search.extended.parseQueryToInterface($('#extended').data('query-pattern'));
+			else
+				Whitelab.debug("Did not parse query from "+input_page+" in extended");
 			
 		},
 		
@@ -508,15 +514,17 @@ $(document).on('change', '#main-div[data-namespace="search"] select.group-by-sel
 	var group = $(this).val();
 	if (group != null && group.length > 0) {
 		var page = $("#result-pane").data('query-page');
-		window.location = '/search/'+page+'?'+Whitelab.assembleQueryParams({
+		var params = Whitelab.assembleQueryParams({
 			'patt': $("#result-pane").data('query-patt'), 
 			'filter': $("#result-pane").data('query-filter'), 
 			'within': $("#result-pane").data('query-within'), 
-			'view': $("#result-pane").data('query-view'), 
+			'view': $("#result-pane").data('query-view')+"", 
 			'group': group, 
-			'offset': 0, 
-			'number': 50
+			'offset': "0", 
+			'number': "50"
 		});
+		Whitelab.debug(params);
+		window.location = '/search/'+page+'?'+params;
 	}
 });
 

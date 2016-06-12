@@ -18,9 +18,12 @@ module WhitelabExplore
   
   # Set current query
   def set_query
-    if ['ngrams','statistics'].include?(action_name)
-      @query = @user.explore_queries.find(params[:id]) if params.has_key?(:id)
-      @query = Explore::Query.find_from_params(action_name, @user.id, query_create_params) if params.has_key?(:patt)
+    if params.has_key?(:filter) || params.has_key?(:patt) || params.has_key?(:id)
+      if params.has_key?(:filter) && (!params.has_key?(:view) || params[:view].to_i == 8)
+        params[:group] = "hit:#{params[:listtype]}" if params.has_key?(:listtype) && ['word','pos','lemma'].include?(params[:listtype])
+        
+      end
+      @query = Explore::Query.find_from_params(action_name, @user, query_create_params)
       @result = @query.execute if @query && !@query.finished? && !@query.failed?
     end
   end
@@ -29,7 +32,7 @@ module WhitelabExplore
   
   # Check allowed parameters for query creation
   def query_create_params
-    params.permit(:id, :patt, :filter, :within, :view, :group, :offset, :number, :input_page)
+    params.permit(:patt, :id, :within, :filter, :view, :listtype, :size, :group, :sort, :order, :offset, :number, :input_page)
   end
   
 end

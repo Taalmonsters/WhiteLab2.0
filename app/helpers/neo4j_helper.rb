@@ -40,21 +40,6 @@ module Neo4jHelper
     return properties.except('status').sort
   end
   
-  def get_docs_in_group(query,group,offset,number)
-    filter = get_grouped_filter(query.group, group)
-    execute_query({
-      :url => backend_url+'whitelab/search/docs',
-      :query => { 
-        "pattern" => pattern, 
-        "filter" => filter, 
-        "within" => query.within, 
-        "number" => number, 
-        "offset" => offset
-      },
-      :headers => headers
-    })
-  end
-  
   def get_document_content(xmlid, patt, offset, number)
     data = execute_query({
       :url => backend_url+'whitelab/search/docs/'+xmlid+'/content',
@@ -146,35 +131,6 @@ module Neo4jHelper
     else
       filter = filter+"AND("+qgroup+"=\""+group+"\")"
     end
-  end
-  
-  def get_hits_in_group(query,group,offset,number)
-    filter = query.filter
-    pattern = query.patt
-    qgroup = query.group
-    qgroup_parts = qgroup.split('_')
-    context_group_label = group_to_label(qgroup_parts[0])
-    if qgroup.start_with?('hit')
-      pattern = '['+group_to_label(qgroup_parts[1])+'="(?c)'+group+'"]'
-    elsif qgroup.end_with?('left')
-      pattern = '['+context_group_label+'="(?c)'+group+'"]'+pattern
-    elsif qgroup.end_with?('right')
-      pattern = pattern+'['+context_group_label+'="(?c)'+group+'"]'
-    else
-      filter = get_grouped_filter(qgroup, group)
-    end
-    
-    execute_query({
-      :url => backend_url+'whitelab/search/hits',
-      :query => { 
-        "pattern" => pattern, 
-        "filter" => filter, 
-        "within" => query.within, 
-        "number" => number, 
-        "offset" => offset
-      },
-      :headers => headers
-    })
   end
   
   def get_kwic(docpid, first_index, last_index, size = 50)

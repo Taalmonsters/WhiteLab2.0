@@ -1,7 +1,6 @@
 class Search::QueriesController < ApplicationController
   include WhitelabSearch
   before_action :set_limits_and_queries, :only => [:history]
-  before_action :set_grouping, :only => [:result]
   
   # Show Search Query details
   def details
@@ -16,9 +15,11 @@ class Search::QueriesController < ApplicationController
   def doc_hits
     if @query && params.has_key?(:docpid)
       @target = params[:docpid]
+      @query.view = 1
+      @query.filter = @query.filter.blank? ? "(id:#{@target})" : "#{@query.filter}AND(id:#{@target})"
+      @query.offset = 0
+      @query.number = params[:hits]
       @doc_hits = @query.result["results"]
-      p "DOC HITS"
-      p @doc_hits
     end
     respond_to do |format|
       format.js do
@@ -29,7 +30,16 @@ class Search::QueriesController < ApplicationController
   
   # Load documents for Search Query in selected group
   def docs_in_group
-    results_in_group(:docs_group)
+    @group_id = params[:group_id]
+    if @query
+      @query = @query.clone
+      @query.filter = @query.filter.blank? ? "("+@query.group+"=\""+params[:docs_group]+"\")" : @query.filter+"AND("+@query.group+"=\""+params[:docs_group]+"\")"
+      @query.view = 2
+      @query.group = nil
+      @query.offset = params[:offset] || 0
+      @query.number = 20
+      @docs = @query.result["results"]
+    end
     respond_to do |format|
       format.js do
         render '/result/docs_in_group'
@@ -59,7 +69,16 @@ class Search::QueriesController < ApplicationController
   
   # Load hits for Search Query in selected group
   def hits_in_group
-    results_in_group(:hits_group)
+    @group_id = params[:group_id]
+    if @query
+      @query = @query.clone
+      @query.add_hits_group(params[:hits_group])
+      @query.view = 1
+      @query.group = nil
+      @query.offset = params[:offset] || 0
+      @query.number = 20
+      @hits = @query.result["results"]
+    end
     respond_to do |format|
       format.js do
         render '/result/hits_in_group'
@@ -120,22 +139,6 @@ class Search::QueriesController < ApplicationController
     end
   end
   
-  protected
-  
-  # Get grouping options for grouped hits or documents, depending on selected view
-  def set_grouping
-    if @query
-      view = @query.view
-      group = @query.group
-      if [8,16].include?(view)
-        @groups = @metadata_handler.get_group_options(view, 'search')
-        if !group.blank?
-          @group = group.gsub(/ /,"_")
-        end
-      end
-    end
-  end
-  
   private
   
   def get_target_from_params
@@ -146,25 +149,11 @@ class Search::QueriesController < ApplicationController
     return nil
   end
   
-  # Load hits or documents for Search Query in selected group
-  def results_in_group(key)
-    if @query && params.has_key?(:group_id) && params.has_key?(key)
-      @offset = params[:offset] || 0
-      @group = params[key]
-      @group_id = params[:group_id]
-      if key.eql?(:hits_group)
-        @hits = @whitelab.get_hits_in_group(@query,@group,@offset,20)['hits']
-      else
-        @docs = @whitelab.get_docs_in_group(@query,@group,@offset,20)['docs']
-      end
-    end
-  end
-  
   def set_limits_and_queries
     @qllimit = params.has_key?(:qllimit) && !params[:qllimit].blank? ? params[:qllimit].to_i : 5
     @eqllimit = params.has_key?(:eqllimit) && !params[:eqllimit].blank? ? params[:eqllimit].to_i : 5
-    @queries = @user.search_queries.limit(@qllimit)
-    @export_queries = @user.export_queries.limit(@eqllimit)
+    @queries = @user.query_history('search_queries', @qllimit)
+    @export_queries = @user.query_history('export_queries', @eqllimit)
   end
   
 end

@@ -5,38 +5,20 @@ module WhitelabQuery
   included do
     belongs_to :user
     enum status: [ :waiting, :running, :counting, :finished, :failed ]
+    attr_accessor :output
   end
   
   def self.find_from_params(klass, page, user_id, params)
-    if params.has_key?(:id)
-      query = klass.find(params[:id].to_i)
-      query = nil if query && (query.user_id != user_id || query.is_changed?(params))
-    elsif params.has_key?(:patt)
-      query = klass.where(where_hash(params)).first
-      query = nil if query && query.user_id != user_id
+    p params
+    if params.has_key?(:patt) || params.has_key?(:filter)
+      query = klass.where(klass.where_data(user_id, page, params)).first
     end
     if query.nil?
-      query = klass.create({
-        :user_id => user_id, 
-        :patt => params[:patt], 
-        :within => params.has_key?(:within) ? params[:within] : nil, 
-        :filter => params.has_key?(:filter) ? params[:filter] : nil, 
-        :docpid => params.has_key?(:docpid) ? params[:docpid] : nil, 
-        :input_page => page,
-        :status => 0 })
-      if klass.column_names.include? 'docpid' && params.has_key?(:docpid) && !params[:docpid].blank?
-        query.docpid = params[:docpid]
-        query.save
-      end
+      query = klass.create(klass.create_hash(user_id, page, params))
     end
-    return query.update_from_params(params)
-  end
-  
-  def self.where_hash(params)
-    hash = {:patt => params[:patt]}
-    hash[:within] = params[:within] if params.has_key?(:within) && !params[:within].blank?
-    hash[:filter] = params[:filter] if params.has_key?(:filter) && !params[:filter].blank?
-    return hash
+    query = query.update_from_params(params)
+    p query
+    return query
   end
   
   def self.history(user_id, hist_offset = 0, hist_number = 5)
@@ -71,24 +53,28 @@ module WhitelabQuery
   end
   
   def execute
-    Thread.new do
-      self.running! if self.waiting?
-      res, backend_status = self.run
-      self.counting! if backend_status == 1
-      if backend_status == 2
-        self.finished!
-        self.hit_count = res['hit_count'] if hit_count.nil?
-        self.document_count = res['document_count'] if document_count.nil?
-        self.group_count = res['group_count'] if res.has_key?('group_count')
-        self.save
+    if [1,2].include?(self.view) || !self.group.blank?
+      Thread.new do
+        self.running! if self.waiting?
+        res, backend_status = self.run
+        self.output = res
+        self.counting! if backend_status == 2
+        if backend_status == 3
+          self.finished!
+          self.hit_count = res['hit_count'] if hit_count.nil?
+          self.document_count = res['document_count'] if document_count.nil?
+          self.group_count = res['group_count'] if res.has_key?('group_count')
+          self.save
+        end
+        self.failed! if backend_status == 4
       end
-      self.failed! if backend_status == 3
     end
   end
   
   def result
-    res, backend_status = self.run
-    return res
+    return self.output if self.finished? && !self.output.blank?
+    self.output, backend_status = self.run
+    return self.output
   end
   
   def run
@@ -96,57 +82,17 @@ module WhitelabQuery
     return backend.search(self, backend.query_to_url(self))
   end
   
-  def is_changed?(params)
-    return true if attribute_is_changed?(patt,params[:patt])
-    return true if attribute_is_changed?(within,params[:within])
-    return true if attribute_is_changed?(filter,params[:filter])
-    return false
-  end
-  
   def page
-    return input_page
-  end
-  
-  def update_from_params(params)
-    has_docpid = self.has_attribute?(:docpid)
-    if attribute_is_changed?(view,params[:view])
-      self.update_attributes({ :view => params[:view], :group => nil, :order => nil, :sort => nil, :offset => 0, :group_count => nil, :status => 0 })
-      self.update_attribute(:docpid, nil) if has_docpid
-    elsif attribute_is_changed?(group,params[:group])
-      self.update_attributes({ :group => params[:group], :order => nil, :sort => nil, :offset => 0, :group_count => nil, :status => 0 })
-      self.update_attribute(:docpid, nil) if has_docpid
-    else
-      changed = attributes_are_changed?(params.slice(:order, :sort, :number, :offset))
-      changed = attributes_are_changed?(params.slice(:docpid)) if has_docpid && !changed
-      if changed
-        status = "waiting"
-        order = params[:order] if attribute_is_changed?(order,params[:order])
-        sort = params[:sort] if attribute_is_changed?(sort,params[:sort])
-        number = params[:number] if attribute_is_changed?(number,params[:number])
-        offset = params[:offset] if attribute_is_changed?(offset,params[:offset])
-        docpid = params[:docpid] if has_docpid && attribute_is_changed?(docpid,params[:docpid])
-        self.save!
-      end
-      if has_docpid && docpid.nil? && params.has_key?(:docpid) && !params[:docpid].blank?
-        status = "waiting"
-        docpid = params[:docpid]
-        self.save!
-      elsif has_docpid && !docpid.blank? && (!params.has_key?(:docpid) || params[:docpid].blank?)
-        status = "waiting"
-        docpid = nil
-        self.save!
-      end
-    end
-    return self
+    return self.input_page
   end
   
   def total
     if view == 1
-      return hit_count.nil? ? 0 : hit_count
+      return self.hit_count.nil? ? self.total : self.hit_count
     elsif view == 2
-      return document_count.nil? ? 0 : document_count
+      return self.document_count.nil? ? self.total : self.document_count
     end
-    return group_count.nil? ? 0 : group_count
+    return self.group_count.nil? ? self.total : self.group_count
   end
   
 end

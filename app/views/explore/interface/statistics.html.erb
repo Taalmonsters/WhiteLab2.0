@@ -6,7 +6,7 @@
 				<div class="panel-body">
 					<%= form_tag("/explore/statistics", id: "statistics-input-form", method: "get", :class => "full-height form-horizontal") do %>
 						<%= hidden_field_tag :filter, "" %>
-						<%= hidden_field_tag :view, @query ? @query.view : 8 %>
+						<%= hidden_field_tag :view, @query && [2,8,4].include?(@query.view) ? @query.view : 8 %>
 						<%= hidden_field_tag :offset, @view == 4 ? 0 : 0 %>
 						<%= hidden_field_tag :number, @view == 4 ? 100000 : 50 %>
 						<div class="form-group">

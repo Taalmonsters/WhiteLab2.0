@@ -1,19 +1,15 @@
-$('div#result-pane').html("<%= escape_javascript(raw render partial: "/query/result", layout: false) %>");
+$('div#result-pane').html("<%= escape_javascript(raw render partial: "/queries/result", layout: false, locals: { query: @query }) %>");
 <% if @query.running? %>
 setTimeout(function(){
 	$.getScript('/<%= @namespace %>/result/id/<%= @query.id %>.js');
 }, 2000);
 <% elsif @query.counting? %>
-setTimeout(function(){
-	$.getScript('/<%= @namespace %>/result/id/<%= @query.id %>/pagination.js');
-}, 2000);
+$.getScript('/<%= @namespace %>/result/id/<%= @query.id %>/pagination.js');
+<% elsif @query.failed? %>
+$('div#result-pane').html("<%= escape_javascript(raw render partial: "/layouts/messages", :locals => { :flash => { :error => "Failed to execute query" } }) %>");
 <% else %>
-setTimeout(function(){
-	$.getScript('/<%= @namespace %>/result/id/<%= @query.id %>/pagination.js');
-}, 2000);
+$.getScript('/<%= @namespace %>/result/id/<%= @query.id %>/pagination.js');
 if ($('#query div#result-pane').html().indexOf('class="loading"') > -1) {
-	setTimeout(function(){
-		$.getScript('/<%= @namespace %>/result/id/<%= @query.id %>.js');
-	}, 2000);
+	$.getScript('/<%= @namespace %>/result/id/<%= @query.id %>.js');
 }
 <% end %>

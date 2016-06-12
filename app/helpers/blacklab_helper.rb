@@ -40,14 +40,15 @@ module BlacklabHelper
     hits = [1,8].include?(view)
     key = hits ? "hit" : "doc"
     key = grouped ? "#{key}Groups" : "#{key}s"
-    return {}, 3 if !response.has_key?(key)
+    return {}, 4 if !response.has_key?(key)
     summary = response['summary']
-    output = reformat_output(response, key, view)
-    return output, 1 if summary['stillCounting']
-    return output, 2
+    output = reformat_output(response, key, query)
+    return output, 2 if summary['stillCounting']
+    return output, 3
   end
   
-  def reformat_output(response, key, view)
+  def reformat_output(response, key, query)
+    view = query.view
     summary = response['summary']
     hits = summary['numberOfHits']
     docs = summary['numberOfDocs']
@@ -99,29 +100,11 @@ module BlacklabHelper
   end
   
   def db_type
-    'blacklab'
+    return 'blacklab'
   end
   
   # Get node containing total counts for all node labels in index, not implemented for BlackLab
   def get_counter_node
-  end
-  
-  def get_docs_in_group(query,group,offset,number)
-    qgroup = query.group
-    filter = query.filter
-    filter = filter.blank? ? "("+qgroup+"=\""+group+"\")" : filter+"AND("+qgroup+"=\""+group+"\")"
-    within = query.within
-    execute_query({
-      :url => backend_url+'docs',
-      :query => { 
-        "outputformat" => "json",
-        "patt" => reformat_pattern(query.patt, within), 
-        "filter" => reformat_filters(filter), 
-        "within" => within, 
-        "number" => number, 
-        "first" => offset
-      }
-    })
   end
   
   def get_document_audio_file(xmlid)
@@ -131,7 +114,7 @@ module BlacklabHelper
       format = format.kind_of?(Array) ? format[0] : format
       return "#{format}/#{xmlid}.#{format}"
     end
-    "Unknown"
+    return "Unknown"
   end
   
   def get_document_content(xmlid, patt, offset, number)
@@ -164,7 +147,7 @@ module BlacklabHelper
     corpora.each do |corpus|
       docs.merge!(get_corpus_document_list(corpus))
     end
-    docs
+    return docs
   end
   
   def get_document_xml_content(xmlid)
@@ -194,7 +177,7 @@ module BlacklabHelper
       break unless resp["summary"]["windowHasNext"]
       offset = offset + number
     end
-    docs
+    return docs
   end
   
   def get_document_id_list(filter)
@@ -215,7 +198,7 @@ module BlacklabHelper
       break unless resp["summary"]["windowHasNext"]
       offset = offset + number
     end
-    docs
+    return docs
   end
   
   def get_document_metadata(xmlid)
@@ -231,7 +214,7 @@ module BlacklabHelper
     data['docInfo'].each do |key, value|
       metadata["Metadata"][key] = [value]
     end
-    metadata
+    return metadata
   end
   
   def get_document_sentence_count(xmlid)
@@ -246,14 +229,14 @@ module BlacklabHelper
       }
     })["summary"]
     if data["stillCounting"].to_s.eql?('true')
-      get_document_sentence_count(xmlid)
+      return get_document_sentence_count(xmlid)
     else
       return data["numberOfHits"]
     end
   end
   
   def get_document_sentence_starts(xmlid, offset, number)
-    execute_query({
+    return execute_query({
       :url => backend_url+'hits',
       :query => {
         "outputformat" => "json",
@@ -266,7 +249,7 @@ module BlacklabHelper
   end
   
   def get_document_snippet(xmlid, hitstart, hitend)
-    execute_query({
+    return execute_query({
       :url => backend_url+'docs/'+xmlid+'/snippet',
       :query => {
         "outputformat" => "json",
@@ -296,38 +279,7 @@ module BlacklabHelper
       doc_id = MetadataHandler.instance.get_document_id(doc)
       contents = contents + get_document_content(doc_id, query.patt, 0, get_document_sentence_count(doc_id))
     end
-    contents
-  end
-  
-  def get_hits_in_group(query,group,offset,number)
-    filter = query.filter
-    pattern = query.patt
-    qgroup = query.group
-    qgroup_parts = qgroup.split('_')
-    context_group_label = group_to_label(qgroup_parts[0])
-    if qgroup.start_with?('hit')
-      pattern = '['+group_to_label(qgroup_parts[1])+'="(?c)'+group+'"]'
-    elsif qgroup.end_with?('left')
-      pattern = '['+context_group_label+'="(?c)'+group+'"]'+pattern
-    elsif qgroup.end_with?('right')
-      pattern = pattern+'['+context_group_label+'="(?c)'+group+'"]'
-    elsif filter.blank?
-      filter = "("+qgroup+"=\""+group+"\")"
-    else
-      filter = filter+"AND("+qgroup+"=\""+group+"\")"
-    end
-    
-    execute_query({
-      :url => backend_url+'hits',
-      :query => { 
-        "outputformat" => "json",
-        "patt" => pattern, 
-        "filter" => reformat_filters(filter), 
-        "within" => query.within, 
-        "number" => number, 
-        "first" => offset
-      }
-    })
+    return contents
   end
   
   def get_kwic(docpid, first_index, last_index, size = 50)
@@ -389,7 +341,7 @@ module BlacklabHelper
     data[offset..offset+number-1].each do |head|
       ph["pos_heads"] << get_pos_head_counts(head)
     end
-    ph
+    return ph
   end
   
   def get_pos_head_counts(head)
@@ -414,7 +366,7 @@ module BlacklabHelper
       obj["token_count"] += hit_count
       obj["token_count_"+corpus] = hit_count
     end
-    obj
+    return obj
   end
   
   def get_pos_tag_by_label(label)
@@ -473,7 +425,7 @@ module BlacklabHelper
       arr, token_index = reformat_sentence_content(xmlid, sentence, token_index)
       reformat.push(*arr)
     end
-    reformat
+    return reformat
   end
   
   def reformat_sentence_content(xmlid, sentence, token_index)
@@ -497,7 +449,7 @@ module BlacklabHelper
     ["lemma", "pos", "phonetic", "xmlid", "speaker", "begin_time", "end_time"].each do |field|
       token = reformat_field_content(obj, field, token)
     end
-    token
+    return token
   end
   
   def reformat_field_content(obj, field, token)
@@ -521,23 +473,23 @@ module BlacklabHelper
     elsif obj[:sentence].has_key?(field)
       token[field] = sentence_field
     end
-    token
+    return token
   end
   
   # Reformat filters to BlackLab format (filter:value)
   def reformat_filters(filters)
     if !filters.blank?
-      return filters.gsub('=',':')
+      return filters.gsub('=',':').sub('Metadata_','')
     end
     return ''
   end
   
   def reformat_group(group)
     if !group.blank?
-      if group.start_with?('hit_') || group.end_with?('_left') || group.end_with?('_right')
-        return group.gsub('_',':').gsub('left','leftword').gsub('right','rightword').gsub('hit:text','hit:word')
+      if group.start_with?('hit') || group.start_with?('left') || group.start_with?('right')
+        return group.gsub('_',':').gsub('left','wordleft').gsub('right','wordright').gsub('text','word')
       else
-        return 'field:'+group
+        return 'field:'+group.sub('Metadata_','')
       end
     end
     return ''
@@ -554,9 +506,9 @@ module BlacklabHelper
     end
     
     if has_phonetic
-      phonetic.join(" ")
+      return phonetic.join(" ")
     else
-      ""
+      return ""
     end
   end
   

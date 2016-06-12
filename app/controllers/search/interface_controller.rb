@@ -85,7 +85,6 @@ class Search::InterfaceController < InterfaceController
       :repeat_from => params[:repeat_from] ? params[:repeat_from].to_i : 1,
       :repeat_to => params[:repeat_to] ? params[:repeat_to].to_i : 1
     }
-    p @field_values
   end
   
 end

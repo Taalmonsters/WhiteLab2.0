@@ -49,7 +49,7 @@ CqlField.prototype.addSubField = function(f) {
 CqlField.prototype.toCqlString = function() {
 	var query = "";
 	var sensitive = this.sensitive ? "(?c)" : "";
-	if (this.value.length == 0 || this.value === "[]" || this.value === "[word=\".*\"]") {
+	if (this.value == null || this.value.length == 0 || this.value === "[]" || this.value === "[word=\".*\"]") {
 		query = "[word=\".*\"]";
 	} else {
 		if (this.operator === "is" || this.operator === "regex") {

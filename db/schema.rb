@@ -19,6 +19,8 @@ ActiveRecord::Schema.define(version: 20151127104919) do
     t.string   "filter",         limit: 255
     t.string   "within",         limit: 255, default: "document"
     t.integer  "view",           limit: 4,   default: 1
+    t.string   "listtype",       limit: 255, default: "word"
+    t.integer  "ngram_size",     limit: 4,   default: 1
     t.string   "group",          limit: 255
     t.string   "sort",           limit: 255
     t.string   "order",          limit: 255
@@ -81,7 +83,6 @@ ActiveRecord::Schema.define(version: 20151127104919) do
     t.integer  "hit_count",      limit: 4
     t.integer  "document_count", limit: 4
     t.integer  "group_count",    limit: 4
-    t.string   "docpid",         limit: 255
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
   end

@@ -1,6 +1,6 @@
 ---
 nl:
-  help_page: "<p>\r\n<ul>\r\n<li><a href=\"/tour/start?namespace=explore\">Start 'Verken'
-    site tour</a></li>\r\n<li><a href=\"/tour/start?namespace=search\">Start 'Zoek'
-    site tour</a></li>\r\n<li><a href=\"#\" target=\"_blank\">WhiteLab 2.0 Gebruikershandleiding</a></li>\r\n<li><a
-    href=\"/doc/api/index.html\" target=\"_blank\">WhiteLab 2.0 API documentatie</a></li>\r\n</ul>\r\n</p>"
+  help_page: "<p><ul><li><a href=\"/tour/start?namespace=explore\">Start 'Verken'
+    site tour</a></li><li><a href=\"/tour/start?namespace=search\">Start 'Zoek'
+    site tour</a></li><li><a href=\"#\" target=\"_blank\">WhiteLab 2.0 Gebruikershandleiding</a></li><li><a
+    href=\"/doc/api/index.html\" target=\"_blank\">WhiteLab 2.0 API documentatie</a></li><li><a href=\"mailto:whitelab@taalmonsters.nl\">Meld een bug of feature request</a></li></ul></p>"

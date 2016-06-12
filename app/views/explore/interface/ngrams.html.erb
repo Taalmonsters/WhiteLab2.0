@@ -1,5 +1,6 @@
+<% size = @size && 0 < @size && @size < 6 ? @size : 5 %>
 <% provide(:title, t(:'page_titles.keys.explore').capitalize+" "+t(:'page_titles.keys.ngrams').capitalize) %>
-<div id="ngrams" class="explore-input-display" data-ngram-size="<%= @size ? @size : 0 %>" data-query-filter="<%= @query && !@query.filter.blank? ? @query.filter : "" %>" data-query-group="<%= @query && !@query.group.blank? ? @query.group : '' %>" data-query-pattern="<%= @query ? @query.patt : '' %>">
+<div id="ngrams" class="explore-input-display" data-ngram-size="<%= size %>" data-query-filter="<%= @query && !@query.filter.blank? ? @query.filter : "" %>" data-query-group="<%= @query && !@query.group.blank? ? @query.group : '' %>" data-query-pattern="<%= @query ? @query.patt : '' %>">
 	<div class="row padding-top-20">
 		<div class="col-xs-10 col-xs-offset-1">
 			<div class="panel panel-default">
@@ -8,10 +9,11 @@
 						<div class="row">
 							<%= hidden_field_tag :patt, "" %>
 							<%= hidden_field_tag :filter, "" %>
+							<%= hidden_field_tag :view, 8 %>
 							<div class="form-group col-xs-12">
 								<label for="size" class="col-xs-6 col-md-2"><%= t(:"form_labels.keys.ngram_size") %></label>
 								<div class="col-xs-6 col-md-2">
-									<%= number_field_tag(:"size", value = @size, options = { :max => 5, :min => 1}) %>
+									<%= number_field_tag(:"size", value = size, options = { :max => 5, :min => 1}) %>
 								</div>
 							</div>
 							<div class="form-group col-xs-12">
@@ -28,7 +30,7 @@
 								<tbody>
 									<tr>
 										<% (1..5).each do |n| %>
-											<% if n > @size %>
+											<% if n > size %>
 												<td><%= select_tag(:"type-#{n}", options_for_select(@listtype_options), {:class => "token-type", :data => { "field" => n }, :include_blank => false, :disabled => true}) %></td>
 											<% else %>
 												<td><%= select_tag(:"type-#{n}", options_for_select(@listtype_options), {:class => "token-type", :data => { "field" => n }, :include_blank => false}) %></td>
@@ -37,7 +39,7 @@
 									</tr>
 									<tr>
 										<% (1..5).each do |n| %>
-											<% if n > @size %>
+											<% if n > size %>
 												<td id="field-<%= n %>"><input class="field-input" type="text" disabled></td>
 											<% else %>
 												<td id="field-<%= n %>"><input class="field-input" type="text"></td>

@@ -31,6 +31,10 @@ Whitelab.explore = {
 		$.getScript('/explore/result/id/'+id+'.js?number='+number+'&offset='+offset);
 	},
 	
+	removeQuery : function(queryId) {
+		$.getScript('/explore/remove/id/'+queryId+'.js');
+	},
+	
 	corpora : {
 		
 		init : function() {
@@ -94,7 +98,7 @@ Whitelab.explore = {
 			var f = $(item).data("field");
 			var typeValue = $(item).find(":selected").val();
 			if (typeValue == "pos")
-				$.getScript('/interface/pos/select.js?element_class=field-input&element=%23field-'+f+'&value='+value);
+				$.getScript('/explore/pos/select.js?element_class=field-input&element=%23field-'+f+'&value='+value);
 			else
 				$("#field-"+f).html('<input class="field-input" type="text">');
 		},

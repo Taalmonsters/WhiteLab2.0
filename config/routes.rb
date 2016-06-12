@@ -54,6 +54,7 @@ Rails.application.routes.draw do
     get '/document' => 'interface#document'
     get '/pos/select' => 'interface#pos_select_options'
     get '/history' => 'queries#history'
+    get '/remove/id/:id' => 'queries#remove'
     get '/details/id/:id' => 'queries#details'
     scope '/result/id' do
       get '/:id' => 'queries#result', as: 'explore_result'

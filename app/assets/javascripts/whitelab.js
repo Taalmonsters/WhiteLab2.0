@@ -212,24 +212,25 @@ var Whitelab = {
 		var group = $("#query-details td.group").html();
 		if (group.indexOf("hit_") > -1) {
 			group_value = encodeURIComponent(group_value);
-			patt = "[word=\"(?c)"+group_value+"\"]";
-		} else if (group.indexOf("_left") > -1) {
+//			TODO: solve as in ruby code (Search::Query.add_hits_group)
+			patt = "["+group.replace('hit_','').replace('text','word')+"=\"(?c)"+group_value+"\"]";
+		} else if (group.indexOf("left") > -1) {
 			group_value = encodeURIComponent(group_value);
-			if (group.indexOf("lemma_") > -1)
+			if (group.indexOf("lemma") > -1)
 				patt = "[lemma=\"(?c)"+group_value+"\"]"+patt;
-			else if (group.indexOf("pos_") > -1)
+			else if (group.indexOf("pos") > -1)
 				patt = "[pos=\""+group_value+"\"]"+patt;
-			else if (group.indexOf("phonetic_") > -1)
+			else if (group.indexOf("phonetic") > -1)
 				patt = "[phonetic=\"(?c)"+group_value+"\"]"+patt;
 			else
 				patt = "[word=\"(?c)"+group_value+"\"]"+patt;
-		} else if (group.indexOf("_right") > -1) {
+		} else if (group.indexOf("right") > -1) {
 			group_value = encodeURIComponent(group_value);
-			if (group.indexOf("lemma_") > -1)
+			if (group.indexOf("lemma") > -1)
 				patt = patt+"[lemma=\"(?c)"+group_value+"\"]";
-			else if (group.indexOf("pos_") > -1)
+			else if (group.indexOf("pos") > -1)
 				patt = patt+"[pos=\"(?c)"+group_value+"\"]";
-			else if (group.indexOf("phonetic_") > -1)
+			else if (group.indexOf("phonetic") > -1)
 				patt = patt+"[phonetic=\"(?c)"+group_value+"\"]";
 			else
 				patt = patt+"[word=\"(?c)"+group_value+"\"]";
@@ -476,17 +477,23 @@ $(document).on('click', 'div#query-list tr.clickable', function(e) {
 		'patt': $(this).find("td.patt").first().data('patt'), 
 		'filter': $(this).find("td.filter").first().data('filter'), 
 		'within': $(this).find("td.within").first().data('within'), 
-		'view': $(this).data("view"), 
+		'view': $(this).data("view")+"", 
 		'group': $(this).find("td.group").first().data('group'), 
-		'offset': $(this).data("offset"), 
-		'number': $(this).data("number")
+		'offset': $(this).data("offset")+"", 
+		'number': $(this).data("number")+""
 	});
 });
 
 $(document).on('click', 'a.remove-query', function(e) {
 	e.preventDefault();
 	e.stopPropagation();
-	Whitelab.search.removeQuery($(this).data('query-id'));
+	var ns = $(this).parent().parent().data("namespace");
+	if (ns === 'search')
+		Whitelab.search.removeQuery($(this).data('query-id'));
+	if (ns === 'explore')
+		Whitelab.explore.removeQuery($(this).data('query-id'));
+	if (ns === 'export')
+		Whitelab.search.removeExportQuery($(this).data('query-id'));
 });
 
 $(document).on('click', 'a.download-result', function(e) {

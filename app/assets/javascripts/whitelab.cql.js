@@ -274,7 +274,7 @@ Whitelab.cql = {
 						if (term.indexOf('(?i)') > -1) {
 							term = term.substring(4);
 						} else if (term.indexOf('(?c)') > -1) {
-							term = term.substring(5);
+							term = term.substring(4);
 							sensitive = true;
 							if (type === "word")
 								wordsensitive = true;
@@ -575,8 +575,9 @@ Whitelab.cql = {
 						var f = query.addEmptyFieldToColumn(v);
 						f.type = type;
 						f.operator = "is";
-						if (type === "word" || type === "lemma") {
-							f.sensitive = $("#word input").prop('checked');
+						if (type === "word" || type === "lemma" || type === "phonetic") {
+							f.sensitive = $("#extended-"+type+" input[type='checkbox'].wordcase").is(":checked");
+							Whitelab.debug("extendedQueryStringToCQL f.sensitive = "+f.sensitive);
 						}
 						f.value = Whitelab.cql.removeQuantifier(vals[v]);
 						f.quantifier = Whitelab.cql.removeValue(vals[v]);
@@ -598,8 +599,8 @@ Whitelab.cql = {
 								f.type = type;
 							}
 							var sub = new CqlField(type,null,false,"is",true,null);
-							if (type === "word") {
-								sub.sensitive = $("#word input").prop('checked');
+							if (type === "word" || type === "lemma" || type === "phonetic") {
+								sub.sensitive = $("#extended-"+type+" input.wordcase").prop('checked');
 							}
 							sub.value = Whitelab.cql.removeQuantifier(vals[v]);
 							sub.quantifier = Whitelab.cql.removeValue(vals[v]);

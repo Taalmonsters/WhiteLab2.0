@@ -6,9 +6,6 @@
 	</div>
 <% end %>
 <% if (@query.waiting? && !@query.group.blank?) || @query.running? %>
-	<% if @query.waiting? && !@query.group.blank? %>
-		<% @query.execute_threaded("EXECUTING QUERY FROM GROUPED DOCS VIEW") %>
-	<% end %>
 	<div class="row">
 		<div class="col-xs-12">
 			<h5 class="warn"><span class="loading"></span></h5>
@@ -61,4 +58,6 @@
 	<div class="row pagination-row">
 		<%= render partial: "/layouts/pagination", layout: false, locals: { numbarr: [50, 100, 200], url: '/'+@namespace+'/result/id/'+@query.id.to_s+'.js', total: @query.total, offset: @query.offset, number: @query.number } %>
 	</div>
+<% else %>
+	<div class="spacer" style="width: 100%; height: 300px;"></div>
 <% end %>

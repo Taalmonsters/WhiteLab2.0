@@ -1,7 +1,4 @@
 <% if @query.blank? || @query.waiting? || @query.running? %>
-	<% if @query.waiting? %>
-		<% @query.execute_threaded("EXECUTING QUERY FROM VOCABULARY GROWTH VIEW") %>
-	<% end %>
 	<div class="row">
 		<div class="col-xs-12">
 			<h5 class="warn"><span class="loading"></span></h5>

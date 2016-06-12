@@ -16,7 +16,6 @@ class CreateSearchQueries < ActiveRecord::Migration
       t.integer :hit_count
       t.integer :document_count
       t.integer :group_count
-      t.string :docpid
 
       t.timestamps null: false
     end
@@ -26,5 +25,12 @@ class CreateSearchQueries < ActiveRecord::Migration
     add_index :search_queries, :filter
     add_index :search_queries, :created_at
     add_index :search_queries, :updated_at
+    
+    reversible do |dir|                                                         
+      dir.up {                                                                  
+        change_column :search_queries, :patt, "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin"
+        change_column :search_queries, :filter, "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin"
+      }                                                            
+    end
   end
 end

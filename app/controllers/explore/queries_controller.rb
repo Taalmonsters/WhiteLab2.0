@@ -2,6 +2,7 @@ class Explore::QueriesController < ApplicationController
   include WhitelabExplore
   before_action :set_limits_and_queries, :only => [:history]
   before_action :set_option
+  before_action :set_grouping, :only => [:result]
   
   # Load bubble chart data for Explore Corpora interface
   def bubble
@@ -60,18 +61,21 @@ class Explore::QueriesController < ApplicationController
     end
   end
   
+  # Remove Explore Query
+  def remove
+    if !@query.blank?
+      @query_id = @query.id
+      @query.destroy
+    end
+    respond_to do |format|
+      format.js do
+        render '/query/remove'
+      end
+    end
+  end
+  
   # Show Explore Query result
   def result
-    @view = 8
-    if @query && [8,16].include?(@query.view)
-      @view = @query.view
-      @groups = @metadata_handler.get_group_options(@query.view, 'explore')
-      if !@query.group.blank?
-        @group = @query.group.gsub(/ /,"_")
-      end
-    elsif @query
-      @view = @query.view
-    end
     respond_to do |format|
       format.js do
         render '/query/result'
@@ -137,6 +141,20 @@ class Explore::QueriesController < ApplicationController
   
   protected
   
+  # Get grouping options for grouped hits or documents, depending on selected view
+  def set_grouping
+    if @query
+      view = @query.view
+      group = @query.group
+      if [8,16].include?(view)
+        @groups = @metadata_handler.get_group_options(view, 'explore')
+        if !group.blank?
+          @group = group.gsub(/ /,"_")
+        end
+      end
+    end
+  end
+  
   def set_option
     @option = params[:option] || 'Corpus_title'
   end
@@ -144,8 +162,8 @@ class Explore::QueriesController < ApplicationController
   def set_limits_and_queries
     @qllimit = params.has_key?(:qllimit) && !params[:qllimit].blank? ? params[:qllimit].to_i : 5
     @eqllimit = params.has_key?(:eqllimit) && !params[:eqllimit].blank? ? params[:eqllimit].to_i : 5
-    @queries = @user.explore_queries.limit(@qllimit)
-    @export_queries = @user.export_queries.limit(@eqllimit)
+    @queries = @user.query_history('explore_queries', @qllimit)
+    @export_queries = @user.query_history('export_queries', @eqllimit)
   end
   
 end
