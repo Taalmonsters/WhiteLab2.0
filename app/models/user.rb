@@ -2,7 +2,6 @@
 class User < ActiveRecord::Base
   has_many :search_queries, :class_name => Search::Query
   has_many :explore_queries, :class_name => Explore::Query
-  has_many :export_queries, :class_name => Export::Query
   
   # Load query history
   def query_history(query_method, ql = 5)
@@ -10,17 +9,12 @@ class User < ActiveRecord::Base
   end
   
   def has_queries?
-    self.search_queries.any? || self.explore_queries.any? || self.export_queries.any?
+    self.search_queries.any? || self.explore_queries.any?
   end
   
   # Check if user has unfinished explore queries
   def has_unfinished_explore_queries?(limit = 0)
     limit > 0 ? self.explore_queries.where("status = ? OR status = ?", 0, 1).order("updated_at DESC").limit(limit).any? : self.explore_queries.where("status = ? OR status = ?", 0, 1).any?
-  end
-  
-  # Check if user has unfinished export queries
-  def has_unfinished_export_queries?(limit = 0)
-    limit > 0 ? self.export_queries.where("status = ? OR status = ?", 0, 1).order("updated_at DESC").limit(limit).any? : self.export_queries.where("status = ? OR status = ?", 0, 1).any?
   end
   
   # Check if user has unfinished search queries

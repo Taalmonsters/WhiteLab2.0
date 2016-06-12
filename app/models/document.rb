@@ -9,26 +9,33 @@ class Document
   def self.growth(query)
     vocab_growth = { 'types' => [{ name: '', x: 0, y: 0 }], 'lemmas' => [{ name: '', x: 0, y: 0 }] }
     total = 0
-    t = 0, l = 0
+    t = 0
+    l = 0
+    type_growth = []
+    lemma_growth = []
+    types = []
+    lemmas = []
+    d = 0
     MetadataHandler.instance.filter_documents(query.filter).each do |doc|
+      d += 1
       xmlid = MetadataHandler.instance.get_document_id(doc)
       document = Document.new({:xmlid => xmlid})
-      token_count = document.token_count
       contents = document.get_content
-      types = contents['word']
-      type_growth = Array.new(total, 0)
-      types.uniq.each{|x| type_growth[types.index(x)] = 1 }
-      lemmas = contents['lemma']
-      lemma_growth = Array.new(total, 0)
-      lemmas.uniq.each{|x| lemma_growth[lemmas.index(x)] = 1 }
-      (total..total+token_count-1).to_a.each do |i|
-        t += type_growth[i]
-        l += lemma_growth[i]
-        vocab_growth['types'] << { name: types[i], x: i+1, y: t }
-        vocab_growth['lemmas'] << { name: lemmas[i], x: i+1, y: l }
-      end
+      total += document.token_count
+      types += contents['word']
+      lemmas += contents['lemma']
     end
-    return { title: 'Vocabulary growth', data: [{ name: 'word_types', color: '#A90C28', data: vocab_growth['types'] }, { name: 'lemmas', color: '#53c4c3', data: vocab_growth['lemmas'] }] }
+    type_growth = Array.new(total, 0)
+    lemma_growth = Array.new(total, 0)
+    types.uniq.each{|x| type_growth[types.index(x)] = 1 }
+    lemmas.uniq.each{|x| lemma_growth[lemmas.index(x)] = 1 }
+    (0..total-1).to_a.each do |i|
+      t += type_growth[i]
+      l += lemma_growth[i]
+      vocab_growth['types'] << { name: types[i], x: i+1, y: t }
+      vocab_growth['lemmas'] << { name: lemmas[i], x: i+1, y: l }
+    end
+    return { document_count: d, hit_count: total, title: 'Vocabulary growth', data: [{ name: 'word_types', color: '#A90C28', data: vocab_growth['types'] }, { name: 'lemmas', color: '#53c4c3', data: vocab_growth['lemmas'] }] }
   end
   
   def audio_file(format = 'mp3')
@@ -114,8 +121,6 @@ class Document
   def token_count
     return MetadataHandler.instance.get_document_token_count(xmlid)
   end
-  
-  protected
   
   def get_content
     return WhitelabBackend.instance.get_document_snippet(self.xmlid, 0, self.token_count)['match']

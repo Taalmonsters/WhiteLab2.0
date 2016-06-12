@@ -20,6 +20,8 @@ Rails.application.routes.draw do
     get '/doc_hits/id/:id' => 'queries#doc_hits'
     get '/remove/id/:id' => 'queries#remove'
     get '/details/id/:id' => 'queries#details'
+    get '/export/id/:id' => 'queries#export'
+    get '/download/id/:id' => 'queries#download'
     scope '/result/id' do
       get '/:id' => 'queries#result', as: 'search_result'
       get '/:id/pagination' => 'queries#result_pagination'
@@ -56,6 +58,8 @@ Rails.application.routes.draw do
     get '/history' => 'queries#history'
     get '/remove/id/:id' => 'queries#remove'
     get '/details/id/:id' => 'queries#details'
+    get '/export/id/:id' => 'queries#export'
+    get '/download/id/:id' => 'queries#download'
     scope '/result/id' do
       get '/:id' => 'queries#result', as: 'explore_result'
       get '/:id/pagination' => 'queries#result_pagination'
@@ -82,22 +86,11 @@ Rails.application.routes.draw do
   get '/tour/step/:step' => 'tour#step'
   get '/tour/end' => 'tour#end'
   
-  # get '/explore/statistics/vocabulary_growth' => 'explore#vocabulary_growth', as: 'explore_vocabulary_growth'
-  # get '/explore/history' => 'explore#history'
-  # get '/explore/treemap/option/:option' => 'explore#treemap'
-  # get '/explore/bubble/option/:option' => 'explore#bubble'
-  # get '/explore/details/id/:id' => 'explore#details'
-  # get '/explore/result/id/:id' => 'explore#result'
-  # get '/explore/result/id/:id/pagination' => 'explore#result_pagination'
-  
   get '/admin/benchmark' => 'admin#benchmark_test'
   get    '/admin'                     => 'admin#index'
   get    '/admin/login'               => 'admin#login', as: 'login'
   post   '/admin/login'               => 'admin#signin', as: 'signin'
   delete '/admin/logout'              => 'admin#signout', as: 'signout'
-  
-  get '/data/export/id/:id' => 'data#export', as: 'data_export'
-  get '/data/export/id/:id/download' => 'data#download_export', as: 'data_download_export'
   
   get '/metadata/index' => 'metadata#index', as: 'metadata_index'
   get '/metadata/coverage' => 'metadata#coverage'

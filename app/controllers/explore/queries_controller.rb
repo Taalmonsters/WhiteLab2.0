@@ -1,6 +1,5 @@
-class Explore::QueriesController < ApplicationController
+class Explore::QueriesController < QueriesController
   include WhitelabExplore
-  before_action :set_limits_and_queries, :only => [:history]
   before_action :set_option
   before_action :set_grouping, :only => [:result]
   
@@ -19,75 +18,6 @@ class Explore::QueriesController < ApplicationController
         format.js
         format.json { render json: @data}
         format.xml { render xml: @data }
-      end
-    end
-  end
-  
-  # Show Explore Query details
-  def details
-    respond_to do |format|
-      format.js do
-        render '/query/details'
-      end
-    end
-  end
-  
-  # Download Explore Query export
-  def download_export
-    @export_query = @user.export_queries.find(params[:id])
-    respond_to do |format|
-      format.csv { send_data @export_query.result['results'].to_csv }
-    end
-  end
-  
-  # Start Explore Query export
-  def export
-    if !@query.blank?
-      @export_query = Explore::Query.export(@query)
-    end
-    respond_to do |format|
-      format.js do
-        render '/query/export'
-      end
-    end
-  end
-  
-  # Show Explore Query history
-  def history
-    respond_to do |format|
-      format.js do
-        render '/query/history'
-      end
-    end
-  end
-  
-  # Remove Explore Query
-  def remove
-    if !@query.blank?
-      @query_id = @query.id
-      @query.destroy
-    end
-    respond_to do |format|
-      format.js do
-        render '/query/remove'
-      end
-    end
-  end
-  
-  # Show Explore Query result
-  def result
-    respond_to do |format|
-      format.js do
-        render '/query/result'
-      end
-    end
-  end
-  
-  # Load Explore Query result pagination
-  def result_pagination
-    respond_to do |format|
-      format.js do
-        render '/query/result_pagination'
       end
     end
   end
@@ -111,34 +41,6 @@ class Explore::QueriesController < ApplicationController
     end
   end
   
-  # Load vocabulary growth data for Explore Statistics interface
-  def vocabulary_growth
-#     TODO: This makes no sense
-    if @query && (@query.blank? || (@query.result.blank? && (!@query.running? || !@query.finished?)))
-      @document = { 'types' => [{ name: '', x: 0, y: 0 }], 'lemmas' => [{ name: '', x: 0, y: 0 }] }
-      data = @whitelab.get_filtered_content(@query)
-      types_seen = []
-      t = 0
-      lemmas_seen = []
-      l = 0
-      data['content'].each do |token|
-        t = t + 1
-        if !types_seen.include?(token['hit_text'])
-          types_seen << token['hit_text']
-        end
-        l = l + 1
-        if !lemmas_seen.include?(token['hit_lemma'])
-          lemmas_seen << token['hit_lemma']
-        end
-        @document['types'] << { name: token['hit_text'], x: t, y: types_seen.size }
-        @document['lemmas'] << { name: token['hit_lemma'], x: l, y: lemmas_seen.size }
-      end
-      @query.update_attribute(:result, { title: 'Vocabulary growth', data: [{ name: 'word_types', color: '#A90C28', data: @document['types'] }, { name: 'lemmas', color: '#53c4c3', data: @document['lemmas'] }] })
-      @query.update_attribute(:status, 10)
-    end
-    render json: @query.result
-  end
-  
   protected
   
   # Get grouping options for grouped hits or documents, depending on selected view
@@ -157,13 +59,6 @@ class Explore::QueriesController < ApplicationController
   
   def set_option
     @option = params[:option] || 'Corpus_title'
-  end
-  
-  def set_limits_and_queries
-    @qllimit = params.has_key?(:qllimit) && !params[:qllimit].blank? ? params[:qllimit].to_i : 5
-    @eqllimit = params.has_key?(:eqllimit) && !params[:eqllimit].blank? ? params[:eqllimit].to_i : 5
-    @queries = @user.query_history('explore_queries', @qllimit)
-    @export_queries = @user.query_history('export_queries', @eqllimit)
   end
   
 end

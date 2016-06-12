@@ -1,5 +1,5 @@
 <% if ['explore', 'search'].include?(@namespace) && !@query.blank? && @query.finished? && !@query.failed? %>
 	<div class="col-xs-12 right-aligned">
-		<button type="button" class="btn btn-info btn-export" data-query-id="<%= @query.id %>"><span class="glyphicon glyphicon-download"></span> <%= t('button_labels.keys.export').capitalize %></button>
+		<a type="button" class="btn btn-info btn-export export" data-namespace="<%= @namespace %>" data-query-id="<%= @query.id %>"><span class="glyphicon glyphicon-download"></span> <%= t('button_labels.keys.export').capitalize %></a>
 	</div>
 <% end %>

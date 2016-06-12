@@ -1,7 +1,7 @@
 <div id="rule<%= rule_id %>" class="rule">
 	<div class="col-xs-3 col-md-3 adjust-padding">
 		<% if group && !group.blank? && key && !key.blank? %>
-			<%= select_tag(:"key", grouped_options_for_select(filters,group.eql?("Metadata") ? key : group+"_"+key), :class => "metadata-key-select", :include_blank => true) %>
+			<%= select_tag(:"key", grouped_options_for_select(filters,group+"_"+key), :class => "metadata-key-select", :include_blank => true) %>
 		<% else %>
 			<%= select_tag(:"key", grouped_options_for_select(filters), :class => "metadata-key-select", :include_blank => true) %>
 		<% end %>

@@ -250,7 +250,7 @@ en:
       query: Query
       queries: Queries
       explore_queries: Explore queries
-      export_queries: Exports
+      export: Export
       query_history: Query history
       show_query_list: Show query list
       hide_query_list: Hide query list

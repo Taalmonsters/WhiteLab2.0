@@ -270,7 +270,13 @@ Whitelab.search = {
 			var filter = Whitelab.metadata.getFilterString();
 			Whitelab.search.advanced.debug("FILTER: "+filter);
 			var within = $("#within").val();
-			window.location = '/search/advanced?patt='+encodeURIComponent(patt)+'&filter='+encodeURIComponent(filter)+'&within='+within+'#results';
+			var view = Whitelab.metadata.getView();
+			if (view == 1 || view == 2)
+				window.location = '/search/advanced?patt='+encodeURIComponent(patt)+'&filter='+encodeURIComponent(filter)+'&within='+within+'&view='+view+'#results';
+			else {
+				var group = $("#metadata-options #group").val();
+				window.location = '/search/advanced?patt='+encodeURIComponent(patt)+'&filter='+encodeURIComponent(filter)+'&within='+within+'&view='+view+'&group='+encodeURIComponent(group)+'#results';
+			}
 		},
 		
 		///////////////////////////////////////////////////////////////////////////
@@ -313,7 +319,13 @@ Whitelab.search = {
 			var patt = $("#expert-input").val();
 			var filter = Whitelab.metadata.getFilterString();
 			var within = $("#within").val();
-			window.location = '/search/expert?patt='+encodeURIComponent(patt)+'&filter='+encodeURIComponent(filter)+'&within='+within+'#results';
+			var view = Whitelab.metadata.getView();
+			if (view == 1 || view == 2)
+				window.location = '/search/expert?patt='+encodeURIComponent(patt)+'&filter='+encodeURIComponent(filter)+'&within='+within+'&view='+view+'#results';
+			else {
+				var group = $("#metadata-options #group").val();
+				window.location = '/search/expert?patt='+encodeURIComponent(patt)+'&filter='+encodeURIComponent(filter)+'&within='+within+'&view='+view+'&group='+encodeURIComponent(group)+'#results';
+			}
 		}
 		
 	},
@@ -357,7 +369,13 @@ Whitelab.search = {
 			var filter = Whitelab.metadata.getFilterString();
 			var within = $("#within").val();
 			Whitelab.debug("PATTERN: "+patt);
-			window.location = '/search/extended?patt='+encodeURIComponent(patt)+'&filter='+encodeURIComponent(filter)+'&within='+within+'#results';
+			var view = Whitelab.metadata.getView();
+			if (view == 1 || view == 2)
+				window.location = '/search/extended?patt='+encodeURIComponent(patt)+'&filter='+encodeURIComponent(filter)+'&within='+within+'&view='+view+'#results';
+			else {
+				var group = $("#metadata-options #group").val();
+				window.location = '/search/extended?patt='+encodeURIComponent(patt)+'&filter='+encodeURIComponent(filter)+'&within='+within+'&view='+view+'&group='+encodeURIComponent(group)+'#results';
+			}
 		},
 		
 		parseQueryToInterface : function(pattern) {
@@ -390,7 +408,7 @@ Whitelab.search = {
 		parseQuery : function() {
 //			Whitelab.debug("PATTERN: "+$("#patt").val());
 			var patt = Whitelab.cql.simpleQueryStringToCQL($("#patt").val(), false);
-			window.location = '/search/simple?patt='+encodeURIComponent(patt)+'#results';
+			window.location = '/search/simple?patt='+encodeURIComponent(patt)+'&view=1#results';
 		}
 		
 	}
@@ -575,13 +593,18 @@ $(document).on('click', '#main-div[data-namespace="search"] a.tablink', function
 	var url = "/search/"+$(this).data('page');
 	var params = $(this).data("params");
 	var patt = $(this).data("patt");
-	if (params.length > 0)
-		url = url+"?"+params;
-	if (patt.length > 0)
-		if (params.length > 0)
-			url = url+"&patt="+patt;
-		else
-			url = url+"?patt="+patt;
+	var filter = Whitelab.metadata.getFilterString();
+	var connector = "?";
+	if (params.length > 0) {
+		url = url+connector+params;
+		connector = "&";
+	}
+	if (patt.length > 0) {
+		url = url+connector+"patt="+patt;
+		connector = "&";
+	}
+	if (filter.length > 0)
+		url = url+connector+"filter="+filter;
 		
 	window.location = url;
 });

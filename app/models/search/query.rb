@@ -1,7 +1,45 @@
 # Module for Search Queries, includes WhitelabQuery
 class Search::Query < ActiveRecord::Base
   include WhitelabQuery
-  include DataFormatHelper
+  
+  before_destroy :delete_export_files
+  
+  def delete_export_files
+    dir = Rails.root.join('data','search',self.id.to_s)
+    FileUtils.rm_r(dir) if File.exists?(dir)
+  end
+  
+  def result_file
+    return Rails.root.join('data','search',self.id.to_s,'result.csv')
+  end
+  
+  def metadata_file
+    return Rails.root.join('data','search',self.id.to_s,'metadata.xml')
+  end
+  
+  def metadata
+    return {
+      :patt => self.patt,
+      :within => self.within,
+      :filter => self.filter,
+      :view => self.view,
+      :group => self.group
+    }.to_xml
+  end
+  
+  # Generate filename for download
+  def generate_filename
+    filename = view_to_path(view)
+    if patt.eql?('[word=".*"]')
+      filename = filename+'_p=empty'
+    else
+      filename = filename+'_p='+patt.gsub(/\]\[/,' ').gsub(/\[*(word|lemma|pos|phonetic)=\"/,'').gsub(/\"\]*/,'')
+    end
+    filename = filename+'_w='+within if !within.eql?('document')
+    filename = filename+'_f='+filter if !filter.blank?
+    filename = filename+'_g='+group if !group.blank?
+    return filename
+  end
   
   def self.find_from_params(page, user, params)
     if params.has_key?(:id)
@@ -15,8 +53,10 @@ class Search::Query < ActiveRecord::Base
     return {
       :user_id => user_id, 
       :patt => params[:patt], 
-      :within => params.has_key?(:within) ? params[:within] : nil, 
-      :filter => params.has_key?(:filter) ? params[:filter] : nil, 
+      :within => params.has_key?(:within) ? params[:within] : 'document', 
+      :filter => params.has_key?(:filter) && !params[:filter].blank? ? params[:filter] : nil, 
+      :group => params.has_key?(:group) ? params[:group] : nil, 
+      :view => params.has_key?(:view) ? params[:view].to_i : 1, 
       :input_page => page,
       :status => 0
     }
@@ -26,8 +66,8 @@ class Search::Query < ActiveRecord::Base
     return {
       :user_id => user_id,
       :patt => params[:patt],
-      :within => params[:within],
-      :filter => params[:filter]
+      :within => params.has_key?(:within) ? params[:within] : 'document',
+      :filter => params.has_key?(:filter) && !params[:filter].blank? ? params[:filter] : nil
     }
   end
   
@@ -68,8 +108,8 @@ class Search::Query < ActiveRecord::Base
   
   def update_from_params(params)
     self.waiting! if self.failed?
-    if attribute_is_changed?(view,params[:view])
-      self.update_attributes({ :view => params[:view], :group => nil, :order => nil, :sort => nil, :offset => 0, :group_count => nil, :status => 0 })
+    if attribute_is_changed?(view,params[:view].to_i)
+      self.update_attributes({ :view => params[:view].to_i, :group => nil, :order => nil, :sort => nil, :offset => 0, :group_count => nil, :status => 0 })
     elsif attribute_is_changed?(group,params[:group])
       self.update_attributes({ :group => params[:group], :order => nil, :sort => nil, :offset => 0, :group_count => nil, :status => 0 })
     else

@@ -29,7 +29,7 @@
 			<%= t(:'metadata_filters.keys.within') %>&nbsp;&nbsp;
 			<%= select_tag(:'within', options_for_select([[t(:'data_labels.keys.document'), 'document'],[t(:'data_labels.keys.paragraph'), 'paragraph'],[t(:'data_labels.keys.sentence'), 'sentence']], ['document'])) %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<%= t(:'metadata_filters.keys.grouped_by') %>&nbsp;&nbsp;
-			<%= select_tag(:'group', options_for_select([[t(:'data_labels.keys.hit').pluralize, 'hits'],[t(:'data_labels.keys.document').pluralize, 'documents']], ['hits'])) %>
+			<%= select_tag(:'group', grouped_options_for_select(@metadata_preselect_groups, ''), :include_blank => true) %>
 			<% end %>
 		</div>
 	</div>

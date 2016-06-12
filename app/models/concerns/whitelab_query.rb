@@ -1,23 +1,33 @@
 # Base module for WhiteLab queries
 module WhitelabQuery
   extend ActiveSupport::Concern
+  include DataFormatHelper
   
   included do
     belongs_to :user
     enum status: [ :waiting, :running, :counting, :finished, :failed ]
+    enum export_status: [ :not_exported, :exporting, :exported ]
     attr_accessor :output
   end
   
   def self.find_from_params(klass, page, user_id, params)
-    p params
     if params.has_key?(:patt) || params.has_key?(:filter)
-      query = klass.where(klass.where_data(user_id, page, params)).first
+      options = klass.where(klass.where_data(user_id, page, params))
+      query = options.first if options.size == 1
+      unless query
+        [:view, :group, :input_page].each do |param|
+          if params.has_key?(param) && !params[param].blank?
+            filtered_options = options.where({param => params[param]})
+            options = filtered_options.any? ? filtered_options : options
+          end
+        end
+        query = options.first
+      end
     end
     if query.nil?
       query = klass.create(klass.create_hash(user_id, page, params))
     end
     query = query.update_from_params(params)
-    p query
     return query
   end
   
@@ -53,7 +63,7 @@ module WhitelabQuery
   end
   
   def execute
-    if [1,2].include?(self.view) || !self.group.blank?
+    if !self.patt.nil? && ([1,2].include?(self.view) || !self.group.blank?)
       Thread.new do
         self.running! if self.waiting?
         res, backend_status = self.run
@@ -67,6 +77,29 @@ module WhitelabQuery
           self.save
         end
         self.failed! if backend_status == 4
+      end
+    end
+  end
+  
+  def export
+    if self.finished? && !self.exporting?
+      Thread.new do
+        self.exporting!
+        q = self.clone
+        q.status = "waiting"
+        q.number = [EXPORT_LIMIT,self.total].min
+        res = q.result
+        FileUtils.mkpath(File.dirname(self.result_file))
+        CSV.open(self.result_file, "wb", force_quotes: true) do |csv|
+          csv << res['results'].first.keys
+          res['results'].each do |hash|
+            csv << hash.values
+          end
+        end
+        # File.open(self.metadata_file, "w") do |xml|
+          # xml.write(self.metadata)
+        # end
+        self.exported!
       end
     end
   end

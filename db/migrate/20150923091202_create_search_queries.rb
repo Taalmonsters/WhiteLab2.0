@@ -10,6 +10,7 @@ class CreateSearchQueries < ActiveRecord::Migration
       t.string :sort
       t.string :order
       t.integer :status, :default => 0
+      t.integer :export_status, :default => 0
       t.integer :offset, :default => 0
       t.integer :number, :default => 50
       t.string :input_page, :default => 'expert'

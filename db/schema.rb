@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151127104919) do
+ActiveRecord::Schema.define(version: 20151009111143) do
 
   create_table "explore_queries", force: :cascade do |t|
     t.integer  "user_id",        limit: 4,                        null: false
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20151127104919) do
     t.string   "sort",           limit: 255
     t.string   "order",          limit: 255
     t.integer  "status",         limit: 4,   default: 0
+    t.integer  "export_status",  limit: 4,   default: 0
     t.integer  "offset",         limit: 4,   default: 0
     t.integer  "number",         limit: 4,   default: 50
     t.string   "input_page",     limit: 255
@@ -41,32 +42,6 @@ ActiveRecord::Schema.define(version: 20151127104919) do
   add_index "explore_queries", ["updated_at"], name: "index_explore_queries_on_updated_at", using: :btree
   add_index "explore_queries", ["user_id"], name: "index_explore_queries_on_user_id", using: :btree
 
-  create_table "export_queries", force: :cascade do |t|
-    t.integer  "user_id",        limit: 4,                        null: false
-    t.string   "patt",           limit: 255
-    t.string   "filter",         limit: 255
-    t.string   "within",         limit: 255, default: "document"
-    t.integer  "view",           limit: 4,   default: 1
-    t.string   "group",          limit: 255
-    t.string   "sort",           limit: 255
-    t.string   "order",          limit: 255
-    t.integer  "status",         limit: 4,   default: 0
-    t.integer  "offset",         limit: 4,   default: 0
-    t.integer  "number",         limit: 4,   default: 1000
-    t.string   "input_page",     limit: 255
-    t.integer  "hit_count",      limit: 4
-    t.integer  "document_count", limit: 4
-    t.integer  "group_count",    limit: 4
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
-  end
-
-  add_index "export_queries", ["created_at"], name: "index_export_queries_on_created_at", using: :btree
-  add_index "export_queries", ["filter"], name: "index_export_queries_on_filter", using: :btree
-  add_index "export_queries", ["patt"], name: "index_export_queries_on_patt", using: :btree
-  add_index "export_queries", ["updated_at"], name: "index_export_queries_on_updated_at", using: :btree
-  add_index "export_queries", ["user_id"], name: "index_export_queries_on_user_id", using: :btree
-
   create_table "search_queries", force: :cascade do |t|
     t.integer  "user_id",        limit: 4,                        null: false
     t.string   "patt",           limit: 255,                      null: false
@@ -77,6 +52,7 @@ ActiveRecord::Schema.define(version: 20151127104919) do
     t.string   "sort",           limit: 255
     t.string   "order",          limit: 255
     t.integer  "status",         limit: 4,   default: 0
+    t.integer  "export_status",  limit: 4,   default: 0
     t.integer  "offset",         limit: 4,   default: 0
     t.integer  "number",         limit: 4,   default: 50
     t.string   "input_page",     limit: 255, default: "expert"

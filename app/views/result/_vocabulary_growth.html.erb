@@ -5,7 +5,7 @@
 		</div>
 	</div>
 <% else %>
-	<% result = @query.result %>
+	<% result = @result || @query.result %>
 	<% if @query.finished? && (result.blank? || result.length == 0) %>
 		<div class="row">
 			<div class="col-xs-12">

@@ -1,15 +1,5 @@
-class Search::QueriesController < ApplicationController
+class Search::QueriesController < QueriesController
   include WhitelabSearch
-  before_action :set_limits_and_queries, :only => [:history]
-  
-  # Show Search Query details
-  def details
-    respond_to do |format|
-      format.js do
-        render '/query/details'
-      end
-    end
-  end
   
   # Load hits for Search Query in selected document
   def doc_hits
@@ -47,26 +37,6 @@ class Search::QueriesController < ApplicationController
     end
   end
   
-  # Download Explore Query export
-  def download_export
-    @export_query = @user.export_queries.find(params[:id])
-    respond_to do |format|
-      format.csv { send_data @export_query.result['results'].to_csv }
-    end
-  end
-  
-  # Start Explore Query export
-  def export
-    if !@query.blank?
-      @export_query = Search::Query.export(@query)
-    end
-    respond_to do |format|
-      format.js do
-        render '/query/export'
-      end
-    end
-  end
-  
   # Load hits for Search Query in selected group
   def hits_in_group
     @group_id = params[:group_id]
@@ -86,15 +56,6 @@ class Search::QueriesController < ApplicationController
     end
   end
   
-  # Show Search Query history
-  def history
-    respond_to do |format|
-      format.js do
-        render '/query/history'
-      end
-    end
-  end
-  
   # Load keywords in context for hit
   def kwic
     @target = get_target_from_params
@@ -108,37 +69,6 @@ class Search::QueriesController < ApplicationController
     end
   end
   
-  # Remove Search Query
-  def remove
-    if !@query.blank?
-      @query_id = @query.id
-      @query.destroy
-    end
-    respond_to do |format|
-      format.js do
-        render '/query/remove'
-      end
-    end
-  end
-  
-  # Show Search Query result
-  def result
-    respond_to do |format|
-      format.js do
-        render '/query/result'
-      end
-    end
-  end
-  
-  # Load Search Query result pagination
-  def result_pagination
-    respond_to do |format|
-      format.js do
-        render '/query/result_pagination'
-      end
-    end
-  end
-  
   private
   
   def get_target_from_params
@@ -147,13 +77,6 @@ class Search::QueriesController < ApplicationController
     last_index = params.has_key?(:last_index) ? params[:last_index].to_s : ''
     return docpid+'_'+first_index+'_'+last_index if docpid && first_index && last_index
     return nil
-  end
-  
-  def set_limits_and_queries
-    @qllimit = params.has_key?(:qllimit) && !params[:qllimit].blank? ? params[:qllimit].to_i : 5
-    @eqllimit = params.has_key?(:eqllimit) && !params[:eqllimit].blank? ? params[:eqllimit].to_i : 5
-    @queries = @user.query_history('search_queries', @qllimit)
-    @export_queries = @user.query_history('export_queries', @eqllimit)
   end
   
 end

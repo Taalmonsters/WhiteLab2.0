@@ -10,8 +10,8 @@ Whitelab.metadata = {
 			for (var i = 0; i < parts.length; i++) {
 				var match = parts[i].match(/^(([A-Za-z0-9]+)_)*([A-Za-z0-9_\-]+)(\!*=|\>=*|\<=*)(.+)$/);
 				var group = "Metadata";
-				if (match[1] != null)
-					group = match[1];
+				if (match[2] != null)
+					group = match[2];
 				Whitelab.metadata.addMetadataRule(group,match[3],Whitelab.search.operatorToValue(match[4]),match[5].replace(/"/g, ''));
 			}
 		} else {
@@ -55,6 +55,21 @@ Whitelab.metadata = {
 		return "";
 	},
 	
+	getView : function() {
+		var val = $("#metadata-options #show").val();
+		var group = $("#metadata-options #group").val();
+		if (val === 'hits')
+			if (group === '')
+				return 1;
+			else
+				return 8;
+		else
+			if (group === '')
+				return 2;
+			else
+				return 16;
+	},
+	
 	updateCoverage : function() {
 		var filterString = Whitelab.metadata.getFilterString();
 		if (filterString.length > 0) {
@@ -83,6 +98,19 @@ Whitelab.metadata = {
 	}
 	
 };
+
+$(document).on('change', '#metadata-filters #show', function(e) {
+	var val = $(this).val();
+	if (val === 'hits') {
+		$('#metadata-filters #group optgroup[label="hit"]').prop('disabled', false);
+		$('#metadata-filters #group optgroup[label="left"]').prop('disabled', false);
+		$('#metadata-filters #group optgroup[label="right"]').prop('disabled', false);
+	} else {
+		$('#metadata-filters #group optgroup[label="hit"]').prop('disabled', true);
+		$('#metadata-filters #group optgroup[label="left"]').prop('disabled', true);
+		$('#metadata-filters #group optgroup[label="right"]').prop('disabled', true);
+	}
+});
 
 $(document).on('change', '.metadata-key-select', function(e) {
 	e.preventDefault();

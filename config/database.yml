@@ -21,6 +21,6 @@ test:
 
 production:
   <<: *default
-  pool: 50 
+  pool: 20 
   database: whitelab_production 
   socket: /var/run/mysqld/mysqld.sock 

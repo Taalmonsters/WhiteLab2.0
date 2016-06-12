@@ -15,4 +15,4 @@
 		<%= render partial: "/documents/display" %>
 	<% end %>
 </div>
-<%= render partial: "/queries/index", :locals => { :query => nil, :queries => @user.query_history('explore_queries'), :export_queries => @user.query_history('export_queries') } %>
+<%= render partial: "/queries/index", :locals => { :query => nil } %>

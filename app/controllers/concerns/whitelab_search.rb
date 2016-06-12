@@ -20,6 +20,9 @@ module WhitelabSearch
         @group = group.gsub(/ /,"_")
       end
     end
+    if ['extended', 'advanced', 'expert'].include?(action_name)
+      @metadata_preselect_groups = @metadata_handler.get_group_options(8, 'search')
+    end
   end
   
   # Set current document
@@ -33,7 +36,6 @@ module WhitelabSearch
   # Set current query
   def set_query
     @query = Search::Query.find_from_params(action_name, @user, query_create_params) if params.has_key?(:patt) || params.has_key?(:id)
-    p @query
     @query.execute if @query && @query.waiting?
   end
   

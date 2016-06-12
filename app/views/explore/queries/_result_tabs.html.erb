@@ -6,6 +6,6 @@
 		<a href="#" class="explore-statistics-tab" data-view="2"><%= t(:"results.keys.document_list").capitalize %></a>
 	</li>
 	<li role="presentation" class="<%= view == 4 ? "active" : "" %>">
-		<a href="#" class="explore-statistics-tab" data-view="4" data-offset="0" data-number="<%= 100000 %>"><%= t(:"results.keys.vocabulary_growth").capitalize %></a>
+		<a href="#" class="explore-statistics-tab" data-view="4" data-offset="0" data-number="<%= @query && @query.hit_count ? @query.hit_count : 100000 %>"><%= t(:"results.keys.vocabulary_growth").capitalize %></a>
 	</li>
 </ul>

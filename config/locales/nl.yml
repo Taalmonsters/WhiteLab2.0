@@ -251,7 +251,7 @@ nl:
       query: Zoekopdracht
       queries: Zoekopdrachten
       explore_queries: Verkenopdrachten
-      export_queries: Exports
+      export: Exporteer
       query_history: Zoekgeschiedenis
       show_query_list: Toon query lijst
       hide_query_list: Verberg query lijst

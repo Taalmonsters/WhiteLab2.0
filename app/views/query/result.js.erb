@@ -1,3 +1,4 @@
+<% unless @query.view == 4 %>
 $('div#result-pane').html("<%= escape_javascript(raw render partial: "/queries/result", layout: false, locals: { query: @query }) %>");
 <% if @query.running? %>
 setTimeout(function(){
@@ -12,4 +13,5 @@ $.getScript('/<%= @namespace %>/result/id/<%= @query.id %>/pagination.js');
 if ($('#query div#result-pane').html().indexOf('class="loading"') > -1) {
 	$.getScript('/<%= @namespace %>/result/id/<%= @query.id %>.js');
 }
+<% end %>
 <% end %>

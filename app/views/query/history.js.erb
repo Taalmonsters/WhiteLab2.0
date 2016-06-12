@@ -6,10 +6,10 @@ if (queryId != null) {
 	$("tr#"+queryId+" a.remove-query").addClass("hidden");
 }
 
-<% if @user.has_unfinished_search_queries?(@qllimit) || @user.has_unfinished_export_queries?(@eqllimit) %>
-setTimeout(function(){
-	var l = $('#query-list').find("table.query-table").first().data("query-history-limit");
-	var el = $('#query-list').find("table.export-query-table").first().data("export-query-history-limit");
-	Whitelab.history.loadQueryList(l,el);
-}, 2000);
-<% end %>
+<!-- <% if @user.has_unfinished_search_queries?(@sl) || @user.has_unfinished_explore_queries?(@el) %> -->
+<!-- setTimeout(function(){ -->
+<!-- 	var sl = $(this).parent().find("table.search-query-table").first().data("search-query-history-limit") || 5; -->
+<!-- 	var el = $(this).parent().find("table.explore-query-table").first().data("explore-query-history-limit") || 5; -->
+<!-- 	Whitelab.history.loadQueryList(sl,el); -->
+<!-- }, 2000); -->
+<!-- <% end %> -->

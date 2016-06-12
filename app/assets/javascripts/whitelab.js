@@ -1,6 +1,6 @@
 var Whitelab = {
 	namespace : 'search',
-	doDebug : true,
+	doDebug : false,
 	
 	debug : function(msg) {
 		if (Whitelab.doDebug)
@@ -293,8 +293,8 @@ var Whitelab = {
 				closeOnEscape: true,
 				draggable: true,
 				autoOpen: false,
-				width: 850,
-				minHeight: 300,
+				width: 1000,
+				minHeight: 500,
 				modal: true,
 				resizable: false,
 				buttons: {
@@ -307,17 +307,13 @@ var Whitelab = {
 			
 		},
 		
-		loadQueryList : function(l,el) {
+		loadQueryList : function(sl,el) {
 			var ns = $("#main-div").data("namespace");
-			if (ns === 'search') {
-				var id = $('#query-list').find("table.query-table").first().data("current-query-id");
-				if (id != null && id.length > 0)
-					$.getScript('/search/history/id/'+id+'.js?qllimit='+l+'&eqllimit='+el);
-				else
-					$.getScript('/search/history.js?qllimit='+l+'&eqllimit='+el);
-			} else {
-				$.getScript('/'+ns+'/history.js?qllimit='+l+'&eqllimit='+el);
-			}
+			var id = $('#query-list').find("table."+ns+"-query-table").first().data("current-query-id");
+			if (id != null && id.length > 0)
+				$.getScript('/'+ns+'/history/id/'+id+'.js?sl='+sl+'&el='+el);
+			else
+				$.getScript('/'+ns+'/history.js?sl='+sl+'&el='+el);
 		}
 		
 	}
@@ -336,15 +332,6 @@ $(document).on('click', 'a.sort-header', function(e) {
 	var order = $(this).data('sort-order');
 	var id = '#'+$("div.page-list-main").attr('id');
 	window.location = Whitelab.getListPage(id,url,null,null,sort,order);
-});
-
-$(document).on('click', '.btn-export', function(e) {
-	e.preventDefault();
-	e.stopPropagation();
-	if (Whitelab.namespace === 'explore' || Whitelab.namespace === 'search') {
-		var queryId = $(this).data("query-id");
-		$.getScript('/data/export/id/'+queryId+'.js?namespace='+Whitelab.namespace);
-	}
 });
 
 $(document).on('click', '.btn-reset', function(e) {
@@ -466,13 +453,16 @@ $(document).on( "click", "a.show-history", function(e) {
 	Whitelab.history.loadQueryList(5,5);
 });
 
+$(document).on( "click", "a.download", function(e) {
+	e.stopPropagation();
+});
+
 
 $(document).on('click', 'div#query-list tr.clickable', function(e) {
 	e.preventDefault();
 	var id = $(this).data("query-id");
 	var page = $(this).data("query-view-page");
-	var ns = $("#main-div").data("namespace");
-	Whitelab.debug("Namespace = "+ns);
+	var ns = $(this).data("namespace");
 	window.location = '/'+ns+'/'+page+'?'+Whitelab.assembleQueryParams({
 		'patt': $(this).find("td.patt").first().data('patt'), 
 		'filter': $(this).find("td.filter").first().data('filter'), 
@@ -492,28 +482,28 @@ $(document).on('click', 'a.remove-query', function(e) {
 		Whitelab.search.removeQuery($(this).data('query-id'));
 	if (ns === 'explore')
 		Whitelab.explore.removeQuery($(this).data('query-id'));
-	if (ns === 'export')
-		Whitelab.search.removeExportQuery($(this).data('query-id'));
 });
 
-$(document).on('click', 'a.download-result', function(e) {
+$(document).on('click', 'a.export', function(e) {
 	e.preventDefault();
 	e.stopPropagation();
-	window.location = '/data/export/id/'+$(this).data('export-query-id')+'/download?format='+$(this).data('format');
+	var ns = $(this).data("namespace");
+	var queryId = $(this).data("query-id");
+	$.getScript('/'+ns+'/export/id/'+queryId+'.js');
 });
 
-$(document).on('click', '#load-more-queries', function(e) {
+$(document).on('click', '#load-more-search-queries', function(e) {
 	e.preventDefault();
-	var l = $(this).parent().find("table.query-table").first().data("query-history-limit") + 5;
-	var el = $(this).parent().find("table.export-query-table").first().data("export-query-history-limit");
-	Whitelab.history.loadQueryList(l,el);
+	var sl = $(this).parent().find("table.search-query-table").first().data("search-query-history-limit") + 5;
+	var el = $(this).parent().find("table.explore-query-table").first().data("explore-query-history-limit") || 5;
+	Whitelab.history.loadQueryList(sl,el);
 });
 
-$(document).on('click', '#load-more-export-queries', function(e) {
+$(document).on('click', '#load-more-explore-queries', function(e) {
 	e.preventDefault();
-	var l = $(this).parent().find("table.query-table").first().data("query-history-limit");
-	var el = $(this).parent().find("table.export-query-table").first().data("export-query-history-limit") + 5;
-	Whitelab.history.loadQueryList(l,el);
+	var sl = $(this).parent().find("table.search-query-table").first().data("search-query-history-limit") || 5;
+	var el = $(this).parent().find("table.explore-query-table").first().data("explore-query-history-limit") + 5;
+	Whitelab.history.loadQueryList(sl,el);
 });
 
 $(document).on('click', '#submit-group button.submit', function(e) {
