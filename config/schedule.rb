@@ -6,9 +6,3 @@
 every 24.hours do
   rake "database:clean"
 end
-
-every 1.hours do
-  rake "database:clean_query_result"
-end
-
-
