@@ -16,6 +16,7 @@ Gemfile.lock
 /log/*
 !/log/.keep
 /tmp
+/data/*
 
 # Ignore generated documentation in public
 /public/doc/
