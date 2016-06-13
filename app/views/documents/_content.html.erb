@@ -7,7 +7,7 @@
 	<div class="row pagination-row">
 		<div class="pagination pagination-top"></div>
 	</div>
-	<% if !content['audio_file'].blank? && !content['audio_file'].eql?('Unknown') %>
+	<% if !content['audio_file'].blank? && !content['audio_file'].eql?('Unknown') && !content['begin_time'].blank? && !content['end_time'].blank? %>
 		<div class="padding-bottom-20">
 			<a href="#" class="playsound btn btn-xs btn-info" data-audio-url="/<%= @namespace %>/document/<%= xmlid %>/audio?format=mp3" data-audio-id="<%= xmlid %>" data-begin-time="<%= !content['begin_time'].blank? ? content['begin_time'] : '' %>" data-end-time="<%= !content['end_time'].blank? ? content['end_time'] : '' %>">
 				<span class="glyphicon glyphicon-play"></span> Play sound
