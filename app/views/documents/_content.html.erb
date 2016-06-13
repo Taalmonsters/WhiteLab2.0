@@ -3,11 +3,12 @@
 <% in_sentence = false %>
 <% paragraphs = [] %>
 <% sentences = [] %>
+<% has_audio = File.exists?(content['audio_file']) %>
 <div class="row" id="document-content">
 	<div class="row pagination-row">
 		<div class="pagination pagination-top"></div>
 	</div>
-	<% if !content['audio_file'].blank? && !content['audio_file'].eql?('Unknown') && File.exists?(content['audio_file']) %>
+	<% if !content['audio_file'].blank? && !content['audio_file'].eql?('Unknown') && has_audio %>
 		<div class="padding-bottom-20">
 			<a href="#" class="playsound btn btn-xs btn-info" data-audio-url="/<%= @namespace %>/document/<%= xmlid %>/audio?format=mp3" data-audio-id="<%= xmlid %>" data-begin-time="<%= !content['begin_time'].blank? ? content['begin_time'] : '' %>" data-end-time="<%= !content['end_time'].blank? ? content['end_time'] : '' %>">
 				<span class="glyphicon glyphicon-play"></span> Play sound
@@ -19,7 +20,7 @@
 		<div class="<%= paragraph['paragraph_type'] %>">
 			<% paragraph['sentences'].each do |s,sentence| %>
 				<div class="sentence">
-					<% if sentence.has_key?('begin_time') && sentence.has_key?('end_time') && !sentence['begin_time'].blank? && !sentence['end_time'].blank? && !content['audio_file'].eql?('Unknown') %>
+					<% if has_audio && sentence.has_key?('begin_time') && sentence.has_key?('end_time') && !sentence['begin_time'].blank? && !sentence['end_time'].blank? && !content['audio_file'].eql?('Unknown') %>
 						<a href="#" class="playsound btn btn-xs btn-info" data-audio-url="/<%= @namespace %>/document/<%= xmlid %>/audio?format=mp3" data-audio-id="<%= xmlid %>" data-begin-time="<%= sentence['begin_time'] %>" data-end-time="<%= sentence['end_time'] %>">
 							<span class="glyphicon glyphicon-play"></span>
 						</a>
