@@ -80,11 +80,13 @@ class Search::Query < ActiveRecord::Base
       group_parts = hits_group.split(' ')
       g = group_to_label(qgroup_parts[1])
       new_parts = []
-      if self.patt.include?("#{g}=")
-        patt_parts.each_with_index{|part,i| new_parts << '['+g+'="(?c)'+group_parts[i]+'"]' }
-      else
-        patt_parts.each_with_index do |part,i|
-          new_parts << "[#{part}&#{g}=\"#{group_parts.size > i ? group_parts[i] : ''}\"]"
+      patt_parts.each_with_index do |part,i|
+        if part.include?("#{g}=")
+          new_parts << '['+g+'="(?c)'+group_parts[i]+'"]'
+        elsif group_parts.size > i
+          new_parts << "[#{part}&#{g}=\"#{group_parts[i]}\"]"
+        else
+          new_parts << "[#{part}]"
         end
       end
       self.patt = new_parts.join('')

@@ -212,8 +212,19 @@ var Whitelab = {
 		var group = $("#query-details td.group").html();
 		if (group.indexOf("hit_") > -1) {
 			group_value = encodeURIComponent(group_value);
-//			TODO: solve as in ruby code (Search::Query.add_hits_group)
-			patt = "["+group.replace('hit_','').replace('text','word')+"=\"(?c)"+group_value+"\"]";
+			patt_parts = patt.substring(1,patt.length - 1).split('][');
+			group_parts = group_value.replace(/([\(\)\'\"\[\]])/g,'\\'+"$1").split(' ');
+			qgroup = group.split(/[\:_]/)[1].replace('text','word');
+			new_parts = [];
+			for (var i = 0; i < patt_parts.length; i++) {
+			    if (patt_parts[i].indexOf(qgroup+'=') > -1 && group_parts.length > i)
+			    	new_parts.push('['+qgroup+'="(?c)'+group_parts[i]+'"]');
+			    else if (group_parts.length > i)
+			    	new_parts.push("["+patt_parts[i]+"&"+qgroup+"=\""+group_parts[i]+"\"]");
+			    else
+			    	new_parts.push("["+patt_parts[i]+"]");
+			}
+			patt = encodeURIComponent(new_parts.join("")).replace(/\=/g,'%3D').replace(/\%252C/g,'%2C');
 		} else if (group.indexOf("left") > -1) {
 			group_value = encodeURIComponent(group_value);
 			if (group.indexOf("lemma") > -1)

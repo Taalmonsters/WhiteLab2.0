@@ -487,7 +487,7 @@ module BlacklabHelper
   def reformat_group(group)
     if !group.blank?
       if group.start_with?('hit') || group.start_with?('left') || group.start_with?('right')
-        return group.gsub('_',':').gsub('left','wordleft').gsub('right','wordright').gsub('text','word')
+        return group.gsub('_',':').gsub('left','wordleft').gsub('right','wordright').gsub(/\:text$/,':word')
       else
         return 'field:'+group.sub('Metadata_','')
       end
