@@ -67,6 +67,8 @@ module WhitelabQuery
       Thread.new do
         self.running! if self.waiting?
         res, backend_status = self.run
+        Rails.logger.debug "RESULT FROM BACKEND (status code #{backend_status}):"
+        Rails.logger.debug res
         self.output = res
         self.counting! if backend_status == 2
         if backend_status == 3
