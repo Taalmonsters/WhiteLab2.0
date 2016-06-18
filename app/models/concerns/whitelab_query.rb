@@ -64,6 +64,7 @@ module WhitelabQuery
   
   def execute
     if !self.patt.nil? && ([1,2].include?(self.view) || !self.group.blank?)
+      Rails.logger.debug "EXECUTING QUERY"
       Thread.new do
         self.running! if self.waiting?
         res, backend_status = self.run
@@ -80,6 +81,8 @@ module WhitelabQuery
         end
         self.failed! if backend_status == 4
       end
+    else
+      Rails.logger.debug "NOT EXECUTING QUERY"
     end
   end
   
@@ -107,12 +110,14 @@ module WhitelabQuery
   end
   
   def result
+    Rails.logger.debug "GET QUERY RESULT"
     return self.output if self.finished? && !self.output.blank?
     self.output, backend_status = self.run
     return self.output
   end
   
   def run
+    Rails.logger.debug "RUNNING QUERY"
     backend = WhitelabBackend.instance
     return backend.search(self, backend.query_to_url(self))
   end
