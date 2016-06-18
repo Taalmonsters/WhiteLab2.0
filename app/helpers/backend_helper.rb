@@ -74,14 +74,16 @@ module BackendHelper
     end
     
     Rails.logger.debug "RESPONSE TO GET:"
-    Rails.logger.debug fix_json(resp.body)
     return JSON.parse(fix_json(resp.body))
   end
   
   def fix_json(json)
-    while json =~ /"\],"/
-      json.gsub!(/^(.*"\]?,)(".*)$/) { |m| $2 =~ 'phonetic' ? [$2,$1].join('') : ['"phonetic":',$2,$1].join('') }
+    json.split("\n").each do |line|
+      Rails.logger.debug line if line =~ '"],"'
     end
+    # while json =~ /"\],"/
+      # json.gsub!(/^(.*"\]?,)(".*)$/) { |m| $2 =~ 'phonetic' ? [$2,$1].join('') : ['"phonetic":',$2,$1].join('') }
+    # end
     return json
   end
   
