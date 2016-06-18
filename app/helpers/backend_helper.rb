@@ -76,15 +76,12 @@ module BackendHelper
     
     uri = URI(data[:url])
     uri.query = URI.encode_www_form(data[:query])
-    # request = Net::HTTP::Get.new(uri.path)
-    # headers.each do |key, value|
-      # request.add_field(key, value)
-    # end
-    # resp = Net::HTTP.start(uri.host, uri.port) {|http|
-      # http.request(request)
-    # }
-    
-    resp = http_get(uri.host, uri.path, data[:query])
+    Rails.logger.debug "Full URL: #{uri.request_uri}"
+    resp = ''
+    Net::HTTP.start(uri.host, uri.port) do |http|
+      request = Net::HTTP::Get.new uri.request_uri
+      resp = http.request request
+    end
     
     Rails.logger.debug "RESPONSE TO GET:"
     Rails.logger.debug resp.body
