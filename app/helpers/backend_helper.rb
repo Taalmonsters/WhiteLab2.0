@@ -65,18 +65,8 @@ module BackendHelper
     Rails.logger.debug "GETTING QUERY WITH HEADERS (timeout = #{BACKEND_TIMEOUT_SECONDS} s):"
     Rails.logger.debug headers
     Rails.logger.debug data[:query]
-    # resp = HTTParty.get(data[:url], timeout: BACKEND_TIMEOUT_SECONDS,
-      # :query => data[:query],
-      # :headers => headers
-    # )
-    # Rails.logger.debug "RESPONSE TO GET:"
-    # Rails.logger.debug resp.parsed_response
-    # return resp
-    
-    
     uri = URI(data[:url])
     uri.query = URI.encode_www_form(data[:query])
-    Rails.logger.debug "Full URL: #{uri.request_uri}"
     resp = ''
     Net::HTTP.start(uri.host, uri.port) do |http|
       request = Net::HTTP::Get.new uri.request_uri
@@ -85,12 +75,7 @@ module BackendHelper
     
     Rails.logger.debug "RESPONSE TO GET:"
     Rails.logger.debug resp.body
-    return JSON.parse(resp.body)
-  end
-  
-  def http_get(domain,path,params)
-    return Net::HTTP.get(domain, "#{path}?".concat(params.collect { |k,v| "#{k}=#{CGI::escape(v.to_s)}" }.join('&'))) if not params.nil?
-    return Net::HTTP.get(domain, path)
+    return resp.body.is_a?(String) ? JSON.parse(resp.body) : resp.body
   end
   
   def get_response_stream(data, target)

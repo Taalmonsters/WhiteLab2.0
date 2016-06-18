@@ -44,7 +44,7 @@ module WhitelabSearch
   
   # Check allowed parameters for query creation
   def query_create_params
-    params.permit(:patt, :id, :within, :filter, :view, :group, :sort, :order, :offset, :number, :input_page)
+    params.permit(:_, :format, :patt, :id, :within, :filter, :view, :group, :sort, :order, :offset, :number, :input_page)
   end
   
 end
