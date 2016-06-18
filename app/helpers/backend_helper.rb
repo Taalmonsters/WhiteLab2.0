@@ -64,13 +64,27 @@ module BackendHelper
   def get_query(data)
     Rails.logger.debug "GETTING QUERY WITH HEADERS (timeout = #{BACKEND_TIMEOUT_SECONDS} s):"
     Rails.logger.debug headers
-    resp = HTTParty.get(data[:url], timeout: BACKEND_TIMEOUT_SECONDS,
-      :query => data[:query],
-      :headers => headers
-    )
+    # resp = HTTParty.get(data[:url], timeout: BACKEND_TIMEOUT_SECONDS,
+      # :query => data[:query],
+      # :headers => headers
+    # )
+    # Rails.logger.debug "RESPONSE TO GET:"
+    # Rails.logger.debug resp.parsed_response
+    # return resp
+    
+    
+    uri = URI(data[:url])
+    uri.query = URI.encode_www_form(data[:query])
+    request = Net::HTTP::Get.new(uri.path)
+    headers.each do |key, value|
+      request.add_field(key, value)
+    end
+    resp = Net::HTTP.start(url.host, url.port) {|http|
+      http.request(request)
+    }
     Rails.logger.debug "RESPONSE TO GET:"
-    Rails.logger.debug resp.parsed_response
-    return resp
+    Rails.logger.debug resp
+    return resp.body
   end
   
   def get_response_stream(data, target)
