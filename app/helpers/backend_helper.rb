@@ -20,10 +20,7 @@ module BackendHelper
     }
     Rails.logger.debug "DATA:"
     Rails.logger.debug data
-    resp = ""
-    while resp.gsub(/[ \t\n]/,'').blank?
-      resp = get_query(data)
-    end
+    resp = get_query(data)
     Rails.logger.debug "RESPONSE TO SEARCH:"
     Rails.logger.debug resp
     return finish_query(query, resp.parsed_response)
