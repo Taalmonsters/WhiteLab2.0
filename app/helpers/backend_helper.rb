@@ -21,7 +21,7 @@ module BackendHelper
     Rails.logger.debug "DATA:"
     Rails.logger.debug data
     resp = ""
-    while resp.strip.blank?
+    while resp.gsub(/[ \t\n]/,'').blank?
       resp = get_query(data)
     end
     Rails.logger.debug "RESPONSE TO SEARCH:"
