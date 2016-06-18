@@ -68,7 +68,7 @@ module BackendHelper
       :headers => headers
     )
     Rails.logger.debug "RESPONSE TO GET:"
-    Rails.logger.debug '"'+resp.parsed_response+'"'
+    Rails.logger.debug resp.parsed_response
     return resp
   end
   
