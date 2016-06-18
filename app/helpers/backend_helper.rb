@@ -85,7 +85,7 @@ module BackendHelper
     
     Rails.logger.debug "RESPONSE TO GET:"
     Rails.logger.debug resp.body
-    return resp.body
+    return resp.body.parsed_response
   end
   
   def http_get(domain,path,params)
