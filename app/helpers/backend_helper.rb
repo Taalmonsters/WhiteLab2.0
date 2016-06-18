@@ -1,6 +1,6 @@
 require 'net/http'
 require 'uri'
-require 'httparty'
+require 'cgi'
 
 # Main backend helper module.
 module BackendHelper
@@ -64,6 +64,7 @@ module BackendHelper
   def get_query(data)
     Rails.logger.debug "GETTING QUERY WITH HEADERS (timeout = #{BACKEND_TIMEOUT_SECONDS} s):"
     Rails.logger.debug headers
+    Rails.logger.debug data[:query]
     # resp = HTTParty.get(data[:url], timeout: BACKEND_TIMEOUT_SECONDS,
       # :query => data[:query],
       # :headers => headers
@@ -75,16 +76,24 @@ module BackendHelper
     
     uri = URI(data[:url])
     uri.query = URI.encode_www_form(data[:query])
-    request = Net::HTTP::Get.new(uri.path)
-    headers.each do |key, value|
-      request.add_field(key, value)
-    end
-    resp = Net::HTTP.start(uri.host, uri.port) {|http|
-      http.request(request)
-    }
+    # request = Net::HTTP::Get.new(uri.path)
+    # headers.each do |key, value|
+      # request.add_field(key, value)
+    # end
+    # resp = Net::HTTP.start(uri.host, uri.port) {|http|
+      # http.request(request)
+    # }
+    
+    resp = http_get(uri.host, uri.path, data[:query])
+    
     Rails.logger.debug "RESPONSE TO GET:"
-    Rails.logger.debug resp
+    Rails.logger.debug resp.body
     return resp.body
+  end
+  
+  def http_get(domain,path,params)
+    return Net::HTTP.get(domain, "#{path}?".concat(params.collect { |k,v| "#{k}=#{CGI::escape(v.to_s)}" }.join('&'))) if not params.nil?
+    return Net::HTTP.get(domain, path)
   end
   
   def get_response_stream(data, target)
