@@ -10,8 +10,10 @@ module BlacklabHelper
   end
   
   def reformat_query_attributes(query)
+    Rails.logger.debug "REFORMAT QUERY ATTRIBUTES"
     attrs = { 'outputformat' => 'json' }
     query.as_json.select{|key,_| ['patt', 'filter', 'group', 'sort', 'order', 'offset', 'number', 'docpid'].include?(key) }.each do |key, value|
+      Rails.logger.debug "KEY = ${key}, VALUE = #{value}"
       unless value.blank?
         if ['filter', 'group'].include?(key)
           attrs[key] = reformat_filters(value) if key.eql?('filter')
@@ -21,6 +23,7 @@ module BlacklabHelper
           value = combine_patt_and_within(query) if key.eql?('patt')
           attrs[key] = value
         end
+        Rails.logger.debug "ATTRIBUET = #{attrs[key]}"
       end
     end
     return attrs
