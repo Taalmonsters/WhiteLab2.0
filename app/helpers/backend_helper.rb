@@ -79,7 +79,7 @@ module BackendHelper
     headers.each do |key, value|
       request.add_field(key, value)
     end
-    resp = Net::HTTP.start(url.host, url.port) {|http|
+    resp = Net::HTTP.start(uri.host, uri.port) {|http|
       http.request(request)
     }
     Rails.logger.debug "RESPONSE TO GET:"
