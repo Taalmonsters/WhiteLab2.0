@@ -74,8 +74,8 @@ module BackendHelper
     end
     
     Rails.logger.debug "RESPONSE TO GET:"
-    Rails.logger.debug resp.body
-    return resp.body.is_a?(String) ? JSON.parse(resp.body) : resp.body
+    Rails.logger.debug resp.body.gsub(/\n/,'')
+    return JSON.parse(resp.body.gsub(/\n/,''))
   end
   
   def get_response_stream(data, target)
