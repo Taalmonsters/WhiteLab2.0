@@ -61,7 +61,7 @@ module BackendHelper
   end
   
   def get_query(data)
-    HTTParty.get(data[:url], timeout: BACKEND_TIMEOUT_SECONDS,
+    return HTTParty.get(data[:url], timeout: BACKEND_TIMEOUT_SECONDS,
       :query => data[:query],
       :headers => headers
     )
