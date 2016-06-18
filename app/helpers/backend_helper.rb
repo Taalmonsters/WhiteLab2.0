@@ -61,10 +61,15 @@ module BackendHelper
   end
   
   def get_query(data)
-    return HTTParty.get(data[:url], timeout: BACKEND_TIMEOUT_SECONDS,
+    Rails.logger.debug "GETTING QUERY WITH HEADERS:"
+    Rails.logger.debug headers
+    resp = HTTParty.get(data[:url], timeout: BACKEND_TIMEOUT_SECONDS,
       :query => data[:query],
       :headers => headers
     )
+    Rails.logger.debug "RESPONSE TO GET:"
+    Rails.logger.debug resp
+    return resp
   end
   
   def get_response_stream(data, target)
