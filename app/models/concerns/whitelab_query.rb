@@ -119,7 +119,12 @@ module WhitelabQuery
   def run
     Rails.logger.debug "RUNNING QUERY"
     backend = WhitelabBackend.instance
-    return backend.search(self, backend.query_to_url(self))
+    url = backend.query_to_url(self)
+    Rails.logger.debug "URL: #{url}"
+    res, stat = backend.search(self, url)
+    Rails.logger.debug "RESPONSE AFTER RUN:"
+    Rails.logger.debug res
+    return res, stat
   end
   
   def page
