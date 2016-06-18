@@ -1,5 +1,6 @@
 require 'net/http'
 require 'uri'
+require 'httparty'
 
 # Main backend helper module.
 module BackendHelper
