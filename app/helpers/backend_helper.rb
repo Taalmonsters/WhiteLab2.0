@@ -79,7 +79,7 @@ module BackendHelper
   
   def fix_json(json)
     json.split("\n").each do |line|
-      Rails.logger.debug line if line =~ '"],"'
+      Rails.logger.debug line if line =~ /"],"/
     end
     # while json =~ /"\],"/
       # json.gsub!(/^(.*"\]?,)(".*)$/) { |m| $2 =~ 'phonetic' ? [$2,$1].join('') : ['"phonetic":',$2,$1].join('') }
