@@ -13,11 +13,17 @@ module BackendHelper
   end
   
   def search(query, url)
+    Rails.logger.debug "SEARCH ON BACKEND"
     data = { 
       :query => reformat_query_attributes(query),
       :url => url
     }
-    return finish_query(query, get_query(data).parsed_response)
+    Rails.logger.debug "DATA:"
+    Rails.logger.debug data
+    resp = get_query(data)
+    Rails.logger.debug "RESPONSE TO SEARCH:"
+    Rails.logger.debug resp
+    return finish_query(query, resp.parsed_response)
   end
   
   def execute_query(data)
