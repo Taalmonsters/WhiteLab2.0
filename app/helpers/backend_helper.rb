@@ -22,7 +22,7 @@ module BackendHelper
     Rails.logger.debug data
     resp = get_query(data)
     Rails.logger.debug "RESPONSE TO SEARCH:"
-    Rails.logger.debug resp
+    Rails.logger.debug resp.parsed_response
     return finish_query(query, resp.parsed_response)
   end
   
@@ -68,7 +68,7 @@ module BackendHelper
       :headers => headers
     )
     Rails.logger.debug "RESPONSE TO GET:"
-    Rails.logger.debug resp
+    Rails.logger.debug '"'+resp.parsed_response+'"'
     return resp
   end
   
