@@ -79,8 +79,8 @@ module BackendHelper
   end
   
   def fix_json(json)
-    while json =~ /\"\],\"/
-      json.gsub!(/^(.*\"\]?,)(\".*)$/) { |m| $2 =~ 'phonetic' ? [$2,$1].join('') : ['"phonetic":',$2,$1].join('') }
+    while json =~ /"\],"/
+      json.gsub!(/^(.*"\]?,)(".*)$/) { |m| $2 =~ 'phonetic' ? [$2,$1].join('') : ['"phonetic":',$2,$1].join('') }
     end
     return json
   end
