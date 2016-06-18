@@ -133,11 +133,12 @@ module WhitelabQuery
   
   def total
     if view == 1
-      return self.hit_count.nil? ? self.total : self.hit_count
+      return self.hit_count unless self.hit_count.nil?
     elsif view == 2
-      return self.document_count.nil? ? self.total : self.document_count
+      return self.document_count unless self.document_count.nil?
     end
-    return self.group_count.nil? ? self.total : self.group_count
+    return self.group_count unless self.group_count.nil?
+    return 0
   end
   
 end
