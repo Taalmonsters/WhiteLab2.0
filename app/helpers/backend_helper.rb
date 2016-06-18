@@ -23,14 +23,14 @@ module BackendHelper
     Rails.logger.debug data
     resp = get_query(data)
     Rails.logger.debug "RESPONSE TO SEARCH:"
-    Rails.logger.debug resp.parsed_response
-    return finish_query(query, resp.parsed_response)
+    Rails.logger.debug resp
+    return finish_query(query, resp)
   end
   
   def execute_query(data)
     has_query = data.has_key?(:query)
     unless data.has_key?(:method) && data[:method].eql?('post')
-      return has_query ? get_query(data).parsed_response : get_headers(data).parsed_response
+      return has_query ? get_query(data) : get_headers(data).parsed_response
     end
     return has_query ? post_query(data).parsed_response : get_headers(data).parsed_response
   end
