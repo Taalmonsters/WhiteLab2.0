@@ -78,16 +78,13 @@ module BackendHelper
   end
   
   def fix_json(json)
-    json.split("\n").each do |line|
-      if line.include?('EnGejos') || line.include?('ArbE+tsrItm@')
-        Rails.logger.debug "CHECK LINE:"
-        Rails.logger.debug line.scan(/./)
-      end
-    end
-    # while json =~ /"\],"/
-      # json.gsub!(/^(.*"\]?,)(".*)$/) { |m| $2 =~ 'phonetic' ? [$2,$1].join('') : ['"phonetic":',$2,$1].join('') }
+    # json.split("\n").each do |line|
+      # if line.include?('EnGejos') || line.include?('ArbE+tsrItm@')
+        # Rails.logger.debug "CHECK LINE:"
+        # Rails.logger.debug line.scan(/./)
+      # end
     # end
-    return json
+    return json.gsub(/\r/,'')
   end
   
   def get_response_stream(data, target)
