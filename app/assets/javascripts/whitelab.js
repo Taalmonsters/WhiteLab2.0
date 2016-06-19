@@ -420,10 +420,10 @@ $(document).on('change', 'select.pagination-go-to', function(e) {
 	var n = $(this).data('number');
 	var o = ($(this).val() - 1) * n;
 	if ($("#main-div[data-namespace='search'] div#result-pane").length > 0)
-		window.location = $(this).data("url")+'&offset=0&number='+n;
+		window.location = $(this).data("url")+'&offset='+o+'&number='+n;
 //		Whitelab.search.getQueryResult(n,o);
 	else if ($("#main-div[data-namespace='explore'] div#result-pane").length > 0)
-		window.location = $(this).data("url")+'&offset=0&number='+n;
+		window.location = $(this).data("url")+'&offset='+o+'&number='+n;
 //		Whitelab.explore.getQueryResult(n,o);
 	else if ($("#document-display").length > 0)
 		Whitelab.document.loadDocument($("#main-div").data("namespace"),$("#document-display").data("tab"), $("#document-display").data("xmlid"), $("#document-display").data("query-id"),o,n);
