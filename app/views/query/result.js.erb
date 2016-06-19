@@ -11,10 +11,10 @@ setTimeout(function(){
 $('div#result-pane').html("<%= escape_javascript(raw render partial: "/layouts/messages", :locals => { :flash => { :error => "Failed to execute query" } }) %>");
 <% else %>
 $('div#result-pane').html("<%= escape_javascript(raw render partial: "/queries/result", layout: false, locals: { query: @query }) %>");
-if ($('#query div#result-pane').html().length == 0 || $('#query div#result-pane').html().indexOf('class="loading"') > -1) {
+<% if @query.counting? %>
 	$.getScript('/<%= @namespace %>/result/id/<%= @query.id %>.js');
-} else {
+<% else %>
 	$.getScript('/<%= @namespace %>/result/id/<%= @query.id %>/pagination.js');
-}
+<% end %>
 <% end %>
 <% end %>
