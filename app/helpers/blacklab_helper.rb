@@ -36,17 +36,20 @@ module BlacklabHelper
   
   def finish_query(query, response)
     Rails.logger.debug "FINISHING QUERY"
-    Rails.logger.debug response
+    Rails.logger.debug query
     view = query.view
     grouped = [8,16].include?(view)
     hits = [1,8].include?(view)
     key = hits ? "hit" : "doc"
     key = grouped ? "#{key}Groups" : "#{key}s"
-    return {}, 4 if !response.has_key?(key)
-    summary = response['summary']
-    output = reformat_output(response, key, query)
-    return output, 2 if summary['stillCounting']
-    return output, 3
+    output, status = {}, 4 if !response.has_key?(key)
+    unless status == 4
+      summary = response['summary']
+      output = reformat_output(response, key, query)
+      status = summary['stillCounting'] ? 2 : 3
+    end
+    Rails.logger.debug "QUERY STATUS = #{status}"
+    return output, status
   end
   
   def reformat_output(response, key, query)
