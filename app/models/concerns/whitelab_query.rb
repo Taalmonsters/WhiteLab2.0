@@ -70,14 +70,14 @@ module WhitelabQuery
         res, backend_status = self.run
         self.output = res
         self.counting! if backend_status == 2
-        if backend_status == 3
-          self.finished!
+        self.finished! if backend_status == 3
+        self.failed! if backend_status == 4
+        if [2,3].include?(backend_status)
           self.hit_count = res['hit_count'] if hit_count.nil?
           self.document_count = res['document_count'] if document_count.nil?
           self.group_count = res['group_count'] if res.has_key?('group_count')
           self.save
         end
-        self.failed! if backend_status == 4
       end
     else
       Rails.logger.debug "NOT EXECUTING QUERY"
