@@ -36,6 +36,7 @@ module BlacklabHelper
   
   def finish_query(query, response)
     Rails.logger.debug "FINISHING QUERY"
+    Rails.logger.debug response
     view = query.view
     grouped = [8,16].include?(view)
     hits = [1,8].include?(view)
