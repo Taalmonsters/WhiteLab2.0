@@ -1,14 +1,14 @@
 class QueriesController < ApplicationController
   before_action :set_limits_and_queries, :only => [:history]
   
-  # Show Query details
-  def details
-    respond_to do |format|
-      format.js do
-        render '/query/details'
-      end
-    end
-  end
+  # # Show Query details
+  # def details
+    # respond_to do |format|
+      # format.js do
+        # render '/query/details'
+      # end
+    # end
+  # end
   
   # Download Query export
   def download

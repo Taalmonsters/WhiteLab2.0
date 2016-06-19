@@ -19,7 +19,7 @@ Rails.application.routes.draw do
     get '/kwic' => 'queries#kwic'
     get '/doc_hits/id/:id' => 'queries#doc_hits'
     get '/remove/id/:id' => 'queries#remove'
-    get '/details/id/:id' => 'queries#details'
+    # get '/details/id/:id' => 'queries#details'
     get '/export/id/:id' => 'queries#export'
     get '/download/id/:id' => 'queries#download'
     scope '/result/id' do
@@ -57,7 +57,7 @@ Rails.application.routes.draw do
     get '/pos/select' => 'interface#pos_select_options'
     get '/history' => 'queries#history'
     get '/remove/id/:id' => 'queries#remove'
-    get '/details/id/:id' => 'queries#details'
+    # get '/details/id/:id' => 'queries#details'
     get '/export/id/:id' => 'queries#export'
     get '/download/id/:id' => 'queries#download'
     scope '/result/id' do

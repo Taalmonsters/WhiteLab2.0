@@ -1,3 +1,12 @@
+<!-- query details -->
+$('div#query-details').html("<%= escape_javascript(raw render partial: "/query/details", layout: false) %>");
+<% if !@query.finished? && !@query.failed? && (@query.view < 8 || !@query.group.blank? ) %>
+setTimeout(function(){
+	$.getScript('/<%= @namespace %>/details/id/<%= @query.id %>.js');
+}, 2000);
+<% end %>
+
+<!-- query results -->
 <% unless @query.view == 4 %>
 $('div#result-pane').html("<%= escape_javascript(raw render partial: "/queries/result", layout: false, locals: { query: @query }) %>");
 <% if @query.running? %>
