@@ -4,6 +4,7 @@ $('div#query-details').html("<%= escape_javascript(raw render partial: "/query/d
 <!-- query results -->
 <% unless @query.view == 4 %>
 $('div#result-pane').html("<%= escape_javascript(raw render partial: "/queries/result", layout: false, locals: { query: @query }) %>");
+<% end %>
 <% if @query.running? %>
 setTimeout(function(){
 	$.getScript('/<%= @namespace %>/result/id/<%= @query.id %>.js');
