@@ -66,7 +66,7 @@ module WhitelabQuery
     if !self.patt.nil? && ([1,2].include?(self.view) || !self.group.blank?)
       Rails.logger.debug "EXECUTING QUERY"
       Thread.new do
-        self.running! if self.waiting?
+        self.running!
         res, backend_status = self.run
         self.output = res
         self.counting! if backend_status == 2
@@ -109,8 +109,8 @@ module WhitelabQuery
   
   def result
     Rails.logger.debug "GET QUERY RESULT"
-    # return self.output if self.finished? && !self.output.blank?
-    # self.output, backend_status = self.run
+    return self.output if self.finished? && !self.output.blank?
+    self.output, backend_status = self.run
     return self.output
   end
   
