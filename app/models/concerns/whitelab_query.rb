@@ -68,8 +68,6 @@ module WhitelabQuery
       Thread.new do
         self.running! if self.waiting?
         res, backend_status = self.run
-        Rails.logger.debug "RESULT FROM BACKEND (status code #{backend_status}):"
-        Rails.logger.debug res
         self.output = res
         self.counting! if backend_status == 2
         if backend_status == 3
@@ -117,14 +115,8 @@ module WhitelabQuery
   end
   
   def run
-    Rails.logger.debug "RUNNING QUERY"
     backend = WhitelabBackend.instance
-    url = backend.query_to_url(self)
-    Rails.logger.debug "URL: #{url}"
-    res, stat = backend.search(self, url)
-    Rails.logger.debug "RESPONSE AFTER RUN:"
-    Rails.logger.debug res
-    return res, stat
+    return backend.search(self, backend.query_to_url(self))
   end
   
   def page

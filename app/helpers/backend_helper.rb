@@ -19,12 +19,7 @@ module BackendHelper
       :query => reformat_query_attributes(query),
       :url => url
     }
-    Rails.logger.debug "DATA:"
-    Rails.logger.debug data
-    resp = get_query(data)
-    Rails.logger.debug "RESPONSE TO SEARCH:"
-    Rails.logger.debug resp
-    return finish_query(query, resp)
+    return finish_query(query, get_query(data))
   end
   
   def execute_query(data)
@@ -72,19 +67,7 @@ module BackendHelper
       request = Net::HTTP::Get.new uri.request_uri
       resp = http.request request
     end
-    
-    Rails.logger.debug "RESPONSE TO GET:"
-    return JSON.parse(fix_json(resp.body))
-  end
-  
-  def fix_json(json)
-    # json.split("\n").each do |line|
-      # if line.include?('EnGejos') || line.include?('ArbE+tsrItm@')
-        # Rails.logger.debug "CHECK LINE:"
-        # Rails.logger.debug line.scan(/./)
-      # end
-    # end
-    return json.gsub(/\r/,'')
+    return JSON.parse(resp.body.gsub(/\r/,''))
   end
   
   def get_response_stream(data, target)
