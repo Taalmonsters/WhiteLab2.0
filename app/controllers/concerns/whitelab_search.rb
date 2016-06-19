@@ -36,7 +36,7 @@ module WhitelabSearch
   # Set current query
   def set_query
     @query = Search::Query.find_from_params(action_name, @user, query_create_params) if params.has_key?(:patt) || params.has_key?(:id)
-    @query.execute if @query && @query.waiting?
+    @query.execute if @query && (@query.waiting? || @query.counting?)
     Rails.logger.debug "NO QUERY" if !@query
   end
   
