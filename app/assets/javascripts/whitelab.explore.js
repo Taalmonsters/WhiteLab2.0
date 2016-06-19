@@ -5,10 +5,10 @@ Whitelab.explore = {
 		if ($('#metadata-filters').length > 0)
 			Whitelab.metadata.init();
 
-		if ($("#main-div[data-namespace='explore'] #query-details").length > 0) {
-			var id = $('#query-details').data("query-id");
-			$.getScript('/explore/details/id/'+id+'.js');
-		}
+//		if ($("#main-div[data-namespace='explore'] #query-details").length > 0) {
+//			var id = $('#query-details').data("query-id");
+//			$.getScript('/explore/details/id/'+id+'.js');
+//		}
 
 		if ($("#document-display").length > 0)
 			Whitelab.document.init();
