@@ -109,8 +109,8 @@ module WhitelabQuery
   
   def result
     Rails.logger.debug "GET QUERY RESULT"
-    return self.output if self.finished? && !self.output.blank?
-    self.output, backend_status = self.run
+    # return self.output if self.finished? && !self.output.blank?
+    # self.output, backend_status = self.run
     return self.output
   end
   
