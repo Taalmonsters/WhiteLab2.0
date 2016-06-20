@@ -94,7 +94,7 @@ module WhitelabQuery
         status_start = q.status
         q.waiting!
         max = [EXPORT_LIMIT,self.total].min
-        q.number = 200
+        q.number = 1000
         o = 0
         FileUtils.mkpath(File.dirname(self.result_file))
         File.delete(self.result_file) if File.exists?(self.result_file)
