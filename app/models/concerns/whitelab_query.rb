@@ -96,23 +96,18 @@ module WhitelabQuery
         max = [EXPORT_LIMIT,self.total].min
         q.number = 200
         o = 0
-        res = nil
+        FileUtils.mkpath(File.dirname(self.result_file))
+        File.delete(self.result_file) if File.exists?(self.result_file)
         while o < max
           q.offset = o
-          if o == 0
-            res = q.result
-          else
-            rres = q.result
-            res['results'] += rres['results']
+          res = q.result
+          CSV.open(self.result_file, "a", force_quotes: true) do |csv|
+            csv << res['results'].first.keys if o == 0
+            res['results'].each do |hash|
+              csv << hash.values
+            end
           end
           o += q.number
-        end
-        FileUtils.mkpath(File.dirname(self.result_file))
-        CSV.open(self.result_file, "wb", force_quotes: true) do |csv|
-          csv << res['results'].first.keys
-          res['results'].each do |hash|
-            csv << hash.values
-          end
         end
         self.status = status_start
         self.number = n_start
