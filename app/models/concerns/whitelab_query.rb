@@ -89,6 +89,8 @@ module WhitelabQuery
       Thread.new do
         self.exporting!
         q = self.clone
+        n_start = q.number
+        o_start = q.offset
         max = [EXPORT_LIMIT,self.total].min
         q.number = 200
         o = 0
@@ -110,6 +112,8 @@ module WhitelabQuery
             csv << hash.values
           end
         end
+        q.number = n_start
+        q.offset = o_start
         # File.open(self.metadata_file, "w") do |xml|
           # xml.write(self.metadata)
         # end
