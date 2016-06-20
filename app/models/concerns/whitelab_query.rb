@@ -88,7 +88,7 @@ module WhitelabQuery
     if self.finished? && !self.exporting?
       Thread.new do
         self.exporting!
-        q = self.dup
+        q = self.clone
         n_start = q.number
         o_start = q.offset
         max = [EXPORT_LIMIT,self.total].min
