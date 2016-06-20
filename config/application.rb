@@ -46,5 +46,5 @@ end
 ::NEO4J_PW = ENV['NEO4J_PW']
 ::BACKEND_TIMEOUT_SECONDS = 600
 ::METADATUM_VALUES_MAX = 50 # Max number of metadatum values in filter value selection
-::EXPORT_LIMIT = 100000 # Max number of hits to export
+::EXPORT_LIMIT = 50000 # Max number of hits to export
 ::FILTER_TOKEN_SAFE_LIMIT = 500000
