@@ -73,8 +73,8 @@ module WhitelabQuery
         self.finished! if backend_status == 3
         self.failed! if backend_status == 4
         if [2,3].include?(backend_status)
-          self.hit_count = res['hit_count'] if hit_count.nil?
-          self.document_count = res['document_count'] if document_count.nil?
+          self.hit_count = res['hit_count']
+          self.document_count = res['document_count']
           self.group_count = res['group_count'] if res.has_key?('group_count')
           self.save
         end
