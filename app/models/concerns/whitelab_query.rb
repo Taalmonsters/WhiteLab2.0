@@ -89,7 +89,6 @@ module WhitelabQuery
       Thread.new do
         self.exporting!
         q = self.clone
-        q.status = "waiting"
         max = [EXPORT_LIMIT,self.total].min
         q.number = 200
         o = 0
