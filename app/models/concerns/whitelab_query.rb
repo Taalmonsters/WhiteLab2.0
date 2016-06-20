@@ -109,12 +109,12 @@ module WhitelabQuery
           end
           o += q.number
         end
-        self.status = status_start
         self.number = n_start
         self.offset = o_start
         # File.open(self.metadata_file, "w") do |xml|
           # xml.write(self.metadata)
         # end
+        self.finished!
         self.exported!
       end
     end
