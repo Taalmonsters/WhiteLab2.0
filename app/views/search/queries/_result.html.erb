@@ -1,14 +1,14 @@
-<%= render partial: "/search/queries/result_tabs", layout: false, locals: { view: query.view, url_params: query.assemble_url_params(['patt', 'filter', 'within']) } %>
+<%= render partial: "/search/queries/result_tabs", layout: false, locals: { view: @query.view, url_params: @query.assemble_url_params(['patt', 'filter', 'within']) } %>
 <div id="query-result" class="tab-content">
-	<% if query.view == 1 %>
+	<% if @query.view == 1 %>
 		<%= render partial: "/result/hits" %>
-	<% elsif query.view == 2 %>
+	<% elsif @query.view == 2 %>
 		<%= render partial: "/result/docs" %>
-	<% elsif query.view == 4 %>
+	<% elsif @query.view == 4 %>
 		<%= render partial: "/result/vocabulary_growth" %>
-	<% elsif query.view == 8 %>
+	<% elsif @query.view == 8 %>
 		<%= render partial: "/result/grouped_hits" %>
-	<% elsif query.view == 16 %>
+	<% elsif @query.view == 16 %>
 		<%= render partial: "/result/grouped_docs" %>
 	<% end %>
 </div>
