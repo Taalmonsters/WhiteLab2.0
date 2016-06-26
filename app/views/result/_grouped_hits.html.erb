@@ -5,7 +5,7 @@
 		</div>
 	</div>
 <% end %>
-<% if !@query.blank? && ((@query.waiting? && !@query.group.blank?) || @query.running? || @query.output.blank?) %>
+<% if !@query.blank? && ((@query.waiting? && !@query.group.blank?) || @query.running?) %>
 	<div class="row">
 		<div class="col-xs-12">
 			<h5 class="warn"><span class="loading"></span></h5>
