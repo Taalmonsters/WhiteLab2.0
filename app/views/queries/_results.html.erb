@@ -5,10 +5,10 @@
 				<label><%= t(:"page_titles.keys.results").capitalize %></label>
 			</div>
 			<div class="panel-body">
-				<div id="result-pane" class="row" data-query-id="<%= query.id %>" data-query-status="<%= query.status %>" data-query-page="<%= query.page %>" data-query-patt="<%= query.patt %>" data-query-filter="<%= query.filter %>" data-query-within="<%= query.within %>" data-query-view="<%= query.view %>">
-					<% if query.finished? %>
+				<div id="result-pane" class="row" data-query-id="<%= @query.id %>" data-query-status="<%= @query.status %>" data-query-page="<%= @query.page %>" data-query-patt="<%= @query.patt %>" data-query-filter="<%= @query.filter %>" data-query-within="<%= @query.within %>" data-query-view="<%= @query.view %>">
+					<% if @query.finished? %>
 						<%= render partial: "/#{@namespace}/queries/result" %>
-					<% elsif query.failed? %>
+					<% elsif @query.failed? %>
 						<%= render partial: "/layouts/messages", :locals => { :flash => { :error => "Failed to execute query" } } %>
 					<% else %>
 					<span class="loading"></span>
