@@ -157,7 +157,7 @@ Whitelab.explore = {
 		init : function() {
 			
 			var id = $('div#result-pane').data("query-id");
-			//$.getScript('/explore/result/id/'+id+'.js');
+			$.getScript('/explore/result/id/'+id+'.js');
 			
 		}
 	}
