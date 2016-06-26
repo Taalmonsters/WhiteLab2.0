@@ -5,7 +5,7 @@
 				<label><%= t(:"page_titles.keys.results").capitalize %></label>
 			</div>
 			<div class="panel-body">
-				<div id="result-pane" class="row" data-query-id="<%= @query.id %>" data-query-status="<%= @query.status %>" data-query-page="<%= @query.page %>" data-query-patt="<%= @query.patt %>" data-query-filter="<%= @query.filter %>" data-query-within="<%= @query.within %>" data-query-view="<%= @query.view %>">
+				<div id="result-pane" class="row" data-query-id="<%= @query.id %>" data-query-status="<%= @query.status %>" data-query-page="<%= @query.page %>" data-query-patt="<%= @query.patt %>" data-query-filter="<%= @query.filter %>" data-query-group="<%= @query.group %>" data-query-within="<%= @query.within %>" data-query-view="<%= @query.view %>">
 					<% if (@query.finished? && !@query.output.blank?) || ([8,16].include?(@query.view) && @query.waiting? && @query.group.blank?) %>
 						<%= render partial: "/#{@namespace}/queries/result" %>
 					<% elsif @query.failed? %>
