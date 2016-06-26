@@ -391,8 +391,10 @@ Whitelab.search = {
 			var id = $('div#result-pane').data("query-id");
 			var view = $('div#result-pane').data("query-view")+0;
 			var group = $('div#result-pane').data("query-group");
-			if (view < 8 || group.length > 0)
+			if (view < 8 || group.length > 0) {
+				console.log("Getting result...group = "+group+", view = "+view);
 				$.getScript('/search/result/id/'+id+'.js');
+			}
 			
 		}
 		
