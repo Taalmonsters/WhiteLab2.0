@@ -7,14 +7,14 @@
 <% end %>
 <div id="query-result" class="tab-content">
 	<% if query.view == 1 %>
-		<%= render partial: "/result/hits", layout: false, locals: { query: query } %>
+		<%= render partial: "/result/hits", :locals => { :query => query } %>
 	<% elsif query.view == 2 %>
-		<%= render partial: "/result/docs", layout: false, locals: { query: query } %>
+		<%= render partial: "/result/docs", :locals => { :query => query } %>
 	<% elsif query.view == 4 %>
-		<%= render partial: "/result/vocabulary_growth", layout: false, locals: { query: query } %>
+		<%= render partial: "/result/vocabulary_growth", :locals => { :query => query } %>
 	<% elsif query.view == 8 %>
-		<%= render partial: "/result/grouped_hits", layout: false, locals: { query: query } %>
+		<%= render partial: "/result/grouped_hits", :locals => { :query => query } %>
 	<% elsif query.view == 16 %>
-		<%= render partial: "/result/grouped_docs", layout: false, locals: { query: query } %>
+		<%= render partial: "/result/grouped_docs", :locals => { :query => query } %>
 	<% end %>
 </div>
