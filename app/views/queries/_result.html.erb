@@ -7,7 +7,7 @@
 <% end %>
 <div id="query-result" class="tab-content">
 	<% if query.view == 1 %>
-		<%= render partial: "/result/hits" %>
+		<%= render partial: "/result/hits", layout: false, locals: { query: query } %>
 	<% elsif query.view == 2 %>
 		<%= render partial: "/result/docs", layout: false, locals: { query: query } %>
 	<% elsif query.view == 4 %>
