@@ -16,7 +16,7 @@ module WhitelabQuery
       options_without_exports = options.select{|x| !x.exporting? }
       query = options_without_exports.first if options_without_exports.size > 0
       query = options.first if options.size > 0 && !query
-      query = query.clone if query.exporting?
+      query = query.clone if query && query.exporting?
       unless query
         [:view, :group, :input_page].each do |param|
           if params.has_key?(param) && !params[param].blank?
