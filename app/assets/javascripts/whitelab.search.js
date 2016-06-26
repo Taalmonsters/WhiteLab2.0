@@ -389,7 +389,10 @@ Whitelab.search = {
 		init : function() {
 			
 			var id = $('div#result-pane').data("query-id");
-			$.getScript('/search/result/id/'+id+'.js');
+			var view = $('div#result-pane').data("query-view")+0;
+			var group = $('div#result-pane').data("query-group");
+			if (view < 8 || group.length > 0)
+				$.getScript('/search/result/id/'+id+'.js');
 			
 		}
 		
