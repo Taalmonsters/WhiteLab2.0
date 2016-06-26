@@ -106,26 +106,25 @@ module WhitelabQuery
     if self.finished? && !self.exporting?
       Thread.new do
         self.exporting!
-        q = self.clone
-        n_start = q.number
-        o_start = q.offset
-        status_start = q.status
-        q.waiting!
+        n_start = self.number
+        o_start = self.offset
+        status_start = self.status
+        self.waiting!
         max = [EXPORT_LIMIT,self.total].min
-        q.number = 1000
+        self.number = 1000
         o = 0
         FileUtils.mkpath(File.dirname(self.result_file))
         File.delete(self.result_file) if File.exists?(self.result_file)
         while o < max
-          q.offset = o
-          res = q.result
+          self.offset = o
+          res = self.result
           CSV.open(self.result_file, "a", force_quotes: true) do |csv|
             csv << res['results'].first.keys if o == 0
             res['results'].each do |hash|
               csv << hash.values
             end
           end
-          o += q.number
+          o += self.number
         end
         self.number = n_start
         self.offset = o_start
