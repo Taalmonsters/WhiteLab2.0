@@ -138,7 +138,7 @@ module WhitelabQuery
   def result
     return self.output if (self.finished? || self.counting?) && !self.output.blank?
     Rails.logger.debug "GET QUERY RESULT"
-    self.execute(false)
+    self.execute
     return self.output
   end
   
