@@ -3,7 +3,7 @@ $('div#query-details').html("<%= escape_javascript(raw render partial: "/query/d
 
 <!-- query results -->
 <% unless @query.view == 4 %>
-<% if @query.running? || @query.counting? %>
+<% if @query.running? || @query.counting? || @query.output.blank? %>
 setTimeout(function(){
 	$.getScript('/<%= @namespace %>/result/id/<%= @query.id %>.js');
 }, 2000);

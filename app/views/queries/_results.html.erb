@@ -6,7 +6,7 @@
 			</div>
 			<div class="panel-body">
 				<div id="result-pane" class="row" data-query-id="<%= @query.id %>" data-query-status="<%= @query.status %>" data-query-page="<%= @query.page %>" data-query-patt="<%= @query.patt %>" data-query-filter="<%= @query.filter %>" data-query-within="<%= @query.within %>" data-query-view="<%= @query.view %>">
-					<% if @query.finished? %>
+					<% if @query.finished? && !@query.output.blank? %>
 						<%= render partial: "/#{@namespace}/queries/result" %>
 					<% elsif @query.failed? %>
 						<%= render partial: "/layouts/messages", :locals => { :flash => { :error => "Failed to execute query" } } %>

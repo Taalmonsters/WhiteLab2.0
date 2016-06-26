@@ -1,4 +1,4 @@
-<% if @query.waiting? || @query.running? %>
+<% if @query.waiting? || @query.running? || @query.output.blank? %>
 	<% if @query.waiting? %>
 		<% @query.execute %>
 	<% end %>
@@ -37,6 +37,6 @@
 		</table>
 	</div>
 	<div class="row pagination-row">
-		<%= render partial: "/layouts/pagination", layout: false, locals: { numbarr: [50, 100, 200], url: '/'+@namespace+'/result/id/'+@query.id.to_s+'.js', total: @query.total, offset: @query.offset, number: @query.number } %>
+		<%= render partial: "/layouts/pagination_with_url", layout: false, locals: { numbarr: [50, 100, 200], url: "/#{@namespace}/#{@query.page}?#{@query.assemble_url_params(['patt', 'filter', 'within', 'view', 'group'])}", total: @query.total, offset: @query.offset, number: @query.number } %>
 	</div>
 <% end %>
