@@ -592,7 +592,7 @@ $(document).on('click', '#main-div[data-namespace="search"] a.tablink', function
 	e.stopPropagation();
 	var url = "/search/"+$(this).data('page');
 	var params = $(this).data("params");
-	var patt = $(this).data("patt");
+	var patt = $(this).data("patt").replace('&','%26');
 	var filter = Whitelab.metadata.getFilterString();
 	var connector = "?";
 	if (params.length > 0) {
