@@ -1,4 +1,4 @@
-<% if query.page.eql?('statistics') %>
+<% if @query.page.eql?('statistics') %>
 <%= render partial: "/explore/queries/result_tabs", layout: false, locals: { view: @query.view } %>
 <% end %>
 <div id="query-result" class="tab-content">
