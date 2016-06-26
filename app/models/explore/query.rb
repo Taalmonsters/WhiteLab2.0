@@ -104,6 +104,9 @@ class Explore::Query < ActiveRecord::Base
     self.waiting! if self.failed?
     if attribute_is_changed?(self.view,params[:view].to_i)
       self.update_attributes({ :view => params[:view].to_i, :group => nil, :order => nil, :sort => nil, :offset => 0, :group_count => nil, :status => 0 })
+      if self.view == 8 && self.group.blank?
+        self.update_attribute(:group, "hit:#{self.listtype || 'word'}")
+      end
     elsif attribute_is_changed?(self.group,params[:group])
       self.update_attributes({ :group => params[:group], :order => nil, :sort => nil, :offset => 0, :group_count => nil, :status => 0 })
     end

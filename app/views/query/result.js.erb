@@ -2,18 +2,20 @@
 $('div#query-details').html("<%= escape_javascript(raw render partial: "/query/details", layout: false) %>");
 
 <!-- query results -->
-<% unless @query.view == 4 %>
-<% if @query.running? || @query.counting? || @query.output.blank? %>
-setTimeout(function(){
-	$.getScript('/<%= @namespace %>/result/id/<%= @query.id %>.js');
-}, 2000);
-<% elsif @query.failed? %>
-$('div#result-pane').html("<%= escape_javascript(raw render partial: "/layouts/messages", :locals => { :flash => { :error => "Failed to execute query" } }) %>");
+<% if @query.view == 4 %>
+	$('div#result-pane').html("<%= escape_javascript(raw render partial: "/queries/result", layout: false, locals: { query: @query }) %>");
 <% else %>
-$('div#result-pane').html("<%= escape_javascript(raw render partial: "/queries/result", layout: false, locals: { query: @query }) %>");
-$('#result-pane').find("div.pagination-row").html("<%= escape_javascript(raw render partial: "/layouts/pagination_with_url", layout: false, locals: { numbarr: [50, 100, 200], url: "/#{@namespace}/#{@query.page}?#{@query.assemble_url_params(['patt', 'filter', 'within', 'view', 'group'])}", total: @query.total, offset: @query.offset, number: @query.number }) %>");
-<% if @query.counting? %>
-	$.getScript('/<%= @namespace %>/result/id/<%= @query.id %>.js');
-<% end %>
-<% end %>
+	<% if @query.running? || @query.counting? || @query.output.blank? %>
+	setTimeout(function(){
+		$.getScript('/<%= @namespace %>/result/id/<%= @query.id %>.js');
+	}, 2000);
+	<% elsif @query.failed? %>
+	$('div#result-pane').html("<%= escape_javascript(raw render partial: "/layouts/messages", :locals => { :flash => { :error => "Failed to execute query" } }) %>");
+	<% else %>
+	$('div#result-pane').html("<%= escape_javascript(raw render partial: "/queries/result", layout: false, locals: { query: @query }) %>");
+	$('#result-pane').find("div.pagination-row").html("<%= escape_javascript(raw render partial: "/layouts/pagination_with_url", layout: false, locals: { numbarr: [50, 100, 200], url: "/#{@namespace}/#{@query.page}?#{@query.assemble_url_params(['patt', 'filter', 'within', 'view', 'group'])}", total: @query.total, offset: @query.offset, number: @query.number }) %>");
+	<% if @query.counting? %>
+		$.getScript('/<%= @namespace %>/result/id/<%= @query.id %>.js');
+	<% end %>
+	<% end %>
 <% end %>

@@ -13,7 +13,10 @@ module WhitelabQuery
   def self.find_from_params(klass, page, user_id, params)
     if params.has_key?(:patt) || params.has_key?(:filter)
       options = klass.where(klass.where_data(user_id, page, params))
-      query = options.first if options.size == 1
+      options_without_exports = options.select{|x| !x.exporting? }
+      query = options_without_exports.first if options_without_exports.size > 0
+      query = options.first if options.size > 0 && !query
+      query = query.clone if query.exporting?
       unless query
         [:view, :group, :input_page].each do |param|
           if params.has_key?(param) && !params[param].blank?

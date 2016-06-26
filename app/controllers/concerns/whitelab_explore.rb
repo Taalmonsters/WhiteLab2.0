@@ -29,7 +29,7 @@ module WhitelabExplore
         params[:group] = "hit:#{params[:listtype]}" if params.has_key?(:listtype) && ['word','pos','lemma'].include?(params[:listtype])
       end
       @query = Explore::Query.find_from_params(action_name, @user, query_create_params)
-      if @query && @query.patt && !@query.finished? && !@query.failed?
+      if @query && @query.patt && (!@query.finished? || !@query.output) && !@query.failed?
         if @query.view == 4
           @query.running!
           @result = Document.growth(@query)
@@ -39,7 +39,6 @@ module WhitelabExplore
         else
           threaded = !action_name.eql?('result')
           @query.execute(threaded) if @query && !@query.running? && !@query.failed? && !@query.output
-          
         end
       end
     end
