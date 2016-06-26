@@ -5,7 +5,65 @@
 				<label><%= t(:"queries.keys.query") %></label>
 			</div>
 			<div class="panel-body">
-				<div id="query-details" class="tab-content contrast" data-query-id="<%= query.id %>"></div>
+				<div id="query-details" class="tab-content contrast" data-query-id="<%= query.id %>">
+					<table class="table table-striped">
+						<thead><tr><th colspan="2"></th></tr></thead>
+						<tbody>
+							<% if @namespace.eql?('search') || !query.patt.eql?('[word=".*"]') %>
+								<tr>
+									<th>CQL <%= t(:"queries.keys.pattern").capitalize %></th>
+									<td class="patt"><%= query.patt %></td>
+								</tr>
+							<% end %>
+							<% if @namespace.eql?('search') %>
+								<tr>
+									<th><%= t(:"queries.keys.within").capitalize %></th>
+									<td class="within"><%= query.within.blank? ? 'document' : query.within %></td>
+								</tr>
+							<% end %>
+							<% if !query.filter.blank? %>
+							<tr>
+								<th><%= t(:"queries.keys.filter").capitalize %></th>
+								<td class="filter"><%= query.filter %></td>
+							</tr>
+							<% end %>
+							<% if !query.sort.blank? %>
+							<tr>
+								<th><%= t(:"queries.keys.sort").capitalize %></th>
+								<td>
+									<% if !query.sort.blank? && query.sort.length > 0 %>
+										<%= query.sort %> (<%= query.order %>)
+									<% end %>
+								</td>
+							</tr>
+							<% end %>
+							<% if !query.group.blank? %>
+							<tr>
+								<th><%= t(:"queries.keys.group").capitalize %></th>
+								<td class="group"><%= query.group %></td>
+							</tr>
+							<% end %>
+							<tr>
+								<th><%= t(:"queries.keys.hit_count").capitalize %></th>
+								<td><%= query.hit_count.blank? || query.hit_count == -1 ? '-' : number_with_delimiter(query.hit_count, :delimiter => t(:'other.keys.numeric_delimiter')) %></td>
+							</tr>
+							<tr>
+								<th><%= t(:"queries.keys.document_count").capitalize %></th>
+								<td><%= query.document_count.blank? || query.document_count == -1 ? '-' : number_with_delimiter(query.document_count, :delimiter => t(:'other.keys.numeric_delimiter')) %></td>
+							</tr>
+							<% if [8,16].include?(query.view) %>
+							<tr>
+								<th><%= t(:"queries.keys.group_count").capitalize %></th>
+								<td><%= query.group_count.blank? || query.group_count == -1 ? '-' : number_with_delimiter(query.group_count, :delimiter => t(:'other.keys.numeric_delimiter')) %></td>
+							</tr>
+							<% end %>
+							<tr>
+								<th><%= t(:"queries.keys.status").capitalize %></th>
+								<td><%= query.status %></td>
+							</tr>
+						</tbody>	
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>

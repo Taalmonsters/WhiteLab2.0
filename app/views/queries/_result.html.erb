@@ -1,20 +1,20 @@
 <% if @namespace.eql?('explore') %>
-	<% if !@query.input_page.blank? && @query.input_page.eql?('statistics') %>
-		<%= render partial: "/"+@namespace+"/queries/result_tabs", layout: false, locals: { view: @query.view } %>
+	<% if !query.input_page.blank? && query.input_page.eql?('statistics') %>
+		<%= render partial: "/"+@namespace+"/queries/result_tabs", layout: false, locals: { view: query.view } %>
 	<% end %>
 <% elsif @namespace.eql?('search') %>
-	<%= render partial: "/"+@namespace+"/queries/result_tabs", layout: false, locals: { view: @query.view, url_params: @query.assemble_url_params(['patt', 'filter', 'within']) } %>
+	<%= render partial: "/"+@namespace+"/queries/result_tabs", layout: false, locals: { view: query.view, url_params: query.assemble_url_params(['patt', 'filter', 'within']) } %>
 <% end %>
 <div id="query-result" class="tab-content">
-	<% if @query.view == 1 %>
-		<%= render partial: "/result/hits" %>
-	<% elsif @query.view == 2 %>
-		<%= render partial: "/result/docs" %>
-	<% elsif @query.view == 4 %>
-		<%= render partial: "/result/vocabulary_growth" %>
-	<% elsif @query.view == 8 %>
-		<%= render partial: "/result/grouped_hits" %>
-	<% elsif @query.view == 16 %>
-		<%= render partial: "/result/grouped_docs" %>
+	<% if query.view == 1 %>
+		<%= render partial: "/result/hits", layout: false, locals: { query: query } %>
+	<% elsif query.view == 2 %>
+		<%= render partial: "/result/docs", layout: false, locals: { query: query } %>
+	<% elsif query.view == 4 %>
+		<%= render partial: "/result/vocabulary_growth", layout: false, locals: { query: query } %>
+	<% elsif query.view == 8 %>
+		<%= render partial: "/result/grouped_hits", layout: false, locals: { query: query } %>
+	<% elsif query.view == 16 %>
+		<%= render partial: "/result/grouped_docs", layout: false, locals: { query: query } %>
 	<% end %>
 </div>

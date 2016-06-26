@@ -1,12 +1,12 @@
-<% if @query.blank? || @query.waiting? || @query.running? %>
+<% if query.blank? || query.waiting? || query.running? %>
 	<div class="row">
 		<div class="col-xs-12">
 			<h5 class="warn"><span class="loading"></span></h5>
 		</div>
 	</div>
 <% else %>
-	<% result = @result || @query.result %>
-	<% if @query.finished? && (result.blank? || result.length == 0) %>
+	<% result = @result || query.result %>
+	<% if query.finished? && (result.blank? || result.length == 0) %>
 		<div class="row">
 			<div class="col-xs-12">
 				<% if @error && !@error.blank? %>
