@@ -39,6 +39,7 @@ module WhitelabExplore
         else
           threaded = !action_name.eql?('result')
           @query.execute(threaded) if @query && ([1,2].include?(@query.view) || !@query.group.blank?) && !@query.running? && !@query.failed? && !@query.output
+          Rails.logger.debug "NO QUERY" if !@query
         end
       end
     end
