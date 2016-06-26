@@ -235,7 +235,7 @@ nl:
       filter: "(Corpus_title=CGN)AND(Actor_home_language=BRABANTS)"
       listtype: word
       view: 8
-      patt: "[word=\".*\"][word=\"of\"][word=\".*\"]"
+      patt: "[][word=\"of\"][]"
       size: 3
       steps:
         - element: "#query-details"

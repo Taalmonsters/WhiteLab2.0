@@ -9,7 +9,7 @@
 					<table class="table table-striped">
 						<thead><tr><th colspan="2"></th></tr></thead>
 						<tbody>
-							<% if @namespace.eql?('search') || !@query.patt.eql?('[word=".*"]') %>
+							<% if @namespace.eql?('search') || !@query.patt.eql?('[]') %>
 								<tr>
 									<th>CQL <%= t(:"queries.keys.pattern").capitalize %></th>
 									<td class="patt"><%= @query.patt %></td>

@@ -30,7 +30,7 @@ class Search::Query < ActiveRecord::Base
   # Generate filename for download
   def generate_filename
     filename = view_to_path(view)
-    if patt.eql?('[word=".*"]')
+    if patt.eql?('[]')
       filename = filename+'_p=empty'
     else
       filename = filename+'_p='+patt.gsub(/\]\[/,' ').gsub(/\[*(word|lemma|pos|phonetic)=\"/,'').gsub(/\"\]*/,'')

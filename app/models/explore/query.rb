@@ -33,7 +33,7 @@ class Explore::Query < ActiveRecord::Base
   # Generate filename for download
   def generate_filename
     filename = self.page+"_"+view_to_path(view)
-    if !patt.eql?('[word=".*"]')
+    if !patt.eql?('[]')
       filename = filename+'_p='+patt.gsub(/\]\[/,' ').gsub(/\[*(word|lemma|pos|phonetic)=\"/,'').gsub(/\"\]*/,'')
     end
     filename = filename+'_w='+within if !within.eql?('document')
@@ -60,7 +60,7 @@ class Explore::Query < ActiveRecord::Base
       :status => 0
     }
     if page.eql?('statistics')
-      hash[:patt] = "[word=\".*\"]"
+      hash[:patt] = "[]"
     elsif page.eql?('ngrams') && params.has_key?(:patt) && !params[:patt].blank?
       hash[:patt] = params[:patt]
     end
@@ -88,7 +88,7 @@ class Explore::Query < ActiveRecord::Base
   
   def is_changed?(page, params)
     if [page,self.page].include?('statistics')
-      return true if attribute_is_changed?(patt,"[word=\".*\"]")
+      return true if attribute_is_changed?(patt,"[]")
     elsif [page,self.page].include?('ngrams')
       return true if attribute_is_changed?(patt,params.has_key?(:patt) && !params[:patt].blank? ? params[:patt] : nil)
     end
