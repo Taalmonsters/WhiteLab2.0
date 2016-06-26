@@ -62,10 +62,25 @@ module WhitelabQuery
     return changed
   end
   
-  def execute
+  def execute(threaded = true)
     if !self.patt.nil? && ([1,2].include?(self.view) || !self.group.blank?)
       Rails.logger.debug "EXECUTING QUERY"
-      Thread.new do
+      if threaded
+        Thread.new do
+          self.running!
+          res, backend_status = self.run
+          self.output = res
+          self.counting! if backend_status == 2
+          self.finished! if backend_status == 3
+          self.failed! if backend_status == 4
+          if [2,3].include?(backend_status)
+            self.hit_count = res['hit_count']
+            self.document_count = res['document_count']
+            self.group_count = res['group_count'] if res.has_key?('group_count')
+            self.save
+          end
+        end
+      else
         self.running!
         res, backend_status = self.run
         self.output = res
@@ -123,7 +138,7 @@ module WhitelabQuery
   def result
     Rails.logger.debug "GET QUERY RESULT"
     return self.output if self.finished? && !self.output.blank?
-    self.output, backend_status = self.run
+    self.execute(false)
     return self.output
   end
   
