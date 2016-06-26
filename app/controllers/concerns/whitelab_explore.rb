@@ -37,7 +37,7 @@ module WhitelabExplore
           @query.document_count = @result[:document_count]
           @query.finished!
         else
-          @result = @query.execute
+          @query.execute
         end
       end
     end
