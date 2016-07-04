@@ -231,7 +231,7 @@ class MetadataHandler
           @whitelab.get_document_id_list("#{label}=\"#{value}\"").each do |doc_id|
             doc_index = documents.index(doc_id)
             doc_values[doc_index] = i
-            done < doc_index
+            done << doc_index
           end
         end
       end
