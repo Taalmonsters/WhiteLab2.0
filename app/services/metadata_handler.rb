@@ -117,7 +117,8 @@ class MetadataHandler
   
   def get_metadatum(group, key)
     group = group.eql?(key) ? 'Metadata' : group
-    return @metadata.values.select{|data| data['group'].eql?(group) && data['key'].eql?(key) }[0]
+    label = group.eql?('Metadata') ? key : "#{group}_#{key}"
+    return @metadata ? @metadata.values.select{|data| data['group'].eql?(group) && data['key'].eql?(key) }[0] : { 'group' => group, 'key' => key, 'label' => label }
   end
   
   def get_total_word_count
