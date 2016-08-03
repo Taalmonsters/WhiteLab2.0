@@ -11,7 +11,7 @@ class Explore::InterfaceController < InterfaceController
   end
   
   def corpora
-    @option = params[:option] || 'Corpus_title'
+    @option = params[:option] || CORPUS_TITLE_FIELD
     respond_to do |format|
       format.html
     end

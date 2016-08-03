@@ -58,7 +58,7 @@ class Explore::QueriesController < QueriesController
   end
   
   def set_option
-    @option = params[:option] || 'Corpus_title'
+    @option = params[:option] || CORPUS_TITLE_FIELD
   end
   
 end

@@ -64,8 +64,8 @@ module BlacklabHelper
       'results' => data.map { |hit|
         {
           "text_left" => hit["left"]["word"].join(" "),
-          "corpus" => response['docInfos'][hit["docPid"]]["Corpus_title"],
-          "collection" => response['docInfos'][hit["docPid"]]["Collection_title"],
+          "corpus" => response['docInfos'][hit["docPid"]][CORPUS_TITLE_FIELD],
+          "collection" => response['docInfos'][hit["docPid"]][COLLECTION_TITLE_FIELD],
           "hit_text"=> hit["match"]["word"].join(" "),
           "last_index" => hit["end"]-1,
           "text_right" => hit["right"]["word"].join(" "),
@@ -84,9 +84,9 @@ module BlacklabHelper
       'document_count' => docs,
       'results' => data.map { |doc|
         {
-          "corpus" => doc["docInfo"]["Corpus_title"],
+          "corpus" => doc["docInfo"][CORPUS_TITLE_FIELD],
           "docpid" => doc["docPid"],
-          "collection" => doc["docInfo"]["Collection_title"],
+          "collection" => doc["docInfo"][COLLECTION_TITLE_FIELD],
           "hit_count" => doc["numberOfHits"]
         }
       }
@@ -169,7 +169,7 @@ module BlacklabHelper
       resp = execute_query({
         :url => backend_url+'docs',
         :query => {
-          "filter" => "Corpus_title:"+corpus,
+          "filter" => "#{CORPUS_TITLE_FIELD}:"+corpus,
           "first" => offset,
           "number" => number,
           "outputformat" => "json"
@@ -177,7 +177,7 @@ module BlacklabHelper
       })
       resp["docs"].each do |doc|
         doc_info = doc["docInfo"]
-        docs[doc["docPid"]] = {"token_count" => doc_info["lengthInTokens"], "corpus" => corpus, "collection" => doc_info["Collection_title"]}
+        docs[doc["docPid"]] = {"token_count" => doc_info["lengthInTokens"], "corpus" => corpus, "collection" => doc_info[COLLECTION_TITLE_FIELD]}
       end
       break unless resp["summary"]["windowHasNext"]
       offset = offset + number
@@ -362,7 +362,7 @@ module BlacklabHelper
             "outputformat" => "json",
             "patt" => "[pos=\"#{head}.*\"]", 
             "group" => "hit:pos",
-            "filter" => "Corpus_title:"+corpus
+            "filter" => "#{CORPUS_TITLE_FIELD}:"+corpus
           }
         })["summary"]
         break unless resp["stillCounting"]
@@ -528,7 +528,7 @@ module BlacklabHelper
           :query => {  
             "outputformat" => "json",
             "patt" => patt,
-            "filter" => "Corpus_title:#{corpus}"
+            "filter" => "#{CORPUS_TITLE_FIELD}:#{corpus}"
           },
           :headers => headers
         })["summary"]

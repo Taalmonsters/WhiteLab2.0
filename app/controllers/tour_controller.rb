@@ -52,7 +52,7 @@ class TourController < ApplicationController
     @page = @tour_data['page']
     
     if @namespace.eql?('explore') && @page.eql?('corpora')
-      @option = 'Corpus_title'
+      @option = CORPUS_TITLE_FIELD
       @options = @metadata_handler.get_group_options(16, 'explore')
     elsif @namespace.eql?('explore') && ['statistics', 'ngrams'].include?(@page)
       @listtype_options = []

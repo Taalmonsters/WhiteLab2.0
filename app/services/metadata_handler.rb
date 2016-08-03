@@ -127,7 +127,8 @@ class MetadataHandler
   end
   
   def load_corpora
-    return @metadata ? @metadata['Corpus_title']['values'] : load_values_from_server(0, 0, "label", "asc", 'Corpus', 'title')
+    group, key = get_group_and_key_from_label(CORPUS_TITLE_FIELD)
+    return @metadata ? @metadata[CORPUS_TITLE_FIELD]['values'] : load_values_from_server(0, 0, "label", "asc", group, key)
   end
   
   def load_values(metadatum)
@@ -143,7 +144,7 @@ class MetadataHandler
     data = []
     metadatum['values'].each_with_index do |value, i|
       docs = get_documents_matching_values(metadatum, [i])
-      corpus_metadatum = get_metadatum('Corpus', 'title')
+      corpus_metadatum = get_metadatum(get_group_and_key_from_label(CORPUS_TITLE_FIELD))
       data << { 'value' => value, 'document_count' => docs.size, 'corpus_counts' => { 'corpora' => corpus_metadatum['values'], 'counts' => (0..corpus_metadatum['value_count']-1).to_a.map{|j| (get_documents_matching_values(corpus_metadatum, [j]) & docs).size } } }
     end
     return data
