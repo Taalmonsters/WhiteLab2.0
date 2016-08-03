@@ -6,7 +6,8 @@ class MetadataHandler
   include DataFormatHelper
   
   def initialize
-    Rails.logger.info "Initializing metadata handler..."
+    @logger = Logger.new STDOUT
+    @logger.info "Initializing metadata handler..."
     @whitelab = WhitelabBackend.instance
     config = Rails.configuration.x
     @format = config.metadata_file_format
@@ -21,7 +22,7 @@ class MetadataHandler
     @token_counts = @documents["token_counts"]
     @limit = @doc_ids.size - 1
     set_total_word_count if @total_word_count <= 0
-    Rails.logger.info "Metadata handler initialized."
+    @logger.info "Metadata handler initialized."
   end
   
   # Filter document list
@@ -202,7 +203,7 @@ class MetadataHandler
   end
   
   def generate_metadata_files(backend)
-    Rails.logger.info "Generating metadata files..."
+    @logger.info "Generating metadata files..."
     documents = []
     counts = []
     fields = {}
@@ -220,6 +221,7 @@ class MetadataHandler
     doc_size = documents.size
     @whitelab.get_metadata_from_server(0, 0, nil, nil).each do |metadatum|
       label = metadatum[:label]
+      @logger.info "Metadatum: #{label}"
       group, key = get_group_and_key_from_label(label)
       doc_values = Array.new(doc_size)
       values = []
@@ -262,7 +264,7 @@ class MetadataHandler
     rroot = Rails.root
     write_file(documents_file, { "document_ids" => documents, "token_counts" => counts, "fields" => fields })
     write_file(metadata_file, metadata_values)
-    Rails.logger.info "Finished generating metadata files."
+    @logger.info "Finished generating metadata files."
   end
   
   def get_documents_matching_values(metadatum, values, inverted = false)
