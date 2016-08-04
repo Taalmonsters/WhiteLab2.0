@@ -18,7 +18,7 @@ Whitelab.statistics = {
 	        },
 
 	        title: {
-	            text: "Total size VS Average document size"
+	            text: "Total size versus average document size"
 	        },
 
 	        xAxis: {
