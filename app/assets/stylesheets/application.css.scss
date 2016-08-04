@@ -57,11 +57,11 @@ a.remove-query {
 .tlyPageGuideStepIndex:hover,
 .tlypageguide-active .tlyPageGuideStepIndex,
 #tlyPageGuideWrapper #tlyPageGuideMessages .tlypageguide_close {
-  background: rgba(83,196,195,0.95);
+  background: rgba(83,196,195,1.0);
 }
 
 .tlypageguide-open #tlyPageGuideWrapper .tlypageguide_toggle.tlyPageGuideToggleActive {
-  background: rgba(83,196,195,0.9);
+  background: rgba(83,196,195,1.0);
 }
 
 .tlyPageGuideStepIndex {
@@ -84,12 +84,12 @@ a.remove-query {
 
 .tlyPageGuideStepIndex:hover.tlypageguide_bottom:after,
 .tlypageguide-active .tlyPageGuideStepIndex.tlypageguide_bottom:after {
-  border-bottom: 10px solid rgba(83,196,195,0.95)
+  border-bottom: 10px solid rgba(83,196,195,1.0)
 }
 
 .tlyPageGuideStepIndex:hover.tlypageguide_right:after, .tlyPageGuideStepIndex:hover.tlypageguide_left:after, .tlyPageGuideStepIndex:hover.tlypageguide_top:after,
 .tlypageguide-active .tlyPageGuideStepIndex.tlypageguide_right:after, .tlypageguide-active .tlyPageGuideStepIndex.tlypageguide_left:after, .tlypageguide-active .tlyPageGuideStepIndex.tlypageguide_top:after {
-  border-top: 10px solid rgba(83,196,195,0.95)
+  border-top: 10px solid rgba(83,196,195,1.0)
 }
 
 .tlyPageGuideStepIndex {
