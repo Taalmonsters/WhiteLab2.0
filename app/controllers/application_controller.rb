@@ -5,10 +5,29 @@ class ApplicationController < ActionController::Base
   before_action :set_locale
   before_action :set_backend
   before_action :set_namespace
+  before_action :load_tour
   include ApplicationHelper
   include DataFormatHelper
   
   helper_method :get_translated_pos_heads
+  
+  def load_tour
+    tour_file = Rails.root.join('config', 'locales', 'tour', "#{@current_language}.yml")
+    ns_tour_file = Rails.root.join('config', 'locales', 'tour', @namespace, "#{@current_language}.yml")
+    @tour_title = nil
+    @tour_steps = []
+    @tour_start = params.has_key?(:help) || params.has_key?(:tour)
+    if File.exists?(ns_tour_file)
+      tour_data = YAML.load_file(ns_tour_file)[@current_language]
+      @tour_title = tour_data['title'] if tour_data.has_key?('title')
+      @tour_steps = tour_data['steps']
+    end
+    if File.exists?(tour_file)
+      tour_data = YAML.load_file(tour_file)[@current_language]
+      @tour_title = tour_data['title'] if tour_data.has_key?('title') && !@tour_title
+      @tour_steps = tour_data['before_ns'] + @tour_steps + tour_data['after_ns']
+    end
+  end
   
   # Set the current user
   def set_user
