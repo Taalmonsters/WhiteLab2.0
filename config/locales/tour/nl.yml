@@ -1,0 +1,101 @@
+---
+nl:
+  title: "Instructies voor WhiteLab"
+  before_ns:
+    - position: bottom
+      target: "#start-tour"
+      content: "Met deze knop zet u de instructies voor de huidige pagina aan of uit. Klik op de pijltjes hiernaast om door de instructies te bladeren, of klik direct op de cijfers in de interface.<br/>Overige opties:<ul><li>Raadpleeg de <a href=\"#\" target=\"_blank\">WhiteLab 2.0 Gebruikershandleiding</a></li><li>Raadpleeg de <a href=\"/doc/api/index.html\" target=\"_blank\">WhiteLab 2.0 API documentatie</a></li><li><a href=\"mailto:whitelab@taalmonsters.nl\">Meld een bug of feature request</a></li></ul>"
+  after_ns:
+    - target: "#query-details table"
+      content: "Hier wordt een samenvatting van uw huidige zoekopdracht weergegeven."
+      position: top
+    - target: "#results .nav.default"
+      content: "De resultaten zijn onderverdeeld in 4 secties: hits, documenten, gegroepeerde hits en gegroepeerde documenten."
+      position: top
+    - target: "#results .nav.custom1"
+      content: "De resultaten zijn onderverdeeld in 3 secties: frequentielijst, documentenlijst en vocabulaire groei."
+      position: top
+    - target: "#hits thead"
+      content: "De <b>hits</b> weergave toont alle afzonderlijke hits in het corpus."
+      position: top
+    - target: "#docs thead"
+      content: "De <b>documenten</b> weergave toont alle documenten waarin hits gevonden zijn."
+      position: top
+    - target: "#query-result select#group"
+      content: "Zowel in de <b>gegroepeerde hits</b> weergave als de <b>gegroepeerde documenten</b> weergave kunt u kiezen uit meerdere attributen om de hits of documenten te groeperen."
+      position: top
+    - target: "#grouped-hits thead"
+      content: "Deze weergave toont alle gevonden hits gegroepeerd volgens het geselecteerde attribuut."
+      position: top
+    - target: "#grouped-docs thead"
+      content: "Deze weergave toont alle documenten waarin hits gevonden zijn gegroepeerd volgens het geselecteerde attribuut."
+      position: top
+    - target: "#search #hits tr.hit-row"
+      content: "Klik op een rij in de tabel om de context waarin de hit gevonden is weer te geven."
+      position: top
+    - target: "#search #docs tr.doc-row"
+      content: "Klik op een rij in de tabel om de specifieke hits in dat document weer te geven."
+      position: top
+    - target: ".show-document"
+      content: "Klik op 'Toon document' om het document waarin de hits gevonden zijn te bekijken."
+      position: top
+    - target: "#search .grouped-hit-row"
+      content: "Klik op een rij in de tabel om de eerste 20 concordanties in die groep te bekijken."
+      position: top
+    - target: ".show-grouped-hits"
+      content: "Klik op deze knop om een aparte zoekopdracht uit te voeren naar alleen de hits in deze groep."
+      position: left
+    - target: ".load-grouped-hits"
+      content: "Klik op deze knop om meer concordanties te laden."
+      position: right
+    - target: ".grouped-doc-row"
+      content: "Klik op een rij in de tabel om de eerste 20 documenten in die groep te bekijken."
+      position: top
+    - target: ".show-grouped-docs"
+      content: "Klik op deze knop om een aparte zoekopdracht uit te voeren naar alleen de documenten in deze groep."
+      position: left
+    - target: ".load-grouped-docs"
+      content: "Klik op deze knop om meer documenten te laden."
+      position: right
+    - target: "#document .nav"
+      position: left
+      content: "De document pagina is onderverdeeld in 3 secties: tekst, metadata en statistieken."
+    - target: ".sentence .word"
+      position: top
+      content: "De sectie <b>tekst</b> toont de daadwerkelijke inhoud van het document. Berweeg met de muis over een woord om de annotaties ervan te zien."
+    - target: ".padding-bottom-20 .playsound"
+      position: left
+      content: "Klik op deze knop om de audio van het gehele document te beluisteren."
+    - target: ".sentence .playsound"
+      position: left
+      content: "Klik op deze knop om de audio van dit fragment te beluisteren."
+    - target: ".speaker"
+      position: top
+      content: "Als de spreker van de zin bekend is, dan vindt u hier de bijbehorende speaker ID van het oorspronkelijke corpus."
+    - target: "td .playsound"
+      position: left
+      content: "Klik op deze knop om de audio van dit fragment te beluisteren."
+    - target: "#document-metadata thead th"
+      content: "Hier ziet u alle beschikbare metadata van het document."
+      position: left
+    - target: "#doc-stats thead th"
+      content: "Hier ziet u wat simpele statistieken van de tekst."
+      position: left
+    - target: "#pos-distribution-display .highcharts-title"
+      content: "Deze grafiek laat de verdeling van Part-of-Speech tags over de tekst zien."
+      position: left
+    - target: "#pos-distribution-display .highcharts-button"
+      content: "Klik op deze knop om data van de visualisatie te downloaden."
+      position: top
+    - target: "#vocabulary-growth-display .highcharts-title"
+      content: "Deze grafiek laat de groei van het aantal unieke woorden en lemma's zien naar mate de tekst vordert."
+      position: left
+    - target: "#vocabulary-growth-display .highcharts-button"
+      content: "Klik op deze knop om data van de visualisatie te downloaden."
+      position: top
+    - target: ".btn-export"
+      content: "Klik op deze knop om de resultaten te exporteren. Wanneer de export klaar is kunt u deze downloaden via de zoek geschiedenis links onderin."
+      position: left
+    - target: "#history-toggle"
+      content: "Klik op deze knop om uw zoek geschiedenis te raadplegen en geëxporteerde resultaten te downloaden."
+      position: top

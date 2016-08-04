@@ -1,0 +1,62 @@
+---
+en:
+  title: "Instructions for WhiteLab Search"
+  steps:
+    - position: bottom
+      target: "#main-search"
+      content: "You are currently in the WhiteLab Search interface. Here you will find different interfaces for different types of users and search strategies:<ul><li>Simple search for beginners</li><li>Extended search for intermediate users</li><li>Advanced search for experienced users</li><li>Expert search for expert users</li></ul>"
+    - position: left
+      target: "#simple #patt"
+      content: "<b>Simple</b> search offers a single input box. Here you can enter a word or a phrase to search for its occurrence throughout the entire corpus."
+    - target: "#metadata-filters .accordion-heading"
+      content: "In the <b>extended</b>, <b>advanced</b>, and <b>expert</b> interfaces you can select different filters to create a subcorpus. Click on this banner to show/hide the metadata filters."
+      position: bottom
+    - target: "#metadata-filters .rule"
+      content: "Here you can use simple selections to define the subcorpus that you wish to query. Use the plus- and minus-buttons to add/remove rules."
+      position: left
+    - target: "#metadata-options"
+      content: "You can also choose to immediately group the results, or define whether a match is allowed to cross a sentence or paragraph boundary using 'within'."
+      position: left
+    - target: "#extended #word-text"
+      content: "In the <b>extended</b> view, you have the option to search for a word or phrase in its surface form (word) or its lemmatized form (lemma), or to select a specific part of speech."
+It is also possible to combine the fields to create a more precise query. Be aware that the term length of the phrases in each field must match for the query to be successful."
+      position: left
+    - target: "#extended .searchinput .tiny"
+      position: bottom
+      content: "Check this box to perform a case sensitive search."
+    - target: "#advanced .add-column"
+      content: "In the <b>advanced</b> view, complex queries can be constructed in a visual manner. Each column represents one position in a phrase. Click this button to add a column."
+      position: top
+    - target: "#advanced .token-type"
+      content: "Here you select whether you want to match on word, lemma, Part-of-Speech tag or phonetic transcription."
+      position: top
+    - target: "#advanced .token-operator"
+      content: "Here you select the way in which the match should be made."
+      position: top
+    - target: "#advanced .token-input-field"
+      content: "Here you supply the value that you want to match against."
+      position: left
+    - target: "#advanced .token-case"
+      content: "Check this box to perform a case sensitive search."
+      position: bottom
+    - target: "#advanced .add-field"
+      content: "Click here to add a field to the column. These fields will be grouped in the query using OR."
+      position: right
+    - target: "#advanced .add-box"
+      content: "Click this button to add a field to the column. These fields will be grouped in the query using AND."
+      position: left
+    - target: "#advanced .toggle-settings"
+      content: "Click this icon to view extra settings, such as searching at the beginning or end of a sentence, or the number of repetitions of a search term."
+      position: right
+    - target: ".loadbutton"
+      content: "To perform queries in batches, press the batch button and select a file (.txt) from your hard drive that contains the terms or phrases that you want to search for. After loading the file, the contents are displayed in the input field and can be adjusted if needed."
+      position: right
+    - target: "input.splitcheck"
+      content: "When you load a batch list from file, this box is automatically checked. When checked, the queries in the batch are all executed as separate queries with the results presented in separate screens.If you wish to execute the batch queries as a single query and have the results accumulated over all queries, uncheck this box."
+      position: top
+    - target: "#expert-input-form textarea"
+      content: "<b>Expert</b> search allows for the input of queries in pure Corpus Query Language (CQL). A good tutorial on CQL can be found <b><a href='http://cwb.sourceforge.net/files/CQP_Tutorial/' target='_blank'>here</a></b>."
+      position: left
+    - target: "#expert .expert-info-icon"
+      content: "Some examples of basic CQL queries are displayed when you click this icon."
+      position: left

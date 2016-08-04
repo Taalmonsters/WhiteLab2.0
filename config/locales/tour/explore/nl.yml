@@ -1,0 +1,46 @@
+---
+nl:
+  title: "Instructies voor WhiteLab Explore"
+  steps:
+    - target: "#main-explore"
+      position: bottom
+      content: "U bevindt zich in de WhiteLab Verken interface. Hier kunt u:<ul><li>Corpusverdelingen bekijken</li><li>Statistieken van subcorpora opvragen</li><li>N-grammen van subcorpora ophalen</li><li>specifieke Documenten opzoeken met behulp van de document ID</li></ul>"
+    - target: "#metadata-filters .accordion-heading"
+      content: "Onder <b>corpora</b>, <b>statistieken</b> en <b>n-grammen</b> kunt u verschillende filters selecteren en zo naar eigen wens een subcorpus samenstellen. Klik op deze balk om de filters te tonen/verbergen."
+      position: bottom
+    - target: "#metadata-filters .rule"
+      content: "Hier definieert u met behulp van gemakkelijke selecties welk deel van de corpora u wilt doorzoeken. Gebruik de plus- en min-knoppen om regels toe te voegen/te verwijderen."
+      position: left
+    - target: ".treemap-controls li.grouping"
+      position: left
+      content: "Hier selecteert u het metadata veld waarvan u de verdeling wil zien."
+    - target: ".treemap-controls li.scale"
+      position: left
+      content: "Hier geeft u aan of u de verdeling wil weergeven op een logaritmische of absolute schaal."
+    - target: "#display #first"
+      position: left
+      content: "Deze visualisatie laat het (sub)corpus zien wat u met de metadata filters samengesteld hebt, verdeeld volgens het metadata veld wat u hierboven geselecteerd hebt."
+    - target: "#bubble-chart .highcharts-title"
+      position: left
+      content: "In deze grafiek ziet u de totale grootte versus de gemiddelde document grootte van het door u samengestelde (sub)corpus, verdeeld volgens het geselecteerde metadata veld."
+    - target: "#bubble-chart .highcharts-button"
+      content: "Klik op deze knop om data van de visualisatie te downloaden."
+      position: top
+    - target: "#statistics #listtype"
+      content: "Hier selecteert u of u een frequentielijst wil van woorden, lemma's, Part-of-Speech tags of fonetische transcripties."
+      position: right
+    - target: "#ngrams-input-form #size"
+      content: "Hier selecteert u de gewenste grootte van de n-grammen."
+      position: right
+    - target: "#ngrams-input-form #listtype"
+      content: "Hier selecteert u of u n-grammen wil zien van woorden, lemma's, Part-of-Speech tags of fonetische transcripties."
+      position: right
+    - target: "#ngrams-input-table #type-1"
+      content: "Hier kunt u per positie in het n-gram aangeven of u wilt matchen op woord, lemma, Part-of-Speech tag of fonetische transcriptie."
+      position: left
+    - target: "#ngrams-input-table input.field-input"
+      content: "Hier kunt u per positie in het n-gram invullen welke waarde u verwacht voor het hierboven geselecteerde veld. Reguliere expressies zijn toegestaan."
+      position: left
+    - target: "#document-input-form #xmlid"
+      content: "Voer een document ID in om de inhoud en metadata van dat document te bekijken."
+      position: left

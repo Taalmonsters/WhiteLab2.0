@@ -1,0 +1,46 @@
+---
+en:
+  title: "Instructions for WhiteLab Explore"
+  steps:
+    - target: "#main-explore"
+      position: bottom
+      content: "You are currently in the WhiteLab Explore interface. Here you can:<ul><li>investigate Corpus composition</li><li>look up Statistics of subcorpora</li><li>gather N-grams of subcorpora</li><li>look up specific Documents by their document ID</li></ul>"
+    - target: "#metadata-filters .accordion-heading"
+      content: "Under <b>corpora</b>, <b>statistics</b> en <b>n-grams</b> you can select different filters to create a subcorpus. Click on this banner to show/hide the metadata filters."
+      position: bottom
+    - target: "#metadata-filters .rule"
+      content: "Here you can use simple selections to define the subcorpus that you wish to query. Use the plus- and minus-buttons to add/remove rules."
+      position: left
+    - target: ".treemap-controls li.grouping"
+      position: left
+      content: "Here you can select the metadata field of which you want to see the distribution over the corpus."
+    - target: ".treemap-controls li.scale"
+      position: left
+      content: "Here you can select whether you want to view the distribution on a logaritmic or absolute scale."
+    - target: "#display #first"
+      position: left
+      content: "This visualization shows the (sub)corpus that you have selected using the metadata filters, grouped according to the selected metadata field."
+    - target: "#bubble-chart .highcharts-title"
+      position: left
+      content: "This graph displays the total size versus the average document size of the (sub)corpus that you have selected using the metadata filters, grouped according to the selected metadata field."
+    - target: "#bubble-chart .highcharts-button"
+      content: "Click this button to download the data of this visualization."
+      position: top
+    - target: "#statistics #listtype"
+      content: "Here you can select if you want to retrieve a frequency list of words, lemmas, Part-of-Speech tags or phonetic transcriptions."
+      position: right
+    - target: "#ngrams-input-form #size"
+      content: "Here you select the desired size of the n-grams to be retrieved."
+      position: right
+    - target: "#ngrams-input-form #listtype"
+      content: "Here you can select if you want to retrieve n-grams of words, lemmas, Part-of-Speech tags or phonetic transcriptions."
+      position: right
+    - target: "#ngrams-input-table #type-1"
+      content: "Here you can select for each position in the n-gram whether you want to match on word, lemma, Part-of-Speech tag or phonetic transcription."
+      position: left
+    - target: "#ngrams-input-table input.field-input"
+      content: "Here you can supply a value to match the selected field on at this position in the n-gram. Regular expressions are allowed."
+      position: left
+    - target: "#document-input-form #xmlid"
+      content: "Enter a document ID to view its contents and metadata."
+      position: left
