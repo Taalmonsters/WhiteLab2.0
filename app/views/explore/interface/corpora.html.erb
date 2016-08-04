@@ -4,8 +4,8 @@
 		<div class="col-xs-10 col-xs-offset-1">
 			<div class="treemap-controls">
 				<ul class="list-unstyled">
-					<li><b><%= t(:"instructions.keys.corpora_explore_select") %>: </b>&nbsp;<%= select_tag(:"corpora-treemap-select", grouped_options_for_select(@metadata_handler.get_group_options(16, 'explore'),@option), :include_blank => false) %></li>
-					<li><b><%= t(:"other.keys.scale").capitalize %></b><span class="space"></span><input type="radio" name="sizing" id="log" value="log" checked> <%= t(:"other.keys.logaritmic") %><span class="space"></span><input type="radio" name="sizing" id="normal" value="normal"> <%= t(:"other.keys.absolute") %></li>
+					<li class="grouping"><b><%= t(:"instructions.keys.corpora_explore_select") %>: </b>&nbsp;<%= select_tag(:"corpora-treemap-select", grouped_options_for_select(@metadata_handler.get_group_options(16, 'explore'),@option), :include_blank => false) %></li>
+					<li class="scale"><b><%= t(:"other.keys.scale").capitalize %></b><span class="space"></span><input type="radio" name="sizing" id="log" value="log" checked> <%= t(:"other.keys.logaritmic") %><span class="space"></span><input type="radio" name="sizing" id="normal" value="normal"> <%= t(:"other.keys.absolute") %></li>
 					<li>
 						<div class="btn-group" role="group">
 							<button id="corpora-treemap-update" class="btn btn-primary submit"><%= t('button_labels.keys.update').capitalize %></button>

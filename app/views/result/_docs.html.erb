@@ -11,7 +11,7 @@
 	<div class="row pagination-row pagination-top">
 		<%= render partial: "/layouts/pagination_with_url", layout: false, locals: { numbarr: [50, 100, 200], url: "/#{@namespace}/#{@query.page}?#{@query.assemble_url_params(['patt', 'filter', 'within', 'view', 'group'])}", total: @query.total, offset: @query.offset, number: @query.number } %>
 	</div>
-	<div class="row">
+	<div class="row" id="docs">
 		<table class="table table-hover table-striped">
 			<thead>
 				<tr>
