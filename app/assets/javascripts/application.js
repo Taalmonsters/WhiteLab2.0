@@ -15,16 +15,35 @@
 //= require bootstrap-sprockets
 //= require d3.min
 //= require whitelab
-//= require intro
+//= require pageguide
 //= require turbolinks
 //= require cookies_eu
 //= require_tree .
 
 var ready;
+var start_tour = false;
 
 ready = function() {
 	Whitelab.init();
+	tl.pg.init({
+		auto_refresh: true,
+		custom_open_button: '#start-tour',
+		refresh_interval: 500
+	});
+	if (start_tour) {
+		start_site_tour();
+	}
 };
+
+function start_site_tour() {
+	if ($('#start-tour').length) {
+		console.log("Starting tour");
+		setTimeout(function(){ $('#start-tour').click(); }, 1000);
+	} else {
+		console.log("Not starting tour");
+		setTimeout(function(){ start_site_tour(); }, 1000);
+	}
+}
 
 $(document).on('click', 'a.metadata-remove-rule', function(e) {
 	e.preventDefault();
