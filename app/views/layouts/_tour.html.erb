@@ -1,0 +1,8 @@
+<ul id="tlyPageGuide" data-tourtitle="<%= @tour_title %>">
+	<% @tour_steps.each do |step| %>
+		<%= render partial: "layouts/tour_step", :locals => { :step => step } %>
+	<% end %>
+</ul>
+<% if @tour_welcome %>
+<div class="tlyPageGuideWelcome"><%= @tour_welcome.html_safe %></div>
+<% end %>
