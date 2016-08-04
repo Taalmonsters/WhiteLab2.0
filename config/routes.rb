@@ -81,11 +81,6 @@ Rails.application.routes.draw do
   get '/test' => 'static_pages#test'
   get '/translate' => 'static_pages#translate'
   
-  get '/help' => 'static_pages#help'
-  get '/tour/start' => 'tour#start'
-  get '/tour/step/:step' => 'tour#step'
-  get '/tour/end' => 'tour#end'
-  
   get '/admin/benchmark' => 'admin#benchmark_test'
   get    '/admin'                     => 'admin#index'
   get    '/admin/login'               => 'admin#login', as: 'login'
