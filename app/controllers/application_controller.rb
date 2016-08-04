@@ -19,13 +19,17 @@ class ApplicationController < ActionController::Base
     @tour_start = params.has_key?(:help) || params.has_key?(:tour)
     if File.exists?(ns_tour_file)
       tour_data = YAML.load_file(ns_tour_file)[@current_language]
-      @tour_title = tour_data['title'] if tour_data.has_key?('title')
-      @tour_steps = tour_data['steps']
+      if tour_data
+        @tour_title = tour_data['title'] if tour_data.has_key?('title')
+        @tour_steps = tour_data['steps']
+      end
     end
     if File.exists?(tour_file)
       tour_data = YAML.load_file(tour_file)[@current_language]
-      @tour_title = tour_data['title'] if tour_data.has_key?('title') && !@tour_title
-      @tour_steps = tour_data['before_ns'] + @tour_steps + tour_data['after_ns']
+      if tour_data
+        @tour_title = tour_data['title'] if tour_data.has_key?('title') && !@tour_title
+        @tour_steps = tour_data['before_ns'] + @tour_steps + tour_data['after_ns']
+      end
     end
   end
   
@@ -44,6 +48,7 @@ class ApplicationController < ActionController::Base
     default_locale = @user.default_locale
     if plocale && @user && !plocale.eql?(default_locale)
       @user.update_attribute(:default_locale, plocale)
+      default_locale = @user.default_locale
     end
     I18n.locale = default_locale || I18n.default_locale
     @interface_languages = load_available_languages.sort
