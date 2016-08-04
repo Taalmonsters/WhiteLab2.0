@@ -2,4 +2,4 @@
 <div id="document" class="search-input-display" data-query-pattern="<%= @query && !@query.patt.blank? ? @query.patt : "" %>" data-query-filter="<%= @query && !@query.filter.blank? ? @query.filter : "" %>" data-query-input-page="<%= @query && !@query.input_page.blank? ? @query.input_page : "" %>">
 	<%= render partial: "/documents/display" %>
 </div>
-<%= render partial: "/queries/index" %>
+<%= render partial: "/queries/index", :locals => { :no_output => true } %>
