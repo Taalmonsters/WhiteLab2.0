@@ -42,9 +42,6 @@ class AdminController < ApplicationController
         elsif @page.eql?('interface') && @tab.eql?('info_page')
           @info_pages = load_info_page_data
           @hlang = params[:hlang]
-        elsif @page.eql?('interface') && @tab.eql?('help_page')
-          @help_pages = load_help_page_data
-          @hlang = params[:hlang]
         elsif @page.eql?('overview') && (!@tab || @tab.eql?('cql'))
           if params[:query]
             begin
@@ -114,16 +111,6 @@ class AdminController < ApplicationController
     end
     I18n.backend.reload!
     render :json => { response: 'Updated info page translation' }
-  end
-  
-  # Save help page translation to configuration file
-  def update_help_page
-    @help_pages = load_help_page_data
-    if params[:hlang] && params[:help_page]
-      save_help_page({ :lang => params[:hlang], :data => params[:help_page] })
-    end
-    I18n.backend.reload!
-    render :json => { response: 'Updated help page translation' }
   end
   
   # Save key or label translation to configuration file
@@ -216,7 +203,7 @@ class AdminController < ApplicationController
         @tab = params[:tab]
       end
     elsif @page && @page.eql?('interface')
-      if params[:tab] && ['language','info_page','help_page','translate'].include?(params[:tab])
+      if params[:tab] && ['language','info_page','translate'].include?(params[:tab])
         @tab = params[:tab]
       end
     end

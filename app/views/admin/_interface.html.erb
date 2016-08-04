@@ -12,11 +12,6 @@
 			<% else %>
 				<li><%= link_to t(:'page_titles.keys.info_page').capitalize, admin_page_url(:page => 'interface', :tab => 'info_page') %></li>
 			<% end %>
-			<% if @tab && @tab.eql?('help_page') %>
-				<li class="active"><a href="#" disabled><%= t(:'page_titles.keys.help').capitalize %></a></li>
-			<% else %>
-				<li><%= link_to t(:'page_titles.keys.help').capitalize, admin_page_url(:page => 'interface', :tab => 'help_page') %></li>
-			<% end %>
 			<% if @tab && @tab.eql?('translate') %>
 				<li class="active"><a href="#" disabled><%= t(:'page_titles.keys.translations').capitalize %></a></li>
 			<% else %>
@@ -29,8 +24,6 @@
 			<%= render partial: '/admin/interface/languages', layout: false %>
 		<% elsif @tab && @tab.eql?('info_page') %>
 			<%= render partial: '/admin/interface/info_page', layout: false %>
-		<% elsif @tab && @tab.eql?('help_page') %>
-			<%= render partial: '/admin/interface/help_page', layout: false %>
 		<% elsif @tab && @tab.eql?('translate') %>
 			<%= render partial: '/admin/interface/translate', layout: false %>
 		<% end %>
