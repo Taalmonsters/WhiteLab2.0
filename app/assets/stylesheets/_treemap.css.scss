@@ -49,7 +49,10 @@ border-radius: 5px;
     display: inline-block;
     min-width: 10px;
   }
-  li {
-    margin-bottom: 15px;
+  ul {
+    display: inline-block;
+    li {
+      margin-bottom: 15px;
+    }
   }
 }

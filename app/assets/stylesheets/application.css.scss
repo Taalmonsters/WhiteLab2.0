@@ -22,7 +22,7 @@
 @import "advanced";
 @import "legacy";
 @import "static_pages";
-@import "introjs";
+@import "pageguide";
 @import "treemap";
 @import "layout";
 @import "results";
@@ -49,5 +49,96 @@ span.loading {
 }
 
 a.remove-query {
-  z-index: 10000;
+  z-index: 99;
+}
+
+#tlyPageGuideWrapper #tlyPageGuideMessages span,
+.tlyPageGuideWelcome button, #tlyPageGuideWelcome button,
+.tlyPageGuideStepIndex:hover,
+.tlypageguide-active .tlyPageGuideStepIndex,
+#tlyPageGuideWrapper #tlyPageGuideMessages .tlypageguide_close {
+  background: rgba(83,196,195,0.95);
+}
+
+.tlypageguide-open #tlyPageGuideWrapper .tlypageguide_toggle.tlyPageGuideToggleActive {
+  background: rgba(83,196,195,0.9);
+}
+
+.tlyPageGuideStepIndex {
+  background: rgba(83,196,195,0.4);
+}
+
+.tlypageguide_shadow {
+  background-color: rgba(83,196,195,0.1);
+}
+
+.tlyPageGuideStepIndex.tlypageguide_bottom:after {
+  border-bottom: 10px solid rgba(83,196,195,0.4);
+}
+
+.tlyPageGuideStepIndex.tlypageguide_right:after,
+.tlyPageGuideStepIndex.tlypageguide_left:after,
+.tlyPageGuideStepIndex.tlypageguide_top:after {
+  border-top: 10px solid rgba(83,196,195,0.4);
+}
+
+.tlyPageGuideStepIndex:hover.tlypageguide_bottom:after,
+.tlypageguide-active .tlyPageGuideStepIndex.tlypageguide_bottom:after {
+  border-bottom: 10px solid rgba(83,196,195,0.95)
+}
+
+.tlyPageGuideStepIndex:hover.tlypageguide_right:after, .tlyPageGuideStepIndex:hover.tlypageguide_left:after, .tlyPageGuideStepIndex:hover.tlypageguide_top:after,
+.tlypageguide-active .tlyPageGuideStepIndex.tlypageguide_right:after, .tlypageguide-active .tlyPageGuideStepIndex.tlypageguide_left:after, .tlypageguide-active .tlyPageGuideStepIndex.tlypageguide_top:after {
+  border-top: 10px solid rgba(83,196,195,0.95)
+}
+
+.tlyPageGuideStepIndex {
+  width: 25px;
+  height: 23px;
+  max-height: 23px;
+  min-height: 15px;
+  font-size: 16px;
+  line-height: 25px;
+  box-shadow: none;
+}
+
+.tlyPageGuideStepIndex.tlypageguide_bottom {
+  bottom: -35px;
+  left: 0px;
+}
+.tlyPageGuideStepIndex.tlypageguide_bottom:after {
+  top: -10px;
+  right: 0;
+  left: 15px;
+  border-right: 0;
+  border-left: 10px solid transparent;
+}
+.tlyPageGuideStepIndex.tlypageguide_right {
+  right: -35px;
+}
+.tlyPageGuideStepIndex.tlypageguide_right:after {
+  top: 0;
+  left: -10px;
+  border-left: 10px solid transparent;
+}
+.tlyPageGuideStepIndex.tlypageguide_left {
+  left: -35px;
+}
+.tlyPageGuideStepIndex.tlypageguide_left:after {
+  top: 0;
+  right: -10px;
+  border-right: 10px solid transparent;
+}
+.tlyPageGuideStepIndex.tlypageguide_top {
+  top: -35px;
+  left: 10px;
+}
+.tlyPageGuideStepIndex.tlypageguide_top:after {
+  bottom: -10px;
+  left: 0;
+  border-right: 10px solid transparent;
+}
+
+#tlyPageGuideWrapper #tlyPageGuideMessages {
+  font-size: 14px;
 }
