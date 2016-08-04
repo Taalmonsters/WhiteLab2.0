@@ -18,8 +18,7 @@ en:
       content: "You can also choose to immediately group the results, or define whether a match is allowed to cross a sentence or paragraph boundary using 'within'."
       position: left
     - target: "#extended #word-text"
-      content: "In the <b>extended</b> view, you have the option to search for a word or phrase in its surface form (word) or its lemmatized form (lemma), or to select a specific part of speech."
-It is also possible to combine the fields to create a more precise query. Be aware that the term length of the phrases in each field must match for the query to be successful."
+      content: "In the <b>extended</b> view, you have the option to search for a word or phrase in its surface form (word) or its lemmatized form (lemma), or to select a specific part of speech. It is also possible to combine the fields to create a more precise query. Be aware that the term length of the phrases in each field must match for the query to be successful."
       position: left
     - target: "#extended .searchinput .tiny"
       position: bottom
