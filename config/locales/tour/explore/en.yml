@@ -4,7 +4,7 @@ en:
   steps:
     - target: "#main-explore"
       position: bottom
-      content: "You are currently in the WhiteLab Explore interface. Here you can:<ul><li>investigate Corpus composition</li><li>look up Statistics of subcorpora</li><li>gather N-grams of subcorpora</li><li>look up specific Documents by their document ID</li></ul>"
+      content: "You are currently in the WhiteLab Explore interface. Here you can:<ul><li>Investigate corpus composition</li><li>Look up statistics of subcorpora</li><li>Gather n-grams of subcorpora</li><li>Look up specific documents by their document ID</li></ul>"
     - target: "#metadata-filters .accordion-heading"
       content: "Under <b>corpora</b>, <b>statistics</b> en <b>n-grams</b> you can select different filters to create a subcorpus. Click on this banner to show/hide the metadata filters."
       position: bottom

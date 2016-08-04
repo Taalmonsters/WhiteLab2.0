@@ -23,6 +23,9 @@ en:
     - target: "#extended .searchinput .tiny"
       position: bottom
       content: "Check this box to perform a case sensitive search."
+    - target: "#extended .loadbutton"
+      content: "To perform queries in batches, press the batch button and select a file (.txt) from your hard drive that contains the terms or phrases that you want to search for. After loading the file, the contents are displayed in the input field and can be adjusted if needed. A batch list may contain multiple terms per line. Be aware that the term length of the phrases in each field must match for the query to be successful."
+      position: right
     - target: "#advanced .add-column"
       content: "In the <b>advanced</b> view, complex queries can be constructed in a visual manner. Each column represents one position in a phrase. Click this button to add a column."
       position: top
@@ -47,8 +50,8 @@ en:
     - target: "#advanced .toggle-settings"
       content: "Click this icon to view extra settings, such as searching at the beginning or end of a sentence, or the number of repetitions of a search term."
       position: right
-    - target: ".loadbutton"
-      content: "To perform queries in batches, press the batch button and select a file (.txt) from your hard drive that contains the terms or phrases that you want to search for. After loading the file, the contents are displayed in the input field and can be adjusted if needed."
+    - target: "#advanced .loadbutton"
+      content: "To perform queries in batches, press the batch button and select a file (.txt) from your hard drive that contains the terms or phrases that you want to search for. After loading the file, the contents are displayed in the input field and can be adjusted if needed. In contract to the batch option in the <b>Extended</b> view, here a batch list may contain only one term per line."
       position: right
     - target: "input.splitcheck"
       content: "When you load a batch list from file, this box is automatically checked. When checked, the queries in the batch are all executed as separate queries with the results presented in separate screens.If you wish to execute the batch queries as a single query and have the results accumulated over all queries, uncheck this box."

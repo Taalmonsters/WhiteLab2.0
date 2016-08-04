@@ -4,7 +4,7 @@ nl:
   steps:
     - target: "#main-explore"
       position: bottom
-      content: "U bevindt zich in de WhiteLab Verken interface. Hier kunt u:<ul><li>Corpusverdelingen bekijken</li><li>Statistieken van subcorpora opvragen</li><li>N-grammen van subcorpora ophalen</li><li>specifieke Documenten opzoeken met behulp van de document ID</li></ul>"
+      content: "U bevindt zich in de WhiteLab Verken interface. Hier kunt u:<ul><li>Corpusverdelingen bekijken</li><li>Statistieken van subcorpora opvragen</li><li>N-grammen van subcorpora ophalen</li><li>Specifieke documenten opzoeken met behulp van de document ID</li></ul>"
     - target: "#metadata-filters .accordion-heading"
       content: "Onder <b>corpora</b>, <b>statistieken</b> en <b>n-grammen</b> kunt u verschillende filters selecteren en zo naar eigen wens een subcorpus samenstellen. Klik op deze balk om de filters te tonen/verbergen."
       position: bottom
@@ -19,7 +19,7 @@ nl:
       content: "Hier geeft u aan of u de verdeling wil weergeven op een logaritmische of absolute schaal."
     - target: "#display #first"
       position: left
-      content: "Deze visualisatie laat het (sub)corpus zien wat u met de metadata filters samengesteld hebt, verdeeld volgens het metadata veld wat u hierboven geselecteerd hebt."
+      content: "Deze visualisatie laat het (sub)corpus zien dat u met de metadata filters samengesteld hebt, verdeeld volgens het metadata veld dat u hierboven geselecteerd hebt."
     - target: "#bubble-chart .highcharts-title"
       position: left
       content: "In deze grafiek ziet u de totale grootte versus de gemiddelde document grootte van het door u samengestelde (sub)corpus, verdeeld volgens het geselecteerde metadata veld."

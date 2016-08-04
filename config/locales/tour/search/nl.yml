@@ -18,12 +18,15 @@ nl:
       content: "U kunt er ook voor kiezen om de resultaten onmiddellijk te groeperen op basis van verschillende kenmerken, en aangeven of een match zins- of paragraafgrenzen mag overschrijden met 'Zoek binnen'."
       position: left
     - target: "#extended #word-text"
-      content: "Bij <b>uitgebreid</b> zoeken kunt u zoeken naar een term of frase in zijn oppervlakte vorm (woord) of zijn gelemmatiseerde vorm (lemma), of om een specifieke woordsoort te selecteren.
+      content: "Bij <b>uitgebreid</b> zoeken kunt u zoeken naar een term of frase in zijn oppervlaktevorm (woord) of zijn gelemmatiseerde vorm (lemma), of om een specifieke woordsoort te selecteren.
 Het is ook mogelijk om de velden te combineren en een meer precieze zoekopdracht te creëren. Let op dat het aantal termen in ieder veld overeen moet komen om de zoekopdracht succesvol uit te voeren."
       position: left
     - target: "#extended .searchinput .tiny"
       position: bottom
       content: "Vink dit vakje aan om een hoofdlettergevoelige query uit te voeren."
+    - target: "#extended .loadbutton"
+      content: "Om meerdere zoekopdrachten als een batch uit te voeren klikt u op de batch knop en selecteert u een bestand (.txt) van uw harde schijf met de termen of frases waar u naar wilt zoeken. Nadat het bestand geladen is wordt de inhoud weergegeven in het zoekveld en kunt u deze nog aanpassen indien nodig. Een batch lijst mag meerdere termen per regel mag bevatten. Let op dat het aantal termen in ieder veld overeen moet komen om de zoekopdracht succesvol uit te voeren."
+      position: right
     - target: "#advanced .add-column"
       content: "Bij <b>geavanceerd</b> zoeken kunt u complexe zoekopdrachten op een visuele manier samenstellen. Elke kolom staat gelijk aan een positie in de frase. Klik op deze knop om een kolom toe te voegen."
       position: top
@@ -48,11 +51,11 @@ Het is ook mogelijk om de velden te combineren en een meer precieze zoekopdracht
     - target: "#advanced .toggle-settings"
       content: "Klik op dit icoon om extra opties weer te geven, zoals zoeken aan het begin of eind van een zin, of het aantal herhalingen van de zoekterm."
       position: right
-    - target: ".loadbutton"
-      content: "Om meerdere zoekopdrachten als een batch uit te voeren klikt u op de batch knop en selecteert u een bestand (.txt) van uw harde schijf met de termen of frases waar u naar wilt zoeken. Nadat het bestand geladen is wordt de inhoud weergegeven in het zoekveld en kunt u deze nog aanpassen indien nodig.Let u alstublieft op dat, in tegenstelling tot de batch optie bij uitgebreid zoeken, een batch lijst hier slechts &eacute;&eacute;n term per regel mag bevatten."
+    - target: "#advanced .loadbutton"
+      content: "Om meerdere zoekopdrachten als een batch uit te voeren klikt u op de batch knop en selecteert u een bestand (.txt) van uw harde schijf met de termen of frases waar u naar wilt zoeken. Nadat het bestand geladen is wordt de inhoud weergegeven in het zoekveld en kunt u deze nog aanpassen indien nodig. Let u alstublieft op dat, in tegenstelling tot de batch optie bij uitgebreid zoeken, een batch lijst hier slechts &eacute;&eacute;n term per regel mag bevatten."
       position: right
     - target: "input.splitcheck"
-      content: "Wanneer u een batch laadt uit een bestand, dan wordt automatisch dit vakje aangevinkt. Als het aangevinkt is, dan worden de zoekopdrachten in de batch ieder als aparte zoekopdracht uitgevoerd met de resultaten in afzonderlijke schermen.Indien u de zoekopdrachten in de batch als &eacute;&eacute;n zoekopdracht uit wil voeren en de resultaten in &eacute;&eacute;n scherm gepresenteerd wil zien, zet u dan dit vakje uit."
+      content: "Wanneer u een batch laadt uit een bestand, dan wordt automatisch dit vakje aangevinkt. Als het aangevinkt is, dan worden de zoekopdrachten in de batch ieder als aparte zoekopdracht uitgevoerd met de resultaten in afzonderlijke schermen. Indien u de zoekopdrachten in de batch als &eacute;&eacute;n zoekopdracht uit wil voeren en de resultaten in &eacute;&eacute;n scherm gepresenteerd wil zien, zet u dan dit vakje uit."
       position: top
     - target: "#expert-input-form textarea"
       content: "Bij <b>expert</b> zoeken kunt u een zoekopdracht invoeren uitgedrukt in de Corpus Query Language (CQL). Een goede tutorial over CQL vindt u <b><a href='http://cwb.sourceforge.net/files/CQP_Tutorial/' target='_blank'>hier</a></b>."
