@@ -1,17 +1,10 @@
 	</div>
 	<%= render partial: "layouts/dialogs" %>
+	<%= render partial: "layouts/tour" if !@tour_title.blank? %>
 	<script>
+		start_tour = <%= @tour_start ? 'true' : 'false' %>;
 		Whitelab.namespace = '<%= @namespace %>';
 		Whitelab.metadata.filterTokenSafeLimit = <%= FILTER_TOKEN_SAFE_LIMIT %>;
-		<% if !@tour_data.blank? %>
-			Whitelab.tour.active = true;
-			<% if @tour_data.has_key?('next_url') %>
-			Whitelab.tour.nextUrl = '<%= @tour_data['next_url'] %>';
-			<% else %>
-			Whitelab.tour.nextUrl = null;
-			<% end %>
-			Whitelab.tour.steps = <%= @tour_data['steps'].to_json.html_safe %>;
-		<% end %>
 	</script>
 </body>
 </html>
