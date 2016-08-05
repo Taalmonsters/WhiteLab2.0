@@ -210,12 +210,12 @@ class MetadataHandler
     fields = {}
     metadata_values = {}
     corpora = {}
-    data = @whitelab.get_document_list(load_corpora)
+    data = @whitelab.get_document_list
     data.keys.each_with_index do |doc_id, i|
       doc_data = data[doc_id]
       documents << doc_id
-      counts << doc_data['token_count']
-      corpus = doc_data['corpus']
+      counts << doc_data['lengthInTokens']
+      corpus = doc_data[CORPUS_TITLE_FIELD]
       corpora[corpus] = [] unless corpora.has_key?(corpus)
       corpora[corpus] << i
     end
@@ -231,7 +231,7 @@ class MetadataHandler
         unless value.blank?
           i = values.size
           values << value
-          @whitelab.get_document_id_list("#{label}=\"#{value}\"").each do |doc_id|
+          data.select{|_, doc| doc[label].eql?(value) }.each do |doc_id, doc|
             doc_index = documents.index(doc_id)
             doc_values[doc_index] = i
             done << doc_index

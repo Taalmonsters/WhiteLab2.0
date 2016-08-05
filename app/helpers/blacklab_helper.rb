@@ -147,10 +147,50 @@ module BlacklabHelper
     return data
   end
   
-  def get_document_list(corpora)
-    docs = {}
-    corpora.each do |corpus|
-      docs.merge!(get_corpus_document_list(corpus))
+  def get_document_list
+    filters = []
+    resp = execute_query({
+      :url => backend_url+'docs',
+      :query => {
+        "first" => 0,
+        "number" => 500,
+        "outputformat" => "json"
+      }
+    })
+    if resp.has_key?('error')
+      docs = {}
+      get_metadatum_values_by_label(500, 0, "label", "asc", CORPUS_TITLE_FIELD).each do |corpus|
+        docs = get_filtered_document_list("#{CORPUS_TITLE_FIELD}:#{corpus}", docs)
+      end
+      return docs
+    else
+      return get_filtered_document_list(nil, {})
+    end
+  end
+  
+  def get_filtered_document_list(filter, docs)
+    offset = 0
+    number = 500
+    while true do
+      resp = execute_query({
+        :url => backend_url+'docs',
+        :query => filter.nil? ? {
+          "first" => offset,
+          "number" => number,
+          "outputformat" => "json"
+        } : {
+          "filter" => filter,
+          "first" => offset,
+          "number" => number,
+          "outputformat" => "json"
+        }
+      })
+      resp["docs"].each do |doc|
+        doc_info = doc["docInfo"]
+        docs[doc["docPid"]] = doc["docInfo"]
+      end
+      break unless resp["summary"]["windowHasNext"]
+      offset = offset + number
     end
     return docs
   end
