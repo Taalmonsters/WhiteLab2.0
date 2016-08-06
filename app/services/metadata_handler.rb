@@ -247,23 +247,17 @@ class MetadataHandler
         f = f + 1
         offset = 0
       else
-        data['docs'].each_with_index do |doc, i|
-          documents['document_ids'] << doc['docPid']
-          doc = doc['docInfo']
-          documents['token_counts'] << doc['lengthInTokens']
-          metadata.each do |label, metadatum|
-            metadatum[:"document_count_#{doc[CORPUS_TITLE_FIELD]}"] = metadatum[:"document_count_#{doc[CORPUS_TITLE_FIELD]}"] + 1 if ENABLE_METADATA_FILTERING
-            if doc.has_key?(label) && !doc[label].blank?
-              unless metadatum[:values].include?(doc[label])
-                metadatum[:values] << doc[label]
-                metadatum[:value_count] = (metadatum[:values] - ['unknown']).size
-              end
-              documents['fields'][metadatum[:label]] << metadatum[:values].index(doc[label])
-            else
-              metadatum[:values] << 'unknown' unless metadatum[:values].include?('unknown')
-              documents['fields'][metadatum[:label]] << metadatum[:values].index('unknown')
-            end
+        documents['document_ids'] = documents['document_ids'] + data['docs'].map{|doc| doc['docPid'] }
+        documents['token_counts'] = documents['token_counts'] + data['docs'].map{|doc| doc['docInfo']['lengthInTokens'] }
+        metadata.each do |label, metadatum|
+          corpora.each do |corpus|
+            metadatum[:"document_count_#{corpus}"] = metadatum[:"document_count_#{corpus}"] + data['docs'].select{|doc| doc['docInfo'][CORPUS_TITLE_FIELD].eql?(corpus) }.size
           end
+          data['docs'].map{|doc| doc['docInfo'].has_key?(label) && !doc['docInfo'][label].blank? ? doc['docInfo'][label] : 'unknown' }.uniq.each do |value|
+            metadatum[:values] << value unless metadatum[:values].include?(value)
+          end
+          metadatum[:value_count] = (metadatum[:values] - ['unknown']).size
+          documents['fields'][metadatum[:label]] = documents['fields'][metadatum[:label]] + data['docs'].map{|doc| doc['docInfo'].has_key?(label) && !doc['docInfo'][label].blank? ? metadatum[:values].index(doc['docInfo'][label]) : metadatum[:values].index('unknown') }
         end
         if (data.has_key?('summary') && (!data['summary'].has_key?('windowHasNext') || !data['summary']['windowHasNext'])) || (!data.has_key?('summary') && data['docs'].size < number)
           if !unfiltered && f < filters.size - 1
