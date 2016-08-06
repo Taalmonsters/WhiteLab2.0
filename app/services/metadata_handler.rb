@@ -233,7 +233,6 @@ class MetadataHandler
       elsif !unfiltered && data['docs'].size == 0 && f < filters.size - 1
         f = f + 1
       else
-        break if data['docs'].size == 0
         data['docs'].each_with_index do |doc, i|
           documents['document_ids'] << doc['id']
           documents['token_counts'] << doc['lengthInTokens']
