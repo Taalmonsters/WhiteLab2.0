@@ -13,7 +13,9 @@
 		<table class="table table-hover table-striped">
 			<thead>
 				<tr>
+					<% if ENABLE_METADATA_FILTERING %>
 					<th><%= t(:"data_labels.keys.corpus").capitalize %></th>
+					<% end %>
 					<th class="right-aligned"><%= t(:"results.keys.context").capitalize+" "+t(:"results.keys.left") %></th>
 					<th class="center-aligned"><%= t(:"data_labels.keys.hit").capitalize %></th>
 					<th><%= t(:"results.keys.context").capitalize+" "+t(:"results.keys.right") %></th>
@@ -29,9 +31,11 @@
 						<% docs << hit["docpid"] %>
 					<% end %>
 					<tr class="clickable hit-row" data-docpid="<%= hit["docpid"] %>" data-first-index="<%= hit["first_index"] %>" data-last-index="<%= hit["last_index"] %>">
+						<% if ENABLE_METADATA_FILTERING %>
 						<td>
 							<%= hit["corpus"] %>
 						</td>
+						<% end %>
 						<td class="right-aligned">
 							&hellip; <%= hit["text_left"].html_safe %>
 						</td>

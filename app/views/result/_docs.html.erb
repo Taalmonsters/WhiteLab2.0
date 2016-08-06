@@ -16,8 +16,10 @@
 			<thead>
 				<tr>
 					<th><%= t(:"data_labels.keys.document").capitalize %></th>
+					<% if ENABLE_METADATA_FILTERING %>
 					<th><%= t(:"data_labels.keys.collection").capitalize %></th>
 					<th><%= t(:"data_labels.keys.corpus").capitalize %></th>
+					<% end %>
 					<th># <%= t(:"results.keys.hits").capitalize %></th>
 					<th></th>
 				</tr>
@@ -26,8 +28,10 @@
 				<% @query.result['results'].each do |doc| %>
 					<tr class="clickable doc-row" data-docpid="<%= doc["docpid"] %>" data-hits="<%= doc["hit_count"] %>">
 						<td><b><%= doc["docpid"] %></b></td>
+						<% if ENABLE_METADATA_FILTERING %>
 						<td><%= doc["collection"] %></td>
 						<td><%= doc["corpus"] %></td>
+						<% end %>
 						<td><%= number_with_delimiter(doc["hit_count"], :delimiter => t(:'other.keys.numeric_delimiter')) %></td>
 						<td style="width: 125px;"><button class="btn btn-primary btn-xs show-document" data-docpid="<%= doc["docpid"] %>"><%= t(:"button_labels.keys.show").capitalize+" "+t(:"data_labels.keys.document") %></button></td>
 					</tr>
