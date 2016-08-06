@@ -148,7 +148,7 @@ module BlacklabHelper
   end
   
   def get_document_list(offset, number)
-    resp = execute_query({
+    return execute_query({
       :url => backend_url+'docs',
       :query => {
         "first" => offset,
@@ -156,12 +156,10 @@ module BlacklabHelper
         "outputformat" => "json"
       }
     })
-    resp["docs"].map{|doc| doc["docInfo"] } if resp.has_key?("docs")
-    return resp
   end
   
   def get_filtered_document_list(filter, offset, number)
-    resp = execute_query({
+    return execute_query({
       :url => backend_url+'docs',
       :query => {
         "filter" => filter,
@@ -170,8 +168,6 @@ module BlacklabHelper
         "outputformat" => "json"
       }
     })
-    resp["docs"].map{|doc| doc["docInfo"] } if resp.has_key?("docs")
-    return resp
   end
   
   def get_document_xml_content(xmlid)

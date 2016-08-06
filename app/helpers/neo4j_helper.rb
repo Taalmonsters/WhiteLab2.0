@@ -59,7 +59,7 @@ module Neo4jHelper
     data = Yajl::Parser.parse(data)
     resp = {'docs' => []}
     data["results"][0]["data"].each do |doc_row|
-      resp['docs'] << {"id" => doc_row["row"][0], "lengthInTokens" => doc_row["row"][1], CORPUS_TITLE_FIELD => doc_row["row"][2], COLLECTION_TITLE_FIELD => doc_row["row"][3]}
+      resp['docs'] << { "docInfo" => { "id" => doc_row["row"][0], "lengthInTokens" => doc_row["row"][1], CORPUS_TITLE_FIELD => doc_row["row"][2], COLLECTION_TITLE_FIELD => doc_row["row"][3]}}
     end
     resp
   end
