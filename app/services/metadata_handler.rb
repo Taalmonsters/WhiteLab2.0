@@ -252,8 +252,9 @@ class MetadataHandler
         documents['document_ids'] = documents['document_ids'] + data['docs'].map{|doc| doc['docPid'] }
         documents['token_counts'] = documents['token_counts'] + data['docs'].map{|doc| doc['docInfo']['lengthInTokens'] }
         metadata.keys.in_groups_of(25).each do |group|
+          threads = []
           group.select{|label| !label.nil? }.each do |label|
-            Thread.new do
+            threads << Thread.new do
               metadatum = metadata[label]
               corpora.each do |corpus|
                 metadatum[:"document_count_#{corpus}"] = metadatum[:"document_count_#{corpus}"] + data['docs'].select{|doc| doc['docInfo'][CORPUS_TITLE_FIELD].eql?(corpus) }.size
@@ -266,6 +267,9 @@ class MetadataHandler
               metadatum[:value_count] = (metadatum[:values] - ['unknown']).size
               documents['fields'][metadatum[:label]] = documents['fields'][metadatum[:label]] + values.map{|value| metadatum[:values].index(value) }
             end
+          end
+          threads.each do |t|
+            t.join
           end
         end
         if (data.has_key?('summary') && (!data['summary'].has_key?('windowHasNext') || !data['summary']['windowHasNext'])) || (!data.has_key?('summary') && data['docs'].size < number)
