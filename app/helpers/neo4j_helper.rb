@@ -54,15 +54,14 @@ module Neo4jHelper
     return data['content'][0]
   end
   
-  def get_document_list
-    data = `curl --header "Authorization: Basic bmVvNGo6Nzc0M21vbnN0ZXJzODE=" -H accept:application/json -H content-type:application/json -d '{"statements": [{ "statement": "MATCH (d:Document)<-[:HAS_DOCUMENT]->(cc:Collection) MATCH (cc)<-[:HAS_COLLECTION]-(c:Corpus) RETURN DISTINCT d.xmlid AS xmlid, d.token_count AS token_count, c.title AS corpus, cc.title AS collection;" }]}' http://localhost:7474/db/data/transaction/commit`;
+  def get_document_list(offset, number)
+    data = `curl --header "Authorization: Basic bmVvNGo6Nzc0M21vbnN0ZXJzODE=" -H accept:application/json -H content-type:application/json -d '{"statements": [{ "statement": "MATCH (d:Document)<-[:HAS_DOCUMENT]->(cc:Collection) MATCH (cc)<-[:HAS_COLLECTION]-(c:Corpus) RETURN DISTINCT d.xmlid AS xmlid, d.token_count AS token_count, c.title AS corpus, cc.title AS collection SKIP #{offset} LIMIT #{number};" }]}' http://localhost:7474/db/data/transaction/commit`;
     data = Yajl::Parser.parse(data)
-    docs = {}
+    resp = {'docs' => []}
     data["results"][0]["data"].each do |doc_row|
-      doc = doc_row["row"]
-      docs[doc[0]] = {"token_count" => doc[1], "corpus" => doc[2], "collection" => doc[3]}
+      resp['docs'] << {"id" => doc_row["row"][0], "lengthInTokens" => doc_row["row"][1], CORPUS_TITLE_FIELD => doc_row["row"][2], COLLECTION_TITLE_FIELD => doc_row["row"][3]}
     end
-    docs
+    resp
   end
   
   def get_document_id_list(filter)

@@ -135,7 +135,7 @@ module BlacklabHelper
       if sentence_count > next_index
         snippet_length = sentences[next_index]["start"]
       else
-        snippet_length = MetadataHandler.instance.get_document_token_count(xmlid)
+        snippet_length = ENABLE_METADATA_FILTERING ? MetadataHandler.instance.get_document_token_count(xmlid) : 1000
       end
       if sentence_count > index
         sentence = get_document_snippet(xmlid, sentences[index]["start"], snippet_length)
@@ -147,52 +147,37 @@ module BlacklabHelper
     return data
   end
   
-  def get_document_list
-    filters = []
+  def get_document_list(offset, number)
     resp = execute_query({
       :url => backend_url+'docs',
       :query => {
-        "first" => 0,
-        "number" => 500,
+        "first" => offset,
+        "number" => number,
         "outputformat" => "json"
       }
     })
-    if resp.has_key?('error')
-      docs = {}
-      get_metadatum_values_by_label(500, 0, "label", "asc", CORPUS_TITLE_FIELD).each do |corpus|
-        docs = get_filtered_document_list("#{CORPUS_TITLE_FIELD}:#{corpus}", docs)
-      end
-      return docs
-    else
-      return get_filtered_document_list(nil, {})
-    end
+    resp["docs"].map{|doc| doc["docInfo"] }
+    return resp
   end
   
-  def get_filtered_document_list(filter, docs)
-    offset = 0
-    number = 500
-    while true do
-      resp = execute_query({
-        :url => backend_url+'docs',
-        :query => filter.nil? ? {
-          "first" => offset,
-          "number" => number,
-          "outputformat" => "json"
-        } : {
-          "filter" => filter,
-          "first" => offset,
-          "number" => number,
-          "outputformat" => "json"
-        }
-      })
-      resp["docs"].each do |doc|
-        doc_info = doc["docInfo"]
-        docs[doc["docPid"]] = doc["docInfo"]
-      end
-      break unless resp["summary"]["windowHasNext"]
-      offset = offset + number
-    end
-    return docs
+  def get_filtered_document_list(filter, offset, number)
+    resp = execute_query({
+      :url => backend_url+'docs',
+      :query => {
+        "filter" => filter,
+        "first" => offset,
+        "number" => number,
+        "outputformat" => "json"
+      }
+    })
+    resp["docs"].map{|doc| doc["docInfo"] }
+    return resp
+    # resp["docs"].each do |doc|
+      # docs[doc["docPid"]] = doc["docInfo"]
+    # end
+    # break unless resp["summary"]["windowHasNext"]
+    # offset = offset + number
+    # return docs
   end
   
   def get_document_xml_content(xmlid)
@@ -320,8 +305,7 @@ module BlacklabHelper
   
   def get_filtered_content(query)
     contents = []
-    MetadataHandler.instance.filter_documents(query.filter).each do |doc|
-      doc_id = MetadataHandler.instance.get_document_id(doc)
+    get_filtered_document_list(query.filter).keys.each do |doc_id|
       contents = contents + get_document_content(doc_id, query.patt, 0, get_document_sentence_count(doc_id))
     end
     return contents
@@ -351,7 +335,7 @@ module BlacklabHelper
         "outputformat" => "json"
       }
     })
-    fields = resp["fieldInfo"]["metadataFields"]
+    fields = resp["metadataFields"]
     wanted = number == 0 ? fields : fields.keys[offset..offset+number]
     data = []
     fields.each do |label, field_data|
