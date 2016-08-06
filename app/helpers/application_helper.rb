@@ -50,14 +50,16 @@ module ApplicationHelper
     files.each do |yml|
       lang = File.basename(yml, ".yml")
       lang_data = YAML.load_file(yml)[lang]
-      ['group','key'].each do |set|
-        if !lang_data.has_key?("metadata_#{set}s")
-          lang_data["metadata_#{set}s"] = {
-            'title' => "Metadata #{set}s",
-            'description' => "Translations of metadata #{set} labels",
-            'keys' => {}
-          }
-          save_language({ :lang => lang, :data => lang_data })
+      if ENABLE_METADATA_FILTERING
+        ['group','key'].each do |set|
+          if !lang_data.has_key?("metadata_#{set}s")
+            lang_data["metadata_#{set}s"] = {
+              'title' => "Metadata #{set}s",
+              'description' => "Translations of metadata #{set} labels",
+              'keys' => {}
+            }
+            save_language({ :lang => lang, :data => lang_data })
+          end
         end
       end
       data[lang] = lang_data
@@ -65,11 +67,13 @@ module ApplicationHelper
     
     changed = false
     
-    MetadataHandler.instance.metadata.each do |label, metadatum|
-      data.each do |lang, ldata|
-        ldata, changed_group = set_metadata_translation(ldata, 'group', metadatum['group'])
-        ldata, changed_key = set_metadata_translation(ldata, 'key', metadatum['key'])
-        changed = changed ? changed : changed_group || changed_key
+    if ENABLE_METADATA_FILTERING
+      MetadataHandler.instance.metadata.each do |label, metadatum|
+        data.each do |lang, ldata|
+          ldata, changed_group = set_metadata_translation(ldata, 'group', metadatum['group'])
+          ldata, changed_key = set_metadata_translation(ldata, 'key', metadatum['key'])
+          changed = changed ? changed : changed_group || changed_key
+        end
       end
     end
     
@@ -110,11 +114,6 @@ module ApplicationHelper
   # Save info page translation to configuration file
   def save_info_page(lang_obj)
     save_page('info', lang_obj)
-  end
-  
-  # Save help page translation to configuration file
-  def save_help_page(lang_obj)
-    save_page('help', lang_obj)
   end
   
   def save_page(page, lang_obj)

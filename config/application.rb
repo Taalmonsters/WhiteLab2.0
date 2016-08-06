@@ -42,9 +42,10 @@ end
 
 ::ADMIN_USER = ENV['WL2_ADMIN']
 ::ADMIN_PW = ENV['WL2_ADMIN_KEY']
-::NEO4J_USER = ENV['NEO4J_USER']
-::NEO4J_PW = ENV['NEO4J_PW']
+# ::NEO4J_USER = ENV['NEO4J_USER']
+# ::NEO4J_PW = ENV['NEO4J_PW']
 ::BACKEND_TIMEOUT_SECONDS = 600
+::ENABLE_METADATA_FILTERING = true # Set to 'false' if your corpus has no metadata
 ::METADATUM_VALUES_MAX = 50 # Max number of metadatum values in filter value selection
 ::EXPORT_LIMIT = 50000 # Max number of hits to export
 ::FILTER_TOKEN_SAFE_LIMIT = 500000
