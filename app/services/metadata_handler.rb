@@ -254,60 +254,6 @@ class MetadataHandler
         offset = offset + number
       end
     end
-    
-    
-    # data = @whitelab.get_document_list
-    # data.keys.each_with_index do |doc_id, i|
-      # doc_data = data[doc_id]
-      # documents << doc_id
-      # counts << doc_data['lengthInTokens']
-      # corpus = doc_data[CORPUS_TITLE_FIELD]
-      # corpora[corpus] = [] unless corpora.has_key?(corpus)
-      # corpora[corpus] << i
-    # end
-    # doc_size = documents.size
-    # @whitelab.get_metadata_from_server(0, 0, nil, nil).each do |metadatum|
-      # label = metadatum[:label]
-      # @logger.info "Metadatum: #{label}"
-      # group, key = get_group_and_key_from_label(label)
-      # doc_values = Array.new(doc_size)
-      # values = []
-      # done = []
-      # @whitelab.get_metadatum_values_by_label(doc_size, 0, "label", "asc", label).each do |value|
-        # unless value.blank?
-          # i = values.size
-          # values << value
-          # data.select{|_, doc| doc[label].eql?(value) }.each do |doc_id, doc|
-            # doc_index = documents.index(doc_id)
-            # doc_values[doc_index] = i
-            # done << doc_index
-          # end
-        # end
-      # end
-      # dsize = done.size
-      # if dsize > 0
-        # sizes = get_corpus_division(done, corpora)
-        # if dsize < doc_size
-          # i = values.size
-          # values << 'No value'
-          # ((0..(doc_size-1)).to_a - done).each do |doc_index|
-            # doc_values[doc_index] = i
-          # end
-        # end
-        # fields["#{label}"] = doc_values
-        # field = {
-          # 'group' => group,
-          # 'key' => key,
-          # 'label' => label,
-          # 'values' => values,
-          # 'value_count' => (values - ['No value']).size
-        # }
-        # get_corpus_division(done, corpora).each do |corpus, size|
-          # field["document_count_#{corpus}"] = size
-        # end
-        # metadata_values[label] = field
-      # end
-    # end
     rroot = Rails.root
     write_file(documents_file, documents)
     write_file(metadata_file, metadata)
