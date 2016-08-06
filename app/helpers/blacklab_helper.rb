@@ -335,7 +335,7 @@ module BlacklabHelper
         "outputformat" => "json"
       }
     })
-    fields = resp["metadataFields"]
+    fields = resp.has_key?("metadataFields") ? resp["metadataFields"] : resp["fieldInfo"]["metadataFields"]
     wanted = number == 0 ? fields : fields.keys[offset..offset+number]
     data = []
     fields.each do |label, field_data|
