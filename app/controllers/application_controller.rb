@@ -57,7 +57,7 @@ class ApplicationController < ActionController::Base
   
   def set_backend
     @whitelab = WhitelabBackend.instance
-    @metadata_handler = ENABLE_METADATA_FILTERING ? MetadataHandler.instance : nil
+    @metadata_handler = MetadataHandler.instance
   end
   
   def set_namespace
@@ -98,6 +98,7 @@ class ApplicationController < ActionController::Base
   # Get selected metadata filter from parameters
   def set_filter
     @filter = ''
+    return if !ENABLE_METADATA_FILTERING
     if @query && !@query.filter.blank?
       @filter = @query.filter
     elsif params[:filter] && !params[:filter].blank?
@@ -107,15 +108,17 @@ class ApplicationController < ActionController::Base
   
   # Calculate the number of tokens based on the selected metadata filter
   def set_filtered_amount
-    if !@filter.blank?
-      @total_tokens = @metadata_handler.get_total_word_count
-      @filtered_total_abs = @metadata_handler.get_filtered_word_count(@filter)
-      perc = (@filtered_total_abs * 1.0) / @total_tokens
-      @filtered_total_perc = format_percentage(perc * 100,1)
-    else
-      @total_tokens = @metadata_handler.get_total_word_count
-      @filtered_total_abs = @total_tokens
-      @filtered_total_perc = format_percentage(100.0,1)
+    if ENABLE_METADATA_FILTERING
+      if !@filter.blank?
+        @total_tokens = @metadata_handler.get_total_word_count
+        @filtered_total_abs = @metadata_handler.get_filtered_word_count(@filter)
+        perc = (@filtered_total_abs * 1.0) / @total_tokens
+        @filtered_total_perc = format_percentage(perc * 100,1)
+      else
+        @total_tokens = @metadata_handler.get_total_word_count
+        @filtered_total_abs = @total_tokens
+        @filtered_total_perc = format_percentage(100.0,1)
+      end
     end
   end
   

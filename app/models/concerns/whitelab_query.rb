@@ -137,10 +137,10 @@ module WhitelabQuery
     end
   end
   
-  def result
-    return self.output if (self.finished? || self.counting?) && !self.output.blank?
+  def result(threaded = true)
+    return self.output if (self.finished? || self.counting?) && self.output && !self.output.blank?
     Rails.logger.debug "GET QUERY RESULT"
-    self.execute
+    self.execute(threaded)
     return self.output
   end
   

@@ -5,11 +5,12 @@ class Search::QueriesController < QueriesController
   def doc_hits
     if @query && params.has_key?(:docpid)
       @target = params[:docpid]
+      field, id = @metadata_handler.docpid_to_id(@target)
       @query.view = 1
-      @query.filter = @query.filter.blank? ? "(id:#{@target})" : "#{@query.filter}AND(id:#{@target})"
+      @query.filter = "(#{field}:#{id})"
       @query.offset = 0
       @query.number = params[:hits]
-      @doc_hits = @query.result["results"]
+      @doc_hits = @query.result(false)["results"]
     end
     respond_to do |format|
       format.js do

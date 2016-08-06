@@ -61,7 +61,7 @@
 				</li>
 				<% else %>
 				<li id="main-explore" class="left-spaced">
-					<a href="/explore/corpora"><%= t(:"page_titles.keys.explore").capitalize %></a>
+					<a href="<%= ENABLE_METADATA_FILTERING ? '/explore/corpora' : '/explore/document' %>"><%= t(:"page_titles.keys.explore").capitalize %></a>
 				</li>
 				<% end %>
 				<% if @namespace.eql?('static_pages') %>

@@ -20,11 +20,13 @@
 			<a href="#" data-params="<%= "#{url_params}&view=8&offset=0&number=50&group=" %>"><%= t(:"results.keys.grouped_hits").capitalize %></a>
 		</li>
 	<% end %>
-	<% if view == 16 %>
-		<li role="presentation" class="active"><a href="#"><%= t(:"results.keys.grouped_documents").capitalize %></a></li>
-	<% else %>
-		<li role="presentation">
-			<a href="#" data-params="<%= "#{url_params}&view=16&offset=0&number=50&group=" %>"><%= t(:"results.keys.grouped_documents").capitalize %></a>
-		</li>
+	<% if ENABLE_METADATA_FILTERING %>
+		<% if view == 16 %>
+			<li role="presentation" class="active"><a href="#"><%= t(:"results.keys.grouped_documents").capitalize %></a></li>
+		<% else %>
+			<li role="presentation">
+				<a href="#" data-params="<%= "#{url_params}&view=16&offset=0&number=50&group=" %>"><%= t(:"results.keys.grouped_documents").capitalize %></a>
+			</li>
+		<% end %>
 	<% end %>
 </ul>

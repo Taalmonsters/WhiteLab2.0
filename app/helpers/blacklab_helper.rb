@@ -161,8 +161,13 @@ module BlacklabHelper
   def get_filtered_document_list(filter, offset, number)
     return execute_query({
       :url => backend_url+'docs',
-      :query => {
+      :query => ENABLE_METADATA_FILTERING ? {
         "filter" => filter,
+        "first" => offset,
+        "number" => number,
+        "outputformat" => "json"
+      } : {
+        "patt" => filter,
         "first" => offset,
         "number" => number,
         "outputformat" => "json"

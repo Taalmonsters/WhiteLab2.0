@@ -33,7 +33,7 @@
 			<li id="document_link" class="active"><a class="tablink" onclick="event.preventDefault();"><%= t(:"page_titles.keys.document").capitalize %></a></li>
 		<% end %>
 	</ul>
-	<% if !action_name.eql?("simple") && !action_name.eql?("document") %>
+	<% if !action_name.eql?("simple") && !action_name.eql?("document") && ENABLE_METADATA_FILTERING %>
 		<%= render partial: "/metadata/filters" %>
 	<% end %>
 </div>

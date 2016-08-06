@@ -25,6 +25,11 @@ class MetadataHandler
     @logger.info "Metadata handler initialized."
   end
   
+  def docpid_to_id(docpid)
+    return @metadata["Metadata_id"]["values"][@fields["Metadata_id"][@doc_ids.index(docpid)]] if @fields.has_key?("Metadata_id")
+    return @metadata["Metadata_fromInputFile"]["values"][@fields["Metadata_fromInputFile"][@doc_ids.index(docpid)]]
+  end
+  
   # Filter document list
   # return_counts = 0: returns document indices in array
   # return_counts = 1: returns token counts in array
@@ -96,16 +101,18 @@ class MetadataHandler
       end
     end
     
-    get_metadata_group_options({}, namespace).sort_by {|k, v| [k, v] }.each do |group, data|
-      group = I18n.translate(:"#{group}").capitalize
-      if !groups.has_key?(group)
-        groups[group] = []
+    if ENABLE_METADATA_FILTERING
+      get_metadata_group_options({}, namespace).sort_by {|k, v| [k, v] }.each do |group, data|
+        group = I18n.translate(:"#{group}").capitalize
+        if !groups.has_key?(group)
+          groups[group] = []
+        end
+        data.each do |arr|
+          field = I18n.translate(:"#{arr[0]}")
+          groups[group] << [field, arr[1]]
+        end
+        groups[group].sort!
       end
-      data.each do |arr|
-        field = I18n.translate(:"#{arr[0]}")
-        groups[group] << [field, arr[1]]
-      end
-      groups[group].sort!
     end
     return groups
   end
@@ -210,12 +217,12 @@ class MetadataHandler
       'token_counts' => [],
       'fields' => {}
     }
-    corpora = @whitelab.get_metadatum_values_by_label(500, 0, "label", "asc", CORPUS_TITLE_FIELD)
+    corpora = ENABLE_METADATA_FILTERING ? @whitelab.get_metadatum_values_by_label(500, 0, "label", "asc", CORPUS_TITLE_FIELD) : []
     
     offset = 0
     number = 500
     unfiltered = true
-    filters = corpora.map{|corpus| "#{CORPUS_TITLE_FIELD}:#{corpus}" }
+    filters = ENABLE_METADATA_FILTERING ? corpora.map{|corpus| "#{CORPUS_TITLE_FIELD}:#{corpus}" } : ['[]']
     f = 0
     metadata = {}
     @whitelab.get_metadata_from_server(0, 0, nil, nil).select{|metadatum| !metadatum[:label].eql?('fromInputFile') && !metadatum[:label].end_with?('fromInputFile') && !metadatum[:label].include?('.') }.each{|metadatum| metadata[metadatum[:label]] = metadatum }
@@ -244,9 +251,9 @@ class MetadataHandler
           documents['document_ids'] << doc['docPid']
           doc = doc['docInfo']
           documents['token_counts'] << doc['lengthInTokens']
-          corpus = doc[CORPUS_TITLE_FIELD]
+          corpus = doc[CORPUS_TITLE_FIELD] if ENABLE_METADATA_FILTERING
           metadata.each do |label, metadatum|
-            metadatum[:"document_count_#{corpus}"] = metadatum[:"document_count_#{corpus}"] + 1
+            metadatum[:"document_count_#{corpus}"] = metadatum[:"document_count_#{corpus}"] + 1 if ENABLE_METADATA_FILTERING
             if doc.has_key?(label) && !doc[label].blank?
               unless metadatum[:values].include?(doc[label])
                 metadatum[:values] << doc[label]
