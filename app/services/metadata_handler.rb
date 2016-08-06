@@ -243,11 +243,11 @@ class MetadataHandler
                 metadatum[:values] << doc[metadatum[:label]]
                 metadatum[:value_count] = (metadatum[:values] - ['No value']).size
                 metadatum[:"document_count_#{corpus}"] = metadatum[:"document_count_#{corpus}"] + 1
-                documents[metadatum[:label]] << metadatum[:values].index?(doc[metadatum[:label]])
+                documents[metadatum[:label]] << metadatum[:values].index(doc[metadatum[:label]])
               end
             else
               metadatum[:values] << 'No value' unless metadatum[:values].include?('No value')
-              documents[metadatum[:label]] << metadatum[:values].index?('No value')
+              documents[metadatum[:label]] << metadatum[:values].index('No value')
             end
           end
         end
