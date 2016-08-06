@@ -241,9 +241,8 @@ class MetadataHandler
         offset = 0
       else
         data['docs'].each_with_index do |doc, i|
-          docpid = doc['docPid']
+          documents['document_ids'] << doc['docPid']
           doc = doc['docInfo']
-          documents['document_ids'] << docpid
           documents['token_counts'] << doc['lengthInTokens']
           corpus = doc[CORPUS_TITLE_FIELD]
           metadata.each do |label, metadatum|
