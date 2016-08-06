@@ -239,6 +239,8 @@ class MetadataHandler
       documents['fields'][metadatum[:label]] = []
     end
     done = false
+    x = 0
+    max = 10
     while !done do
       data = unfiltered ? @whitelab.get_document_list(offset, number) : @whitelab.get_filtered_document_list(filters[f],offset, number)
       if unfiltered && data.has_key?('error')
@@ -253,18 +255,25 @@ class MetadataHandler
           corpora.each do |corpus|
             metadatum[:"document_count_#{corpus}"] = metadatum[:"document_count_#{corpus}"] + data['docs'].select{|doc| doc['docInfo'][CORPUS_TITLE_FIELD].eql?(corpus) }.size
           end
-          data['docs'].map{|doc| doc['docInfo'].has_key?(label) && !doc['docInfo'][label].blank? ? doc['docInfo'][label] : 'unknown' }.uniq.each do |value|
+          values = data['docs'].map{|doc| doc['docInfo'].has_key?(label) && !doc['docInfo'][label].blank? ? doc['docInfo'][label] : 'unknown' }
+          values.uniq.each do |value|
             metadatum[:values] << value unless metadatum[:values].include?(value)
           end
           metadatum[:value_count] = (metadatum[:values] - ['unknown']).size
-          documents['fields'][metadatum[:label]] = documents['fields'][metadatum[:label]] + data['docs'].map{|doc| doc['docInfo'].has_key?(label) && !doc['docInfo'][label].blank? ? metadatum[:values].index(doc['docInfo'][label]) : metadatum[:values].index('unknown') }
+          documents['fields'][metadatum[:label]] = documents['fields'][metadatum[:label]] + values.map{|value| metadatum[:values].index(value) }
         end
         if (data.has_key?('summary') && (!data['summary'].has_key?('windowHasNext') || !data['summary']['windowHasNext'])) || (!data.has_key?('summary') && data['docs'].size < number)
           if !unfiltered && f < filters.size - 1
             f = f + 1
             offset = 0
           else
-            done = true
+            if x < max
+              x = x + 1
+              offset = 0
+              f = 0
+            else
+              done = true
+            end
           end
         else
           offset = offset + number
