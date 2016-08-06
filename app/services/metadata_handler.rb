@@ -239,8 +239,6 @@ class MetadataHandler
       documents['fields'][metadatum[:label]] = []
     end
     done = false
-    x = 0
-    max = 100
     while !done do
       data = unfiltered ? @whitelab.get_document_list(offset, number) : @whitelab.get_filtered_document_list(filters[f],offset, number)
       if unfiltered && data.has_key?('error')
@@ -277,13 +275,7 @@ class MetadataHandler
             f = f + 1
             offset = 0
           else
-            if x < max
-              x = x + 1
-              offset = 0
-              f = 0
-            else
-              done = true
-            end
+            done = true
           end
         else
           offset = offset + number
