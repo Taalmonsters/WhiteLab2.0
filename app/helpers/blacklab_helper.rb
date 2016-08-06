@@ -156,7 +156,7 @@ module BlacklabHelper
         "outputformat" => "json"
       }
     })
-    resp["docs"].map{|doc| doc["docInfo"] }
+    resp["docs"].map{|doc| doc["docInfo"] } if resp.has_key?("docs")
     return resp
   end
   
@@ -170,14 +170,8 @@ module BlacklabHelper
         "outputformat" => "json"
       }
     })
-    resp["docs"].map{|doc| doc["docInfo"] }
+    resp["docs"].map{|doc| doc["docInfo"] } if resp.has_key?("docs")
     return resp
-    # resp["docs"].each do |doc|
-      # docs[doc["docPid"]] = doc["docInfo"]
-    # end
-    # break unless resp["summary"]["windowHasNext"]
-    # offset = offset + number
-    # return docs
   end
   
   def get_document_xml_content(xmlid)
