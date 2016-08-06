@@ -27,11 +27,6 @@ module ApplicationHelper
     load_page_data('info')
   end
   
-  # Load translated help page content from configuration file
-  def load_help_page_data
-    load_page_data('help')
-  end
-  
   def load_page_data(page)
     data = {}
     files = Dir.glob(Rails.root.join('config', 'locales', page+'_page').to_s+"/*.yml")

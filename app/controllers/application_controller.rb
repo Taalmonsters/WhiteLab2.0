@@ -57,7 +57,7 @@ class ApplicationController < ActionController::Base
   
   def set_backend
     @whitelab = WhitelabBackend.instance
-    @metadata_handler = MetadataHandler.instance
+    @metadata_handler = ENABLE_METADATA_FILTERING ? MetadataHandler.instance : nil
   end
   
   def set_namespace
