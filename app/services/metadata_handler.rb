@@ -205,66 +205,112 @@ class MetadataHandler
   
   def generate_metadata_files(backend)
     @logger.info "Generating metadata files..."
-    documents = []
-    counts = []
-    fields = {}
-    metadata_values = {}
-    corpora = {}
-    data = @whitelab.get_document_list
-    data.keys.each_with_index do |doc_id, i|
-      doc_data = data[doc_id]
-      documents << doc_id
-      counts << doc_data['lengthInTokens']
-      corpus = doc_data[CORPUS_TITLE_FIELD]
-      corpora[corpus] = [] unless corpora.has_key?(corpus)
-      corpora[corpus] << i
+    documents = {
+      'document_ids' => [],
+      'token_counts' => []
+    }
+    corpora = @whitelab.get_metadatum_values_by_label(500, 0, "label", "asc", CORPUS_TITLE_FIELD)
+    
+    offset = 0
+    number = 500
+    unfiltered = true
+    filters = corpora.map{|corpus| "#{CORPUS_TITLE_FIELD}:#{corpus}" }
+    f = 0
+    metadata = @whitelab.get_metadata_from_server(0, 0, nil, nil)
+    metadata.each do |metadatum|
+      metadatum[:values] = []
+      metadatum[:value_count] = 0
+      corpora.each do |corpus|
+        metadatum[:"document_count_#{corpus}"] = 0
+      end
+      documents[metadatum[:label]] = []
     end
-    doc_size = documents.size
-    @whitelab.get_metadata_from_server(0, 0, nil, nil).each do |metadatum|
-      label = metadatum[:label]
-      @logger.info "Metadatum: #{label}"
-      group, key = get_group_and_key_from_label(label)
-      doc_values = Array.new(doc_size)
-      values = []
-      done = []
-      @whitelab.get_metadatum_values_by_label(doc_size, 0, "label", "asc", label).each do |value|
-        unless value.blank?
-          i = values.size
-          values << value
-          data.select{|_, doc| doc[label].eql?(value) }.each do |doc_id, doc|
-            doc_index = documents.index(doc_id)
-            doc_values[doc_index] = i
-            done << doc_index
+    while true do
+      data = unfiltered ? @whitelab.get_document_list(offset, number) : @whitelab.get_filtered_document_list(filters[f],offset, number)
+      if unfiltered && data.has_key?('error')
+        unfiltered = false
+      elsif !unfiltered && data['docs'].size == 0 && f < filters.size - 1
+        f = f + 1
+      else
+        break if data['docs'].size == 0
+        data['docs'].each_with_index do |doc, i|
+          documents['document_ids'] << doc['id']
+          documents['token_counts'] << doc['lengthInTokens']
+          corpus = doc_data[CORPUS_TITLE_FIELD]
+          metadata.each do |metadatum|
+            if doc.has_key?(metadatum[:label]) && !doc[metadatum[:label]].blank?
+              unless metadatum[:values].include?(doc[metadatum[:label]])
+                metadatum[:values] << doc[metadatum[:label]]
+                metadatum[:value_count] = (metadatum[:values] - ['No value']).size
+                metadatum[:"document_count_#{corpus}"] = metadatum[:"document_count_#{corpus}"] + 1
+                documents[metadatum[:label]] << metadatum[:values].index?(doc[metadatum[:label]])
+              end
+            else
+              metadatum[:values] << 'No value' unless metadatum[:values].include?('No value')
+              documents[metadatum[:label]] << metadatum[:values].index?('No value')
+            end
           end
         end
-      end
-      dsize = done.size
-      if dsize > 0
-        sizes = get_corpus_division(done, corpora)
-        if dsize < doc_size
-          i = values.size
-          values << 'No value'
-          ((0..(doc_size-1)).to_a - done).each do |doc_index|
-            doc_values[doc_index] = i
-          end
-        end
-        fields["#{label}"] = doc_values
-        field = {
-          'group' => group,
-          'key' => key,
-          'label' => label,
-          'values' => values,
-          'value_count' => (values - ['No value']).size
-        }
-        get_corpus_division(done, corpora).each do |corpus, size|
-          field["document_count_#{corpus}"] = size
-        end
-        metadata_values[label] = field
+        offset = offset + number
       end
     end
+    
+    
+    # data = @whitelab.get_document_list
+    # data.keys.each_with_index do |doc_id, i|
+      # doc_data = data[doc_id]
+      # documents << doc_id
+      # counts << doc_data['lengthInTokens']
+      # corpus = doc_data[CORPUS_TITLE_FIELD]
+      # corpora[corpus] = [] unless corpora.has_key?(corpus)
+      # corpora[corpus] << i
+    # end
+    # doc_size = documents.size
+    # @whitelab.get_metadata_from_server(0, 0, nil, nil).each do |metadatum|
+      # label = metadatum[:label]
+      # @logger.info "Metadatum: #{label}"
+      # group, key = get_group_and_key_from_label(label)
+      # doc_values = Array.new(doc_size)
+      # values = []
+      # done = []
+      # @whitelab.get_metadatum_values_by_label(doc_size, 0, "label", "asc", label).each do |value|
+        # unless value.blank?
+          # i = values.size
+          # values << value
+          # data.select{|_, doc| doc[label].eql?(value) }.each do |doc_id, doc|
+            # doc_index = documents.index(doc_id)
+            # doc_values[doc_index] = i
+            # done << doc_index
+          # end
+        # end
+      # end
+      # dsize = done.size
+      # if dsize > 0
+        # sizes = get_corpus_division(done, corpora)
+        # if dsize < doc_size
+          # i = values.size
+          # values << 'No value'
+          # ((0..(doc_size-1)).to_a - done).each do |doc_index|
+            # doc_values[doc_index] = i
+          # end
+        # end
+        # fields["#{label}"] = doc_values
+        # field = {
+          # 'group' => group,
+          # 'key' => key,
+          # 'label' => label,
+          # 'values' => values,
+          # 'value_count' => (values - ['No value']).size
+        # }
+        # get_corpus_division(done, corpora).each do |corpus, size|
+          # field["document_count_#{corpus}"] = size
+        # end
+        # metadata_values[label] = field
+      # end
+    # end
     rroot = Rails.root
-    write_file(documents_file, { "document_ids" => documents, "token_counts" => counts, "fields" => fields })
-    write_file(metadata_file, metadata_values)
+    write_file(documents_file, documents)
+    write_file(metadata_file, metadata)
     @logger.info "Finished generating metadata files."
   end
   
