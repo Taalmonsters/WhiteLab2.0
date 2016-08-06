@@ -216,14 +216,19 @@ class MetadataHandler
     unfiltered = true
     filters = corpora.map{|corpus| "#{CORPUS_TITLE_FIELD}:#{corpus}" }
     f = 0
-    metadata = @whitelab.get_metadata_from_server(0, 0, nil, nil)
-    metadata.each do |metadatum|
+    metadata = {}
+    @whitelab.get_metadata_from_server(0, 0, nil, nil).select{|metadatum| !metadatum[:label].eql?('fromInputFile') && !metadatum[:label].end_with?('fromInputFile') && !metadatum[:label].include?('.') }.each{|metadatum| metadata[metadatum[:label]] = metadatum }
+    metadata.each do |label, metadatum|
       metadatum[:values] = []
       metadatum[:value_count] = 0
+      if metadatum[:group].eql?(metadatum[:key])
+        metadatum[:group] = 'Metadata'
+        metadatum[:label] = "#{metadatum[:group]}_#{metadatum[:key]}"
+      end
       corpora.each do |corpus|
         metadatum[:"document_count_#{corpus}"] = 0
       end
-      documents[metadatum[:label]] = []
+      documents[label] = []
     end
     done = false
     while !done do
@@ -234,30 +239,32 @@ class MetadataHandler
         f = f + 1
       else
         data['docs'].each_with_index do |doc, i|
+          doc = doc['docInfo']
           documents['document_ids'] << doc['id']
           documents['token_counts'] << doc['lengthInTokens']
           corpus = doc[CORPUS_TITLE_FIELD]
-          metadata.each do |metadatum|
-            if doc.has_key?(metadatum[:label]) && !doc[metadatum[:label]].blank?
-              unless metadatum[:values].include?(doc[metadatum[:label]])
-                metadatum[:values] << doc[metadatum[:label]]
-                metadatum[:value_count] = (metadatum[:values] - ['No value']).size
+          metadata.each do |label, metadatum|
+            if doc.has_key?(label) && !doc[label].blank?
+              unless metadatum[:values].include?(doc[label])
+                metadatum[:values] << doc[label]
+                metadatum[:value_count] = (metadatum[:values] - ['unknown']).size
                 metadatum[:"document_count_#{corpus}"] = metadatum[:"document_count_#{corpus}"] + 1
-                documents[metadatum[:label]] << metadatum[:values].index(doc[metadatum[:label]])
+                documents[label] << metadatum[:values].index(doc[label])
               end
             else
-              metadatum[:values] << 'No value' unless metadatum[:values].include?('No value')
-              documents[metadatum[:label]] << metadatum[:values].index('No value')
+              metadatum[:values] << 'unknown' unless metadatum[:values].include?('unknown')
+              documents[label] << metadatum[:values].index('unknown')
             end
           end
         end
-        if data['docs'].size < number
+        if (data.has_key?('summary') && data['summary'].has_key?('windowHasNext') && data['summary']['windowHasNext']) || data['docs'].size < number
           done = true
         else
           offset = offset + number
         end
       end
     end
+    metadata.keys.each { |k| metadata["#{metadata[k][:group]}_#{metadata[k][:key]}"] = metadata[k]; metadata.delete(k) unless k.eql?("#{metadata[k][:group]}_#{metadata[k][:key]}") }
     rroot = Rails.root
     write_file(documents_file, documents)
     write_file(metadata_file, metadata)
