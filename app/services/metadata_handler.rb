@@ -207,7 +207,8 @@ class MetadataHandler
     @logger.info "Generating metadata files..."
     documents = {
       'document_ids' => [],
-      'token_counts' => []
+      'token_counts' => [],
+      'fields' => {}
     }
     corpora = @whitelab.get_metadatum_values_by_label(500, 0, "label", "asc", CORPUS_TITLE_FIELD)
     
@@ -228,7 +229,7 @@ class MetadataHandler
       corpora.each do |corpus|
         metadatum[:"document_count_#{corpus}"] = 0
       end
-      documents[label] = []
+      documents['fields'][metadatum[:label]] = []
     end
     done = false
     while !done do
@@ -237,28 +238,35 @@ class MetadataHandler
         unfiltered = false
       elsif !unfiltered && data['docs'].size == 0 && f < filters.size - 1
         f = f + 1
+        offset = 0
       else
         data['docs'].each_with_index do |doc, i|
+          docpid = doc['docPid']
           doc = doc['docInfo']
-          documents['document_ids'] << doc['id']
+          documents['document_ids'] << docpid
           documents['token_counts'] << doc['lengthInTokens']
           corpus = doc[CORPUS_TITLE_FIELD]
           metadata.each do |label, metadatum|
+            metadatum[:"document_count_#{corpus}"] = metadatum[:"document_count_#{corpus}"] + 1
             if doc.has_key?(label) && !doc[label].blank?
               unless metadatum[:values].include?(doc[label])
                 metadatum[:values] << doc[label]
                 metadatum[:value_count] = (metadatum[:values] - ['unknown']).size
-                metadatum[:"document_count_#{corpus}"] = metadatum[:"document_count_#{corpus}"] + 1
-                documents[label] << metadatum[:values].index(doc[label])
               end
+              documents['fields'][metadatum[:label]] << metadatum[:values].index(doc[label])
             else
               metadatum[:values] << 'unknown' unless metadatum[:values].include?('unknown')
-              documents[label] << metadatum[:values].index('unknown')
+              documents['fields'][metadatum[:label]] << metadatum[:values].index('unknown')
             end
           end
         end
-        if (data.has_key?('summary') && data['summary'].has_key?('windowHasNext') && data['summary']['windowHasNext']) || data['docs'].size < number
-          done = true
+        if (data.has_key?('summary') && (!data['summary'].has_key?('windowHasNext') || !data['summary']['windowHasNext'])) || (!data.has_key?('summary') && data['docs'].size < number)
+          if !unfiltered && f < filters.size - 1
+            f = f + 1
+            offset = 0
+          else
+            done = true
+          end
         else
           offset = offset + number
         end

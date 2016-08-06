@@ -28,17 +28,20 @@ module WhitelabExplore
       if params.has_key?(:filter) && view == 8
         params[:group] = "hit:#{params[:listtype]}" if params.has_key?(:listtype) && ['word','pos','lemma'].include?(params[:listtype])
       end
-      @query = Explore::Query.find_from_params(action_name, @user, query_create_params)
-      if @query && @query.patt && (!@query.finished? || !@query.output) && !@query.failed?
-        if @query.view == 4
-          @query.running!
-          @result = Document.growth(@query)
-          @query.hit_count = @result[:hit_count]
-          @query.document_count = @result[:document_count]
-          @query.finished!
-        else
-          threaded = !action_name.eql?('result')
-          @query.execute(threaded) if @query && !@query.running? && !@query.failed? && !@query.output
+      unless ['corpora','document'].include?(action_name)
+        @query = Explore::Query.find_from_params(action_name, @user, query_create_params)
+        if @query && @query.patt && (!@query.finished? || !@query.output) && !@query.failed?
+          if @query.view == 4
+            @query.running!
+            @result = Document.growth(@query)
+            @query.hit_count = @result[:hit_count]
+            @query.document_count = @result[:document_count]
+            @query.finished!
+          else
+            p "HIER"
+            threaded = !action_name.eql?('result')
+            @query.execute(threaded) if @query && !@query.running? && !@query.failed? && !@query.output
+          end
         end
       end
     end

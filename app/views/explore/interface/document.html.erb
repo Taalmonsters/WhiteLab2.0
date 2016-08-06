@@ -15,4 +15,4 @@
 		<%= render partial: "/documents/display" %>
 	<% end %>
 </div>
-<%= render partial: "/queries/index" %>
+<%= render partial: "/queries/index", :locals => { :no_output => true } %>
