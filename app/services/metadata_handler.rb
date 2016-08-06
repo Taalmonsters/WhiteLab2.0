@@ -251,9 +251,8 @@ class MetadataHandler
           documents['document_ids'] << doc['docPid']
           doc = doc['docInfo']
           documents['token_counts'] << doc['lengthInTokens']
-          corpus = doc[CORPUS_TITLE_FIELD] if ENABLE_METADATA_FILTERING
           metadata.each do |label, metadatum|
-            metadatum[:"document_count_#{corpus}"] = metadatum[:"document_count_#{corpus}"] + 1 if ENABLE_METADATA_FILTERING
+            metadatum[:"document_count_#{doc[CORPUS_TITLE_FIELD]}"] = metadatum[:"document_count_#{doc[CORPUS_TITLE_FIELD]}"] + 1 if ENABLE_METADATA_FILTERING
             if doc.has_key?(label) && !doc[label].blank?
               unless metadatum[:values].include?(doc[label])
                 metadatum[:values] << doc[label]
