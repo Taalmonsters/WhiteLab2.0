@@ -225,7 +225,8 @@ class MetadataHandler
       end
       documents[metadatum[:label]] = []
     end
-    while true do
+    done = false
+    while !done do
       data = unfiltered ? @whitelab.get_document_list(offset, number) : @whitelab.get_filtered_document_list(filters[f],offset, number)
       if unfiltered && data.has_key?('error')
         unfiltered = false
@@ -251,7 +252,11 @@ class MetadataHandler
             end
           end
         end
-        offset = offset + number
+        if data['docs'].size < number
+          done = true
+        else
+          offset = offset + number
+        end
       end
     end
     rroot = Rails.root
