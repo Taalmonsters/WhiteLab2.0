@@ -236,7 +236,7 @@ class MetadataHandler
         data['docs'].each_with_index do |doc, i|
           documents['document_ids'] << doc['id']
           documents['token_counts'] << doc['lengthInTokens']
-          corpus = doc_data[CORPUS_TITLE_FIELD]
+          corpus = doc[CORPUS_TITLE_FIELD]
           metadata.each do |metadatum|
             if doc.has_key?(metadatum[:label]) && !doc[metadatum[:label]].blank?
               unless metadatum[:values].include?(doc[metadatum[:label]])
