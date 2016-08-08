@@ -1,4 +1,5 @@
 require 'singleton'
+require 'set'
 
 # The MetadataHandler class handles all document metadata
 class MetadataHandler
@@ -244,43 +245,40 @@ class MetadataHandler
       if unfiltered && data.has_key?('error')
         unfiltered = false
       elsif !unfiltered && data['docs'].size == 0 && f < filters.size - 1
-        f = f + 1
+        f += 1
         offset = 0
       else
         documents['document_ids'].concat(data['docs'].map{|doc| doc['docPid'] })
         documents['token_counts'].concat(data['docs'].map{|doc| doc['docInfo']['lengthInTokens'] })
-        threads = []
         metadata.keys.each do |label|
-          threads << Thread.new do
-            metadatum = metadata[label]
-            corpora.each do |corpus|
-              metadatum[:"document_count_#{corpus}"] = metadatum[:"document_count_#{corpus}"] + data['docs'].select{|doc| doc['docInfo'][CORPUS_TITLE_FIELD].eql?(corpus) }.size
-            end
-            values = data['docs'].map{|doc| doc['docInfo'][label] }
-            values.uniq.each do |value|
-              v = value.blank? || value.nil? ? 'unknown' : value
-              metadatum[:values] << v unless metadatum[:values].include?(v)
-            end
-            metadatum[:value_count] = (metadatum[:values] - ['unknown']).size
-            documents['fields'][metadatum[:label]].concat(values.map{|value| metadatum[:values].index(value) })
+          metadatum = metadata[label]
+          corpora.each do |corpus|
+            metadatum[:"document_count_#{corpus}"] += data['docs'].select{|doc| doc['docInfo'][CORPUS_TITLE_FIELD].eql?(corpus) }.size
           end
-        end
-        threads.each do |t|
-          t.join
+          values = data['docs'].map{|doc| doc['docInfo'][label].blank? || doc['docInfo'][label].nil? ? 'unknown' : doc['docInfo'][label] }
+          values.uniq.each{|value| metadatum[:values] |= [value] }
+          documents['fields'][metadatum[:label]].concat(values.map{|value| metadatum[:values].index(value) })
         end
         if (data.has_key?('summary') && (!data['summary'].has_key?('windowHasNext') || !data['summary']['windowHasNext'])) || (!data.has_key?('summary') && data['docs'].size < number)
           if !unfiltered && f < filters.size - 1
-            f = f + 1
+            f += 1
             offset = 0
           else
             done = true
           end
         else
-          offset = offset + number
+          offset += number
         end
       end
     end
-    metadata.keys.each { |k| metadata["#{metadata[k][:group]}_#{metadata[k][:key]}"] = metadata[k]; metadata.delete(k) unless k.eql?("#{metadata[k][:group]}_#{metadata[k][:key]}") }
+    metadata.keys.each do |k|
+      nk = "#{metadata[k][:group]}_#{metadata[k][:key]}"
+      unless k.eql?(nk)
+        metadata[nk] = metadata[k]
+        metadata.delete(k)
+      end
+      metadata[nk][:value_count] = (metadata[nk][:values] - ['unknown']).size
+    end
     rroot = Rails.root
     write_file(documents_file, documents)
     write_file(metadata_file, metadata)
