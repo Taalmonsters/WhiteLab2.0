@@ -255,12 +255,10 @@ class MetadataHandler
           corpora.each do |corpus|
             metadatum[:"document_count_#{corpus}"] += data['docs'].select{|doc| doc['docInfo'][CORPUS_TITLE_FIELD].eql?(corpus) }.size
           end
-          values = data['docs'].map{|doc| doc['docInfo'][label] }
+          values = data['docs'].map{|doc| doc['docInfo'].has_key?(label) && !doc['docInfo'][label].blank? && !doc['docInfo'][label].nil? ? doc['docInfo'][label] : 'Unknown' }
           values.uniq.each do |value|
-            v = value.blank? || value.nil? ? 'unknown' : value
-            metadatum[:values] << v unless metadatum[:values].include?(v)
+            metadatum[:values] << value unless metadatum[:values].include?(value)
           end
-          metadatum[:value_count] = (metadatum[:values] - ['unknown']).size
           documents['fields'][metadatum[:label]].concat(values.map{|value| metadatum[:values].index(value) })
         end
         if (data.has_key?('summary') && (!data['summary'].has_key?('windowHasNext') || !data['summary']['windowHasNext'])) || (!data.has_key?('summary') && data['docs'].size < number)
@@ -275,7 +273,13 @@ class MetadataHandler
         end
       end
     end
-    metadata.keys.each { |k| metadata["#{metadata[k][:group]}_#{metadata[k][:key]}"] = metadata[k]; metadata.delete(k) unless k.eql?("#{metadata[k][:group]}_#{metadata[k][:key]}") }
+    metadata.keys.each do |k|
+      metadata[k][:value_count] = (metadata[k][:values] - ['Unknown']).size
+      unless k.eql?("#{metadata[k][:group]}_#{metadata[k][:key]}")
+        metadata["#{metadata[k][:group]}_#{metadata[k][:key]}"] = metadata[k]
+        metadata.delete(k)
+      end
+    end
     rroot = Rails.root
     write_file(documents_file, documents)
     write_file(metadata_file, metadata)
