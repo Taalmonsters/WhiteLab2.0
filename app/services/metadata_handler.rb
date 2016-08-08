@@ -220,7 +220,7 @@ class MetadataHandler
     corpora = ENABLE_METADATA_FILTERING ? @whitelab.get_metadatum_values_by_label(500, 0, "label", "asc", CORPUS_TITLE_FIELD) : []
     
     offset = 0
-    number = 500
+    number = 2500
     unfiltered = true
     filters = ENABLE_METADATA_FILTERING ? corpora.map{|corpus| "#{CORPUS_TITLE_FIELD}:#{corpus}" } : ['[]']
     f = 0
@@ -247,28 +247,26 @@ class MetadataHandler
         f = f + 1
         offset = 0
       else
-        documents['document_ids'] = documents['document_ids'] + data['docs'].map{|doc| doc['docPid'] }
-        documents['token_counts'] = documents['token_counts'] + data['docs'].map{|doc| doc['docInfo']['lengthInTokens'] }
-        metadata.keys.in_groups_of(25).each do |group|
-          threads = []
-          group.select{|label| !label.nil? }.each do |label|
-            threads << Thread.new do
-              metadatum = metadata[label]
-              corpora.each do |corpus|
-                metadatum[:"document_count_#{corpus}"] = metadatum[:"document_count_#{corpus}"] + data['docs'].select{|doc| doc['docInfo'][CORPUS_TITLE_FIELD].eql?(corpus) }.size
-              end
-              values = data['docs'].map{|doc| doc['docInfo'][label] }
-              values.uniq.each do |value|
-                v = value.blank? || value.nil? ? 'unknown' : value
-                metadatum[:values] << v unless metadatum[:values].include?(v)
-              end
-              metadatum[:value_count] = (metadatum[:values] - ['unknown']).size
-              documents['fields'][metadatum[:label]] = documents['fields'][metadatum[:label]] + values.map{|value| metadatum[:values].index(value) }
+        documents['document_ids'].concat(data['docs'].map{|doc| doc['docPid'] })
+        documents['token_counts'].concat(data['docs'].map{|doc| doc['docInfo']['lengthInTokens'] })
+        threads = []
+        metadata.keys.each do |label|
+          threads << Thread.new do
+            metadatum = metadata[label]
+            corpora.each do |corpus|
+              metadatum[:"document_count_#{corpus}"] = metadatum[:"document_count_#{corpus}"] + data['docs'].select{|doc| doc['docInfo'][CORPUS_TITLE_FIELD].eql?(corpus) }.size
             end
+            values = data['docs'].map{|doc| doc['docInfo'][label] }
+            values.uniq.each do |value|
+              v = value.blank? || value.nil? ? 'unknown' : value
+              metadatum[:values] << v unless metadatum[:values].include?(v)
+            end
+            metadatum[:value_count] = (metadatum[:values] - ['unknown']).size
+            documents['fields'][metadatum[:label]].concat(values.map{|value| metadatum[:values].index(value) })
           end
-          threads.each do |t|
-            t.join
-          end
+        end
+        threads.each do |t|
+          t.join
         end
         if (data.has_key?('summary') && (!data['summary'].has_key?('windowHasNext') || !data['summary']['windowHasNext'])) || (!data.has_key?('summary') && data['docs'].size < number)
           if !unfiltered && f < filters.size - 1
