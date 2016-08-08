@@ -221,7 +221,7 @@ class MetadataHandler
     corpora = ENABLE_METADATA_FILTERING ? @whitelab.get_metadatum_values_by_label(500, 0, "label", "asc", CORPUS_TITLE_FIELD) : []
     
     offset = 0
-    number = 500
+    number = 2500
     unfiltered = true
     filters = ENABLE_METADATA_FILTERING ? corpora.map{|corpus| "#{CORPUS_TITLE_FIELD}:#{corpus}" } : ['[]']
     f = 0
