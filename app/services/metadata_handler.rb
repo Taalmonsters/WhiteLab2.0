@@ -260,17 +260,12 @@ class MetadataHandler
           File.open(metadatum[:file], "a") do |file|
             data['docs'].each do |doc|
               if doc['docInfo'].has_key?(label) && !doc['docInfo'][label].blank? && !doc['docInfo'][label].nil?
-                file.write "doc['docInfo'][label]\n"
+                file.write "#{doc['docInfo'][label]}\n"
               else
                 file.write "Unknown\n"
               end
             end
           end
-          # values = data['docs'].map{|doc| doc['docInfo'].has_key?(label) && !doc['docInfo'][label].blank? && !doc['docInfo'][label].nil? ? doc['docInfo'][label] : 'Unknown' }
-          # values.uniq.each do |value|
-            # metadatum[:values] << value unless metadatum[:values].include?(value)
-          # end
-          # documents['fields'][metadatum[:label]].concat(values.map{|value| metadatum[:values].index(value) })
         end
         if (data.has_key?('summary') && (!data['summary'].has_key?('windowHasNext') || !data['summary']['windowHasNext'])) || (!data.has_key?('summary') && data['docs'].size < number)
           if !unfiltered && f < filters.size - 1
@@ -296,7 +291,6 @@ class MetadataHandler
         metadata.delete(k)
       end
     end
-    rroot = Rails.root
     write_file(documents_file, documents)
     write_file(metadata_file, metadata)
     @logger.info "Finished generating metadata files."
