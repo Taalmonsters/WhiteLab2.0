@@ -234,6 +234,8 @@ class MetadataHandler
         metadatum[:group] = 'Metadata'
         metadatum[:label] = "#{metadatum[:group]}_#{metadatum[:key]}"
       end
+      metadatum[:file] = Rails.root.join("config", "metadata_#{backend}", "#{metadatum[:label]}.txt")
+      File.delete(metadatum[:file]) if File.exists?(metadatum[:file])
       corpora.each do |corpus|
         metadatum[:"document_count_#{corpus}"] = 0
       end
@@ -255,11 +257,20 @@ class MetadataHandler
           corpora.each do |corpus|
             metadatum[:"document_count_#{corpus}"] += data['docs'].select{|doc| doc['docInfo'][CORPUS_TITLE_FIELD].eql?(corpus) }.size
           end
-          values = data['docs'].map{|doc| doc['docInfo'].has_key?(label) && !doc['docInfo'][label].blank? && !doc['docInfo'][label].nil? ? doc['docInfo'][label] : 'Unknown' }
-          values.uniq.each do |value|
-            metadatum[:values] << value unless metadatum[:values].include?(value)
+          File.open(metadatum[:file], "a") do |file|
+            data['docs'].each do |doc|
+              if doc['docInfo'].has_key?(label) && !doc['docInfo'][label].blank? && !doc['docInfo'][label].nil?
+                file.write doc['docInfo'][label]
+              else
+                file.write "Unknown"
+              end
+            end
           end
-          documents['fields'][metadatum[:label]].concat(values.map{|value| metadatum[:values].index(value) })
+          # values = data['docs'].map{|doc| doc['docInfo'].has_key?(label) && !doc['docInfo'][label].blank? && !doc['docInfo'][label].nil? ? doc['docInfo'][label] : 'Unknown' }
+          # values.uniq.each do |value|
+            # metadatum[:values] << value unless metadatum[:values].include?(value)
+          # end
+          # documents['fields'][metadatum[:label]].concat(values.map{|value| metadatum[:values].index(value) })
         end
         if (data.has_key?('summary') && (!data['summary'].has_key?('windowHasNext') || !data['summary']['windowHasNext'])) || (!data.has_key?('summary') && data['docs'].size < number)
           if !unfiltered && f < filters.size - 1
@@ -274,7 +285,12 @@ class MetadataHandler
       end
     end
     metadata.keys.each do |k|
+      values = File.readlines(metadata[k][:file])
+      metadata[k][:values] = values.uniq
+      values.map!{|value| metadata[k][:values].index(value) }
+      documents['fields'][metadata[k][:label]] = values
       metadata[k][:value_count] = (metadata[k][:values] - ['Unknown']).size
+      File.delete(metadata[k][:file])
       unless k.eql?("#{metadata[k][:group]}_#{metadata[k][:key]}")
         metadata["#{metadata[k][:group]}_#{metadata[k][:key]}"] = metadata[k]
         metadata.delete(k)
