@@ -12,12 +12,17 @@ server, since it uses REST calls to communicate with the index.
 Requirements
 ============
 
-- BlackLab
 - Tomcat 7
+- BlackLab
 - Ruby
 - Apache and Phusion Passenger
 - MySQL
 - WhiteLab 2.0 web application
+
+Tomcat 7
+========
+
+If you have not yet installed Tomcat 7, you can download it from [here](http://tomcat.apache.org/download-70.cgi). Installation instructions can be found [here](https://tomcat.apache.org/tomcat-7.0-doc/setup.html).
 
 BlackLab
 ========
@@ -35,11 +40,6 @@ This will create a directory labeled 'server' in your BlackLab folder, with a su
 ```
 $ cp server/target/blacklab-server-[VERSION].war /path/to/tomcat/webapps/blacklab-server.war
 ```
-
-Tomcat 7
-========
-
-If you have not yet installed Tomcat 7, you can download it from [here](http://tomcat.apache.org/download-70.cgi). Installation instructions can be found [here](https://tomcat.apache.org/tomcat-7.0-doc/setup.html).
 
 Ruby
 ====
