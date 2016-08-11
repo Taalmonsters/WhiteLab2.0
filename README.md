@@ -8,9 +8,10 @@ Main changes in this version:
 - Added support for multiple corpora;
 - The Search page is set as the home page and the original Home page has been moved to Info;
 - Admin interface to control contents of the Info page, interface translations, and available metadata;
-- Added support for a Neo4J backend comprised of a [data importer](https://github.com/Taalmonsters/WhiteLab2.0-Importer) and [search plugin](https://github.com/Taalmonsters/WhiteLab2.0-Neo4J-Plugin) as an alternative to [BlackLab](https://github.com/INL/BlackLab) and [BlackLab Server](https://github.com/INL/BlackLab-server);
-- Added support for audio. The Neo4J backend allows for playback of fragments matching query hits, while the BlackLab backend only allows for playback of entire files;
-- Custom indexers have been created for BlackLab that are suited for importing the SoNaR reference corpus and the CGN corpus, each with their individual metadata formats. Fields have been added to these indexers to allow integration with WhiteLab 2.0 and the use of audio. A WhiteLab 2.0 compatible version of BlackLab is available [here](https://github.com/Taalmonsters/BlackLab).
+- Added support for a Neo4J backend comprised of a [data importer](https://github.com/Taalmonsters/WhiteLab2.0-Importer) and [search plugin](https://github.com/Taalmonsters/WhiteLab2.0-Neo4J-Plugin) as an alternative to [BlackLab](https://github.com/INL/BlackLab);
+- Added support for audio. Both the Neo4J and the BlackLab backends allow for playback of fragments matching query hits, and of entire files;
+- Custom indexers have been created for BlackLab that are suited for importing corpora consisting of FoLiA files with or without phonetic transcriptions and audio time codes, with either CMDI or IMDI metadata files.
+- The site tour has been replaced with easier to navigate page instructions.
 
 Installation and configuration
 ==============================
