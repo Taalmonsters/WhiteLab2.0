@@ -260,9 +260,9 @@ class MetadataHandler
           File.open(metadatum[:file], "a") do |file|
             data['docs'].each do |doc|
               if doc['docInfo'].has_key?(label) && !doc['docInfo'][label].blank? && !doc['docInfo'][label].nil?
-                file.write doc['docInfo'][label]
+                file.write "doc['docInfo'][label]\n"
               else
-                file.write "Unknown"
+                file.write "Unknown\n"
               end
             end
           end
