@@ -216,7 +216,9 @@ class MetadataHandler
   
   def generate_metadata_files(backend)
     @logger.info "Generating metadata files..."
-    documents = {
+    dfile = documents_file
+    dfile_exists = File.exists?(dfile)
+    documents = dfile_exists ? JSON.parse(File.read(dfile)) : {
       'document_ids' => [],
       'token_counts' => [],
       'fields' => {}
@@ -260,8 +262,10 @@ class MetadataHandler
         f += 1
         offset = 0
       else
-        documents['document_ids'].concat(data['docs'].map{|doc| doc['docPid'] })
-        documents['token_counts'].concat(data['docs'].map{|doc| doc['docInfo']['lengthInTokens'] })
+        unless dfile_exists
+          documents['document_ids'].concat(data['docs'].map{|doc| doc['docPid'] })
+          documents['token_counts'].concat(data['docs'].map{|doc| doc['docInfo']['lengthInTokens'] })
+        end
         metadata.keys.each do |label|
           unless skip.include?(label)
             metadatum = metadata[label]
@@ -269,6 +273,8 @@ class MetadataHandler
             corpora.each do |corpus|
               metadatum[:"document_count_#{corpus}"] += data['docs'].select{|doc| doc['docInfo'][CORPUS_TITLE_FIELD].eql?(corpus) }.size
             end
+          end
+          unless documents['fields'].has_key?(metadatum[:label])
             File.open(metadatum[:file], "a") do |file|
               data['docs'].each do |doc|
                 if doc['docInfo'].has_key?(fieldLabel) && !doc['docInfo'][fieldLabel].blank? && !doc['docInfo'][fieldLabel].nil?
@@ -293,7 +299,7 @@ class MetadataHandler
       end
     end
     metadata.keys.each do |k|
-      unless skip.include?(k)
+      unless documents['fields'].has_key?(metadata[k][:label])
         values = File.readlines(metadata[k][:file]).map(&:chomp)
         metadata[k][:values] = values.uniq
         s = (metadata[k][:values] - ['Unknown']).size
@@ -310,7 +316,7 @@ class MetadataHandler
         write_file(mfile, metadata)
       end
     end
-    write_file(documents_file, documents)
+    write_file(dfile, documents)
     @logger.info "Finished generating metadata files."
   end
   
