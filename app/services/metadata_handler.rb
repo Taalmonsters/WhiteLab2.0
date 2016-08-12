@@ -230,7 +230,7 @@ class MetadataHandler
     skip = metadata.keys + ['Metadata_lengthInTokens','Metadata_metadataCid','Metadata_version']
     @whitelab.get_metadata_from_server(0, 0, nil, nil).each do |metadatum|
       if metadatum[:group].eql?(metadatum[:key])
-        metadatum[:group] = 'Metadata'
+        metadatum[:group] = metadatum[:key].eql?('Id') ? 'Language' : 'Metadata'
         metadatum[:label] = "#{metadatum[:group]}_#{metadatum[:key]}"
       end
       unless skip.include?(metadatum[:label]) || metadatum[:label].include?('.')
@@ -257,15 +257,16 @@ class MetadataHandler
         documents['token_counts'].concat(data['docs'].map{|doc| doc['docInfo']['lengthInTokens'] })
         metadata.keys.each do |label|
           metadatum = metadata[label]
+          fieldLabel = label.start_with?('Metadata') ? metadatum[:key] : label
           corpora.each do |corpus|
             metadatum[:"document_count_#{corpus}"] += data['docs'].select{|doc| doc['docInfo'][CORPUS_TITLE_FIELD].eql?(corpus) }.size
           end
           File.open(metadatum[:file], "a") do |file|
             data['docs'].each do |doc|
-              if doc['docInfo'].has_key?(label) && !doc['docInfo'][label].blank? && !doc['docInfo'][label].nil?
-                file.write "#{doc['docInfo'][label]}\n"
+              if doc['docInfo'].has_key?(fieldLabel) && !doc['docInfo'][fieldLabel].blank? && !doc['docInfo'][fieldLabel].nil?
+                file.puts "#{doc['docInfo'][fieldLabel].gsub(/\n+/,", ").gsub(/ +/,' ').gsub(/= /,'=').gsub(/, ,/,',')}"
               else
-                file.write "Unknown\n"
+                file.puts "Unknown"
               end
             end
           end
@@ -283,19 +284,19 @@ class MetadataHandler
       end
     end
     metadata.keys.each do |k|
-      values = File.readlines(metadata[k][:file])
+      values = File.readlines(metadata[k][:file]).map(&:chomp)
       metadata[k][:values] = values.uniq
       s = (metadata[k][:values] - ['Unknown']).size
       metadata[k][:value_count] = s
       if s == values.size
         values = (0..s-1).to_a
       elsif s < 2
-        values = Array.new(s, 0)
+        values = Array.new(values.size, 0)
       else
         values.map!{|value| metadata[k][:values].index(value) }
       end
       documents['fields'][metadata[k][:label]] = values
-      File.delete(metadata[k][:file])
+      # File.delete(metadata[k][:file])
       write_file(mfile, metadata)
     end
     write_file(documents_file, documents)
