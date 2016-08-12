@@ -229,7 +229,7 @@ class MetadataHandler
     f = 0
     mfile = metadata_file
     metadata = File.exists?(mfile) ? JSON.parse(File.read(mfile)) : {}
-    skip = metadata.keys + ['Metadata_lengthInTokens','Metadata_metadataCid','Metadata_version']
+    skip = ['Metadata_lengthInTokens','Metadata_metadataCid','Metadata_version']
     @whitelab.get_metadata_from_server(0, 0, nil, nil).each do |metadatum|
       if metadatum[:group].eql?(metadatum[:key])
         metadatum[:group] = metadatum[:key].eql?('Id') ? 'Language' : 'Metadata'
