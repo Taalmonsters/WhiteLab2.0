@@ -258,17 +258,19 @@ class MetadataHandler
         documents['document_ids'].concat(data['docs'].map{|doc| doc['docPid'] })
         documents['token_counts'].concat(data['docs'].map{|doc| doc['docInfo']['lengthInTokens'] })
         metadata.keys.each do |label|
-          metadatum = metadata[label]
-          fieldLabel = label.start_with?('Metadata') ? metadatum[:key] : label
-          corpora.each do |corpus|
-            metadatum[:"document_count_#{corpus}"] += data['docs'].select{|doc| doc['docInfo'][CORPUS_TITLE_FIELD].eql?(corpus) }.size
-          end
-          File.open(metadatum[:file], "a") do |file|
-            data['docs'].each do |doc|
-              if doc['docInfo'].has_key?(fieldLabel) && !doc['docInfo'][fieldLabel].blank? && !doc['docInfo'][fieldLabel].nil?
-                file.puts "#{doc['docInfo'][fieldLabel].gsub(/\n+/,", ").gsub(/ +/,' ').gsub(/= /,'=').gsub(/, ,/,',')}"
-              else
-                file.puts "Unknown"
+          unless skip.include?(label)
+            metadatum = metadata[label]
+            fieldLabel = label.start_with?('Metadata') ? metadatum[:key] : label
+            corpora.each do |corpus|
+              metadatum[:"document_count_#{corpus}"] += data['docs'].select{|doc| doc['docInfo'][CORPUS_TITLE_FIELD].eql?(corpus) }.size
+            end
+            File.open(metadatum[:file], "a") do |file|
+              data['docs'].each do |doc|
+                if doc['docInfo'].has_key?(fieldLabel) && !doc['docInfo'][fieldLabel].blank? && !doc['docInfo'][fieldLabel].nil?
+                  file.puts "#{doc['docInfo'][fieldLabel].gsub(/\n+/,", ").gsub(/ +/,' ').gsub(/= /,'=').gsub(/, ,/,',')}"
+                else
+                  file.puts "Unknown"
+                end
               end
             end
           end
@@ -286,20 +288,22 @@ class MetadataHandler
       end
     end
     metadata.keys.each do |k|
-      values = File.readlines(metadata[k][:file]).map(&:chomp)
-      metadata[k][:values] = values.uniq
-      s = (metadata[k][:values] - ['Unknown']).size
-      metadata[k][:value_count] = s
-      if s == values.size
-        values = (0..s-1).to_a
-      elsif s < 2
-        values = Array.new(values.size, 0)
-      else
-        values.map!{|value| metadata[k][:values].index(value) }
+      unless skip.include?(k)
+        values = File.readlines(metadata[k][:file]).map(&:chomp)
+        metadata[k][:values] = values.uniq
+        s = (metadata[k][:values] - ['Unknown']).size
+        metadata[k][:value_count] = s
+        if s == values.size
+          values = (0..s-1).to_a
+        elsif s < 2
+          values = Array.new(values.size, 0)
+        else
+          values.map!{|value| metadata[k][:values].index(value) }
+        end
+        documents['fields'][metadata[k][:label]] = values
+        File.delete(metadata[k][:file])
+        write_file(mfile, metadata)
       end
-      documents['fields'][metadata[k][:label]] = values
-      File.delete(metadata[k][:file])
-      write_file(mfile, metadata)
     end
     write_file(documents_file, documents)
     @logger.info "Finished generating metadata files."
