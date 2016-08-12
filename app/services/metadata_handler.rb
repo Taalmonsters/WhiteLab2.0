@@ -227,25 +227,21 @@ class MetadataHandler
     f = 0
     mfile = metadata_file
     metadata = File.exists?(mfile) ? JSON.parse(File.read(mfile)) : {}
-    skip = metadata.keys
+    skip = metadata.keys + ['Metadata_lengthInTokens','Metadata_metadataCid','Metadata_version']
     @whitelab.get_metadata_from_server(0, 0, nil, nil).each do |metadatum|
-      unless skip.include?("#{metadatum[:group]}_#{metadatum[:key]}") || metadatum[:key].eql?('fromInputFile') || metadatum[:group].include?('.') || metadatum[:key].include?('.')
-        metadata["#{metadatum[:group]}_#{metadatum[:key]}"] = metadatum
+      if metadatum[:group].eql?(metadatum[:key])
+        metadatum[:group] = 'Metadata'
+        metadatum[:label] = "#{metadatum[:group]}_#{metadatum[:key]}"
       end
-    end
-    metadata.each do |label, metadatum|
-      unless skip.include?(label)
+      unless skip.include?(metadatum[:label]) || metadatum[:label].include?('.')
         metadatum[:values] = []
         metadatum[:value_count] = 0
-        if metadatum[:group].eql?(metadatum[:key])
-          metadatum[:group] = 'Metadata'
-          metadatum[:label] = "#{metadatum[:group]}_#{metadatum[:key]}"
-        end
         metadatum[:file] = Rails.root.join("config", "metadata_#{backend}", "#{metadatum[:label]}.txt")
         File.delete(metadatum[:file]) if File.exists?(metadatum[:file])
         corpora.each do |corpus|
           metadatum[:"document_count_#{corpus}"] = 0
         end
+        metadata[metadatum[:label]] = metadatum
       end
     end
     done = false
