@@ -225,21 +225,28 @@ class MetadataHandler
     unfiltered = true
     filters = ENABLE_METADATA_FILTERING ? corpora.map{|corpus| "#{CORPUS_TITLE_FIELD}:#{corpus}" } : ['[]']
     f = 0
-    metadata = {}
-    @whitelab.get_metadata_from_server(0, 0, nil, nil).select{|metadatum| !metadatum[:label].eql?('fromInputFile') && !metadatum[:label].end_with?('fromInputFile') && !metadatum[:label].include?('.') }.each{|metadatum| metadata[metadatum[:label]] = metadatum }
+    mfile = metadata_file
+    metadata = File.exists?(mfile) ? JSON.parse(File.read(mfile)) : {}
+    skip = metadata.keys
+    @whitelab.get_metadata_from_server(0, 0, nil, nil).each do |metadatum|
+      unless skip.include?("#{metadatum[:group]}_#{metadatum[:key]}") || metadatum[:key].eql?('fromInputFile') || metadatum[:group].include?('.') || metadatum[:key].include?('.')
+        metadata["#{metadatum[:group]}_#{metadatum[:key]}"] = metadatum
+      end
+    end
     metadata.each do |label, metadatum|
-      metadatum[:values] = []
-      metadatum[:value_count] = 0
-      if metadatum[:group].eql?(metadatum[:key])
-        metadatum[:group] = 'Metadata'
-        metadatum[:label] = "#{metadatum[:group]}_#{metadatum[:key]}"
+      unless skip.include?(label)
+        metadatum[:values] = []
+        metadatum[:value_count] = 0
+        if metadatum[:group].eql?(metadatum[:key])
+          metadatum[:group] = 'Metadata'
+          metadatum[:label] = "#{metadatum[:group]}_#{metadatum[:key]}"
+        end
+        metadatum[:file] = Rails.root.join("config", "metadata_#{backend}", "#{metadatum[:label]}.txt")
+        File.delete(metadatum[:file]) if File.exists?(metadatum[:file])
+        corpora.each do |corpus|
+          metadatum[:"document_count_#{corpus}"] = 0
+        end
       end
-      metadatum[:file] = Rails.root.join("config", "metadata_#{backend}", "#{metadatum[:label]}.txt")
-      File.delete(metadatum[:file]) if File.exists?(metadatum[:file])
-      corpora.each do |corpus|
-        metadatum[:"document_count_#{corpus}"] = 0
-      end
-      documents['fields'][metadatum[:label]] = []
     end
     done = false
     while !done do
@@ -282,17 +289,20 @@ class MetadataHandler
     metadata.keys.each do |k|
       values = File.readlines(metadata[k][:file])
       metadata[k][:values] = values.uniq
-      values.map!{|value| metadata[k][:values].index(value) }
-      documents['fields'][metadata[k][:label]] = values
-      metadata[k][:value_count] = (metadata[k][:values] - ['Unknown']).size
-      File.delete(metadata[k][:file])
-      unless k.eql?("#{metadata[k][:group]}_#{metadata[k][:key]}")
-        metadata["#{metadata[k][:group]}_#{metadata[k][:key]}"] = metadata[k]
-        metadata.delete(k)
+      s = (metadata[k][:values] - ['Unknown']).size
+      metadata[k][:value_count] = s
+      if s == values.size
+        values = (0..s-1).to_a
+      elsif s < 2
+        values = Array.new(s, 0)
+      else
+        values.map!{|value| metadata[k][:values].index(value) }
       end
+      documents['fields'][metadata[k][:label]] = values
+      File.delete(metadata[k][:file])
+      write_file(mfile, metadata)
     end
     write_file(documents_file, documents)
-    write_file(metadata_file, metadata)
     @logger.info "Finished generating metadata files."
   end
   
