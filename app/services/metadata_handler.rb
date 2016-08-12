@@ -252,10 +252,6 @@ class MetadataHandler
         metadatum[:group] = metadatum[:key].eql?('Id') ? 'Language' : 'Metadata'
         metadatum[:label] = "#{metadatum[:group]}_#{metadatum[:key]}"
       end
-      if metadata.has_key?(metadatum[:label]) && metadata[metadatum[:label]]['values'].size > 0
-        @logger.info "Skipping #{metadatum[:label]} - already done"
-        skip << metadatum[:label]
-      end
       unless skip.include?(metadatum[:label]) || metadatum[:label].include?('.')
         metadatum[:values] = []
         metadatum[:value_count] = 0
