@@ -121,7 +121,7 @@ var Whitelab = {
 	loadGroupedDocs : function(group_id,group_value) {
 		var qid = $("#result-pane").data("query-id");
 		var o = $("#"+group_id).data("offset");
-		group_value = encodeURIComponent(group_value);
+		group_value = encodeURIComponent(group_value.replace(/\./g,'\\.'));
 		if ($("#main-div[data-namespace='search']").length > 0)
 			$.getScript('/search/result/id/'+qid+'/groupdocs.js?group_id='+group_id+'&docs_group='+group_value+'&offset='+o+'&number=20');
 		else if ($("#main-div[data-namespace='explore']").length > 0)
@@ -130,7 +130,7 @@ var Whitelab = {
 	
 	loadGroupedHits : function(group_id,group_value) {
 		Whitelab.debug("loadGroupedHits");
-		group_value = encodeURIComponent(group_value);
+		group_value = encodeURIComponent(group_value.replace(/\./g,'\\.'));
 		var qid = $("#result-pane").data("query-id");
 		var o = $("#"+group_id).data("offset");
 		if ($("#main-div[data-namespace='search']").length > 0)
@@ -171,10 +171,10 @@ var Whitelab = {
 			filter = '';
 		var group = $("#query-details td.group").html();
 		if (group.indexOf("hit_") > -1) {
-			group_value = encodeURIComponent(group_value);
+			group_value = encodeURIComponent(group_value.replace(/\./g,'\\.'));
 			patt = "[word=\"(?c)"+group_value+"\"]";
 		} else if (group.indexOf("_left") > -1) {
-			group_value = encodeURIComponent(group_value);
+			group_value = encodeURIComponent(group_value.replace(/\./g,'\\.'));
 			if (group.indexOf("lemma_") > -1)
 				patt = "[lemma=\"(?c)"+group_value+"\"]"+patt;
 			else if (group.indexOf("pos_") > -1)
@@ -184,7 +184,7 @@ var Whitelab = {
 			else
 				patt = "[word=\"(?c)"+group_value+"\"]"+patt;
 		} else if (group.indexOf("_right") > -1) {
-			group_value = encodeURIComponent(group_value);
+			group_value = encodeURIComponent(group_value.replace(/\./g,'\\.'));
 			if (group.indexOf("lemma_") > -1)
 				patt = patt+"[lemma=\"(?c)"+group_value+"\"]";
 			else if (group.indexOf("pos_") > -1)
@@ -211,7 +211,7 @@ var Whitelab = {
 			filter = '';
 		var group = $("#query-details td.group").html();
 		if (group.indexOf("hit_") > -1) {
-			group_value = encodeURIComponent(group_value);
+			group_value = encodeURIComponent(group_value.replace(/\./g,'\\.'));
 			patt_parts = patt.substring(1,patt.length - 1).split('][');
 			group_parts = group_value.replace(/([\(\)\'\"\[\]])/g,'\\'+"$1").split(' ');
 			qgroup = group.split(/[\:_]/)[1].replace('text','word');
@@ -226,7 +226,7 @@ var Whitelab = {
 			}
 			patt = encodeURIComponent(new_parts.join("")).replace(/\=/g,'%3D').replace(/\%252C/g,'%2C');
 		} else if (group.indexOf("left") > -1) {
-			group_value = encodeURIComponent(group_value);
+			group_value = encodeURIComponent(group_value.replace(/\./g,'\\.'));
 			if (group.indexOf("lemma") > -1)
 				patt = "[lemma=\"(?c)"+group_value+"\"]"+patt;
 			else if (group.indexOf("pos") > -1)
@@ -236,7 +236,7 @@ var Whitelab = {
 			else
 				patt = "[word=\"(?c)"+group_value+"\"]"+patt;
 		} else if (group.indexOf("right") > -1) {
-			group_value = encodeURIComponent(group_value);
+			group_value = encodeURIComponent(group_value.replace(/\./g,'\\.'));
 			if (group.indexOf("lemma") > -1)
 				patt = patt+"[lemma=\"(?c)"+group_value+"\"]";
 			else if (group.indexOf("pos") > -1)
