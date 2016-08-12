@@ -235,6 +235,7 @@ class MetadataHandler
         metadatum[:group] = metadatum[:key].eql?('Id') ? 'Language' : 'Metadata'
         metadatum[:label] = "#{metadatum[:group]}_#{metadatum[:key]}"
       end
+      skip << metadatum[:label] if metadata[metadatum[:label]][:values].size > 0
       unless skip.include?(metadatum[:label]) || metadatum[:label].include?('.')
         metadatum[:values] = []
         metadatum[:value_count] = 0
@@ -267,7 +268,7 @@ class MetadataHandler
             File.open(metadatum[:file], "a") do |file|
               data['docs'].each do |doc|
                 if doc['docInfo'].has_key?(fieldLabel) && !doc['docInfo'][fieldLabel].blank? && !doc['docInfo'][fieldLabel].nil?
-                  file.puts "#{doc['docInfo'][fieldLabel].gsub(/\n+/,", ").gsub(/ +/,' ').gsub(/= /,'=').gsub(/, ,/,',')}"
+                  file.puts "#{doc['docInfo'][fieldLabel].gsub(/\n/,'\n')}"
                 else
                   file.puts "Unknown"
                 end
