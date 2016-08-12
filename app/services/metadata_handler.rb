@@ -42,7 +42,8 @@ class MetadataHandler
     docs = []
     filter_to_hash(filter_str).each do |group, keys|
       keys.each do |key, mdata|
-        metadatum = get_metadatum(group, key)
+        metadatum = @metadata["#{group}_#{key}"]
+        p metadatum
         mdata.each do |set, values|
           if values.any?
             set_matches = get_documents_matching_values(metadatum, values, set.eql?(:negative))
@@ -67,15 +68,21 @@ class MetadataHandler
   def get_filtered_group_composition(option, filter)
     no_filter = !filter || filter.eql?("")
     group, key = get_group_and_key_from_label(option)
-    label = "#{group}_#{key}"
-    return [] if !@fields.has_key?(label)
-    list = @fields[label]
-    field_values = @metadata[label]['values']
-    if no_filter
-      return list.each_index.group_by{|i| list[i] }.select{|value,doc_indices| !value.nil? }.map{|value,doc_indices| { option => field_values[value], 'hit_count' => doc_indices.map{|d| @token_counts[d] }.reduce(:+), 'document_count' => doc_indices.size } }
-    else
-      return filter_documents(filter).group_by{|i| list[i] }.select{|value,doc_indices| !value.nil? }.map{|value,doc_indices| { option => field_values[value], 'hit_count' => doc_indices.map{|d| @token_counts[d] }.reduce(:+), 'document_count' => doc_indices.size } }
-    end
+    # label = "#{group}_#{key}"
+    # return [] if !@fields.has_key?(label)
+    # list = @fields[label]
+    # field_values = @metadata[label]['values']
+    # if no_filter
+      # return list.each_index.group_by{|i| list[i] }.select{|value,doc_indices| !value.nil? }.map{|value,doc_indices| { option => field_values[value], 'hit_count' => doc_indices.map{|d| @token_counts[d] }.reduce(:+), 'document_count' => doc_indices.size } }
+    # else
+      # return filter_documents(filter).group_by{|i| list[i] }.select{|value,doc_indices| !value.nil? }.map{|value,doc_indices| { option => field_values[value], 'hit_count' => doc_indices.map{|d| @token_counts[d] }.reduce(:+), 'document_count' => doc_indices.size } }
+    # end
+    
+    labels = get_labels_from_group_and_key(group, key).select{|label| @fields.has_key?(label) }
+    return [] unless labels.any?
+    return filter_documents(filter).group_by{|i| labels.map{|label| @metadata[label]['values'][@fields[label][i]] }.select{|value| !value.nil? && !value.eql?('Unknown')}.join(",") }.map{|value,doc_indices| { option => value, 'hit_count' => doc_indices.map{|d| @token_counts[d] }.reduce(:+), 'document_count' => doc_indices.size } }
+    
+    
   end
   
   def get_filtered_word_count(filter)
@@ -118,6 +125,10 @@ class MetadataHandler
     return groups
   end
   
+  def get_labels_from_group_and_key(group, key)
+    return @metadata.keys.select{|mlabel| @metadata[mlabel]['group'].eql?(group) && @metadata[mlabel]['key'].eql?(key) }
+  end
+  
   # Load paginated list of metadata in index
   def get_metadata(number, offset, sort, order)
     fields = @metadata.values.select{|data| !data['key'].include?("\.") }
@@ -127,7 +138,8 @@ class MetadataHandler
   def get_metadatum(group, key)
     group = group.eql?(key) ? 'Metadata' : group
     label = group.eql?('Metadata') ? key : "#{group}_#{key}"
-    return @metadata ? @metadata.values.select{|data| data['group'].eql?(group) && data['key'].eql?(key) }[0] : { 'group' => group, 'key' => key, 'label' => label }
+    matches = @metadata ? @metadata.values.select{|data| data['group'].eql?(group) && data['key'].eql?(key) } : [{ 'group' => group, 'key' => key, 'label' => label }]
+    return matches.size == 1 ? matches[0] : matches
   end
   
   def get_total_word_count
@@ -195,10 +207,14 @@ class MetadataHandler
     filter[1, filter.length - 2].split(')AND(').each do |filter_part|
       label, unstripped_value = filter_part.split(/\!*[=\:]/)
       unless unstripped_value.blank?
+        stripped_value = strip_value(unstripped_value)
         group, key = get_group_and_key_from_label(label)
-        has_group = filters.has_key?(group)
+        metadatum = get_metadatum(group, key)
+        metadatum = metadatum.is_a?(Array) ? metadatum.select{|m| m['values'].include?(stripped_value) }[0] : metadatum
+        has_group = filters.has_key?(metadatum['group'])
+        group, key = get_group_and_key_from_label(metadatum['label'])
         matches = has_group && filters[group].has_key?(key) ? filters[group][key] : { :positive => [], :negative => [] }
-        matches[filter_part.eql?("#{label}!=#{unstripped_value}") ? :negative : :positive] << value_to_index("#{group}_#{key}", strip_value(unstripped_value))
+        matches[filter_part.eql?("#{label}!=#{unstripped_value}") ? :negative : :positive] << value_to_index("#{metadatum['label']}", stripped_value)
         filters[group] = {} unless has_group
         filters[group][key] = matches
       end
@@ -316,15 +332,27 @@ class MetadataHandler
   
   def get_documents_matching_values(metadatum, values, inverted = false)
     return [] if !values.any?
-    arr = @fields["#{metadatum['label']}"]
-    docs =  arr.each_index.select do |i|
-      if inverted
-        !values.include?(arr[i])
-      else
-        values.include?(arr[i])
+    if metadatum.is_a?(Array)
+      docs = []
+      @doc_ids.each_index.select do |i|
+        doc_values = metadatum.map{|m| @fields["#{m['label']}"][i] }
+        if inverted
+          (values & doc_values).size == 0
+        else
+          (values & doc_values).size > 0
+        end
       end
+    else
+      arr = @fields["#{metadatum['label']}"]
+      docs =  arr.each_index.select do |i|
+        if inverted
+          !values.include?(arr[i])
+        else
+          values.include?(arr[i])
+        end
+      end
+      return docs
     end
-    return docs
   end
   
   # Load options for grouping by metadatum
@@ -335,7 +363,10 @@ class MetadataHandler
         (namespace.eql?('search') && data.has_key?('searchable') && data['searchable'].eql?('false'))
         tr_group = group_translation_key(data['group'])
         groups[tr_group] = [] unless groups.has_key?(tr_group)
-        groups[tr_group] << [key_translation_key(key), data['label']]
+        kt = key_translation_key(key)
+        label = "#{data['group']}_#{data['key']}"
+        groups[tr_group] << [kt, label] unless groups[tr_group].include?([kt, label])
+        # groups[tr_group] << [key_translation_key(key), data['label']]
       end
     end
     groups

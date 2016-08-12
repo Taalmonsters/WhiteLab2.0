@@ -61,8 +61,8 @@ class MetadataController < ApplicationController
   
   # Load metadatum values by group and key
   def values
-    @values = @metadatum['values']
-    @value_count = @metadatum['value_count']
+    @values = @metadatum.map{|m| m['values']}.flatten.uniq
+    @value_count = (@values - ["Unknown"]).size
     @value_list_incomplete = false
     # if @values.blank?
       # mvalues = @metadata_handler.load_values_from_server(0, 0, "value", "asc", @group, @key)
