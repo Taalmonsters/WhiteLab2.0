@@ -44,7 +44,7 @@ module WhitelabQuery
       if only.include?(name) && !value.blank?
         name = translations.keys.include?(name) ? translations[name] : name
         value = translations.keys.include?("#{name}_value") ? translations["#{name}_value"] : value
-        prms << "#{name}=#{value.to_s.gsub('&','%26')}"
+        prms << "#{name}=#{value.to_s.gsub('&','%26').gsub('\\','%5C')}"
       end
     end
     return prms.join('&')
