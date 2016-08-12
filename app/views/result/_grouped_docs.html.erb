@@ -24,7 +24,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<% @query.result['results'].each_with_index do |group,i| %>
+				<% @query.result(false)['results'].each_with_index do |group,i| %>
 					<tr class="clickable grouped-doc-row" data-group-value="<%= group[@group] %>" data-group-id="<%= @query.group+i.to_s %>">
 						<td><%= group[@group].html_safe %></td>
 						<td class="progress-field">

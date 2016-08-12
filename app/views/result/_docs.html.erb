@@ -25,7 +25,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<% @query.result['results'].each do |doc| %>
+				<% @query.result(false)['results'].each do |doc| %>
 					<tr class="clickable doc-row" data-docpid="<%= doc["docpid"] %>" data-hits="<%= doc["hit_count"] %>">
 						<td><b><%= doc["docpid"] %></b></td>
 						<% if ENABLE_METADATA_FILTERING %>

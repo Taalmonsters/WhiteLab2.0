@@ -4,13 +4,15 @@ class Search::QueriesController < QueriesController
   # Load hits for Search Query in selected document
   def doc_hits
     if @query && params.has_key?(:docpid)
+      sub_query = @query.dup
       @target = params[:docpid]
       field, id = @metadata_handler.docpid_to_id(@target)
-      @query.view = 1
-      @query.filter = "(#{field}:#{id})"
-      @query.offset = 0
-      @query.number = params[:hits]
-      @doc_hits = @query.result(false)["results"]
+      sub_query.view = 1
+      sub_query.filter = "(#{field}:#{id})"
+      sub_query.offset = 0
+      sub_query.number = params[:hits]
+      @doc_hits = sub_query.result(false)["results"]
+      sub_query.destroy
     end
     respond_to do |format|
       format.js do
@@ -23,13 +25,14 @@ class Search::QueriesController < QueriesController
   def docs_in_group
     @group_id = params[:group_id]
     if @query
-      @query = @query.clone
-      @query.filter = @query.filter.blank? ? "("+@query.group+"=\""+params[:docs_group]+"\")" : @query.filter+"AND("+@query.group+"=\""+params[:docs_group]+"\")"
-      @query.view = 2
-      @query.group = nil
-      @query.offset = params[:offset] || 0
-      @query.number = 20
-      @docs = @query.result["results"]
+      sub_query = @query.dup
+      sub_query.filter = @query.filter.blank? ? "("+@query.group+"=\""+params[:docs_group]+"\")" : @query.filter+"AND("+@query.group+"=\""+params[:docs_group]+"\")"
+      sub_query.view = 2
+      sub_query.group = nil
+      sub_query.offset = params[:offset] || 0
+      sub_query.number = 20
+      @docs = sub_query.result(false)["results"]
+      sub_query.destroy
     end
     respond_to do |format|
       format.js do
@@ -42,13 +45,14 @@ class Search::QueriesController < QueriesController
   def hits_in_group
     @group_id = params[:group_id]
     if @query
-      @query = @query.clone
-      @query.add_hits_group(params[:hits_group])
-      @query.view = 1
-      @query.group = nil
-      @query.offset = params[:offset] || 0
-      @query.number = 20
-      @hits = @query.result["results"]
+      sub_query = @query.dup
+      sub_query.add_hits_group(params[:hits_group])
+      sub_query.view = 1
+      sub_query.group = nil
+      sub_query.offset = params[:offset] || 0
+      sub_query.number = 20
+      @hits = sub_query.result(false)["results"]
+      sub_query.destroy
     end
     respond_to do |format|
       format.js do

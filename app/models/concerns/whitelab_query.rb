@@ -13,10 +13,9 @@ module WhitelabQuery
   def self.find_from_params(klass, page, user_id, params)
     if params.has_key?(:patt) || params.has_key?(:filter)
       options = klass.where(klass.where_data(user_id, page, params))
-      options_without_exports = options.select{|x| !x.exporting? }
+      options_without_exports = options.select{|x| x.not_exported? }
       query = options_without_exports.first if options_without_exports.size > 0
       query = options.first if options.size > 0 && !query
-      query = query.clone if query && query.exporting?
       unless query
         [:view, :group, :input_page].each do |param|
           if params.has_key?(param) && !params[param].blank?
@@ -103,6 +102,7 @@ module WhitelabQuery
   end
   
   def export
+    Rails.logger.info("EXPORTING WL QUERY")
     if self.finished? && !self.exporting?
       Thread.new do
         self.exporting!
@@ -117,7 +117,8 @@ module WhitelabQuery
         File.delete(self.result_file) if File.exists?(self.result_file)
         while o < max
           self.offset = o
-          res = self.result
+          res = self.result(false)
+          Rails.logger.info "RESULT: #{res}"
           CSV.open(self.result_file, "a", force_quotes: true) do |csv|
             csv << res['results'].first.keys if o == 0
             res['results'].each do |hash|

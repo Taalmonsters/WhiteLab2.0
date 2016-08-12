@@ -109,23 +109,32 @@ class Search::Query < ActiveRecord::Base
   end
   
   def update_from_params(params)
-    self.waiting! if self.failed?
-    if attribute_is_changed?(view,params[:view].to_i)
-      self.update_attributes({ :view => params[:view].to_i, :group => nil, :order => nil, :sort => nil, :offset => 0, :group_count => nil, :status => 0 })
-    elsif attribute_is_changed?(group,params[:group])
-      self.update_attributes({ :group => params[:group], :order => nil, :sort => nil, :offset => 0, :group_count => nil, :status => 0 })
+    new_query = self
+    new_query.waiting! if new_query.failed?
+    if attribute_is_changed?(new_query.view,params[:view].to_i)
+      if !new_query.not_exported?
+        new_query = self.dup
+        new_query.not_exported!
+      end
+      new_query.update_attributes({ :view => params[:view].to_i, :group => nil, :order => nil, :sort => nil, :offset => 0, :group_count => nil, :status => 0 })
+    elsif attribute_is_changed?(new_query.group,params[:group])
+      if !new_query.not_exported?
+        new_query = self.dup
+        new_query.not_exported!
+      end
+      new_query.update_attributes({ :group => params[:group], :order => nil, :sort => nil, :offset => 0, :group_count => nil, :status => 0 })
     else
-      changed = attributes_are_changed?(params.slice(:order, :sort, :number, :offset))
+      changed = new_query.attributes_are_changed?(params.slice(:order, :sort, :number, :offset))
       if changed
-        self.waiting!
-        self.order = params[:order] if attribute_is_changed?(order,params[:order])
-        self.sort = params[:sort] if attribute_is_changed?(sort,params[:sort])
-        self.number = params[:number].to_i if attribute_is_changed?(number,params[:number].to_i)
-        self.offset = params[:offset].to_i if attribute_is_changed?(offset,params[:offset].to_i)
-        self.save!
+        new_query.waiting!
+        new_query.order = params[:order] if attribute_is_changed?(order,params[:order])
+        new_query.sort = params[:sort] if attribute_is_changed?(sort,params[:sort])
+        new_query.number = params[:number].to_i if attribute_is_changed?(number,params[:number].to_i)
+        new_query.offset = params[:offset].to_i if attribute_is_changed?(offset,params[:offset].to_i)
+        new_query.save!
       end
     end
-    return self
+    return new_query
   end
   
 end

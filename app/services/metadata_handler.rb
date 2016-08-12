@@ -27,8 +27,8 @@ class MetadataHandler
   end
   
   def docpid_to_id(docpid)
-    return @metadata["Metadata_id"]["values"][@fields["Metadata_id"][@doc_ids.index(docpid)]] if @fields.has_key?("Metadata_id")
-    return @metadata["Metadata_fromInputFile"]["values"][@fields["Metadata_fromInputFile"][@doc_ids.index(docpid)]]
+    return "id", @metadata["Metadata_id"]["values"][@fields["Metadata_id"][@doc_ids.index(docpid)]] if @fields.has_key?("Metadata_id")
+    return "fromInputFile", @metadata["Metadata_fromInputFile"]["values"][@fields["Metadata_fromInputFile"][@doc_ids.index(docpid)]]
   end
   
   # Filter document list
@@ -192,13 +192,15 @@ class MetadataHandler
   def filter_to_hash(filter)
     filters = {}
     filter[1, filter.length - 2].split(')AND(').each do |filter_part|
-      label, unstripped_value = filter_part.split(/\!*=/)
-      group, key = get_group_and_key_from_label(label)
-      has_group = filters.has_key?(group)
-      matches = has_group && filters[group].has_key?(key) ? filters[group][key] : { :positive => [], :negative => [] }
-      matches[filter_part.eql?("#{label}!=#{unstripped_value}") ? :negative : :positive] << value_to_index(label, strip_value(unstripped_value))
-      filters[group] = {} unless has_group
-      filters[group][key] = matches
+      label, unstripped_value = filter_part.split(/\!*[=\:]/)
+      unless unstripped_value.blank?
+        group, key = get_group_and_key_from_label(label)
+        has_group = filters.has_key?(group)
+        matches = has_group && filters[group].has_key?(key) ? filters[group][key] : { :positive => [], :negative => [] }
+        matches[filter_part.eql?("#{label}!=#{unstripped_value}") ? :negative : :positive] << value_to_index("#{group}_#{key}", strip_value(unstripped_value))
+        filters[group] = {} unless has_group
+        filters[group][key] = matches
+      end
     end
     return filters
   end
@@ -346,10 +348,12 @@ class MetadataHandler
   
   # Strip quotes from metadatum value
   def strip_value(value)
-    value.chomp('"').reverse.chomp('"').reverse
+    return value if value.nil?
+    return value.chomp('"').reverse.chomp('"').reverse
   end
   
   def value_to_index(label, value)
+    return value if value.nil?
     return @metadata["#{label}"]["values"].index(value)
   end
   
