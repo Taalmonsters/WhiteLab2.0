@@ -296,7 +296,7 @@ class MetadataHandler
         values.map!{|value| metadata[k][:values].index(value) }
       end
       documents['fields'][metadata[k][:label]] = values
-      # File.delete(metadata[k][:file])
+      File.delete(metadata[k][:file])
       write_file(mfile, metadata)
     end
     write_file(documents_file, documents)
