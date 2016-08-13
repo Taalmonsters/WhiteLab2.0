@@ -303,6 +303,7 @@ class MetadataHandler
         end
         documents['fields'][metadata[k][:label]] = values
         File.delete(metadata[k][:file])
+        metadata[k].except!(:file)
         write_file(mfile, metadata)
       end
     end
