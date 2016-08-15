@@ -70,12 +70,12 @@ module BlacklabHelper
           "last_index" => hit["end"]-1,
           "text_right" => hit["right"]["word"].join(" "),
           "docpid" => hit["docPid"],
-          "end_time" => hit["match"]["end_time"].select{|et| !et.blank? }.sort.last,
-          "begin_time" => hit["match"]["begin_time"].select{|bt| !bt.blank? }.sort.first,
-          "hit_pos" => hit["match"]["pos"].join(" "),
-          "hit_phonetic" => reformat_phonetic(hit["match"]["phonetic"]),
+          "end_time" => hit["match"].has_key?("end_time") ? hit["match"]["end_time"].select{|et| !et.blank? }.sort.last : nil,
+          "begin_time" => hit["match"].has_key?("begin_time") ? hit["match"]["begin_time"].select{|bt| !bt.blank? }.sort.first : nil,
+          "hit_pos" => hit["match"].has_key?("pos") ? hit["match"]["pos"].join(" ") : nil,
+          "hit_phonetic" => hit["match"].has_key?("phonetic") ? reformat_phonetic(hit["match"]["phonetic"]) : nil,
           "first_index" => hit["start"],
-          "hit_lemma" => hit["match"]["lemma"].join(" ")
+          "hit_lemma" => hit["match"].has_key?("lemma") ? hit["match"]["lemma"].join(" ") : nil
         }
       }
     } if view == 1
