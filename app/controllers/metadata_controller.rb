@@ -93,7 +93,7 @@ class MetadataController < ApplicationController
       @label = params[:label]
       @group = @label.split('_')[0]
       @key = @label.sub(/#{@group}_/,'')
-      @metadatum = @metadata_handler.get_metadatum(@group,@key)
+      @metadatum = @metadata_handler.get_metadatum_by_label(@label)
     elsif params[:group] && params[:key]
       @group = params[:group].sub(/\_$/,'')
       @key = params[:key]

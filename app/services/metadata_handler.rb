@@ -142,6 +142,13 @@ class MetadataHandler
     return matches.size == 1 ? matches[0] : matches
   end
   
+  def get_metadatum_by_label(label)
+    group, key = label.split('_', 2)
+    group = group.eql?(key) ? 'Metadata' : group
+    matches = @metadata ? @metadata.values.select{|data| data['label'].eql?(label) } : [{ 'group' => group, 'key' => key, 'label' => label }]
+    return matches.size == 1 ? matches[0] : matches
+  end
+  
   def get_metadatum_values(metadatum, filtered_total)
     return metadatum['values'] unless metadatum.is_a?(Array)
     return metadatum[0]['values'] unless metadatum.size > 1
