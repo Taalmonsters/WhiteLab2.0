@@ -3,7 +3,7 @@ class MetadataController < ApplicationController
   before_action :set_logged_in, :only => [:index, :edit, :update]
   before_action :current_metadatum_label, :only => [:edit, :update, :values, :filter_rule]
   before_action :set_filter, :only => [:coverage]
-  before_action :set_filtered_amount, :only => [:coverage]
+  before_action :set_filtered_amount, :only => [:coverage, :values, :filter_rule]
   
   # Show list of available metadata
   def index
@@ -53,7 +53,7 @@ class MetadataController < ApplicationController
       @rule_id = params[:rule_id]
     end
     if @group && @key
-      @values = @metadatum['values']
+      @values = @metadata_handler.get_metadatum_values(@metadatum, @filtered_total_abs)
       @value = params[:value]
       @operator = params[:operator]
     end
@@ -61,17 +61,9 @@ class MetadataController < ApplicationController
   
   # Load metadatum values by group and key
   def values
-    @values = @metadatum.map{|m| m['values']}.flatten.uniq
+    @values = @metadata_handler.get_metadatum_values(@metadatum, @filtered_total_abs)
     @value_count = (@values - ["Unknown"]).size
     @value_list_incomplete = false
-    # if @values.blank?
-      # mvalues = @metadata_handler.load_values_from_server(0, 0, "value", "asc", @group, @key)
-      # @values = mvalues.map{|x| x["value"]}
-    # else
-      # if !@value_count.blank? && @value_count > @values.size
-        # @value_list_incomplete = true
-      # end
-    # end
     @rule_id = 'rule0'
     if params[:rule_id]
       @rule_id = params[:rule_id]

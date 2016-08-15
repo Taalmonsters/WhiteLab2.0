@@ -142,6 +142,22 @@ class MetadataHandler
     return matches.size == 1 ? matches[0] : matches
   end
   
+  def get_metadatum_values(metadatum, filtered_total)
+    return metadatum['values'] unless metadatum.is_a?(Array)
+    return metadatum[0]['values'] unless metadatum.size > 1
+    total_size = 0
+    values = metadatum.map{|m| m['values']}.flatten.uniq
+    metadatum.each do |m|
+      (m['values'] - ["Unknown"]).each do |v|
+        total_size += get_filtered_word_count("(#{m['group']}_#{m['key']}=\"#{v}\")")
+      end
+    end
+    if total_size >= filtered_total
+      values -= ["Unknown"]
+    end
+    return values
+  end
+  
   def get_total_word_count
     return @total_word_count
   end
