@@ -18,6 +18,7 @@ nl:
       show: toon
       go_to: ga naar
       per: per
+      of: van
   operators:
     title: Operators
     description: Vertalingen van query operator labels

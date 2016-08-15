@@ -18,6 +18,7 @@ en:
       show: show
       go_to: go to
       per: per
+      of: of
   operators:
     title: Operators
     description: Translations of query operator labels
