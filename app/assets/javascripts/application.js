@@ -16,7 +16,6 @@
 //= require d3.min
 //= require whitelab
 //= require pageguide
-//= require turbolinks
 //= require cookies_eu
 //= require_tree .
 
