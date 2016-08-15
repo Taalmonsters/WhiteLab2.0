@@ -4,6 +4,7 @@
 <% next_page = current_page + 1 %>
 <% min_page = (current_page - 3) < 1 ? 1 : current_page - 3 %>
 <% max_page = (current_page + 3) > pages ? pages : current_page + 3 %>
+<% options_arr = (1..pages).to_a %>
 <% if !defined?(numbarr) %>
 	<% numbarr = [10,20,50] %>
 <% end %>
@@ -58,7 +59,7 @@
 	</div>
 	<div class="col-sm-3 right-aligned">
 		<%= t(:'navigation.keys.go_to').capitalize %> <%= t(:'navigation.keys.page') %>
-		<%= select_tag("go_to", options_for_select((1..pages), [current_page]), :class => "pagination-go-to", :data => { :number => number, :url => url }) %>
+		<%= select_tag("go_to", options_for_select(options_arr, [current_page]), :class => "pagination-go-to", :data => { :number => number, :url => url }) %>
 	</div>
 </div>
 <%= render partial: "/layouts/export" %>
