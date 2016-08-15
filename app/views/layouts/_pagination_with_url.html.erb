@@ -57,7 +57,7 @@
 	<div class="col-sm-3 right-aligned">
 		<%= t(:'navigation.keys.go_to').capitalize %> <%= t(:'navigation.keys.page') %>
 		<% if pages > 50 %>
-			<%= number_field_tag("go_to", value = current_page, { :min => 1, :max => pages, :data => { :number => number, :url => url } }) %> <%= t(:'navigation.keys.of') %> <%= number_with_delimiter(pages, :delimiter => t(:'other.keys.numeric_delimiter')) %>
+			<%= number_field_tag("go_to", value = current_page, { :min => 1, :max => pages, :class => "pagination-go-to", :data => { :number => number, :url => url } }) %> <%= t(:'navigation.keys.of') %> <%= number_with_delimiter(pages, :delimiter => t(:'other.keys.numeric_delimiter')) %>
 		<% else %>
 			<%= select_tag("go_to", options_for_select((1..pages),[current_page]), :class => "pagination-go-to", :data => { :number => number, :url => url }) %>
 		<% end %>
