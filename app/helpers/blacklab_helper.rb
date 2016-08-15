@@ -42,6 +42,8 @@ module BlacklabHelper
     hits = [1,8].include?(view)
     key = hits ? "hit" : "doc"
     key = grouped ? "#{key}Groups" : "#{key}s"
+    Rails.logger.warn "Response does not have key #{key}:" if !response.has_key?(key)
+    Rails.logger.warn response.to_json if !response.has_key?(key)
     output, status = {}, 4 if !response.has_key?(key)
     unless status == 4
       summary = response['summary']
