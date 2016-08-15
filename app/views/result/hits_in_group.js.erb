@@ -1,8 +1,8 @@
-$('#<%= @group_id %>').data('offset',<%= @query.offset.to_i+20 %>);
+$('#<%= @group_id %>').data('offset',<%= @offset+20 %>);
 if ($('#<%= @group_id %> div.hits > table > tbody').html().indexOf('loading') > -1) {
 	$('#<%= @group_id %> div.hits > table > tbody').html('');
 }
 $('#<%= @group_id %> div.hits > table > tbody').append("<%= escape_javascript(raw render partial: "/result/hits_in_group", layout: false) %>");
-if (<%= @query.offset.to_i+20 %> > $('tr[data-group-id="<%= @group_id %>"] div.progress-bar').attr('aria-valuenow')) {
+if (<%= @offset+20 %> > $('tr[data-group-id="<%= @group_id %>"] div.progress-bar').attr('aria-valuenow')) {
 	$('#<%= @group_id %> button.load-grouped-hits').remove();
 }

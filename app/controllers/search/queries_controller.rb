@@ -24,12 +24,13 @@ class Search::QueriesController < QueriesController
   # Load documents for Search Query in selected group
   def docs_in_group
     @group_id = params[:group_id]
+    @offset = params[:offset] || 0
     if @query
       sub_query = @query.dup
       sub_query.filter = @query.filter.blank? ? "("+@query.group+"=\""+params[:docs_group]+"\")" : @query.filter+"AND("+@query.group+"=\""+params[:docs_group]+"\")"
       sub_query.view = 2
       sub_query.group = nil
-      sub_query.offset = params[:offset] || 0
+      sub_query.offset = @offset
       sub_query.number = 20
       @docs = sub_query.result(false)["results"]
       sub_query.destroy
@@ -44,12 +45,13 @@ class Search::QueriesController < QueriesController
   # Load hits for Search Query in selected group
   def hits_in_group
     @group_id = params[:group_id]
+    @offset = params[:offset] || 0
     if @query
       sub_query = @query.dup
       sub_query.add_hits_group(params[:hits_group])
       sub_query.view = 1
       sub_query.group = nil
-      sub_query.offset = params[:offset] || 0
+      sub_query.offset = @offset
       sub_query.number = 20
       @hits = sub_query.result(false)["results"]
       sub_query.destroy
