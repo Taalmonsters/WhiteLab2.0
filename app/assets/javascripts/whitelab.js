@@ -416,7 +416,7 @@ $(document).on('change', 'select.pagination-size-select', function(e) {
 		window.location = Whitelab.getListPage('#'+$("div.page-list-main").attr('id'),$("div.page-list-main").data('url'),$(this).val(),0,null,null);
 });
 
-$(document).on('change', 'select.pagination-go-to', function(e) {
+$(document).on('change', '.pagination-go-to', function(e) {
 	var n = $(this).data('number');
 	var o = ($(this).val() - 1) * n;
 	if ($("#main-div[data-namespace='search'] div#result-pane").length > 0)
