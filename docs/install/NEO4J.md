@@ -235,9 +235,10 @@ WhiteLab 2.0 web application
 ============================
 
 We are now ready to install the WhiteLab 2.0 web application. Download it from [here](https://github.com/Taalmonsters/WhiteLab2.0) and unpack it in /var/www/html. For convenience, you may rename the unpacked directory to, for instance, 'whitelab'.
-Descend into the newly created whitelab directory and issue the following command:
+Descend into the newly created whitelab directory and issue the following commands:
 
 ```
+$ gem install bundler
 $ bundle install
 ```
 
