@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<blacklabResponse>
+    <indexName>cgn</indexName>
+    <displayName>OpenSoNaR-CGN corpus</displayName>
+    <description>The SoNaR and CGN corpora combined for online querying</description>
+    <status>available</status>
+    <contentViewable>true</contentViewable>
+    <documentFormat>DocIndexerWhiteLab2</documentFormat>
+    <tokenCount>10085169</tokenCount>
+    <versionInfo>
+      <blackLabBuildTime>2016-07-03 00:01:20</blackLabBuildTime>
+      <indexFormat>3.1</indexFormat>
+      <timeCreated>2016-07-03 00:29:45</timeCreated>
+      <timeModified>2016-07-03 00:29:45</timeModified>
+    </versionInfo>
+    <fieldInfo>
+      <pidField>id</pidField>
+      <titleField>TextTitle</titleField>
+      <authorField>AuthorNameOrPseudonym</authorField>
+      <complexFields>
+        <complexField name="contents">
+          <displayName>Contents</displayName>
+          <mainProperty>word</mainProperty>
+          <basicProperties>
+            <property name="begin_time">
+              <sensitivity>ONLY_INSENSITIVE</sensitivity>
+            </property>
+            <property name="end_time">
+              <sensitivity>ONLY_INSENSITIVE</sensitivity>
+            </property>
+            <property name="lemma">
+              <sensitivity>SENSITIVE_AND_INSENSITIVE</sensitivity>
+            </property>
+            <property name="phonetic">
+              <sensitivity>ONLY_INSENSITIVE</sensitivity>
+            </property>
+            <property name="pos">
+              <sensitivity>ONLY_INSENSITIVE</sensitivity>
+            </property>
+            <property name="speaker">
+              <sensitivity>ONLY_INSENSITIVE</sensitivity>
+            </property>
+            <property name="word">
+              <sensitivity>SENSITIVE_AND_INSENSITIVE</sensitivity>
+            </property>
+            <property name="xmlid">
+              <sensitivity>ONLY_INSENSITIVE</sensitivity>
+            </property>
+          </basicProperties>
+        </complexField>
+      </complexFields>
+      <metadataFields>
+        <metadataField name="Address">
+          <fieldName>Address</fieldName>
+          <displayName>Address</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Age">
+          <fieldName>Age</fieldName>
+          <displayName>Age</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Anonymized">
+          <fieldName>Anonymized</fieldName>
+          <displayName>Anonymized</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="AudioExportFormat">
+          <fieldName>AudioExportFormat</fieldName>
+          <displayName>Audio export format</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="AudioWebPlayFormat">
+          <fieldName>AudioWebPlayFormat</fieldName>
+          <displayName>Audio web play format</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="AuthorName">
+          <fieldName>AuthorName</fieldName>
+          <displayName>Author name</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="BirthDate">
+          <fieldName>BirthDate</fieldName>
+          <displayName>Birth date</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="CGN.availability">
+          <fieldName>CGN.availability</fieldName>
+          <displayName>CGN.availability</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="CGN.byteCount">
+          <fieldName>CGN.byteCount</fieldName>
+          <displayName>CGN.byteCount</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="CGN.secCount">
+          <fieldName>CGN.secCount</fieldName>
+          <displayName>CGN.secCount</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="CGN.tempoAv">
+          <fieldName>CGN.tempoAv</fieldName>
+          <displayName>CGN.tempoAv</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="CGN.wordCount">
+          <fieldName>CGN.wordCount</fieldName>
+          <displayName>CGN.wordCount</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Channel">
+          <fieldName>Channel</fieldName>
+          <displayName>Channel</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="CharacterEncoding">
+          <fieldName>CharacterEncoding</fieldName>
+          <displayName>Character encoding</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Code">
+          <fieldName>Code</fieldName>
+          <displayName>Code</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Collection_title">
+          <fieldName>Collection_title</fieldName>
+          <displayName>Collection_title</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Continent">
+          <fieldName>Continent</fieldName>
+          <displayName>Continent</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Corpus_title">
+          <fieldName>Corpus_title</fieldName>
+          <displayName>Corpus_title</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Country">
+          <fieldName>Country</fieldName>
+          <displayName>Country</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Date">
+          <fieldName>Date</fieldName>
+          <displayName>Date</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Derivation">
+          <fieldName>Derivation</fieldName>
+          <displayName>Derivation</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Description">
+          <fieldName>Description</fieldName>
+          <displayName>Description</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Education">
+          <fieldName>Education</fieldName>
+          <displayName>Education</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="End">
+          <fieldName>End</fieldName>
+          <displayName>End</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="EventStructure">
+          <fieldName>EventStructure</fieldName>
+          <displayName>Event structure</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="FamilySocialRole">
+          <fieldName>FamilySocialRole</fieldName>
+          <displayName>Family social role</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Format">
+          <fieldName>Format</fieldName>
+          <displayName>Format</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Genre">
+          <fieldName>Genre</fieldName>
+          <displayName>Genre</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="History">
+          <fieldName>History</fieldName>
+          <displayName>History</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Id">
+          <fieldName>Id</fieldName>
+          <displayName>Id</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Interactivity">
+          <fieldName>Interactivity</fieldName>
+          <displayName>Interactivity</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Involvement">
+          <fieldName>Involvement</fieldName>
+          <displayName>Involvement</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Key">
+          <fieldName>Key</fieldName>
+          <displayName>Key</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Level">
+          <fieldName>Level</fieldName>
+          <displayName>Level</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="LicenseCode">
+          <fieldName>LicenseCode</fieldName>
+          <displayName>LicenseCode</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Location_Country">
+          <fieldName>Location_Country</fieldName>
+          <displayName>Location_country</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="MediaResourceLink">
+          <fieldName>MediaResourceLink</fieldName>
+          <displayName>Media resource link</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Methodology">
+          <fieldName>Methodology</fieldName>
+          <displayName>Methodology</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Modalities">
+          <fieldName>Modalities</fieldName>
+          <displayName>Modalities</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Organisation">
+          <fieldName>Organisation</fieldName>
+          <displayName>Organisation</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="PlanningType">
+          <fieldName>PlanningType</fieldName>
+          <displayName>Planning type</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Publisher">
+          <fieldName>Publisher</fieldName>
+          <displayName>Publisher</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Quality">
+          <fieldName>Quality</fieldName>
+          <displayName>Quality</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="RecordingConditions">
+          <fieldName>RecordingConditions</fieldName>
+          <displayName>Recording conditions</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Region">
+          <fieldName>Region</fieldName>
+          <displayName>Region</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="ResourceLink">
+          <fieldName>ResourceLink</fieldName>
+          <displayName>Resource link</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Role">
+          <fieldName>Role</fieldName>
+          <displayName>Role</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Sex">
+          <fieldName>Sex</fieldName>
+          <displayName>Sex</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Size">
+          <fieldName>Size</fieldName>
+          <displayName>Size</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="SocialContext">
+          <fieldName>SocialContext</fieldName>
+          <displayName>Social context</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Start">
+          <fieldName>Start</fieldName>
+          <displayName>Start</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="SubGenre">
+          <fieldName>SubGenre</fieldName>
+          <displayName>Sub genre</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="SubType">
+          <fieldName>SubType</fieldName>
+          <displayName>Sub type</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Task">
+          <fieldName>Task</fieldName>
+          <displayName>Task</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Title">
+          <fieldName>Title</fieldName>
+          <displayName>Title</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Translated">
+          <fieldName>Translated</fieldName>
+          <displayName>Translated</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="Type">
+          <fieldName>Type</fieldName>
+          <displayName>Type</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="fromInputFile">
+          <fieldName>fromInputFile</fieldName>
+          <displayName>From input file</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="generator">
+          <fieldName>generator</fieldName>
+          <displayName>Generator</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="id">
+          <fieldName>id</fieldName>
+          <displayName>id</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="metadataCid">
+          <fieldName>metadataCid</fieldName>
+          <displayName>Metadata cid</displayName>
+          <type>TEXT</type>
+        </metadataField>
+        <metadataField name="version">
+          <fieldName>version</fieldName>
+          <displayName>Version</displayName>
+          <type>TEXT</type>
+        </metadataField>
+      </metadataFields>
+    </fieldInfo>
+</blacklabResponse>

@@ -8,7 +8,7 @@ default: &default
 
 development:
   <<: *default
-  pool: 2 
+  pool: 10 
   database: whitelab_development 
 
 # Warning: The database defined as "test" will be erased and
