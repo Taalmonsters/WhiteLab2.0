@@ -545,3 +545,8 @@ $(document).on('click', '#result-pane ul.nav-tabs a', function(e) {
 	var page = $("div."+ns+"-input-display").attr("id");
 	window.location = "/"+ns+"/"+page+"?"+$(this).data("params")+"#results";
 });
+
+$(document).on('click', '#info a', function(e) {
+	e.preventDefault();
+	window.open($(this).attr('href').replace(/"/g,''));
+});
