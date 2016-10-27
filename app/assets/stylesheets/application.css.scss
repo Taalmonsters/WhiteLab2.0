@@ -142,3 +142,8 @@ a.remove-query {
 #tlyPageGuideWrapper #tlyPageGuideMessages {
   font-size: 14px;
 }
+
+#info a {
+  font-weight: bold;
+  color: $brand-info !important;
+}
