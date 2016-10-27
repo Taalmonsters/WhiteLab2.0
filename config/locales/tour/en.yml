@@ -5,8 +5,8 @@ en:
     - position: bottom
       target: "#start-tour"
       content: "Use this button to turn page instructions on/off. Click on the arrows on the left to scroll through the instructions, or directly click one of the numbers in the interface.<br/>Other options:
-        <ul><li>Consult the <a href=\"#\" target=\"_blank\">WhiteLab 2.0 User manual</a></li>
-        <li>Consult the <a href=\"/doc/api/index.html\" target=\"_blank\">WhiteLab 2.0 API documentation</a></li>
+        <ul><li>Consult the <a href=\"http://whitelab.taalmonsters.nl/doc/manual/index.html\" target=\"_blank\">WhiteLab 2.0 User manual</a></li>
+        <li>Consult the <a href=\"http://whitelab.taalmonsters.nl/doc/api/index.html\" target=\"_blank\">WhiteLab 2.0 API documentation</a></li>
         <li><a href=\"mailto:whitelab@taalmonsters.nl\">Report a bug or submit a feature request</a></li></ul>"
   after_ns:
     - target: "#query-details table"

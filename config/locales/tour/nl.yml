@@ -4,7 +4,7 @@ nl:
   before_ns:
     - position: bottom
       target: "#start-tour"
-      content: "Met deze knop zet u de instructies voor de huidige pagina aan of uit. Klik op de pijltjes hiernaast om door de instructies te bladeren, of klik direct op de cijfers in de interface.<br/>Overige opties:<ul><li>Raadpleeg de <a href=\"#\" target=\"_blank\">WhiteLab 2.0 Gebruikershandleiding</a></li><li>Raadpleeg de <a href=\"/doc/api/index.html\" target=\"_blank\">WhiteLab 2.0 API documentatie</a></li><li><a href=\"mailto:whitelab@taalmonsters.nl\">Meld een bug of feature request</a></li></ul>"
+      content: "Met deze knop zet u de instructies voor de huidige pagina aan of uit. Klik op de pijltjes hiernaast om door de instructies te bladeren, of klik direct op de cijfers in de interface.<br/>Overige opties:<ul><li>Raadpleeg de <a href=\"http://whitelab.taalmonsters.nl/doc/manual/index.html\" target=\"_blank\">WhiteLab 2.0 Gebruikershandleiding</a></li><li>Raadpleeg de <a href=\"http://whitelab.taalmonsters.nl/doc/api/index.html\" target=\"_blank\">WhiteLab 2.0 API documentatie</a></li><li><a href=\"mailto:whitelab@taalmonsters.nl\">Meld een bug of feature request</a></li></ul>"
   after_ns:
     - target: "#query-details table"
       content: "Hier wordt een samenvatting van uw huidige zoekopdracht weergegeven."
