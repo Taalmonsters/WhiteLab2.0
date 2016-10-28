@@ -115,7 +115,7 @@ module ApplicationHelper
     lang = lang_obj[:lang]
     new_data = {
       lang => {
-        "#{page}_page" => data
+        "#{page}_page" => lang_obj[:data]
       }
     }
     File.open(Rails.root.join('config', 'locales', "#{page}_page").to_s+"/"+lang+".yml", 'w', external_encoding: 'ASCII-8BIT') { |file| YAML.dump(new_data, file) }
