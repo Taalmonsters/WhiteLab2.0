@@ -23,6 +23,7 @@ module BlacklabHelper
         end
       end
     end
+    attrs["sort"] = "size" unless !attrs.has_key?("group") || attrs.has_key?("sort")
     return attrs
   end
   
