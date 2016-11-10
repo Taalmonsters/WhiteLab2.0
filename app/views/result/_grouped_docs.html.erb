@@ -25,11 +25,12 @@
 			</thead>
 			<tbody>
 				<% @query.result(false)['results'].each_with_index do |group,i| %>
+					<% largest_group = @query.result(false)['largest_group_size'] %>
 					<tr class="clickable grouped-doc-row" data-group-value="<%= group[@group] %>" data-group-id="<%= @query.group+i.to_s %>">
 						<td><%= group[@group].html_safe %></td>
 						<td class="progress-field">
 							<div class="progress">
-								<div class="progress-bar" role="progressbar" aria-valuenow="<%= group['document_count'] %>" aria-valuemin="1" aria-valuemax="<%= @query.document_count %>" style="width: <%= ((group['document_count'].to_f / @query.document_count) * 100).to_i %>%; min-width: 2em;"><%= number_with_delimiter(group['document_count'], :delimiter => t(:'other.keys.numeric_delimiter')) %></div>
+								<div class="progress-bar" role="progressbar" aria-valuenow="<%= group['document_count'] %>" aria-valuemin="1" aria-valuemax="<%= largest_group %>" style="width: <%= (group['document_count'] / largest_group.to_f) * 100 %>%; min-width: 2em;"><%= number_with_delimiter(group['document_count'], :delimiter => t(:'other.keys.numeric_delimiter')) %></div>
 							</div>
 						</td>
 					</tr>
