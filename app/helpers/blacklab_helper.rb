@@ -98,6 +98,7 @@ module BlacklabHelper
       'hit_count' => hits,
       'document_count' => docs,
       'group_count' => summary['numberOfGroups'],
+      'largest_group_size' => summary['largestGroupSize'],
       'results' => data.map { |group|
         {
           "#{query.group}" => group["identityDisplay"],
