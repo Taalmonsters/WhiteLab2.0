@@ -220,7 +220,7 @@ var Whitelab = {
 			    if (patt_parts[i].indexOf(qgroup+'=') > -1 && group_parts.length > i)
 			    	new_parts.push('['+qgroup+'="(?c)'+group_parts[i]+'"]');
 			    else if (group_parts.length > i)
-			    	new_parts.push("["+patt_parts[i]+"&"+qgroup+"=\""+group_parts[i]+"\"]");
+			    	new_parts.push("["+patt_parts[i]+"&"+qgroup+"=\"(?c)"+group_parts[i]+"\"]");
 			    else
 			    	new_parts.push("["+patt_parts[i]+"]");
 			}
