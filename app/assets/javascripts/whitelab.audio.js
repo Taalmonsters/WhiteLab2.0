@@ -40,7 +40,6 @@ Whitelab.audio = {
 	},
 	
 	timeToSeconds : function(t) {
-		Whitelab.debug("Whitelab.audio.timeToSeconds("+t+")");
 		var i = t === '00:00:00.000' ? 1 : 0;
 		var parts = t.split(":");
 		return parseFloat(parts[2]) + (60 * parseInt(parts[1])) + (3600 * parseInt(parts[0]) + i);
@@ -49,11 +48,11 @@ Whitelab.audio = {
 
 $(document).on('click', 'a.playsound', function(e) {
 	e.preventDefault();
-	var url = $(this).data('audio-url');
-	var begin_time = Whitelab.audio.timeToSeconds($(this).data('begin-time'));
-	var end_time = Whitelab.audio.timeToSeconds($(this).data('end-time'));
 	
 	if (!$(this).hasClass('playing')) {
+		var url = $(this).data('audio-url');
+		var begin_time = Whitelab.audio.timeToSeconds($(this).data('begin-time'));
+		var end_time = Whitelab.audio.timeToSeconds($(this).data('end-time'));
 		Whitelab.audio.stopSegment();
 		Whitelab.audio.playSegment(this,url,begin_time,end_time);
 	} else
