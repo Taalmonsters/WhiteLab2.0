@@ -84,7 +84,7 @@ class Search::Query < ActiveRecord::Base
         if part.include?("#{g}=")
           new_parts << '['+g+'="(?c)'+group_parts[i]+'"]'
         elsif group_parts.size > i
-          new_parts << "[#{part}&#{g}=\"#{group_parts[i]}\"]"
+          new_parts << "[#{part}&#{g}=\"(?c)#{group_parts[i]}\"]"
         else
           new_parts << "[#{part}]"
         end
