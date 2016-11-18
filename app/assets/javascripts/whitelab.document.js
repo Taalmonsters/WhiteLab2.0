@@ -38,8 +38,12 @@ $(document).on('click', 'a.document-tab', function(e) {
 	if (!$(this).parent().hasClass("active")) {
 		$(this).parent().parent().find("li.active").first().removeClass("active");
 		$(this).parent().addClass("active");
-		$("#document-display div.tab-content").html('<span class="loading"></span>');
-		Whitelab.document.loadDocument($("#main-div").data("namespace"),$(this).data("tab"), $("#document-display").data("xmlid"), $("#document-display").data("query-id"));
+		var tab = $(this).data("tab");
+		if (tab === "statistics")
+			$("#document-display div.tab-content").html('<span class="loading"></span> Note: If this page does not load, please disable your ad blocking software.');
+		else
+			$("#document-display div.tab-content").html('<span class="loading"></span>');
+		Whitelab.document.loadDocument($("#main-div").data("namespace"),tab, $("#document-display").data("xmlid"), $("#document-display").data("query-id"));
 	}
 });
 
