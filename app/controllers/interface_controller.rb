@@ -12,4 +12,12 @@ class InterfaceController < ApplicationController
     end
   end
   
+  def pos_features
+    @pos = params[:pos].sub(/\.\*$/,'') if params.has_key?(:pos) && !params[:pos].blank?
+    @features = load_pos_feature_data(@pos)
+    respond_to do |format|
+      format.js { render '/pos_heads/refine' }
+    end
+  end
+  
 end
