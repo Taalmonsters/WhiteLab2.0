@@ -164,6 +164,7 @@ en:
       delete: delete
       export: export
       download: download
+      refine: refine
   instructions:
     title: Instructions
     description: Translations of instructions appearing in the application
@@ -294,7 +295,7 @@ en:
       ADJ: adjective
       BW: adverb
       LET: punctuation
-      LID: determiner
+      LID: article
       N: noun
       SPEC: proper noun
       TSW: interjection
@@ -303,3 +304,123 @@ en:
       VNW: pronoun
       VZ: preposition
       WW: verb
+  pos_features:
+    title: PoS features
+    description: Translations of part of speech features from the D-COI set
+    keys:
+      NTYPE: type
+      GETAL: number
+      GRAAD: degree
+      GENUS: genus
+      NAAMVAL: case
+      POSITIE: position
+      BUIGING: inflection
+      GETAL-N: number-n
+      WVORM: form
+      PVTIJD: tense
+      PVAGR: verb agreement
+      NUMTYPE: type
+      VWTYPE: type
+      PDTYPE: pd type
+      STATUS: status
+      PERSOON: person
+      LWTYPE: type
+      VZTYPE: type
+      CONJTYPE: type
+      SPECTYPE: type
+      DIALECT: dialect
+      NPAGR: noun phrase agreement
+      soortnaam: type name
+      eigennaam: proper noun
+      enkelvoud: singular
+      meervoud: plural
+      basis: base
+      diminutief: diminutive
+      genus: genus
+      zijdig: gendered
+      onzijdig: neutral
+      standaard: standard
+      genitief: genitive
+      datief: dative
+      prenominaal: prenominal
+      nominaal: nominal
+      postnominaal: postnominal
+      vrij: free
+      comparatief: comprarative
+      superlatief: superlative
+      zonder: without
+      zonder-n: without-n
+      met-e: with-e
+      met-s: with-s
+      met-t: with-t
+      meervoud-n: plural-n
+      bijzonder: special
+      persoonsvorm: finite verb
+      buigbaar: non-declinable
+      infinitief: infinitive
+      voltooid_deelwoord: past participle
+      onvoltooid_deelwoord: present participle
+      tegenwoordig: present
+      verleden: past
+      conjunctief: conjunctive
+      hoofdtelwoord: cardinal
+      rangtelwoord: ordinal
+      persoonlijk: personal
+      reflexief: reflexive
+      persoonlijk_reflexief: personal reflexive
+      reciprook: reciprocal
+      bezittelijk: possessive
+      betrekkelijk: relative
+      vragend: interrogative
+      vragend_betrekkelijk: relative interrogative
+      exclamatief: exclamatory
+      aanwijzend: demonstrative
+      onbepaald: indefinite
+      gradeerbaar: degreeable
+      determiner: determiner
+      pronomen: pronoun
+      adv-pronomen: pronominal adverb
+      nominatief: nominative
+      oblique: oblique
+      status: status
+      vol: full
+      gereduceerd: reduced
+      nadruk: stress
+      persoon: person
+      "1": first person
+      "2": second person
+      2v: second person - feminine
+      2b: second person - polite form
+      "3": third person
+      3p: third person - personal
+      3m: third person - masculine
+      3v: third person - feminine
+      3o: third person - neutral
+      mv: plural
+      getal: number
+      masculien: masculine
+      feminien: feminine
+      agr: agreement
+      evon: singular neutral
+      rest: rest
+      evz: singular gendered
+      agr3: plural agreement
+      evmo: singular masculine/neutral
+      rest3: plural rest
+      evf: singular feminine
+      initieel: initial
+      versmolten: fused
+      finaal: final
+      onderschikkend: subordinate
+      nevenschikkend: coordinate
+      afgebroken: broken off
+      onverstaanbaar: incomprehensible
+      vreemd: foreign
+      deeleigen: part of proper noun
+      meta: metadata
+      commentaar: comment
+      achtergrond: background
+      afkorting: abbreviation
+      symbool: symbol
+      dialectisch: dialectical
+      bepaald: definite

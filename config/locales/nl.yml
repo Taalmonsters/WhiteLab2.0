@@ -164,6 +164,7 @@ nl:
       delete: verwijder
       export: exporteer
       download: download
+      refine: verfijn
   instructions:
     title: Instructies
     description: Vertalingen van instructies die in de applicatie verschijnen
@@ -304,3 +305,123 @@ nl:
       VNW: voornaamwoord
       VZ: voorzetsel
       WW: werkwoord
+  pos_features:
+    title: PoS features
+    description: Translations of part of speech features from the D-COI set
+    keys:
+      NTYPE: type
+      GETAL: getal
+      GRAAD: graad
+      GENUS: genus
+      NAAMVAL: naamval
+      POSITIE: positie
+      BUIGING: buiging
+      GETAL-N: getal-n
+      WVORM: werkwoordsvorm
+      PVTIJD: werkwoordtijd
+      PVAGR: persoonsvorm overeenkomst
+      NUMTYPE: type
+      VWTYPE: type
+      PDTYPE: pd type
+      STATUS: status
+      PERSOON: persoon
+      LWTYPE: type
+      VZTYPE: type
+      CONJTYPE: type
+      SPECTYPE: type
+      DIALECT: dialect
+      NPAGR: NP overeenkomst
+      soortnaam: soortnaam
+      eigennaam: eigennaam
+      enkelvoud: enkelvoud
+      meervoud: meervoud
+      basis: basis
+      diminutief: diminutief
+      genus: genus
+      zijdig: zijdig
+      onzijdig: onzijdig
+      standaard: standaard
+      genitief: genitief
+      datief: datief
+      prenominaal: prenominaal
+      nominaal: nominaal
+      postnominaal: postnominaal
+      vrij: vrij
+      comparatief: compraratief
+      superlatief: superlatief
+      zonder: zonder
+      zonder-n: zonder-n
+      met-e: met-e
+      met-s: met-s
+      met-t: met-t
+      meervoud-n: meervoud-n
+      bijzonder: speciaal
+      persoonsvorm: persoonsvorm
+      buigbaar: buigbaar
+      infinitief: infinitief
+      voltooid_deelwoord: voltooid deelwoord
+      onvoltooid_deelwoord: onvoltooid deelwoord
+      tegenwoordig: tegenwoordig
+      verleden: verleden
+      conjunctief: conjunctief
+      hoofdtelwoord: hoofdtelwoord
+      rangtelwoord: rangtelwoord
+      persoonlijk: persoonlijk
+      reflexief: reflexief
+      persoonlijk_reflexief: persoonlijk reflexief
+      reciprook: reciprook
+      bezittelijk: bezittelijk
+      betrekkelijk: betrekkelijk
+      vragend: vragend
+      vragend_betrekkelijk: vragend betrekkelijk
+      exclamatief: exclamatief
+      aanwijzend: aanwijzend
+      onbepaald: onbepaald
+      gradeerbaar: gradeerbaar
+      determiner: determiner
+      pronomen: pronomen
+      adv-pronomen: voornaamwoordelijk bijwoord
+      nominatief: nominatief
+      oblique: oblique
+      status: status
+      vol: vol
+      gereduceerd: gereduceerd
+      nadruk: nadruk
+      persoon: persoon
+      "1": eerste persoon
+      "2": tweede persoon
+      2v: tweede persoon - feminien
+      2b: tweede persoon - beleefdheidsvorm
+      "3": derde persoon
+      3p: derde persoon - persoonlijk
+      3m: derde persoon - masculien
+      3v: derde persoon - feminien
+      3o: derde persoon - onzijdig
+      mv: meervoud
+      getal: getal
+      masculien: masculien
+      feminien: feminien
+      agr: overeenkomst
+      evon: enkelvoudig onzijdig
+      rest: rest
+      evz: enkelvoudig zijdig
+      agr3: meervoudig overeenkomst
+      evmo: enkelvoudig masculien/onzijdig
+      rest3: meervoudig rest
+      evf: enkelvoudig feminien
+      initieel: initieel
+      versmolten: versmolten
+      finaal: finaal
+      onderschikkend: onderschikkend
+      nevenschikkend: nevenschikkend
+      afgebroken: afgebroken
+      onverstaanbaar: onverstaanbaar
+      vreemd: vreemd
+      deeleigen: deel van eigennaam
+      meta: metadata
+      commentaar: commentaar
+      achtergrond: achtergrond
+      afkorting: afkorting
+      symbool: symbool
+      dialectisch: dialectisch
+      bepaald: bepaald

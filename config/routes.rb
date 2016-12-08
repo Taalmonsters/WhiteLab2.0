@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       get '/field' => 'interface#advanced_field'
     end
     get '/pos/select' => 'interface#pos_select_options'
+    get '/pos/features' => 'interface#pos_features'
     get '/history' => 'queries#history'
     get '/history/id/:id' => 'queries#history'
     get '/kwic' => 'queries#kwic'
