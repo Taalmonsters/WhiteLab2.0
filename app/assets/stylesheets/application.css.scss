@@ -147,3 +147,13 @@ a.remove-query {
   font-weight: bold;
   color: $brand-info !important;
 }
+
+#refine-pos {
+  .form-group {
+    margin-bottom: 0;
+    display: block;
+  }
+  .form-group:last-of-type > div {
+    margin-bottom: 20px;
+  }
+}

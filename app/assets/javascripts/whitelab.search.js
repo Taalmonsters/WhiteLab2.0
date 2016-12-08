@@ -584,7 +584,11 @@ $(document).on('click', '#simple button.btn-submit', function(e) {
 });
 
 $(document).on('change', 'div.search-input-display input, div.search-input-display select', function(e) {
-	var func = $("#main-div[data-namespace='search'] div.search-input-display").attr("id")+"QueryStringToCQL";
+	var searchpage = $("#main-div[data-namespace='search'] div.search-input-display").attr("id");
+	if (searchpage === 'extended' && $(this).attr("id") === 'pos-text') {
+		$.getScript("/search/pos/features.js?pos="+$(this).val());
+	}
+	var func = searchpage+"QueryStringToCQL";
 	var patt = window["Whitelab"]["cql"][func]();
 	$('.tablink').each(function(i, item) {
 		$(item).attr('data-patt', patt);
