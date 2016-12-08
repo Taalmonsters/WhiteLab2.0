@@ -19,11 +19,11 @@
 						<%= select_tag(:"#{field}-text", options_for_select(options), :class => 'form-control', :include_blank => true) %>
 						<span class="glyphicon glyphicon-chevron-down select-thingy"></span>
 					</div>
+					<span id="extended-refine-pos" class="tiny red hidden"><a href="#" onclick="event.preventDefault(); $('#refine-pos').toggleClass('hidden')"><%= t(:'button_labels.keys.refine').capitalize %></a></span>
+					<div id="refine-pos" class="hidden margin-bottom-10"></div>
 				<% else %>
 					<input type="text" class="form-control padding-bottom-10" id="<%= field %>-text" />
-					<% if ['word','lemma','phonetic'].include?(field) %>
-						<span class="tiny"><input class="wordcase" type="checkbox" /> <%= t(:'data_labels.keys.case_sensitive').capitalize %></span>
-					<% end %>
+					<span class="tiny"><input class="wordcase" type="checkbox" /> <%= t(:'data_labels.keys.case_sensitive').capitalize %></span>
 				<% end %>
 			</div>
 			<div class="col-xs-3 col-sm-1 loadbutton file-control">

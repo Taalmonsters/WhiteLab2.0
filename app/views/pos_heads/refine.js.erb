@@ -1,0 +1,7 @@
+<% if @features && @features.keys.any? %>
+	$("#refine-pos").html("<%= escape_javascript(raw render partial: "pos_heads/refine", locals: { features: @features } ) %>");
+	$("#extended-refine-pos").removeClass("hidden");
+<% else %>
+	$("#refine-pos").html("");
+	$("#extended-refine-pos").addClass("hidden");
+<% end %>
