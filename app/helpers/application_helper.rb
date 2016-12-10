@@ -37,6 +37,17 @@ module ApplicationHelper
     data
   end
   
+  def load_pos_feature_keys
+    data = []
+    File.readlines(Rails.root.join('config').to_s+"/pos_features.txt").each do |line|
+      line.sub!(/\n$/,'')
+      tag, line = line.split('-',2)
+      feat, line = line.split('=',2)
+      data << feat unless data.include?(feat)
+    end
+    return data
+  end
+  
   def load_pos_feature_data(pos)
     data = {}
     unless pos.blank?
@@ -50,6 +61,21 @@ module ApplicationHelper
       end
     end
     return data
+  end
+  
+  def load_pos_feature_value_data(f)
+    data = []
+    unless f.blank?
+      File.readlines(Rails.root.join('config').to_s+"/pos_features.txt").each do |line|
+        line.sub!(/\n$/,'')
+        tag, line = line.split('-',2)
+        feat, line = line.split('=',2)
+        if feat.eql?(f)
+          data = data + line.split(',').map{|val| val.split(':') }.map{|v| [t(:"pos_features.keys.#{v[0]}"), v[1]] }
+        end
+      end
+    end
+    return data.uniq
   end
   
   # Load data for label and keys translations

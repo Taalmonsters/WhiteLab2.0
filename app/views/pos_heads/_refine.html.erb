@@ -3,7 +3,7 @@
 		<label for="extended-pos-feat-<%= feat.downcase %>" class="col-xs-4 control-label padding-top-15"><%= t(:"pos_features.keys.#{feat}") %></label>
 		<div class="col-xs-8 padding-top-10">
 			<div class="selectpicker">
-				<%= select_tag(:"#{feat}", options_for_select(options), :class => 'form-control pos-feat-select', :include_blank => true) %>
+				<%= select_tag(:"#{feat}", options_for_select(options, values ? options.select{|arr| values.include?(arr[1]) }.first : nil), :class => 'form-control pos-feat-select', :include_blank => true) %>
 				<span class="glyphicon glyphicon-chevron-down select-thingy"></span>
 			</div>
 		</div>

@@ -309,6 +309,7 @@ nl:
     title: PoS features
     description: Translations of part of speech features from the D-COI set
     keys:
+      features: kenmerken
       NTYPE: type
       GETAL: getal
       GRAAD: graad

@@ -6,7 +6,11 @@ class InterfaceController < ApplicationController
     @value = params[:value]
     @element = params[:element]
     @element_class = params[:element_class]
-    @pos_heads = get_translated_pos_heads
+    if params.has_key?(:feat) && !params[:feat].blank?
+      @pos_heads = load_pos_feature_value_data(params[:feat])
+    else
+      @pos_heads = get_translated_pos_heads
+    end
     respond_to do |format|
       format.js { render '/pos_heads/select' }
     end
@@ -15,6 +19,7 @@ class InterfaceController < ApplicationController
   def pos_features
     @pos = params[:pos].sub(/\.\*$/,'') if params.has_key?(:pos) && !params[:pos].blank?
     @features = load_pos_feature_data(@pos)
+    @values = params[:values].split(',') if params.has_key?(:values)
     respond_to do |format|
       format.js { render '/pos_heads/refine' }
     end

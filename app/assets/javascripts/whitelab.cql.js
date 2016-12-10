@@ -25,7 +25,6 @@ Whitelab.cql = {
 	
 	cqlToAdvancedInterface : function(query) {
 		Whitelab.debug("cqlToAdvancedInterface("+query+")");
-//		Whitelab.search.advanced.addColumn();
 		
 		var n = query.indexOf("[");
 		var m = -1;
@@ -41,6 +40,12 @@ Whitelab.cql = {
 		while (n > -1) {
 			m = query.indexOf("]",n);
 			var c = query.substring(n,m+1);
+			var count = (c.match(/"/g) || []).length;
+			while (count == 1) {
+				m = query.indexOf("]",m+1);
+				c = query.substring(n,m+1);
+				count = (c.match(/"/g) || []).length;
+			}
 			columns.push(c);
 			n = query.indexOf("[",m+1);
 			if (n == -1) {
@@ -121,7 +126,7 @@ Whitelab.cql = {
 					var field = document.getElementById("column"+c+"-box"+b+"-field"+f);
 					var or = ors.shift();
 					if (or === '[]' || or === '[word=\".*\"]') {
-						// do nothing
+						Whitelab.search.advanced.addFieldToBoxInColumn(b, c, "word", "is", ".*", batch, sensitive, startsen, endsen, repeat_from, repeat_to);
 					} else {
 						if (or.indexOf('lemma') > -1) {
 							token_type = 'lemma';
@@ -144,7 +149,6 @@ Whitelab.cql = {
 						} else if (term.indexOf('(?c)') > -1) {
 							term = term.substring(5);
 							if (type === 'word' || type === 'lemma' || type === 'phonetic') {
-//								$(field).find("div.token-case > input").prop('checked', true);
 								sensitive = true;
 							}
 						}
@@ -181,14 +185,6 @@ Whitelab.cql = {
 								}
 							}
 						}
-						
-//						if (type === 'pos' && dd == 1) {
-////							Whitelab.search.advanced.inputAsDropdown($(field).find("div.token-input"));
-//							$(field).find("select.advanced-pos-select").last().val(term);
-//						} else {
-//							Whitelab.debug($(field).find("div.token-input-field > input[type='text']"));
-//							$(field).find("div.token-input-field > input[type='text']").val(term);
-//						}
 						if (input.length > 0)
 							Whitelab.search.advanced.addFieldToBoxInColumn(b, c, token_type, operator, input, batch, sensitive, startsen, endsen, repeat_from, repeat_to);
 					}
@@ -204,10 +200,6 @@ Whitelab.cql = {
 				
 				Whitelab.sleep(100);
 			}
-			
-//			if ($("#advanced-canvas .advanced-column").length == 0) {
-//				Whitelab.search.advanced.addFieldToBoxInColumn(0,0);
-//			}
 		}
 	},
 	
@@ -227,6 +219,12 @@ Whitelab.cql = {
 		while (n > -1) {
 			m = query.indexOf("]",n);
 			var c = query.substring(n,m+1);
+			var count = (c.match(/"/g) || []).length;
+			while (count % 2 == 1) {
+				m = query.indexOf("]",m+1);
+				c = query.substring(n,m+1);
+				count = (c.match(/"/g) || []).length;
+			}
 			columns.push(c);
 			n = query.indexOf("[",m+1);
 			if (n-m > 1) {
@@ -377,9 +375,12 @@ Whitelab.cql = {
 					var column = cql.columns[i];
 					var field = column.getFieldByType(type);
 					if (field != null) {
-						var v = field.subfields[0].value;
-						Whitelab.debug("field "+type+" has value: "+v);
-						if (field.subfields[0].value.length == 0)
+						if (type === "pos" && field.subfields.length > 1) {
+							for (var j = 0; j < field.subfields.length; j++) {
+								if (field.subfields[j].value.length > 0)
+									vals.push(field.subfields[j].value);
+							}
+						} else if (field.subfields[0].value.length == 0)
 							vals.push("[]");
 						else
 							vals.push(field.subfields[0].value);
@@ -388,14 +389,23 @@ Whitelab.cql = {
 					}
 				}
 				if (vals.length > 0) {
-					var val = vals.join(" ");
 					if (type === "pos") {
-						if ($("#extended #pos-text option[value='"+val+"']").length > 0) {
-							$("#extended #"+type+"-text").val(val);
+						if ($("#extended #pos-text option[value='"+vals[0]+"']").length > 0) {
+							$("#extended #"+type+"-text").val(vals[0]);
+							$("#extended-refine-pos").removeClass("hidden");
+							var pos = vals.shift();
+							if (vals.length > 0) {
+								$("#refine-pos").removeClass("hidden");
+								for (var i = 0; i < vals.length; i++) {
+									vals[i] = vals[i].replace(/[\W_]/g, "");
+								}
+								$.getScript("/search/pos/features.js?pos="+pos+"&values="+vals.join(","));
+							}
 						} else {
-							$("#extended-pos .searchinput").html('<input type="text" id="pos-text" name="pos" value="'+val+'" />');
+							$("#extended-pos .searchinput").html('<input type="text" id="pos-text" name="pos" value="'+vals.join(" ")+'" />');
 						}
 					} else {
+						var val = vals.join(" ");
 						$("#extended #"+type+"-text").val(val);
 					}
 				}
@@ -575,15 +585,26 @@ Whitelab.cql = {
 						var f = query.addEmptyFieldToColumn(v);
 						f.type = type;
 						f.operator = "is";
-						if (type === "word" || type === "lemma" || type === "phonetic") {
+						if (["word","lemma","phonetic"].indexOf(type) > -1) {
 							f.sensitive = $("#extended-"+type+" input[type='checkbox'].wordcase").is(":checked");
 							Whitelab.debug("extendedQueryStringToCQL f.sensitive = "+f.sensitive);
 						}
 						f.value = Whitelab.cql.removeQuantifier(vals[v]);
 						f.quantifier = Whitelab.cql.removeValue(vals[v]);
+						if (type === "pos") {
+							$.each(document.getElementsByClassName("pos-feat-select"), function(pf,feat) {
+								var feat_val = $(feat).val();
+								if (feat_val !== "") {
+									var pff = query.addEmptyFieldToColumn(v);
+									pff.type = $(feat).attr("id");
+									pff.operator = "is";
+									pff.value = feat_val;
+								}
+							});
+						}
 					}
 				}
-			} else {
+			} else if (!$("#extended-"+type+" .batchrow").is(':hidden')) {
 				var lines = $("#extended-"+type+" .batchlist").val().split("\n");
 				$.each(lines, function(l,line) {
 					if (line.length > 0) {

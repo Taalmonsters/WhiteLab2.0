@@ -8,8 +8,13 @@
 				<select class="token-type" data-column="<%= @field[:column] %>" data-box="<%= @field[:box] %>" data-field="<%= @field[:field] %>">
 					<option value="word" <%= @field_values[:token_type].eql?('word') ? 'selected="true"' : '' %>><%= t(:"data_labels.keys.word") %></option>
 					<option value="lemma" <%= @field_values[:token_type].eql?('lemma') ? 'selected="true"' : '' %>><%= t(:"data_labels.keys.lemma") %></option>
-					<option value="pos" <%= @field_values[:token_type].eql?('pos') ? 'selected="true"' : '' %>><%= t(:"data_labels.keys.pos") %></option>
 					<option value="phonetic" <%= @field_values[:token_type].eql?('phonetic') ? 'selected="true"' : '' %>><%= t(:"data_labels.keys.phonetic") %></option>
+					<option value="pos" <%= @field_values[:token_type].eql?('pos') ? 'selected="true"' : '' %>><%= t(:"data_labels.keys.pos") %></option>
+					<optgroup label="<%= t(:"data_labels.keys.pos") %> <%= t(:"pos_features.keys.features") %>">
+					<% @pos_feat_keys.each do |feat| %>
+						<option value="<%= feat %>" <%= @field_values[:token_type].eql?(feat) ? 'selected="true"' : '' %>><%= t(:"pos_features.keys.#{feat}").eql?("type") ? feat.downcase : t(:"pos_features.keys.#{feat}") %></option>
+					<% end %>
+					</optgroup>
 				</select>
 			</div>
 			<div class="inline operator-select">

@@ -100,7 +100,7 @@ Whitelab.search = {
 			if (operator != null)
 				url = url + '&operator='+operator;
 			if (input != null)
-				url = url + '&input='+input;
+				url = url + '&input='+encodeURI(input);
 			if (batch != null)
 				url = url + '&batch='+batch;
 			if (sensitive != null)
@@ -260,6 +260,8 @@ Whitelab.search = {
 			var operatorValue = $(row).find(".token-operator").find(":selected").val();
 			if (typeValue == "pos" && (operatorValue == "is" || operatorValue == "not"))
 				$.getScript('/search/pos/select.js?element_class=advanced-pos-select&element=%23column'+c+'-box'+b+'-field'+f+'%20div.token-input-field');
+			else if (["word", "lemma", "pos", "phonetic"].indexOf(typeValue) == -1 && (operatorValue == "is" || operatorValue == "not"))
+				$.getScript('/search/pos/select.js?element_class=advanced-pos-select&element=%23column'+c+'-box'+b+'-field'+f+'%20div.token-input-field&feat='+typeValue);
 			else
 				$("#column"+c+"-box"+b+"-field"+f+" div.token-input-field").html('<input placeholder="<any>" type="text">');
 		},
@@ -282,7 +284,7 @@ Whitelab.search = {
 		///////////////////////////////////////////////////////////////////////////
 		
 		getBoxValue : function(box,type,op) {
-			if (type == 'pos' && (op == 'is' || op == 'not')) {
+			if (["word","lemma","phonetic"].indexOf(type) == -1 && (op == 'is' || op == 'not')) {
 				var term = $(box).find(".advanced-pos-select").first().val();
 				return term;
 			} else {

@@ -52,16 +52,30 @@ CqlField.prototype.toCqlString = function() {
 	if (this.value == null || this.value.length == 0 || this.value === "[]" || this.value === "[word=\".*\"]") {
 		query = "[word=\".*\"]";
 	} else {
-		if (this.operator === "is" || this.operator === "regex") {
-			query = this.type+"=\""+sensitive+this.value+"\"";
-		} else if (this.operator == "not") {
-			query = this.type+"!=\""+sensitive+this.value+"\"";
-		} else if (this.operator == "contains") {
-			query = this.type+"=\""+sensitive+".*"+this.value+".*\"";
-		} else if (this.operator == "ends") {
-			query = this.type+"=\""+sensitive+".*"+this.value+"\"";
-		} else if (this.operator == "starts") {
-			query = this.type+"=\""+sensitive+this.value+".*\"";
+		if (["word","lemma","pos","phonetic"].indexOf(this.type) == -1) {
+			if (this.operator === "is" || this.operator === "regex") {
+				query = "pos=\".*[\\(,]"+this.value+"[,\\)].*\"";
+			} else if (this.operator == "not") {
+				query = "pos!=\".*[\\(,]"+this.value+"[,\\)].*\"";
+			} else if (this.operator == "contains") {
+				query = "pos=\""+".*"+this.value+".*\"";
+			} else if (this.operator == "ends") {
+				query = "pos=\""+".*"+this.value+"[.\\)].*\"";
+			} else if (this.operator == "starts") {
+				query = "pos=\".*[\\(,]"+this.value+".*\"";
+			}
+		} else {
+			if (this.operator === "is" || this.operator === "regex") {
+				query = this.type+"=\""+sensitive+this.value+"\"";
+			} else if (this.operator == "not") {
+				query = this.type+"!=\""+sensitive+this.value+"\"";
+			} else if (this.operator == "contains") {
+				query = this.type+"=\""+sensitive+".*"+this.value+".*\"";
+			} else if (this.operator == "ends") {
+				query = this.type+"=\""+sensitive+".*"+this.value+"\"";
+			} else if (this.operator == "starts") {
+				query = this.type+"=\""+sensitive+this.value+".*\"";
+			}
 		}
 	}
 	if (this.quantifier != null) {
