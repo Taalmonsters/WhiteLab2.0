@@ -103,8 +103,9 @@ class MetadataHandler
       groups['left'] = []
       groups['right'] = []
       ['hit','left','right'].each do |position|
-        ['text','lemma','pos','phonetic'].each do |annotation|
+        ['word','lemma','pos','phonetic'].each do |annotation|
           groups[position] << [annotation, position+'_'+annotation]
+          groups[position] << ["#{annotation} (case insensitive)", position+'_'+annotation+'_i']
         end
       end
     end
