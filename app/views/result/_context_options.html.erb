@@ -1,0 +1,47 @@
+<div class="form-group col-xs-12">
+	<%= check_box_tag "group_case", ":i", @query.group && @query.group.include?(':i') %> case insensitive
+</div>
+<div class="form-group col-xs-12 col-sm-4 col-md-3 col-lg-2">
+	<label>Left context:</label>
+	<div class="form-inline">
+		<div class="form-group">
+			<label for="l_from">From</label>
+			<%= number_field_tag :l_from, @query.context_start("L"), :min => 0, :max => 10 %>
+		</div>
+		<div class="form-group">
+			<label for="l_to">To</label>
+			<%= number_field_tag :l_to, @query.context_end("L"), :min => 0, :max => 10 %>
+		</div>
+	</div>
+	<hr class="visible-xs" />
+</div>
+<div class="form-group col-xs-12 col-sm-4 col-md-3 col-lg-2">
+	<label>Hit:</label>
+	<div class="form-inline">
+		<div class="form-group">
+			<label for="h_from">From</label>
+			<%= number_field_tag :h_from, @query.context_start("H"), :min => 0, :max => @query.columns %>
+		</div>
+		<div class="form-group">
+			<label for="h_to">To</label>
+			<%= number_field_tag :h_to, @query.context_end("H"), :min => 0, :max => @query.columns %>
+		</div>
+	</div>
+	<hr class="visible-xs" />
+</div>
+<div class="form-group col-xs-12 col-sm-4 col-md-3 col-lg-2">
+	<label>Right context:</label>
+	<div class="form-inline">
+		<div class="form-group">
+			<label for="r_from">From</label>
+			<%= number_field_tag :r_from, @query.context_start("R"), :min => 0, :max => 10 %>
+		</div>
+		<div class="form-group">
+			<label for="r_to">To</label>
+			<%= number_field_tag :r_to, @query.context_end("R"), :min => 0, :max => 10 %>
+		</div>
+	</div>
+</div>
+<div class="form-group col-xs-12">
+	<button id="group-hits-button" class="btn btn-primary">Group</button>
+</div>

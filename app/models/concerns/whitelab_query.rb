@@ -64,6 +64,32 @@ module WhitelabQuery
     return changed
   end
   
+  def columns
+    self.patt.scan(/\]\[/).count + 1
+  end
+  
+  def context_end(part, start = 0)
+    if self.group && self.group.include?(part)
+      r = self.group.split(part, 2)[1]
+      r = r.split(/;/,2)[0]
+      return r.include?('-') ? r.split('-',2)[1].to_i : r.to_i
+    elsif self.group.start_with?(part.downcase)
+      return part.eql?("H") ? self.columns : 1
+    end
+    return start
+  end
+  
+  def context_start(part)
+    if self.group && self.group.include?(part)
+      r = self.group.split(part, 2)[1]
+      r = r.split(/;/,2)[0]
+      return r.include?('-') ? r.split('-')[0].to_i : r.to_i
+    elsif self.group.start_with?(part.downcase)
+      return 1
+    end
+    return 0
+  end
+  
   def execute(threaded = true)
     if !self.patt.nil? && ([1,2].include?(self.view) || !self.group.blank?)
       Rails.logger.debug "EXECUTING QUERY"
@@ -138,6 +164,10 @@ module WhitelabQuery
     end
   end
   
+  def page
+    return self.input_page
+  end
+  
   def result(threaded = true)
     return self.output if (self.finished? || self.counting?) && self.output && !self.output.blank?
     Rails.logger.debug "GET QUERY RESULT"
@@ -150,8 +180,11 @@ module WhitelabQuery
     return backend.search(self, backend.query_to_url(self))
   end
   
-  def page
-    return self.input_page
+  def selected_group
+    return self.group unless self.group =~ /(word|lemma|pos|phonetic)/
+    position = self.group.include?("R") ? "right" : self.group.include?("L") ? "left" : "hit"
+    annotation = self.group.include?("phonetic") ? "phonetic" : self.group.include?("pos") ? "pos" : self.group.include?("lemma") ? "lemma" : "word"
+    return "#{position}:#{annotation}"
   end
   
   def total

@@ -1,7 +1,12 @@
 <% if @namespace && @namespace.eql?('search') %>
 	<div class="row">
 		<div class="col-xs-12">
-			<%= select_tag(:"group", grouped_options_for_select(@groups, @query.group), :class => "group-by-select", :include_blank => true) %>
+			<%= select_tag(:"group", grouped_options_for_select(@groups, @query.selected_group), :class => "group-by-select", :include_blank => true) %>
+		</div>
+		<div id="context-options" class="col-xs-12 <%= "hidden" unless @query.group && @query.group.start_with?("context") %>">
+			<% if @query.group %>
+				<%= render partial: "result/context_options" %>
+			<% end %>
 		</div>
 	</div>
 <% end %>
@@ -25,6 +30,7 @@
 			</thead>
 			<tbody>
 				<% @query.result(false)['results'].each_with_index do |group,i| %>
+					<% puts group.to_json %>
 					<% largest_group = @query.result(false)['largest_group_size'] %>
 					<tr class="clickable grouped-hit-row" data-group-value="<%= group[@group] %>" data-group-id="<%= @query.group+i.to_s %>">
 						<td><%= group[@group].kind_of?(Array) ? group[@group][0].html_safe : group[@group].html_safe %></td>
@@ -43,7 +49,8 @@
 										<tr>
 											<th class="right-aligned"><%= t(:"results.keys.context").capitalize+" "+t(:"results.keys.left") %></th>
 											<th class="center-aligned"><%= t(:"data_labels.keys.hit").capitalize %></th>
-											<th><%= t(:"results.keys.context").capitalize+" "+t(:"results.keys.right") %></th></tr>
+											<th><%= t(:"results.keys.context").capitalize+" "+t(:"results.keys.right") %></th>
+										</tr>
 									</thead>
 									<tbody></tbody>
 								</table></div>

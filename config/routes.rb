@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     get '/history' => 'queries#history'
     get '/history/id/:id' => 'queries#history'
     get '/kwic' => 'queries#kwic'
+    get '/context_options/id/:id' => 'queries#context_options'
     get '/doc_hits/id/:id' => 'queries#doc_hits'
     get '/remove/id/:id' => 'queries#remove'
     # get '/details/id/:id' => 'queries#details'

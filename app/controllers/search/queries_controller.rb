@@ -1,6 +1,15 @@
 class Search::QueriesController < QueriesController
   include WhitelabSearch
   
+  def context_options
+    @query.group = params[:group] if params.has_key?(:group)
+    respond_to do |format|
+      format.js do
+        render '/result/context_options'
+      end
+    end
+  end
+  
   # Load hits for Search Query in selected document
   def doc_hits
     if @query && params.has_key?(:docpid)

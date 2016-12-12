@@ -397,6 +397,21 @@ Whitelab.search = {
 				$.getScript('/search/result/id/'+id+'.js');
 			}
 			
+		},
+		
+		groupResults: function(group) {
+			var page = $("#result-pane").data('query-page');
+			var params = Whitelab.assembleQueryParams({
+				'patt': $("#result-pane").data('query-patt'), 
+				'filter': $("#result-pane").data('query-filter'), 
+				'within': $("#result-pane").data('query-within'), 
+				'view': $("#result-pane").data('query-view')+"", 
+				'group': group, 
+				'offset': "0", 
+				'number': "50"
+			});
+			Whitelab.debug(params);
+			window.location = '/search/'+page+'?'+params;
 		}
 		
 	},
@@ -537,19 +552,34 @@ $(document).on('click', '#main-div[data-namespace="search"] button.show-document
 $(document).on('change', '#main-div[data-namespace="search"] select.group-by-select', function(e) {
 	var group = $(this).val();
 	if (group != null && group.length > 0) {
-		var page = $("#result-pane").data('query-page');
-		var params = Whitelab.assembleQueryParams({
-			'patt': $("#result-pane").data('query-patt'), 
-			'filter': $("#result-pane").data('query-filter'), 
-			'within': $("#result-pane").data('query-within'), 
-			'view': $("#result-pane").data('query-view')+"", 
-			'group': group, 
-			'offset': "0", 
-			'number': "50"
-		});
-		Whitelab.debug(params);
-		window.location = '/search/'+page+'?'+params;
+		if (group.indexOf("word") > -1 || group.indexOf("lemma") > -1 || group.indexOf("pos") > -1 || group.indexOf("phonetic") > -1) {
+			$("#context-options").removeClass("hidden");
+			var qid = $("#result-pane").data("query-id");
+			$.getScript('/search/context_options/id/'+qid+'.js?group='+group);
+		} else
+			Whitelab.search.result.groupResults(group);
 	}
+});
+
+$(document).on('click', '#group-hits-button', function(e) {
+	e.preventDefault();
+	var group = $('#main-div[data-namespace="search"] select.group-by-select').val();
+	group = group.replace(/^(hit|left|right)/, "context");
+	if ($("#group_case").is(':checked'))
+		group = group+':i';
+	else
+		group = group+':s';
+	var arr = [];
+	$.each(["l","h","r"], function(i, item) {
+		if ($("#"+item+"_from").val() > 0) {
+			var g = item.toUpperCase()+$("#"+item+"_from").val();
+			if ($("#"+item+"_to").val() >= $("#"+item+"_from").val())
+				g = g+"-"+$("#"+item+"_to").val();
+			arr.push(g);
+		}
+	});
+	group = group+":"+arr.join(";");
+	Whitelab.search.result.groupResults(group);
 });
 
 $(document).on('click', '#main-div[data-namespace="search"] tr.hit-row', function(e) {
