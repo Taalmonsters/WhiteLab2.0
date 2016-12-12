@@ -90,7 +90,7 @@ module WhitelabQuery
     return 0
   end
   
-  def execute(threaded = true)
+  def execute(threaded = true, max_count = nil)
     if !self.patt.nil? && ([1,2].include?(self.view) || !self.group.blank?)
       Rails.logger.debug "EXECUTING QUERY"
       if threaded
@@ -99,7 +99,7 @@ module WhitelabQuery
           res, backend_status = self.run
           self.output = res
           self.counting! if backend_status == 2
-          self.finished! if backend_status == 3
+          self.finished! if backend_status == 3 || (max_count && res['hit_count'] >= max_count)
           self.failed! if backend_status == 4
           if [2,3].include?(backend_status)
             self.hit_count = res['hit_count']
@@ -113,7 +113,7 @@ module WhitelabQuery
         res, backend_status = self.run
         self.output = res
         self.counting! if backend_status == 2
-        self.finished! if backend_status == 3
+        self.finished! if backend_status == 3 || (max_count && res['hit_count'] >= max_count)
         self.failed! if backend_status == 4
         if [2,3].include?(backend_status)
           self.hit_count = res['hit_count']

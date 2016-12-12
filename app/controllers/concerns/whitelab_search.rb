@@ -35,10 +35,11 @@ module WhitelabSearch
   
   # Set current query
   def set_query
+    @max_count = params[:max_count].to_i if params.has_key?(:max_count)
     @query = Search::Query.find_from_params(action_name, @user, query_create_params) if params.has_key?(:patt) || params.has_key?(:id)
     unless ['download'].include?(action_name)
       threaded = !action_name.eql?('result')
-      @query.execute(threaded) if @query && ([1,2].include?(@query.view) || !@query.group.blank?) && !@query.failed? && !@query.output
+      @query.execute(threaded, @max_count) if @query && ([1,2].include?(@query.view) || !@query.group.blank?) && !@query.failed? && !@query.output
     end
     Rails.logger.debug "NO QUERY" if !@query
   end
