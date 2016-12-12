@@ -1,6 +1,6 @@
 var Whitelab = {
 	namespace : 'search',
-	doDebug : true,
+	doDebug : false,
 	
 	debug : function(msg) {
 		if (Whitelab.doDebug)
