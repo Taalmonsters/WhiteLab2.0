@@ -128,6 +128,7 @@ en:
       documents: documents
       grouped_hits: grouped hits
       grouped_documents: grouped documents
+      relative_hits: relative hits
       frequency_list: frequency list
       document_list: document list
       vocabulary_growth: vocabulary growth

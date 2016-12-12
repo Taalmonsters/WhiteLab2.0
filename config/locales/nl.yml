@@ -128,6 +128,7 @@ nl:
       documents: documenten
       grouped_hits: gegroepeerde hits
       grouped_documents: gegroepeerde documenten
+      relative_hits: relatieve hits
       frequency_list: frequentielijst
       document_list: documentenlijst
       vocabulary_growth: vocabulaire groei

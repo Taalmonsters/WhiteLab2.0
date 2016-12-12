@@ -14,6 +14,7 @@ class QueriesController < ApplicationController
   def download
     respond_to do |format|
       format.csv { send_file @query.result_file, :disposition=>"attachment; filename='#{@query.generate_filename}.csv'" }
+      format.tsv { send_file @query.result_file(true), :disposition=>"attachment; filename='#{@query.generate_filename}.tsv'" }
       format.xml { send_file @query.metadata_file, :disposition=>"attachment; filename='#{@query.generate_filename}.xml'" }
     end
   end

@@ -66,19 +66,19 @@ module BlacklabHelper
       'document_count' => docs,
       'results' => data.map { |hit|
         {
-          "text_left" => hit["left"]["word"].join(" "),
           "corpus" => response['docInfos'][hit["docPid"]][CORPUS_TITLE_FIELD],
           "collection" => response['docInfos'][hit["docPid"]][COLLECTION_TITLE_FIELD],
-          "hit_text"=> hit["match"]["word"].join(" "),
-          "last_index" => hit["end"]-1,
-          "text_right" => hit["right"]["word"].join(" "),
           "docpid" => hit["docPid"],
-          "end_time" => hit["match"].has_key?("end_time") ? hit["match"]["end_time"].select{|et| !et.blank? }.sort.last : nil,
-          "begin_time" => hit["match"].has_key?("begin_time") ? hit["match"]["begin_time"].select{|bt| !bt.blank? }.sort.first : nil,
+          "text_left" => hit["left"]["word"].join(" "),
+          "hit_text"=> hit["match"]["word"].join(" "),
+          "text_right" => hit["right"]["word"].join(" "),
           "hit_pos" => hit["match"].has_key?("pos") ? hit["match"]["pos"].join(" ") : nil,
           "hit_phonetic" => hit["match"].has_key?("phonetic") ? reformat_phonetic(hit["match"]["phonetic"]) : nil,
+          "hit_lemma" => hit["match"].has_key?("lemma") ? hit["match"]["lemma"].join(" ") : nil,
           "first_index" => hit["start"],
-          "hit_lemma" => hit["match"].has_key?("lemma") ? hit["match"]["lemma"].join(" ") : nil
+          "last_index" => hit["end"]-1,
+          "end_time" => hit["match"].has_key?("end_time") ? hit["match"]["end_time"].select{|et| !et.blank? }.sort.last : nil,
+          "begin_time" => hit["match"].has_key?("begin_time") ? hit["match"]["begin_time"].select{|bt| !bt.blank? }.sort.first : nil
         }
       }
     } if view == 1
@@ -88,9 +88,10 @@ module BlacklabHelper
       'results' => data.map { |doc|
         {
           "corpus" => doc["docInfo"][CORPUS_TITLE_FIELD],
-          "docpid" => doc["docPid"],
           "collection" => doc["docInfo"][COLLECTION_TITLE_FIELD],
-          "hit_count" => doc["numberOfHits"]
+          "docpid" => doc["docPid"],
+          "hit_count" => doc["numberOfHits"],
+          "relative_hit_count" => (doc["numberOfHits"].to_f / hits) * 100
         }
       }
     } if view == 2
@@ -102,7 +103,8 @@ module BlacklabHelper
       'results' => data.map { |group|
         {
           "#{query.group}" => group["identityDisplay"],
-          "#{view == 8 ? 'hit_count' : 'document_count'}" => group["size"]
+          "#{view == 8 ? 'hit_count' : 'document_count'}" => group["size"],
+          "relative_#{view == 8 ? 'hit_count' : 'document_count'}" => view == 8 ? (group["size"].to_f / hits) * 100 : (group["size"].to_f / docs) * 100
         }
       }
     } if [8,16].include?(view)

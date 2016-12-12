@@ -9,8 +9,8 @@ class Search::Query < ActiveRecord::Base
     FileUtils.rm_r(dir) if File.exists?(dir)
   end
   
-  def result_file
-    return Rails.root.join('data','search',self.id.to_s,'result.csv')
+  def result_file(tsv = false)
+    return Rails.root.join('data','search',self.id.to_s,tsv ? 'result.tsv' : 'result.csv')
   end
   
   def metadata_file

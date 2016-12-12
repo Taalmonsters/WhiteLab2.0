@@ -144,6 +144,7 @@ Whitelab.statistics = {
 	
 	displayVocabularyGrowth : function(json) {
 		Whitelab.debug('displayVocabularyGrowth');
+		Whitelab.debug(json);
 		$('#vocabulary-growth-display').html("");
         $('#vocabulary-growth-display').highcharts({
 
@@ -198,7 +199,15 @@ Whitelab.statistics = {
 
             tooltip: {
                 shared: false,
-                crosshairs: false
+                crosshairs: false,
+	        	borderColor: '#999',
+	            useHTML: true,
+	            headerFormat: '<table class="table">',
+	            pointFormat: '<tr><th colspan="2"><h3>{point.name}</h3></th></tr>' +
+	            	'<tr><th>Unique {point.ggroup}:</th><td>{point.y}</td><td>({point.y2} %)</td></tr>' +
+	                '<tr><th>Progress:</th><td>{point.x} tokens</td><td>({point.x2} %)</td></tr>',
+	            footerFormat: '</table>',
+	            followPointer: false
             },
 
             plotOptions: {

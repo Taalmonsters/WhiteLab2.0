@@ -36,6 +36,7 @@
 								<img src="<%= image_url('spinner.gif') %>" />
 								<% elsif query.exported? %>
 								<a class="btn btn-xs btn-info download" data-format="csv" href="/search/download/id/<%= query.id %>.csv" style="z-index:2000;">CSV</a>
+								<a class="btn btn-xs btn-info download" data-format="tsv" href="/search/download/id/<%= query.id %>.tsv" style="z-index:2000;">TSV</a>
 								<% end %>
 							</td>
 						</tr>
@@ -84,6 +85,7 @@
 							<img src="<%= image_url('spinner.gif') %>" />
 							<% elsif query.exported? %>
 							<a class="btn btn-xs btn-info download" data-format="csv" href="/explore/download/id/<%= query.id %>.csv" style="z-index:2000;">CSV</a>
+							<a class="btn btn-xs btn-info download" data-format="tsv" href="/explore/download/id/<%= query.id %>.tsv" style="z-index:2000;">TSV</a>
 							<% end %>
 						</td>
 					</tr>

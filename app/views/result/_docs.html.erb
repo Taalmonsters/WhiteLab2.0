@@ -21,6 +21,7 @@
 					<th><%= t(:"data_labels.keys.corpus").capitalize %></th>
 					<% end %>
 					<th># <%= t(:"results.keys.hits").capitalize %></th>
+					<th><%= t(:"results.keys.relative_hits").capitalize %></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -33,6 +34,7 @@
 						<td><%= doc["corpus"] %></td>
 						<% end %>
 						<td><%= number_with_delimiter(doc["hit_count"], :delimiter => t(:'other.keys.numeric_delimiter')) %></td>
+						<td><%= number_with_precision(doc["relative_hit_count"], precision: 1, separator: t(:"other.keys.numeric_separator")) %> %</td>
 						<td style="width: 125px;"><button class="btn btn-primary btn-xs show-document" data-docpid="<%= doc["docpid"] %>"><%= t(:"button_labels.keys.show").capitalize+" "+t(:"data_labels.keys.document") %></button></td>
 					</tr>
 					<tr class="doc-hits-row hidden" id="<%= doc["docpid"] %>"></tr>

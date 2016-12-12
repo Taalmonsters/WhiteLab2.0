@@ -7,7 +7,7 @@ class Document
   validates :xmlid, presence: true
   
   def self.growth(query)
-    vocab_growth = { 'types' => [{ name: '', x: 0, y: 0 }], 'lemmas' => [{ name: '', x: 0, y: 0 }] }
+    vocab_growth = { 'types' => [{ ggroup: 'types', name: '', x: 0, x2: 0.0, y: 0, y2: 0.0 }], 'lemmas' => [{ ggroup: 'lemmas', name: '', x: 0, x2: 0.0, y: 0, y2: 0.0 }] }
     total = 0
     t = 0
     l = 0
@@ -27,13 +27,29 @@ class Document
     end
     type_growth = Array.new(total, 0)
     lemma_growth = Array.new(total, 0)
-    types.uniq.each{|x| type_growth[types.index(x)] = 1 }
-    lemmas.uniq.each{|x| lemma_growth[lemmas.index(x)] = 1 }
+    total_unique_types = 0
+    total_unique_lemmas = 0
+    types.uniq.each{|x| type_growth[types.index(x)] = 1; total_unique_types += 1; }
+    lemmas.uniq.each{|x| lemma_growth[lemmas.index(x)] = 1; total_unique_lemmas += 1; }
     (0..total-1).to_a.each do |i|
       t += type_growth[i]
       l += lemma_growth[i]
-      vocab_growth['types'] << { name: types[i], x: i+1, y: t }
-      vocab_growth['lemmas'] << { name: lemmas[i], x: i+1, y: l }
+      vocab_growth['types'] << {
+        ggroup: 'types',
+        name: types[i],
+        x: i+1,
+        x2: (((i+1).to_f / total) * 100).round(1),
+        y: t,
+        y2: ((t.to_f / total_unique_types) * 100).round(1)
+      }
+      vocab_growth['lemmas'] << {
+        ggroup: 'lemmas',
+        name: lemmas[i],
+        x: i+1,
+        x2: (((i+1).to_f / total) * 100).round(1),
+        y: l,
+        y2: ((l.to_f / total_unique_lemmas) * 100).round(1)
+      }
     end
     return { document_count: d, hit_count: total, title: 'Vocabulary growth', data: [{ name: 'word_types', color: '#A90C28', data: vocab_growth['types'] }, { name: 'lemmas', color: '#53c4c3', data: vocab_growth['lemmas'] }] }
   end
@@ -44,21 +60,37 @@ class Document
   
   def growth
     total = self.token_count
-    vocab_growth = { 'types' => [{ name: '', x: 0, y: 0 }], 'lemmas' => [{ name: '', x: 0, y: 0 }] }
+    vocab_growth = { 'types' => [{ ggroup: 'types', name: '', x: 0, x2: 0.0, y: 0, y2: 0.0 }], 'lemmas' => [{ ggroup: 'lemmas', name: '', x: 0, x2: 0.0, y: 0, y2: 0.0 }] }
     contents = self.get_content
     types = contents['word']
+    total_unique_types = 0
     type_growth = Array.new(total, 0)
-    types.uniq.each{|x| type_growth[types.index(x)] = 1 }
+    types.uniq.each{|x| type_growth[types.index(x)] = 1; total_unique_types += 1; }
     lemmas = contents['lemma']
+    total_unique_lemmas = 0
     lemma_growth = Array.new(total, 0)
-    lemmas.uniq.each{|x| lemma_growth[lemmas.index(x)] = 1 }
+    lemmas.uniq.each{|x| lemma_growth[lemmas.index(x)] = 1; total_unique_lemmas += 1; }
     t = 0
     l = 0
     (0..total-1).to_a.each do |i|
       t += type_growth[i]
       l += lemma_growth[i]
-      vocab_growth['types'] << { name: types[i], x: i+1, y: t }
-      vocab_growth['lemmas'] << { name: lemmas[i], x: i+1, y: l }
+      vocab_growth['types'] << {
+        ggroup: 'types',
+        name: types[i],
+        x: i+1,
+        x2: ActionController::Base.helpers.number_with_precision(((i+1).to_f / total) * 100, precision: 1, separator: I18n.t(:"other.keys.numeric_separator")),
+        y: t,
+        y2: ActionController::Base.helpers.number_with_precision((t.to_f / total_unique_types) * 100, precision: 1, separator: I18n.t(:"other.keys.numeric_separator"))
+      }
+      vocab_growth['lemmas'] << {
+        ggroup: 'lemmas',
+        name: lemmas[i],
+        x: i+1,
+        x2: ActionController::Base.helpers.number_with_precision(((i+1).to_f / total) * 100, precision: 1, separator: I18n.t(:"other.keys.numeric_separator")),
+        y: l,
+        y2: ActionController::Base.helpers.number_with_precision((l.to_f / total_unique_lemmas) * 100, precision: 1, separator: I18n.t(:"other.keys.numeric_separator"))
+      }
     end
     return { title: 'Vocabulary growth', data: [{ name: 'word_types', color: '#A90C28', data: vocab_growth['types'] }, { name: 'lemmas', color: '#53c4c3', data: vocab_growth['lemmas'] }] }
   end

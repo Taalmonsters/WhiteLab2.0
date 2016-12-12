@@ -38,7 +38,6 @@ module WhitelabExplore
             @query.document_count = @result[:document_count]
             @query.finished!
           else
-            p "HIER"
             threaded = !action_name.eql?('result')
             @query.execute(threaded) if @query && !@query.running? && !@query.failed? && !@query.output
           end

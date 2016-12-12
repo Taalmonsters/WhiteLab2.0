@@ -128,7 +128,7 @@ module WhitelabQuery
   end
   
   def export
-    Rails.logger.info("EXPORTING WL QUERY")
+    Rails.logger.debug("EXPORTING WL QUERY")
     if self.finished? && !self.exporting?
       Thread.new do
         self.exporting!
@@ -139,16 +139,25 @@ module WhitelabQuery
         max = [EXPORT_LIMIT,self.total].min
         self.number = 1000
         o = 0
-        FileUtils.mkpath(File.dirname(self.result_file))
-        File.delete(self.result_file) if File.exists?(self.result_file)
+        csv_file = self.result_file
+        FileUtils.mkpath(File.dirname(csv_file))
+        File.delete(csv_file) if File.exists?(csv_file)
+        tsv_file = self.result_file(true)
+        File.delete(tsv_file) if File.exists?(tsv_file)
         while o < max
           self.offset = o
           res = self.result(false)
-          Rails.logger.info "RESULT: #{res}"
-          CSV.open(self.result_file, "a", force_quotes: true) do |csv|
+          Rails.logger.debug "RESULT: #{res}"
+          CSV.open(csv_file, "a", force_quotes: true) do |csv|
             csv << res['results'].first.keys if o == 0
             res['results'].each do |hash|
               csv << hash.values
+            end
+          end
+          File.open(tsv_file, "a") do |tsv|
+            tsv.write res['results'].first.keys.join("\t")+"\n" if o == 0
+            res['results'].each do |hash|
+              tsv.write hash.values.join("\t")+"\n"
             end
           end
           o += self.number
