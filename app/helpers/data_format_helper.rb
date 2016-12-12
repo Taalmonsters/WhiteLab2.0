@@ -38,10 +38,19 @@ module DataFormatHelper
   # Format corpus composition as Highcharts bubble chart
   def format_for_bubble_chart(data, title, filtered_token_count)
     max_doc_count = 0
+    total_doc_count = 0
     if data.any?
       data.sort!{|group| group['document_count'] }
       max_doc_count = data[0]['document_count']
-      data.map!{|group| { 'name' => group[title], 'x' => group['hit_count'], 'y' => group['hit_count'] / group['document_count'], 'z' => group['document_count'] } }
+      data.each{|group| total_doc_count += group['document_count'] }
+      data.map!{|group| {
+        'name' => group[title],
+        'x' => group['hit_count'],
+        'x2' => ActionController::Base.helpers.number_with_precision((group['hit_count'].to_f / filtered_token_count) * 100, precision: 1, separator: t(:"other.keys.numeric_separator")),
+        'y' => group['hit_count'] / group['document_count'],
+        'z' => group['document_count'],
+        'z2' => ActionController::Base.helpers.number_with_precision((group['document_count'].to_f / total_doc_count) * 100, precision: 1, separator: t(:"other.keys.numeric_separator")) }
+      }
     else
       data = [{ 'name' => 'Unknown', 'x' => filtered_token_count, 'y' => 0, 'z' => 0 }]
     end

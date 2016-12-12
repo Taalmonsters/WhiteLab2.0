@@ -52,8 +52,8 @@ Whitelab.statistics = {
 	            useHTML: true,
 	            headerFormat: '<table class="table">',
 	            pointFormat: '<tr><th colspan="2"><h3>{point.name}</h3></th></tr>' +
-	            	'<tr><th>Document count:</th><td>{point.z:,.0f}</td></tr>' +
-	                '<tr><th>Total size:</th><td>{point.x:,.0f} tokens</td></tr>' +
+	            	'<tr><th>Document count:</th><td>{point.z:,.0f}</td><td>({point.z2} %)</td></tr>' +
+	                '<tr><th>Total size:</th><td>{point.x:,.0f} tokens</td><td>({point.x2} %)</td></tr>' +
 	                '<tr><th>Average document size:</th><td>{point.y:,.0f} tokens</td></tr>',
 	            footerFormat: '</table>',
 	            followPointer: false
