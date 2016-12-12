@@ -272,6 +272,7 @@ nl:
     keys:
       default: standaard
       numeric_delimiter: "."
+      numeric_separator: ","
       model: model
       node_count: aantal nodes
       loading: laden

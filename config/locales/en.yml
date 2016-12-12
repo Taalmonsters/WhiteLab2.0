@@ -271,6 +271,7 @@ en:
     keys:
       default: default
       numeric_delimiter: ","
+      numeric_separator: "."
       model: model
       node_count: node count
       loading: loading
