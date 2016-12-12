@@ -37,7 +37,7 @@
 		<% end %>
 		<tr>
 			<th><%= t(:"queries.keys.hit_count").capitalize %></th>
-			<td><%= @query.hit_count.blank? || @query.hit_count == -1 ? '-' : "#{number_with_delimiter(@query.hit_count, :delimiter => t(:'other.keys.numeric_delimiter'))} (#{number_with_precision((@query.hit_count.to_f / @filtered_total_abs.to_f) * 100, precision: 1, separator: t(:"other.keys.numeric_separator"))} %)" %></td>
+			<td><%= @query.hit_count.blank? || @query.hit_count == -1 ? '-' : "#{number_with_delimiter(@query.hit_count, :delimiter => t(:'other.keys.numeric_delimiter'))} (#{number_with_precision(((@query.hit_count.to_f * @query.columns) / @filtered_total_abs.to_f) * 100, precision: 1, separator: t(:"other.keys.numeric_separator"))} %)" %></td>
 		</tr>
 		<tr>
 			<th><%= t(:"queries.keys.document_count").capitalize %></th>
