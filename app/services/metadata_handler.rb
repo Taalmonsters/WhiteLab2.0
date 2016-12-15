@@ -106,7 +106,7 @@ class MetadataHandler
         ['word','lemma','pos','phonetic'].each do |annotation|
           groups[translation] << ["#{translation} - #{I18n.t(:"data_labels.keys.#{annotation}")}", position+':'+annotation]
         end
-        groups[translation] << ["#{translation} - #{I18n.t(:"data_labels.keys.context")}", 'context'] if position.eql?('hit')
+        groups[translation] << ["#{translation} - #{I18n.t(:"data_labels.keys.context")} (#{I18n.t(:"page_titles.keys.advanced")})", 'context'] if position.eql?('hit')
       end
     end
     
