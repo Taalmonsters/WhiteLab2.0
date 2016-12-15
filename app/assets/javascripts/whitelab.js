@@ -50,6 +50,14 @@ var Whitelab = {
 		return params.join('&');
 	},
 	
+	checkContextSizeValues : function(one, other, reverse) {
+		var x = $(one).val();
+		var y = $(other).val();
+		if ((reverse && x < y) || (!reverse && x > y)) {
+			$(other).val(x);
+		}
+	},
+	
 	createRequest : function(method, url) {
 		var xhr = new XMLHttpRequest();
 		if ("withCredentials" in xhr) {
@@ -130,9 +138,9 @@ var Whitelab = {
 	
 	loadGroupedHits : function(group_id,group_value) {
 		Whitelab.debug("loadGroupedHits");
-		group_value = encodeURIComponent(group_value.replace(/\./g,'\\.'));
 		var qid = $("#result-pane").data("query-id");
 		var o = $("#"+group_id).data("offset");
+		group_value = group_id.indexOf("context") == 0 ? group_value : encodeURIComponent(group_value.replace(/\./g,'\\.'));
 		if ($("#main-div[data-namespace='search']").length > 0)
 			$.getScript('/search/result/id/'+qid+'/grouphits.js?group_id='+group_id+'&hits_group='+group_value+'&offset='+o+'&number=20');
 		else if ($("#main-div[data-namespace='explore']").length > 0)
@@ -169,7 +177,7 @@ var Whitelab = {
 		var filter = $("#query-details td.filter").html();
 		if (typeof filter === 'undefined')
 			filter = '';
-		var group = $("#query-details td.group").html();
+		var group = $("#query-details td.group").html().replace(/;/g,'%3B');
 		if (group.indexOf("hit_") > -1) {
 			group_value = encodeURIComponent(group_value.replace(/\./g,'\\.'));
 			patt = "[word=\"(?c)"+group_value+"\"]";
@@ -209,8 +217,8 @@ var Whitelab = {
 		var filter = $("#query-details td.filter").html();
 		if (typeof filter === 'undefined')
 			filter = '';
-		var group = $("#query-details td.group").html();
-		if (group.indexOf("hit_") > -1) {
+		var group = $("#query-details td.group").html().replace(/;/g,'%3B');
+		if (group.indexOf("hit") == 0) {
 			group_value = encodeURIComponent(group_value.replace(/\./g,'\\.'));
 			patt_parts = patt.substring(1,patt.length - 1).split('][');
 			group_parts = group_value.replace(/([\(\)\'\"\[\]])/g,'\\'+"$1").split(' ');
@@ -225,7 +233,7 @@ var Whitelab = {
 			    	new_parts.push("["+patt_parts[i]+"]");
 			}
 			patt = encodeURIComponent(new_parts.join("")).replace(/\=/g,'%3D').replace(/\%252C/g,'%2C');
-		} else if (group.indexOf("left") > -1) {
+		} else if (group.indexOf("wordleft") == 0) {
 			group_value = encodeURIComponent(group_value.replace(/\./g,'\\.'));
 			if (group.indexOf("lemma") > -1)
 				patt = "[lemma=\"(?c)"+group_value+"\"]"+patt;
@@ -235,7 +243,7 @@ var Whitelab = {
 				patt = "[phonetic=\"(?c)"+group_value+"\"]"+patt;
 			else
 				patt = "[word=\"(?c)"+group_value+"\"]"+patt;
-		} else if (group.indexOf("right") > -1) {
+		} else if (group.indexOf("wordright") == 0) {
 			group_value = encodeURIComponent(group_value.replace(/\./g,'\\.'));
 			if (group.indexOf("lemma") > -1)
 				patt = patt+"[lemma=\"(?c)"+group_value+"\"]";
@@ -245,13 +253,17 @@ var Whitelab = {
 				patt = patt+"[phonetic=\"(?c)"+group_value+"\"]";
 			else
 				patt = patt+"[word=\"(?c)"+group_value+"\"]";
+		} else if (group.indexOf("context") == 0) {
 		} else {
 			if (filter.length > 0)
 				filter = filter+"AND("+group+"="+"\""+group_value+"\")";
 			else
 				filter = "("+group+"="+"\""+group_value+"\")";
 		}
-		window.location = "/search/expert?view=1&patt="+patt+"&within="+within+"&filter="+filter;
+		if (group.indexOf("context") == 0)
+			window.location = "/search/expert?view=1&patt="+patt+"&within="+within+"&filter="+filter+"&group="+group+"&viewgroup="+group_value;
+		else
+			window.location = "/search/expert?view=1&patt="+patt+"&within="+within+"&filter="+filter;
 	},
 	
 	sleep : function(ms) {
@@ -369,8 +381,8 @@ $(document).on('click', 'button.load-grouped-docs', function(e) {
 
 $(document).on('click', 'button.load-grouped-hits', function(e) {
 	var group_id = $(this).data("group-id");
-	var group_value = $(this).data("group-value");
-	Whitelab.loadGroupedHits(group_id,group_value);
+	var identity = group_id.indexOf("context") == 0 ? $(this).data("group-identity") : $(this).data("group-value");
+	Whitelab.loadGroupedHits(group_id,identity);
 });
 
 $(document).on('click', 'button.show-grouped-docs', function(e) {
@@ -379,8 +391,9 @@ $(document).on('click', 'button.show-grouped-docs', function(e) {
 });
 
 $(document).on('click', 'button.show-grouped-hits', function(e) {
-	var group_value = $(this).data("group-value");
-	Whitelab.showGroupedHits(group_value);
+	var group_id = $(this).data("group-id");
+	var identity = group_id.indexOf("context") == 0 ? $(this).data("group-identity") : $(this).data("group-value");
+	Whitelab.showGroupedHits(identity);
 });
 
 $(document).on('click', '.info-panel-toggle', function(e) {
@@ -435,9 +448,9 @@ $(document).on('click', 'tr.grouped-hit-row', function(e) {
 	e.preventDefault();
 	e.stopPropagation();
 	var group_id = $(this).data("group-id");
-	var group_value = $(this).data("group-value");
+	var identity = group_id.indexOf("context") == 0 ? $(this).data("group-identity") : $(this).data("group-value");
 	if ($("#"+group_id+" div.hits > table > tbody").html().length == 0) {
-		Whitelab.loadGroupedHits(group_id,group_value);
+		Whitelab.loadGroupedHits(group_id,identity);
 	}
 	$("#"+group_id).toggleClass("hidden");
 });
@@ -446,9 +459,9 @@ $(document).on('click', 'tr.grouped-doc-row', function(e) {
 	e.preventDefault();
 	e.stopPropagation();
 	var group_id = $(this).data("group-id");
-	var group_value = $(this).data("group-value");
+	var identity = $(this).data("group-identity");
 	if ($("#"+group_id+" div.docs > table > tbody").html().length == 0) {
-		Whitelab.loadGroupedDocs(group_id,group_value);
+		Whitelab.loadGroupedDocs(group_id,identity);
 	}
 	$("#"+group_id).toggleClass("hidden");
 });

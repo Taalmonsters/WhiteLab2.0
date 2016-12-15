@@ -1,0 +1,28 @@
+<tr class="context hit-context">
+	<td>
+		<% if index == 0 %>
+			<%= radio_button_tag :hit_context, "H#{index}", !@query.group.eql?('context') && @query.group =~ /[EH][0-9]/ %>
+		<% end %>
+	</td>
+	<td>
+		<div class="form-inline">
+			<div class="form-group">
+				<%= "#{t(:"operators.keys.from").capitalize} #{t(:"data_labels.keys.position")}" %>
+				<%= number_field_tag :"h_from_#{index}", selection.sub(/[EH]/,'').split('-')[0].to_i, :min => 1, :class => "context-from" %>
+			</div>
+			<div class="form-group">
+				<%= t(:"operators.keys.to") %>
+				<%= number_field_tag :"h_to_#{index}", selection.sub(/[EH]/,'').split('-').last.to_i, :min => 1, :class => "context-to" %>
+			</div>
+			<div class="form-group">
+				from the
+				<%= select_tag :"h_start_#{index}", options_for_select([['start', 'H'],['end', 'E']], selection[0]), :class => "context-direction" %>
+				of the hit
+			</div>
+		</div>
+	</td>
+	<td class="controls">
+		<%= image_tag 'minus.png', :class => "update-context-options remove", :data => { set: "H" } %>
+		<%= image_tag 'plus.png', :class => "update-context-options add", :data => { set: "H" } %>
+	</td>
+</tr>

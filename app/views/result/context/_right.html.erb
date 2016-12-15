@@ -1,0 +1,21 @@
+<tr class="context right-context">
+	<td>
+		<div class="form-inline">
+			<div class="form-group">
+				<%= "#{t(:"operators.keys.from").capitalize} #{t(:"data_labels.keys.position")}" %>
+				<%= number_field_tag :"r_from_#{index}", selection.sub(/R/,'').split('-')[0].to_i, :min => 1, :max => 10, :class => "context-from", :onchange => "Whitelab.checkContextSizeValues(this, $('#r_to_#{index}'), false)" %>
+			</div>
+			<div class="form-group">
+				<%= t(:"operators.keys.to") %>
+				<%= number_field_tag :"r_to_#{index}", selection.sub(/R/,'').split('-').last.to_i, :min => 1, :max => 10, :class => "context-to", :onchange => "Whitelab.checkContextSizeValues(this, $('#r_from_#{index}'), true)" %>
+			</div>
+			<div class="form-group">
+				right of the hit
+			</div>
+		</div>
+	</td>
+	<td class="controls">
+		<%= image_tag 'minus.png', :class => "update-context-options remove", :data => { set: "R" } %>
+		<%= image_tag 'plus.png', :class => "update-context-options add", :data => { set: "R" } %>
+	</td>
+</tr>

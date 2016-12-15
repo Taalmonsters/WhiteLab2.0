@@ -1,9 +1,9 @@
 <% if @namespace && @namespace.eql?('search') %>
 	<div class="row">
-		<div class="col-xs-12">
-			<%= select_tag(:"group", grouped_options_for_select(@groups, @query.selected_group), :class => "group-by-select", :include_blank => true) %>
+		<div class="col-xs-12 col-sm-4 col-md-3">
+			<%= select_tag(:"group", grouped_options_for_select(@groups, @query.selected_group), :class => "group-by-select form-control", :include_blank => true) %>
 		</div>
-		<div id="context-options" class="col-xs-12 <%= "hidden" unless @query.group && @query.group.start_with?("context") %>">
+		<div id="context-options" class="col-xs-12 <%= "hidden" unless @query.group && (@query.group.start_with?("hit") || @query.group.start_with?("word") || @query.group.start_with?("context")) %>">
 			<% if @query.group %>
 				<%= render partial: "result/context_options" %>
 			<% end %>
@@ -31,8 +31,9 @@
 			<tbody>
 				<% @query.result(false)['results'].each_with_index do |group,i| %>
 					<% largest_group = @query.result(false)['largest_group_size'] %>
-					<tr class="clickable grouped-hit-row" data-group-value="<%= group[@group] %>" data-group-id="<%= @query.group+i.to_s %>">
-						<td><%= group[@group].kind_of?(Array) ? group[@group][0].html_safe : group[@group].html_safe %></td>
+					<% g = @query.group =~ /H(;|$)/ ? group[@group].sub(/(.+) - - - -(.*)/, '\1\2') : group[@group] %>
+					<tr class="clickable grouped-hit-row" data-group-value="<%= group[@group] %>" data-group-identity="<%= group["identity"] %>" data-group-id="<%= @query.group.gsub(/[\:;\.]/,'_')+i.to_s %>">
+						<td><%= g.kind_of?(Array) ? g[0].html_safe : g.html_safe %></td>
 						<td class="progress-field">
 							<div class="progress">
 								<div class="progress-bar" role="progressbar" aria-valuenow="<%= group['hit_count'] %>" aria-valuemin="1" aria-valuemax="<%= largest_group %>" style="width: <%= (group['hit_count'] / largest_group.to_f) * 100 %>%; min-width: 6em;"><%= number_with_delimiter(group['hit_count'], :delimiter => t(:'other.keys.numeric_delimiter')) %> (<%= number_with_precision(group['relative_hit_count'], precision: 1, separator: t(:'other.keys.numeric_separator')) %> %)</div>
@@ -40,7 +41,7 @@
 						</td>
 					</tr>
 					<% if @namespace.eql?('search') %>
-						<tr class="group-hits-row hidden" id="<%= @query.group+i.to_s %>" data-offset="0">
+						<tr class="group-hits-row hidden" id="<%= @query.group.gsub(/[\:;\.]/,'_')+i.to_s %>" data-offset="0">
 							<td></td>
 							<td>
 								<div class="hits"><table class="table">
@@ -53,7 +54,7 @@
 									</thead>
 									<tbody></tbody>
 								</table></div>
-								<div><button class="btn btn-xs btn-info show-grouped-hits" data-group-value="<%= group[@group] %>"><%= t(:"button_labels.keys.show_detailed").capitalize+" "+t(:"data_labels.keys.hit").pluralize %></button> <button class="btn btn-xs btn-default load-grouped-hits" data-group-id="<%= @query.group+i.to_s %>" data-group-value="<%= group[@group] %>"><%= t(:"button_labels.keys.load_more").capitalize %></button></div>
+								<div><button class="btn btn-xs btn-info show-grouped-hits" data-group-id="<%= @query.group.gsub(/[\:;\.]/,'_')+i.to_s %>" data-group-value="<%= group[@group] %>" data-group-identity="<%= group["identity"] %>"><%= t(:"button_labels.keys.show_detailed").capitalize+" "+t(:"data_labels.keys.hit").pluralize %></button> <button class="btn btn-xs btn-default load-grouped-hits" data-group-id="<%= @query.group.gsub(/[\:;\.]/,'_')+i.to_s %>" data-group-value="<%= group[@group] %>" data-group-identity="<%= group["identity"] %>"><%= t(:"button_labels.keys.load_more").capitalize %></button></div>
 							</td>
 						</tr>
 					<% end %>

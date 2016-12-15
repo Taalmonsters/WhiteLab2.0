@@ -32,6 +32,7 @@ nl:
       repeat: herhaal
       start_of_sentence: begin van zin
       end_of_sentence: eind van zin
+      from: van
       to: tot en met
       times: keer
   data_labels:
@@ -76,9 +77,14 @@ nl:
       value_count: aantal waarden
       token_count: aantal tokens
       case_sensitive: hoofdlettergevoelig
+      case_insensitive: niet hoofdlettergevoelig
       hit: hit
+      left: links
+      right: rechts
       value_type: waarde type
       actor_count: aantal actors
+      context: context
+      position: positie
   metadata_filters:
     title: Metadata filters
     description: Vertalingen van elementen in de metadata filter display
@@ -267,6 +273,7 @@ nl:
       hit_count: hits
       document_count: documenten
       group_count: groepen
+      viewgroup: geselecteerde groep
   other:
     title: Overig
     description: Overige vertalingen
@@ -287,10 +294,82 @@ nl:
     title: Metadata groepen
     description: Vertalingen van metadata groep labels
     keys:
+      Metadata: Metadata
+      Collection: Collection
+      Corpus: Corpus
+      Location: Location
+      Language: Language
   metadata_keys:
     title: Metadata keys
     description: Vertalingen van metadata key labels
     keys:
+      Address: Address
+      Age: Age
+      AnnotationType-SoNaR: AnnotationType-SoNaR
+      Anonymized: Anonymized
+      AudioExportFormat: AudioExportFormat
+      AudioWebPlayFormat: AudioWebPlayFormat
+      AuthorName: AuthorName
+      AuthorNameOrPseudonym: AuthorNameOrPseudonym
+      AuthorNameOrPseudonymSearch: AuthorNameOrPseudonymSearch
+      BirthDate: BirthDate
+      Channel: Channel
+      CharacterEncoding: CharacterEncoding
+      Code: Code
+      CollectionCode: CollectionCode
+      CollectionName: CollectionName
+      title: title
+      Continent: Continent
+      Country: Country
+      Date: Date
+      Derivation: Derivation
+      Description: Description
+      Education: Education
+      End: End
+      EventStructure: EventStructure
+      FamilySocialRole: FamilySocialRole
+      Format: Format
+      Genre: Genre
+      History: History
+      Id: Id
+      Interactivity: Interactivity
+      Involvement: Involvement
+      Key: Key
+      Language-iso-code: Language-iso-code
+      LanguageName: LanguageName
+      Level: Level
+      LicenseCode: LicenseCode
+      LicenseDate: LicenseDate
+      LicenseDetails: LicenseDetails
+      MediaResourceLink: MediaResourceLink
+      Methodology: Methodology
+      Modalities: Modalities
+      Number: Number
+      Organisation: Organisation
+      PlanningType: PlanningType
+      ProjectName: ProjectName
+      Publisher: Publisher
+      Quality: Quality
+      RecordingConditions: RecordingConditions
+      Region: Region
+      ResourceLink: ResourceLink
+      Role: Role
+      Sex: Sex
+      Size: Size
+      SizeUnit: SizeUnit
+      SocialContext: SocialContext
+      Start: Start
+      SubGenre: SubGenre
+      SubType: SubType
+      Task: Task
+      TextTitle: TextTitle
+      TextType: TextType
+      Title: Title
+      Translated: Translated
+      Type: Type
+      fromInputFile: fromInputFile
+      generator: generator
+      id: id
   pos_heads:
     title: PoS hoofden
     description: Vertalingen van part of speech hoofden
@@ -391,11 +470,11 @@ nl:
       gereduceerd: gereduceerd
       nadruk: nadruk
       persoon: persoon
-      "1": eerste persoon
-      "2": tweede persoon
+      '1': eerste persoon
+      '2': tweede persoon
       2v: tweede persoon - feminien
       2b: tweede persoon - beleefdheidsvorm
-      "3": derde persoon
+      '3': derde persoon
       3p: derde persoon - persoonlijk
       3m: derde persoon - masculien
       3v: derde persoon - feminien

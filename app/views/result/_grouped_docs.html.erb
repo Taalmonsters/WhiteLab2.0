@@ -26,7 +26,7 @@
 			<tbody>
 				<% @query.result(false)['results'].each_with_index do |group,i| %>
 					<% largest_group = @query.result(false)['largest_group_size'] %>
-					<tr class="clickable grouped-doc-row" data-group-value="<%= group[@group] %>" data-group-id="<%= @query.group+i.to_s %>">
+					<tr class="clickable grouped-doc-row" data-group-value="<%= group[@group] %>" data-group-identity="<%= group["identity"] %>" data-group-id="<%= @query.group+i.to_s %>">
 						<td><%= group[@group].html_safe %></td>
 						<td class="progress-field">
 							<div class="progress">
@@ -48,7 +48,7 @@
 									</thead>
 									<tbody></tbody>
 								</table></div>
-								<div><button class="btn btn-xs btn-info show-grouped-docs" data-group-value="<%= group[@group] %>"><%= t(:"button_labels.keys.show_detailed").capitalize+" "+t(:"data_labels.keys.document").pluralize %></button> <button class="btn btn-xs btn-default load-grouped-docs" data-group-id="<%= @query.group+i.to_s %>" data-group-value="<%= group[@group] %>"><%= t(:"button_labels.keys.load_more").capitalize %></button></div>
+								<div><button class="btn btn-xs btn-info show-grouped-docs" data-group-value="<%= group[@group] %>" data-group-identity="<%= group["identity"] %>"><%= t(:"button_labels.keys.show_detailed").capitalize+" "+t(:"data_labels.keys.document").pluralize %></button> <button class="btn btn-xs btn-default load-grouped-docs" data-group-id="<%= @query.group+i.to_s %>" data-group-value="<%= group[@group] %>" data-group-identity="<%= group["identity"] %>"><%= t(:"button_labels.keys.load_more").capitalize %></button></div>
 							</td>
 						</tr>
 					<% end %>

@@ -17,7 +17,7 @@ module WhitelabQuery
       query = options_without_exports.first if options_without_exports.size > 0
       query = options.first if options.size > 0 && !query
       unless query
-        [:view, :group, :input_page].each do |param|
+        [:view, :group, :input_page, :viewgroup].each do |param|
           if params.has_key?(param) && !params[param].blank?
             filtered_options = options.where({param => params[param]})
             options = filtered_options.any? ? filtered_options : options
@@ -66,28 +66,6 @@ module WhitelabQuery
   
   def columns
     self.patt.scan(/\]\[/).count + 1
-  end
-  
-  def context_end(part, start = 0)
-    if self.group && self.group.include?(part)
-      r = self.group.split(part, 2)[1]
-      r = r.split(/;/,2)[0]
-      return r.include?('-') ? r.split('-',2)[1].to_i : r.to_i
-    elsif self.group.start_with?(part.downcase)
-      return part.eql?("H") ? self.columns : 1
-    end
-    return start
-  end
-  
-  def context_start(part)
-    if self.group && self.group.include?(part)
-      r = self.group.split(part, 2)[1]
-      r = r.split(/;/,2)[0]
-      return r.include?('-') ? r.split('-')[0].to_i : r.to_i
-    elsif self.group.start_with?(part.downcase)
-      return 1
-    end
-    return 0
   end
   
   def execute(threaded = true, max_count = nil)
@@ -190,10 +168,9 @@ module WhitelabQuery
   end
   
   def selected_group
-    return self.group unless self.group =~ /(word|lemma|pos|phonetic)/
-    position = self.group.include?("R") ? "right" : self.group.include?("L") ? "left" : "hit"
-    annotation = self.group.include?("phonetic") ? "phonetic" : self.group.include?("pos") ? "pos" : self.group.include?("lemma") ? "lemma" : "word"
-    return "#{position}:#{annotation}"
+    return self.group unless self.group =~ /^(hit|word|context)/
+    position, type, rest = self.group.split(':',3)
+    return position.eql?('context') ? position : "#{position}:#{type}"
   end
   
   def total

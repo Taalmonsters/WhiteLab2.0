@@ -42,6 +42,7 @@ class Search::Query < ActiveRecord::Base
   end
   
   def self.find_from_params(page, user, params)
+    params[:group] = params[:group].gsub('%3B',';') if params.has_key?(:group)
     if params.has_key?(:id)
       query = user.search_queries.find(params[:id].to_i)
       query = nil if query && query.is_changed?(page, params)
@@ -55,7 +56,8 @@ class Search::Query < ActiveRecord::Base
       :patt => params[:patt], 
       :within => params.has_key?(:within) ? params[:within] : 'document', 
       :filter => params.has_key?(:filter) && !params[:filter].blank? ? params[:filter] : nil, 
-      :group => params.has_key?(:group) ? params[:group] : nil, 
+      :group => params.has_key?(:group) ? params[:group] : nil,
+      :viewgroup => params.has_key?(:viewgroup) ? params[:viewgroup] : nil,
       :view => params.has_key?(:view) ? params[:view].to_i : 1, 
       :input_page => page,
       :status => 0
@@ -67,16 +69,19 @@ class Search::Query < ActiveRecord::Base
       :user_id => user_id,
       :patt => params[:patt],
       :within => params.has_key?(:within) ? params[:within] : 'document',
-      :filter => params.has_key?(:filter) && !params[:filter].blank? ? params[:filter] : nil
+      :filter => params.has_key?(:filter) && !params[:filter].blank? ? params[:filter] : nil,
+      :group => params.has_key?(:viewgroup) && !params[:viewgroup].blank? && params.has_key?(:group) && !params[:group].blank? ? params[:group] : nil,
+      :viewgroup => params.has_key?(:viewgroup) && !params[:viewgroup].blank? ? params[:viewgroup] : nil
     }
   end
   
   def add_hits_group(hits_group)
     hits_group.gsub!(/([\(\)\[\]\'\"\?\!])/){|s| "\\"+s}
-    qgroup_parts = group.split('_')
+    qgroup_parts = group.split(':')
     context_group_label = group_to_label(qgroup_parts[1])
     if self.group.start_with?('hit')
       patt_parts = self.patt.gsub(/(^\[|\]$)/,'').split('][')
+      puts "qgroup_parts #{qgroup_parts}"
       group_parts = hits_group.split(' ')
       g = group_to_label(qgroup_parts[1])
       new_parts = []

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151009111143) do
+ActiveRecord::Schema.define(version: 20161215143201) do
 
   create_table "explore_queries", force: :cascade do |t|
     t.integer  "user_id",        limit: 4,                        null: false
@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(version: 20151009111143) do
     t.integer  "group_count",    limit: 4
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
+    t.string   "viewgroup",      limit: 255
   end
 
   add_index "search_queries", ["created_at"], name: "index_search_queries_on_created_at", using: :btree

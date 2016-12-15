@@ -1,47 +1,120 @@
-<div class="form-group col-xs-12">
-	<%= check_box_tag "group_case", ":i", @query.group && @query.group.include?(':i') %> case insensitive
-</div>
-<div class="form-group col-xs-12 col-sm-4 col-md-3 col-lg-2">
-	<label>Left context:</label>
-	<div class="form-inline">
-		<div class="form-group">
-			<label for="l_from">From</label>
-			<%= number_field_tag :l_from, @query.context_start("L"), :min => 0, :max => 10 %>
-		</div>
-		<div class="form-group">
-			<label for="l_to">To</label>
-			<%= number_field_tag :l_to, @query.context_end("L"), :min => 0, :max => 10 %>
-		</div>
-	</div>
-	<hr class="visible-xs" />
-</div>
-<div class="form-group col-xs-12 col-sm-4 col-md-3 col-lg-2">
-	<label>Hit:</label>
-	<div class="form-inline">
-		<div class="form-group">
-			<label for="h_from">From</label>
-			<%= number_field_tag :h_from, @query.context_start("H"), :min => 0, :max => @query.columns %>
-		</div>
-		<div class="form-group">
-			<label for="h_to">To</label>
-			<%= number_field_tag :h_to, @query.context_end("H"), :min => 0, :max => @query.columns %>
-		</div>
-	</div>
-	<hr class="visible-xs" />
-</div>
-<div class="form-group col-xs-12 col-sm-4 col-md-3 col-lg-2">
-	<label>Right context:</label>
-	<div class="form-inline">
-		<div class="form-group">
-			<label for="r_from">From</label>
-			<%= number_field_tag :r_from, @query.context_start("R"), :min => 0, :max => 10 %>
-		</div>
-		<div class="form-group">
-			<label for="r_to">To</label>
-			<%= number_field_tag :r_to, @query.context_end("R"), :min => 0, :max => 10 %>
-		</div>
+<div class="row">
+	<div class="form-group col-xs-12">
+		<%= check_box_tag "group_case", ":s", !@query.group || !@query.group.include?(':i') %> <%= t(:"data_labels.keys.case_sensitive").titleize %>
 	</div>
 </div>
+<% if @query.group.start_with?('context') %>
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="form-inline">
+				<div class="form-group">
+					<label for="context_type"><%= "#{t(:"data_labels.keys.context")} type".capitalize %></label>
+					<%= select_tag(:"context_type", options_for_select([[t(:"data_labels.keys.word"),'word'],[t(:"data_labels.keys.lemma"),'lemma'],[t(:"data_labels.keys.pos"),'pos'],[t(:"data_labels.keys.phonetic"),'phonetic']], @query.group.split(':').count > 1 ? @query.group.split(':')[1] : 'word'), :class => "form-control", :include_blank => false) %>
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-xs-12 col-sm-4">
+			<table class="table">
+				<thead>
+					<tr>
+						<th colspan="2"><%= "#{t(:"data_labels.keys.context")} #{t(:"data_labels.keys.left")}".capitalize %></th>
+					</tr>
+				</thead>
+				<tbody>
+					<% if @query.group =~ /L/ %>
+						<% l_opts = @query.group.split(':')[3].split(';').select{|part| part =~ /L/ } %>
+						<% keep = [] %>
+						<% s = nil %>
+						<% e = nil %>
+						<% l_opt = l_opts.shift %>
+						<% while l_opt do %>
+							<% ss = l_opt.sub('L','').split('-')[0].to_i %>
+							<% ee = l_opt.sub('L','').split('-').last.to_i %>
+							<% if !e || ee == e - 1 %>
+								<% s = ss unless s %>
+								<% e = ee %>
+							<% else %>
+								<% if e %>
+									<% keep << "L#{s}-#{e}" %>
+								<% end %>
+								<% s = ss %>
+								<% e = ee %>
+							<% end %>
+							<% l_opt = l_opts.shift %>
+						<% end %>
+						<% keep << "L#{s}-#{e}" %>
+						<% puts keep %>
+						<% keep.each_with_index do |context_selection, i| %>
+							<%= render partial: "result/context/left", locals: { selection: context_selection, index: i } %>
+						<% end %>
+					<% else %>
+						<tr>
+							<td>No left context</td>
+							<td class="controls"><%= image_tag 'plus.png', :class => "update-context-options add first", :data => { set: "L" } %></td>
+						<tr>
+					<% end %>
+				</tbody>
+			</table>
+			<hr class="visible-xs" />
+		</div>
+		<div class="form-group col-xs-12 col-sm-4">
+			<table class="table">
+				<thead>
+					<tr>
+						<th colspan="3"><%= "#{t(:"data_labels.keys.hit")}".capitalize %></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<%= radio_button_tag :hit_context, "H", @query.group.eql?('context') || @query.group =~ /H(;|$)/ %>
+						</td>
+						<td colspan="2">
+							Full hit context
+						</td>
+					</tr>
+					<% if @query.group =~ /[EH][0-9]/ %>
+						<% @query.group.split(':')[3].split(';').select{|part| part =~ /[EH]/ }.each_with_index do |context_selection, i| %>
+							<%= render partial: "result/context/hit", locals: { selection: context_selection, index: i } %>
+						<% end %>
+					<% else %>
+						<tr>
+							<td>
+								<%= radio_button_tag :hit_context, "N", !@query.group.eql?('context') && @query.group !~ /[EH]/ %>
+							</td>
+							<td>
+								No hit context
+							</td>
+							<td class="controls"><%= image_tag 'plus.png', :class => "update-context-options add first", :data => { set: "H" } %></td>
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+			<hr class="visible-xs" />
+		</div>
+		<div class="form-group col-xs-12 col-sm-4">
+			<table class="table">
+				<thead>
+					<tr>
+						<th colspan="2"><%= "#{t(:"data_labels.keys.context")} #{t(:"data_labels.keys.right")}".capitalize %></th>
+					</tr>
+				</thead>
+				<tbody>
+					<% if @query.group =~ /R/ %>
+						<% @query.group.split(':')[3].split(';').select{|part| part =~ /R/ }.each_with_index do |context_selection, i| %>
+							<%= render partial: "result/context/right", locals: { selection: context_selection, index: i } %>
+						<% end %>
+					<% else %>
+						<tr>
+							<td>No right context</td>
+							<td class="controls"><%= image_tag 'plus.png', :class => "update-context-options add first", :data => { set: "R" } %></td>
+						<tr>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+<% end %>
 <div class="form-group col-xs-12">
 	<button id="group-hits-button" class="btn btn-primary">Group</button>
 </div>

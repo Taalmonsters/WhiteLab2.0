@@ -32,6 +32,7 @@ en:
       repeat: repeat
       start_of_sentence: start of sentence
       end_of_sentence: end of sentence
+      from: from
       to: to
       times: times
   data_labels:
@@ -76,9 +77,14 @@ en:
       value_count: value count
       token_count: token count
       case_sensitive: case sensitive
+      case_insensitive: case insensitive
       hit: hit
+      left: left
+      right: right
       value_type: value type
       actor_count: actor count
+      context: context
+      position: position
   metadata_filters:
     title: Metadata filters
     description: Translations of elements in metadata filter display
@@ -266,6 +272,7 @@ en:
       hit_count: hits
       document_count: documents
       group_count: groups
+      viewgroup: selected group
   other:
     title: Other
     description: Other translations
@@ -286,10 +293,82 @@ en:
     title: Metadata groups
     description: Translations of metadata group labels
     keys:
+      Metadata: Metadata
+      Collection: Collection
+      Corpus: Corpus
+      Location: Location
+      Language: Language
   metadata_keys:
     title: Metadata keys
     description: Translations of metadata key labels
     keys:
+      Address: Address
+      Age: Age
+      AnnotationType-SoNaR: AnnotationType-SoNaR
+      Anonymized: Anonymized
+      AudioExportFormat: AudioExportFormat
+      AudioWebPlayFormat: AudioWebPlayFormat
+      AuthorName: AuthorName
+      AuthorNameOrPseudonym: AuthorNameOrPseudonym
+      AuthorNameOrPseudonymSearch: AuthorNameOrPseudonymSearch
+      BirthDate: BirthDate
+      Channel: Channel
+      CharacterEncoding: CharacterEncoding
+      Code: Code
+      CollectionCode: CollectionCode
+      CollectionName: CollectionName
+      title: title
+      Continent: Continent
+      Country: Country
+      Date: Date
+      Derivation: Derivation
+      Description: Description
+      Education: Education
+      End: End
+      EventStructure: EventStructure
+      FamilySocialRole: FamilySocialRole
+      Format: Format
+      Genre: Genre
+      History: History
+      Id: Id
+      Interactivity: Interactivity
+      Involvement: Involvement
+      Key: Key
+      Language-iso-code: Language-iso-code
+      LanguageName: LanguageName
+      Level: Level
+      LicenseCode: LicenseCode
+      LicenseDate: LicenseDate
+      LicenseDetails: LicenseDetails
+      MediaResourceLink: MediaResourceLink
+      Methodology: Methodology
+      Modalities: Modalities
+      Number: Number
+      Organisation: Organisation
+      PlanningType: PlanningType
+      ProjectName: ProjectName
+      Publisher: Publisher
+      Quality: Quality
+      RecordingConditions: RecordingConditions
+      Region: Region
+      ResourceLink: ResourceLink
+      Role: Role
+      Sex: Sex
+      Size: Size
+      SizeUnit: SizeUnit
+      SocialContext: SocialContext
+      Start: Start
+      SubGenre: SubGenre
+      SubType: SubType
+      Task: Task
+      TextTitle: TextTitle
+      TextType: TextType
+      Title: Title
+      Translated: Translated
+      Type: Type
+      fromInputFile: fromInputFile
+      generator: generator
+      id: id
   pos_heads:
     title: PoS heads
     description: Translations of part of speech heads
@@ -390,11 +469,11 @@ en:
       gereduceerd: reduced
       nadruk: stress
       persoon: person
-      "1": first person
-      "2": second person
+      '1': first person
+      '2': second person
       2v: second person - feminine
       2b: second person - polite form
-      "3": third person
+      '3': third person
       3p: third person - personal
       3m: third person - masculine
       3v: third person - feminine

@@ -399,7 +399,49 @@ Whitelab.search = {
 			
 		},
 		
+		getContextGroupFromInput: function() {
+			var group = $('#main-div[data-namespace="search"] select.group-by-select').val();
+			if (group === "context")
+				// Check value of type selection and add type to group
+				group = group+':'+$("#context_type").val();
+			if ($("#group_case").is(':checked'))
+				group = group+':s';
+			else
+				group = group+':i';
+			if (group.indexOf("context") == 0) {
+				var arr = [];
+				$.each(["left","hit","right"], function(i, set) {
+					var skip = false;
+					if (set === "hit") {
+						var full = $("input[name=hit_context]:checked").val();
+						if (full === "H") {
+							arr.push("H");
+							skip = true;
+						} else if (full === "N")
+							skip = true;
+					}
+					if (!skip) {
+						$.each(document.getElementsByClassName(set+"-context"), function(j, item) {
+							if ($(item).find(".context-from").first().val() > 0) {
+								var from = $(item).find(".context-from").first().val();
+								var to = $(item).find(".context-to").first().val();
+								var letter = set === "hit" ? $(item).find(".context-direction").first().val() : set[0].toUpperCase();
+								if (to < from)
+									for (var k = from; k >= to; k--)
+										arr.push(letter+k+"-"+k);
+								else
+									arr.push(letter+from+"-"+to);
+							}
+						});
+					}
+				});
+				group = group+":"+arr.join(";");
+			}
+			return group;
+		},
+		
 		groupResults: function(group) {
+			group = group.replace(/;/g, '%3B');
 			var page = $("#result-pane").data('query-page');
 			var params = Whitelab.assembleQueryParams({
 				'patt': $("#result-pane").data('query-patt'), 
@@ -552,9 +594,10 @@ $(document).on('click', '#main-div[data-namespace="search"] button.show-document
 $(document).on('change', '#main-div[data-namespace="search"] select.group-by-select', function(e) {
 	var group = $(this).val();
 	if (group != null && group.length > 0) {
-		if (group.indexOf("word") > -1 || group.indexOf("lemma") > -1 || group.indexOf("pos") > -1 || group.indexOf("phonetic") > -1) {
+		if (group.indexOf("hit") == 0 || group.indexOf("word") == 0 || group.indexOf("context") == 0) {
 			$("#context-options").removeClass("hidden");
 			var qid = $("#result-pane").data("query-id");
+			group = group.replace(/;/g,'%3B');
 			$.getScript('/search/context_options/id/'+qid+'.js?group='+group);
 		} else
 			Whitelab.search.result.groupResults(group);
@@ -563,23 +606,42 @@ $(document).on('change', '#main-div[data-namespace="search"] select.group-by-sel
 
 $(document).on('click', '#group-hits-button', function(e) {
 	e.preventDefault();
-	var group = $('#main-div[data-namespace="search"] select.group-by-select').val();
-	group = group.replace(/^(hit|left|right)/, "context");
-	if ($("#group_case").is(':checked'))
-		group = group+':i';
+	var group = Whitelab.search.result.getContextGroupFromInput();
+	if (group[group.length -1] === ':')
+		alert("Error: invalid grouping! Please select at least one context option.");
 	else
-		group = group+':s';
-	var arr = [];
-	$.each(["l","h","r"], function(i, item) {
-		if ($("#"+item+"_from").val() > 0) {
-			var g = item.toUpperCase()+$("#"+item+"_from").val();
-			if ($("#"+item+"_to").val() >= $("#"+item+"_from").val())
-				g = g+"-"+$("#"+item+"_to").val();
-			arr.push(g);
+		Whitelab.search.result.groupResults(group);
+});
+
+$(document).on('click', '#context-options .update-context-options', function(e) {
+	e.preventDefault();
+	var group = null;
+	// Add or remove option
+	if ($(this).hasClass("remove")) {
+		$(this).parent().parent().remove();
+		// Generate group from input
+		group = Whitelab.search.result.getContextGroupFromInput();
+	} else {
+		// Generate group from input
+		group = Whitelab.search.result.getContextGroupFromInput();
+		if ($(this).hasClass("first")) {
+			group = group[group.length-1] == ':' ? group+$(this).data("set")+'1-1' : group+';'+$(this).data("set")+'1-1';
+		} else {
+			// Get max value of highest entered in same set
+			var max = 0;
+			$.each($(this).parent().parent().parent().find(".context-to"), function(i, to) {
+				if ($(to).val() > max)
+					max = $(to).val();
+			});
+			// Add one and add to group
+			max++;
+			group = group =~ /[LHER]/ ? group+';'+$(this).data("set")+max+'-'+max : group+':'+$(this).data("set")+max+'-'+max;
 		}
-	});
-	group = group+":"+arr.join(";");
-	Whitelab.search.result.groupResults(group);
+	}
+	// Regenerate context options partial with new group
+	var qid = $("#result-pane").data("query-id");
+	group = group.replace(/;/g,'%3B');
+	$.getScript('/search/context_options/id/'+qid+'.js?group='+group);
 });
 
 $(document).on('click', '#main-div[data-namespace="search"] tr.hit-row', function(e) {

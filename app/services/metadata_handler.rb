@@ -98,13 +98,15 @@ class MetadataHandler
   def get_group_options(view, namespace)
     groups = {}
     if view == 8
-      groups['hit'] = []
-      groups['left'] = []
-      groups['right'] = []
-      ['hit','left','right'].each do |position|
+      groups[I18n.t(:"data_labels.keys.hit")] = []
+      groups[I18n.t(:"data_labels.keys.left")] = []
+      groups[I18n.t(:"data_labels.keys.right")] = []
+      ['hit','wordleft','wordright'].each do |position|
+        translation = I18n.t(:"data_labels.keys.#{position.sub('word','')}")
         ['word','lemma','pos','phonetic'].each do |annotation|
-          groups[position] << [annotation, position+':'+annotation]
+          groups[translation] << ["#{translation} - #{I18n.t(:"data_labels.keys.#{annotation}")}", position+':'+annotation]
         end
+        groups[translation] << ["#{translation} - #{I18n.t(:"data_labels.keys.context")}", 'context'] if position.eql?('hit')
       end
     end
     

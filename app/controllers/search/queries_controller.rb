@@ -38,7 +38,6 @@ class Search::QueriesController < QueriesController
       sub_query = @query.dup
       sub_query.filter = @query.filter.blank? ? "("+@query.group+"=\""+params[:docs_group]+"\")" : @query.filter+"AND("+@query.group+"=\""+params[:docs_group]+"\")"
       sub_query.view = 2
-      sub_query.group = nil
       sub_query.offset = @offset
       sub_query.number = 20
       @docs = sub_query.result(false)["results"]
@@ -57,9 +56,13 @@ class Search::QueriesController < QueriesController
     @offset = params[:offset].to_i || 0
     if @query
       sub_query = @query.dup
-      sub_query.add_hits_group(params[:hits_group])
+      if @group_id.start_with?("context")
+        sub_query.viewgroup = params[:hits_group]
+      else
+        sub_query.add_hits_group(params[:hits_group])
+        sub_query.group = nil
+      end
       sub_query.view = 1
-      sub_query.group = nil
       sub_query.offset = @offset
       sub_query.number = 20
       @hits = sub_query.result(false)["results"]

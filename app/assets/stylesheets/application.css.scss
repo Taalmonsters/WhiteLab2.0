@@ -157,3 +157,12 @@ a.remove-query {
     margin-bottom: 20px;
   }
 }
+
+#context-options {
+  img.update-context-options {
+    cursor: pointer;
+  }
+  td.controls {
+    text-align: right;
+  }
+}

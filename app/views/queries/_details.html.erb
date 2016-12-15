@@ -43,6 +43,12 @@
 								<td class="group"><%= @query.group %></td>
 							</tr>
 							<% end %>
+							<% if @namespace.eql?('search') && !@query.viewgroup.blank? %>
+							<tr>
+								<th><%= t(:"queries.keys.viewgroup").capitalize %></th>
+								<td class="viewgroup"><%= @query.viewgroup %></td>
+							</tr>
+							<% end %>
 							<tr>
 								<th><%= t(:"queries.keys.hit_count").capitalize %></th>
 								<td><%= @query.hit_count.blank? || @query.hit_count == -1 ? '-' : number_with_delimiter(@query.hit_count, :delimiter => t(:'other.keys.numeric_delimiter')) %></td>
