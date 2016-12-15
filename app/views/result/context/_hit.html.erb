@@ -15,9 +15,9 @@
 				<%= number_field_tag :"h_to_#{index}", selection.sub(/[EH]/,'').split('-').last.to_i, :min => 1, :class => "context-to" %>
 			</div>
 			<div class="form-group">
-				from the
-				<%= select_tag :"h_start_#{index}", options_for_select([['start', 'H'],['end', 'E']], selection[0]), :class => "context-direction" %>
-				of the hit
+				<%= t(:"operators.keys.from2") %>
+				<%= select_tag :"h_start_#{index}", options_for_select([[t(:"operators.keys.the_start"), 'H'],[t(:"operators.keys.the_end"), 'E']], selection[0]), :class => "context-direction" %>
+				<%= t(:"queries.keys.of_hit") %>
 			</div>
 		</div>
 	</td>

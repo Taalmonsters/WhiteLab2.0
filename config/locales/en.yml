@@ -35,6 +35,9 @@ en:
       from: from
       to: to
       times: times
+      from2: from
+      the_start: the start
+      the_end: the end
   data_labels:
     title: Data labels
     description: Translations of data labels and model names
@@ -172,6 +175,7 @@ en:
       export: export
       download: download
       refine: refine
+      group: group
   instructions:
     title: Instructions
     description: Translations of instructions appearing in the application
@@ -273,6 +277,13 @@ en:
       document_count: documents
       group_count: groups
       viewgroup: selected group
+      full_hit_context: full hit context
+      no_hit_context: no hit context
+      no_left_context: no left context
+      no_right_context: no right context
+      left_of_hit: left of the hit
+      right_of_hit: right of the hit
+      of_hit: of the hit
   other:
     title: Other
     description: Other translations

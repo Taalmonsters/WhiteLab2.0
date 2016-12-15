@@ -49,7 +49,7 @@
 						<% end %>
 					<% else %>
 						<tr>
-							<td>No left context</td>
+							<td><%= t(:"queries.keys.no_left_context").capitalize %></td>
 							<td class="controls"><%= image_tag 'plus.png', :class => "update-context-options add first", :data => { set: "L" } %></td>
 						<tr>
 					<% end %>
@@ -66,12 +66,8 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td>
-							<%= radio_button_tag :hit_context, "H", @query.group.eql?('context') || @query.group =~ /H(;|$)/ %>
-						</td>
-						<td colspan="2">
-							Full hit context
-						</td>
+						<td><%= radio_button_tag :hit_context, "H", @query.group.eql?('context') || @query.group =~ /H(;|$)/ %></td>
+						<td colspan="2"><%= t(:"queries.keys.full_hit_context").capitalize %></td>
 					</tr>
 					<% if @query.group =~ /[EH][0-9]/ %>
 						<% @query.group.split(':')[3].split(';').select{|part| part =~ /[EH]/ }.each_with_index do |context_selection, i| %>
@@ -79,12 +75,8 @@
 						<% end %>
 					<% else %>
 						<tr>
-							<td>
-								<%= radio_button_tag :hit_context, "N", !@query.group.eql?('context') && @query.group !~ /[EH]/ %>
-							</td>
-							<td>
-								No hit context
-							</td>
+							<td><%= radio_button_tag :hit_context, "N", !@query.group.eql?('context') && @query.group !~ /[EH]/ %></td>
+							<td><%= t(:"queries.keys.no_hit_context").capitalize %></td>
 							<td class="controls"><%= image_tag 'plus.png', :class => "update-context-options add first", :data => { set: "H" } %></td>
 						</tr>
 					<% end %>
@@ -106,7 +98,7 @@
 						<% end %>
 					<% else %>
 						<tr>
-							<td>No right context</td>
+							<td><%= t(:"queries.keys.no_right_context").capitalize %></td>
 							<td class="controls"><%= image_tag 'plus.png', :class => "update-context-options add first", :data => { set: "R" } %></td>
 						<tr>
 					<% end %>
@@ -116,5 +108,5 @@
 	</div>
 <% end %>
 <div class="form-group col-xs-12">
-	<button id="group-hits-button" class="btn btn-primary">Group</button>
+	<button id="group-hits-button" class="btn btn-primary"><%= t(:"button_labels.keys.group").capitalize %></button>
 </div>

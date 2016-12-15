@@ -35,6 +35,9 @@ nl:
       from: van
       to: tot en met
       times: keer
+      from2: vanaf
+      the_start: het begin
+      the_end: het einde
   data_labels:
     title: Data labels
     description: Vertalingen van data labels en model namen
@@ -172,6 +175,7 @@ nl:
       export: exporteer
       download: download
       refine: verfijn
+      group: groepeer
   instructions:
     title: Instructies
     description: Vertalingen van instructies die in de applicatie verschijnen
@@ -274,6 +278,13 @@ nl:
       document_count: documenten
       group_count: groepen
       viewgroup: geselecteerde groep
+      full_hit_context: volledige hit context
+      no_hit_context: geen hit context
+      no_left_context: geen context links
+      no_right_context: geen context rechts
+      left_of_hit: links van de hit
+      right_of_hit: rechts van de hit
+      of_hit: van de hit
   other:
     title: Overig
     description: Overige vertalingen
