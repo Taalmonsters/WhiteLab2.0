@@ -8,13 +8,9 @@
 		<div class="form-inline">
 			<div class="form-group">
 				<%= "#{t(:"operators.keys.from").capitalize} #{t(:"data_labels.keys.position")}" %>
-				<%= number_field_tag :"h_from_#{index}", selection.sub(/[EH]/,'').split('-')[0].to_i, :min => 1, :class => "context-from" %>
-			</div>
-			<div class="form-group">
+				<%= number_field_tag :"h_from_#{index}", selection.sub(/[EH]/,'').split('-')[0].to_i, :min => 1, :max => 50, :class => "context-from" %>
 				<%= t(:"operators.keys.to") %>
-				<%= number_field_tag :"h_to_#{index}", selection.sub(/[EH]/,'').split('-').last.to_i, :min => 1, :class => "context-to" %>
-			</div>
-			<div class="form-group">
+				<%= number_field_tag :"h_to_#{index}", selection.sub(/[EH]/,'').split('-').last.to_i, :min => 1, :max => 50, :class => "context-to" %>
 				<%= t(:"operators.keys.from2") %>
 				<%= select_tag :"h_start_#{index}", options_for_select([[t(:"operators.keys.the_start"), 'H'],[t(:"operators.keys.the_end"), 'E']], selection[0]), :class => "context-direction" %>
 				<%= t(:"queries.keys.of_hit") %>

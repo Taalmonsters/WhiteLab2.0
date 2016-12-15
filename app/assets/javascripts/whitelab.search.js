@@ -624,8 +624,13 @@ $(document).on('click', '#context-options .update-context-options', function(e) 
 	} else {
 		// Generate group from input
 		group = Whitelab.search.result.getContextGroupFromInput();
+		var set = $(this).data("set");
 		if ($(this).hasClass("first")) {
-			group = group[group.length-1] == ':' ? group+$(this).data("set")+'1-1' : group+';'+$(this).data("set")+'1-1';
+			if (set === "H") {
+				console.log("hit");
+				group = group.replace(/(;H$|H;)/,'');
+			}
+			group = group[group.length-1] == ':' ? group+set+'1-1' : group+';'+set+'1-1';
 		} else {
 			// Get max value of highest entered in same set
 			var max = 0;
@@ -635,9 +640,10 @@ $(document).on('click', '#context-options .update-context-options', function(e) 
 			});
 			// Add one and add to group
 			max++;
-			group = group =~ /[LHER]/ ? group+';'+$(this).data("set")+max+'-'+max : group+':'+$(this).data("set")+max+'-'+max;
+			group = group =~ /[LHER]/ ? group+';'+set+max+'-'+max : group+':'+set+max+'-'+max;
 		}
 	}
+	console.log(group);
 	// Regenerate context options partial with new group
 	var qid = $("#result-pane").data("query-id");
 	group = group.replace(/;/g,'%3B');
