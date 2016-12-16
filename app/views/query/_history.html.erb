@@ -9,6 +9,7 @@
 						<th><%= t(:"queries.keys.within").capitalize %></th>
 						<th><%= t(:"queries.keys.filter").capitalize %></th>
 						<th><%= t(:"queries.keys.group").capitalize %></th>
+						<th><%= t(:"queries.keys.viewgroup").capitalize %></th>
 						<th><%= t(:"queries.keys.hit_count").capitalize %></th>
 						<th><%= t(:"queries.keys.document_count").capitalize %></th>
 						<th><%= t(:"queries.keys.group_count").capitalize %></th>
@@ -24,6 +25,7 @@
 							<td class="within" data-within="<%= query.within %>"><%= query.within %></td>
 							<td class="filter" data-filter="<%= query.filter %>"><%= query.filter %></td>
 							<td class="group" data-group="<%= query.group %>"><%= query.group %></td>
+							<td class="viewgroup" data-viewgroup="<%= query.viewgroup %>"><%= query.viewgroup %></td>
 							<td><%= query.hit_count.blank? ? '-' : number_with_delimiter(query.hit_count, :delimiter => t(:'other.keys.numeric_delimiter')) %></td>
 							<td><%= query.document_count.blank? ? '-' : number_with_delimiter(query.document_count, :delimiter => t(:'other.keys.numeric_delimiter')) %></td>
 							<td><%= query.group_count.blank? ? '-' : number_with_delimiter(query.group_count, :delimiter => t(:'other.keys.numeric_delimiter')) %></td>
