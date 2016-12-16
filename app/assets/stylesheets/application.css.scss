@@ -166,3 +166,17 @@ a.remove-query {
     text-align: right;
   }
 }
+
+.tooltip-hover {
+  cursor: pointer;
+}
+
+.wl-tooltip {
+  background: lighten(#53c4c3, 35%);
+  border: 1px solid #999;
+  z-index: 5000;
+  padding: 10px 20px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}

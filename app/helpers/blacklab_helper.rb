@@ -11,9 +11,6 @@ module BlacklabHelper
   
   def reformat_query_attributes(query)
     attrs = { 'outputformat' => 'json' }
-    puts "========================="
-    puts query.as_json
-    puts "========================="
     query.as_json.select{|key,_| ['patt', 'filter', 'group', 'sort', 'order', 'offset', 'number', 'docpid', 'viewgroup'].include?(key) }.each do |key, value|
       unless value.blank?
         if ['filter', 'group'].include?(key)
@@ -67,6 +64,7 @@ module BlacklabHelper
     return {
       'hit_count' => hits,
       'document_count' => docs,
+      'documents' => response['docInfos'],
       'results' => data.map { |hit|
         {
           "corpus" => response['docInfos'][hit["docPid"]][CORPUS_TITLE_FIELD],
@@ -94,7 +92,8 @@ module BlacklabHelper
           "collection" => doc["docInfo"][COLLECTION_TITLE_FIELD],
           "docpid" => doc["docPid"],
           "hit_count" => doc["numberOfHits"],
-          "relative_hit_count" => (doc["numberOfHits"].to_f / hits) * 100
+          "relative_hit_count" => (doc["numberOfHits"].to_f / hits) * 100,
+          "metadata" => doc["docInfo"]
         }
       }
     } if view == 2
@@ -105,7 +104,7 @@ module BlacklabHelper
       'largest_group_size' => summary['largestGroupSize'],
       'results' => data.map { |group|
         {
-          "identity" => group["identity"],
+          "identity" => group["identity"].sub(/^str:/,''),
           "#{query.group}" => group["identityDisplay"],
           "#{view == 8 ? 'hit_count' : 'document_count'}" => group["size"],
           "relative_#{view == 8 ? 'hit_count' : 'document_count'}" => view == 8 ? (group["size"].to_f / hits) * 100 : (group["size"].to_f / docs) * 100

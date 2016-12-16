@@ -36,7 +36,7 @@ class MetadataController < ApplicationController
     end
     if @metadatum
       updates = {}
-      ['group','key','value_type','explorable','searchable'].each do |key|
+      ['group','key','value_type','explorable','searchable','hoverable'].each do |key|
         if params[key]
           updates[key] = params[key].to_s
         end

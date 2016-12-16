@@ -725,3 +725,21 @@ $(document).on('click', '#main-div[data-namespace="search"] a.tablink', function
 		
 	window.location = url;
 });
+
+$(document).on('mouseover', '.tooltip-hover', function(e) {
+	hover_metadata(e, $(this).data("tooltip"));
+});
+
+$(document).on('mouseout', '.tooltip-hover', function(e) {
+	hover_metadata(e, $(this).data("tooltip"));
+});
+
+function hover_metadata(e, el) {
+	var left  = e.clientX  + "px";
+    var top  = e.clientY  + "px";
+    $("#"+el).css('left',left);
+    $("#"+el).css('top',top);
+    $("#"+el).css('position','fixed');
+    $("#"+el).toggleClass("hidden");
+    return false;
+}

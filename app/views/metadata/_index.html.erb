@@ -7,4 +7,5 @@
 <% fields << { key: "value_count", header: t(:'data_labels.keys.value_count').capitalize, sortable: true, method_name: "value_count" } %>
 <% fields << { key: "explorable", header: t(:'data_labels.keys.explorable').capitalize, sortable: true, method_name: "explorable", default: true } %>
 <% fields << { key: "searchable", header: t(:'data_labels.keys.searchable').capitalize, sortable: true, method_name: "searchable", default: true } %>
+<% fields << { key: "hoverable", header: t(:'data_labels.keys.hoverable').capitalize, sortable: true, method_name: "hoverable", default: false } %>
 <%= render partial: '/layouts/data_table', layout: false, locals: { fields: fields, url: '/admin/index?tab=metadata', things: metadata, model: 'metadatum' } %>

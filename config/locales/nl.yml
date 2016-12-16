@@ -76,6 +76,7 @@ nl:
       most_frequent_word_types: meest frequente woord typen
       searchable: zoekbaar
       explorable: verkenbaar
+      hoverable: toon bij hover
       document_count: aantal documenten
       value_count: aantal waarden
       token_count: aantal tokens
@@ -208,6 +209,10 @@ nl:
         veld te verbergen in de gebruikersinterface.
       metadatum_searchable_description_unchecked: Schakel deze checkbox in om dit
         metadata veld te tonen in de gebruikersinterface.
+      metadatum_hoverable_description_checked: Schakel deze checkbox uit om dit metadata
+        veld te verbergen in de metadata pop-up van een hit.
+      metadatum_hoverable_description_unchecked: Schakel deze checkbox in om dit metadata
+        veld te tonen in de metadata pop-up van een hit.
       batch_cql_description: Een batch CQL bestand bevat 1 CQL query per regel en
         heeft de extensie '.txt'.
       benchmarker: The Query Benchmarker can be used to test WhiteLab's speed when

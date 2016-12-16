@@ -1,6 +1,6 @@
-<% if @hits && @hits.any? %>
-	<% @hits.each do |hit| %>
-		<tr>
+<% if @hits.has_key?("results") && @hits["results"].any? %>
+	<% @hits["results"].each_with_index do |hit, i| %>
+		<tr class="tooltip-hover" data-tooltip="<%= @group_id %>_tooltip<%= i + @offset %>">
 			<td class="right-aligned"><%= hit['text_left'] %></td>
 			<td class="hit center-aligned"><%= hit['hit_text'] %></td>
 			<td><%= hit['text_right'] %></td>

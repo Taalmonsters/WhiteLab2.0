@@ -3,6 +3,7 @@ if ($('#<%= @group_id %> div.docs > table > tbody').html().indexOf('loading') > 
 	$('#<%= @group_id %> div.docs > table > tbody').html('');
 }
 $('#<%= @group_id %> div.docs > table > tbody').append("<%= escape_javascript(raw render partial: "/result/docs_in_group", layout: false) %>");
+$('#<%= @group_id %>-tooltips').append("<%= escape_javascript(raw render partial: "/result/doc_tooltips_in_group", layout: false) %>");
 if (<%= @offset+20 %> > $('tr[data-group-id="<%= @group_id %>"] div.progress-bar').attr('aria-valuenow')) {
 	$('#<%= @group_id %> button.load-grouped-docs').remove();
 }

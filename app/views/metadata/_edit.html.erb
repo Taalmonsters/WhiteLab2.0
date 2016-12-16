@@ -51,6 +51,17 @@
 					<%= select_tag :searchable, options_for_select([['true', 'true'], ['false', 'false']], 'true'), class: 'form-control' %>
 				<% end %>
 			</div>
+			<div class="form-group">
+				<%= label_tag :hoverable, t(:'data_labels.keys.hoverable').capitalize, class: 'control-label' %> <a class="info-panel-toggle">?</a>
+				<div class="panel panel-info hidden">
+					<div class="panel-body"><% if metadatum['hoverable'].blank? || metadatum['hoverable'] == false %><%= t(:'instructions.keys.metadatum_hoverable_description_unchecked') %><% else %><%= t(:'instructions.keys.metadatum_hoverable_description_checked') %><% end %></div>
+				</div>
+				<% if !metadatum.has_key?('hoverable') || metadatum['hoverable'].eql?(false) || metadatum['hoverable'].eql?('false') %>
+					<%= select_tag :hoverable, options_for_select([['true', 'true'], ['false', 'false']], 'false'), class: 'form-control' %>
+				<% else %>
+					<%= select_tag :hoverable, options_for_select([['true', 'true'], ['false', 'false']], 'true'), class: 'form-control' %>
+				<% end %>
+			</div>
 		</div>
 	</div>
 	<div class="row">

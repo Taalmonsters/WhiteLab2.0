@@ -126,6 +126,10 @@ class MetadataHandler
     return groups
   end
   
+  def get_hoverable_metadata
+    return @metadata.keys.select{|mlabel| @metadata[mlabel]['hoverable'].eql?('true') }
+  end
+  
   def get_labels_from_group_and_key(group, key)
     return @metadata.keys.select{|mlabel| @metadata[mlabel]['group'].eql?(group) && @metadata[mlabel]['key'].eql?(key) }
   end

@@ -76,6 +76,7 @@ en:
       most_frequent_word_types: most frequent word types
       searchable: searchable
       explorable: explorable
+      hoverable: show on hover
       document_count: document count
       value_count: value count
       token_count: token count
@@ -207,6 +208,10 @@ en:
         field from the user.
       metadatum_searchable_description_unchecked: Check this box to show the metadata
         field to the user.
+      metadatum_hoverable_description_checked: Uncheck this box to hide the metadata
+        field in the metadata pop-up for a hit.
+      metadatum_hoverable_description_unchecked: Check this box to show the metadata
+        field in the metadata pop-up for a hit.
       batch_cql_description: A CQL batch file contains 1 CQL query per line and has
         extension '.txt'.
       benchmarker: The Query Benchmarker can be used to test WhiteLab's speed when

@@ -1,0 +1,16 @@
+<% if @hits.has_key?("results") && @hits["results"].any? %>
+	<% hoverable = @metadata_handler.get_hoverable_metadata %>
+	<% @hits["results"].each_with_index do |hit, i| %>
+		<span id="<%= @group_id %>_tooltip<%= i + @offset %>" class="hidden wl-tooltip">
+			<h5>Metadata</h5>
+			<ul class="list-unstyled">
+				<li><b>Document</b>: <%= hit["docpid"] %></li>
+				<% @hits["documents"][hit["docpid"]].select{|key,_| hoverable.include?(key) || hoverable.include?("Metadata_#{key}") }.each do |key, values| %>
+					<% group = hoverable.include?("Metadata_#{key}") ? "Metadata" : key.split('_')[0] %>
+					<% mkey = hoverable.include?("Metadata_#{key}") ? key : key.split('_',2)[1] %>
+					<li><b><%= t(:"metadata_groups.keys.#{group}") %> <%= t(:"metadata_keys.keys.#{mkey}") %></b>: <%= values %></li>
+				<% end %>
+			</ul>
+		</span>
+	<% end %>
+<% end %>

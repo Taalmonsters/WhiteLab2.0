@@ -51,6 +51,7 @@
 								<div><button class="btn btn-xs btn-info show-grouped-docs" data-group-value="<%= group[@group] %>" data-group-identity="<%= group["identity"] %>"><%= t(:"button_labels.keys.show_detailed").capitalize+" "+t(:"data_labels.keys.document").pluralize %></button> <button class="btn btn-xs btn-default load-grouped-docs" data-group-id="<%= @query.group+i.to_s %>" data-group-value="<%= group[@group] %>" data-group-identity="<%= group["identity"] %>"><%= t(:"button_labels.keys.load_more").capitalize %></button></div>
 							</td>
 						</tr>
+						<span class="tooltips" id="<%= @query.group+i.to_s %>-tooltips"></span>
 					<% end %>
 				<% end %>
 			</tbody>
