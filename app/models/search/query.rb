@@ -75,6 +75,71 @@ class Search::Query < ActiveRecord::Base
     }
   end
   
+  def self.xml_to_url_params(xml)
+    return "Invalid XML format! No query patt found.", 0 unless xml.css("query patt").any?
+    arr, error = self.query_xml_to_url_params(xml.at_css("query"))
+    if error
+      return "Invalid query format! #{arr[0]}", 0 if error
+    elsif xml.css("filters").any?
+      filter, error = self.filter_xml_to_url_params(xml.at_css("filters"))
+      return "Invalid filter format!", 0 if error
+      arr << filter unless filter.blank?
+    end
+    if error
+      return "Invalid XML format!", 0
+    else
+      return arr.join("&"), 1
+    end
+  end
+  
+  def self.filter_xml_to_url_params(filter_xml)
+    if filter_xml.css("filter").any?
+      arr = []
+      filter_xml.css("filter").each do |filter|
+        if filter.css("values value").any?
+          filter.css("values value").each do |value|
+            arr << "#{filter.at_css("field").content}:#{value.content}"
+          end
+        else
+          return "", true
+        end
+      end
+      return "filter=(#{arr.join(")AND(")})", false
+    elsif filter_xml.content.length > 0
+      return "filter=#{filter_xml.content}", false
+    end
+    return "", false
+  end
+  
+  def self.query_xml_to_url_params(query_xml)
+    arr = []
+    if query_xml.css("patt tokens").any?
+      # TODO
+    elsif query_xml.at_css("patt").content.length > 0
+      arr << "patt=#{URI.escape(query_xml.at_css("patt").content).gsub('&','%26')}"
+    else
+      return ["No valid patt"], true
+    end
+    if query_xml.css("group context").any?
+      # TODO
+    elsif query_xml.css("group").any? && query_xml.at_css("group").content.length > 0
+      puts "GROUP = #{query_xml.at_css("group").content}"
+      group = query_xml.at_css("group").content
+      arr << "group=#{URI.escape(group).gsub(';','%3B')}"
+      if query_xml.css("viewgroup").any?
+        arr << "view=1"
+      elsif !query_xml.css("view").any?
+        arr << "view=8"
+      end
+    end
+    arr << "within=#{query_xml.at_css("within").content}" if query_xml.css("within").any?
+    arr << "viewgroup=#{query_xml.at_css("viewgroup").content}" if query_xml.css("viewgroup").any?
+    arr << "view=#{query_xml.at_css("view").content}" if query_xml.css("view").any? && !arr.select{|str| str.start_with?("view=") }.any?
+    arr << "number=#{query_xml.at_css("number").content}" if query_xml.css("number").any? && [50,100,200].include?(query_xml.at_css("number").content.to_i)
+    arr << "offset=#{query_xml.at_css("offset").content}" if query_xml.css("offset").any?
+    return arr, false
+  end
+  
   def add_hits_group(hits_group)
     hits_group.gsub!(/([\(\)\[\]\'\"\?\!])/){|s| "\\"+s}
     qgroup_parts = group.split(':')

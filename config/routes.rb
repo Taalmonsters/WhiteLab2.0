@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     get '/extended' => 'interface#extended'
     get '/advanced' => 'interface#advanced'
     get '/expert' => 'interface#expert'
+    post '/expert' => 'interface#expert'
     scope '/advanced' do
       get '/column' => 'interface#advanced_column'
       get '/box' => 'interface#advanced_box'

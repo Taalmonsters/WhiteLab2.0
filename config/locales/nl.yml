@@ -177,6 +177,7 @@ nl:
       download: download
       refine: verfijn
       group: groepeer
+      import: importeer
   instructions:
     title: Instructies
     description: Vertalingen van instructies die in de applicatie verschijnen

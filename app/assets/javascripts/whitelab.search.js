@@ -326,6 +326,30 @@ Whitelab.search = {
 			
 		},
 		
+		importXMLQuery: function(e, el) {
+			e.stopPropagation();
+			var file = el.files[0];
+			if (file["name"].indexOf("xml") == file["name"].length - 3 || file["name"].indexOf("XML") == file["name"].length - 3) {
+				var formData = new FormData();
+				formData.append('file', file);
+				$.ajax({
+			       url : '/search/expert.json',
+			       type : 'POST',
+			       data : formData,
+			       processData: false,  // tell jQuery not to process the data
+			       contentType: false,  // tell jQuery not to set contentType
+			       success : function(data) {
+			    	   console.log(data);
+			           if (data["error"])
+			        	   alert(data["error"]);
+			           else if (data["url"])
+			        	   window.location = data["url"];
+			       }
+				});
+			} else
+				alert("Only XML files allowed!");
+		},
+		
 		parseQuery : function() {
 			var patt = $("#expert-input").val();
 			var filter = Whitelab.metadata.getFilterString();

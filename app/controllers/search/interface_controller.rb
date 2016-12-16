@@ -1,8 +1,10 @@
+require "nokogiri"
 # Interface controller for pages under Search namespace
 class Search::InterfaceController < InterfaceController
   include WhitelabSearch
   before_action :set_field_values, :only => [:advanced_column, :advanced_box, :advanced_field]
   before_action :set_tab, :only => [:document]
+  before_action :check_query_import, :only => [:expert]
   
   # Redirect from /search to /search/expert (with CQL query) or /search/simple (without CQL query)
   def search
@@ -55,6 +57,7 @@ class Search::InterfaceController < InterfaceController
   def expert
     respond_to do |format|
       format.html
+      format.json { render json: @data }
     end
   end
   
@@ -66,6 +69,23 @@ class Search::InterfaceController < InterfaceController
   end
   
   protected
+  
+  def check_query_import
+    if params.has_key?(:file)
+      @data = {}
+      xml = Nokogiri::XML(params[:file].read)
+      if xml && xml.css("search").any?
+        url_params, status = Search::Query.xml_to_url_params(xml.css("search").first)
+        if status == 1
+          @data["url"] = "/search/expert?#{url_params}"
+        else
+          @data["error"] = url_params
+        end
+      else
+        @data["error"] = "Invalid XML format! No search tag found."
+      end
+    end
+  end
   
   # Get field values from parameters
   def set_field_values

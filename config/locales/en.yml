@@ -177,6 +177,7 @@ en:
       download: download
       refine: refine
       group: group
+      import: import
   instructions:
     title: Instructions
     description: Translations of instructions appearing in the application
