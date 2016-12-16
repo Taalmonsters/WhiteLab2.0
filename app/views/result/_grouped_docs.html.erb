@@ -1,7 +1,7 @@
 <% if @namespace && @namespace.eql?('search') %>
 	<div class="row">
-		<div class="col-xs-12">
-			<%= select_tag(:"group", grouped_options_for_select(@groups, @query.group), :class => "group-by-select", :include_blank => true) %>
+		<div class="col-xs-12 col-sm-4 col-md-3">
+			<%= select_tag(:"group", grouped_options_for_select(@groups, @query.group), :class => "group-by-select form-control", :include_blank => true) %>
 		</div>
 	</div>
 <% end %>
