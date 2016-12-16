@@ -78,7 +78,7 @@ class Explore::Query < ActiveRecord::Base
     elsif page.eql?('ngrams')
       return {
         :user_id => user_id,
-        :patt => params[:patt],
+        :patt => URI.unescape(params[:patt]),
         :filter => params[:filter],
         :listtype => params.has_key?(:listtype) ? params[:listtype] : 'word',
         :input_page => page

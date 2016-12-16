@@ -53,7 +53,7 @@ class Search::Query < ActiveRecord::Base
   def self.create_hash(user_id, page, params)
     return {
       :user_id => user_id, 
-      :patt => params[:patt], 
+      :patt => URI.unescape(params[:patt]), 
       :within => params.has_key?(:within) ? params[:within] : 'document', 
       :filter => params.has_key?(:filter) && !params[:filter].blank? ? params[:filter] : nil, 
       :group => params.has_key?(:group) ? params[:group] : nil,
@@ -67,7 +67,7 @@ class Search::Query < ActiveRecord::Base
   def self.where_data(user_id, page, params)
     return {
       :user_id => user_id,
-      :patt => params[:patt],
+      :patt => URI.unescape(params[:patt]),
       :within => params.has_key?(:within) ? params[:within] : 'document',
       :filter => params.has_key?(:filter) && !params[:filter].blank? ? params[:filter] : nil,
       :group => params.has_key?(:viewgroup) && !params[:viewgroup].blank? && params.has_key?(:group) && !params[:group].blank? ? params[:group] : nil,
@@ -81,7 +81,6 @@ class Search::Query < ActiveRecord::Base
     context_group_label = group_to_label(qgroup_parts[1])
     if self.group.start_with?('hit')
       patt_parts = self.patt.gsub(/(^\[|\]$)/,'').split('][')
-      puts "qgroup_parts #{qgroup_parts}"
       group_parts = hits_group.split(' ')
       g = group_to_label(qgroup_parts[1])
       new_parts = []
@@ -95,9 +94,9 @@ class Search::Query < ActiveRecord::Base
         end
       end
       self.patt = new_parts.join('')
-    elsif self.group.start_with?('left')
+    elsif self.group.start_with?('wordleft')
       self.patt = "[#{context_group_label}=\"(?c)#{hits_group}\"]#{self.patt}"
-    elsif self.group.start_with?('right')
+    elsif self.group.start_with?('wordright')
       self.patt = "#{self.patt}[#{context_group_label}=\"(?c)#{hits_group}\"]"
     elsif self.filter.blank?
       self.filter = "(#{self.group}=\"#{hits_group}\")"

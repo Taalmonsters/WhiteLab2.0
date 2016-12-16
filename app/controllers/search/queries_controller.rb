@@ -68,7 +68,6 @@ class Search::QueriesController < QueriesController
       sub_query.number = 20
       @hits = sub_query.result(false)
       sub_query.destroy
-      puts @hits
     end
     respond_to do |format|
       format.js do

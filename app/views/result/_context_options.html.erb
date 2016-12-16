@@ -41,7 +41,6 @@
 							<% l_opt = l_opts.shift %>
 						<% end %>
 						<% keep << "L#{s}-#{e}" %>
-						<% puts keep %>
 						<% keep.each_with_index do |context_selection, i| %>
 							<%= render partial: "result/context/left", locals: { selection: context_selection, index: i } %>
 						<% end %>
