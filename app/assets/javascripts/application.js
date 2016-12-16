@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap-sprockets
+//= require jquery-ui
 //= require d3.min
 //= require whitelab
 //= require pageguide

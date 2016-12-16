@@ -77,6 +77,15 @@ Whitelab.search = {
 				Whitelab.search.advanced.parseQueryToInterface($('#advanced').data('query-pattern'));
 			else
 				Whitelab.search.advanced.addFieldToBoxInColumn(0, 0);
+			
+			$( "#advanced-canvas" ).sortable();
+		    $( "#advanced-canvas" ).disableSelection();
+		    $( "#advanced-canvas" ).sortable({
+		        stop: function( ) {
+		        	Whitelab.search.advanced.resetElementIds()
+		        }
+		    });
+			
 		},
 		
 		addColumn : function() {
@@ -284,7 +293,7 @@ Whitelab.search = {
 		///////////////////////////////////////////////////////////////////////////
 		
 		getBoxValue : function(box,type,op) {
-			if (["word","lemma","phonetic"].indexOf(type) == -1 && (op == 'is' || op == 'not')) {
+			if ($(box).find(".advanced-pos-select").length > 0) {
 				var term = $(box).find(".advanced-pos-select").first().val();
 				return term;
 			} else {

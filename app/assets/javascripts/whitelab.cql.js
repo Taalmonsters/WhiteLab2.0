@@ -148,7 +148,7 @@ Whitelab.cql = {
 							term = term.substring(4);
 						} else if (term.indexOf('(?c)') > -1) {
 							term = term.substring(5);
-							if (type === 'word' || type === 'lemma' || type === 'phonetic') {
+							if (token_type === 'word' || token_type === 'lemma' || token_type === 'phonetic') {
 								sensitive = true;
 							}
 						}
@@ -173,7 +173,7 @@ Whitelab.cql = {
 									dd = 0;
 									operator = 'ends';
 								} else if (indices[0] == term.length - 2) {
-									if (type === 'pos' && term.match(/^[A-Z]+\.\*/)) {
+									if (token_type === 'pos' && term.match(/^[A-Z]+\.\*/)) {
 										dd = 1;	
 									} else {
 										dd = 0;
@@ -486,8 +486,10 @@ Whitelab.cql = {
 			$(this).find(".advanced-box").each(function(j,and) {
 				var f = query.addEmptyFieldToColumn(i);
 				if ($(and).find(".advanced-field").length > 1) {
+					Whitelab.debug("Multiple fields");
 					$.each($(and).find(".advanced-field"), function(j,or) {
 						if (!$(or).find(".batchrow").first().hasClass("active")) {
+							Whitelab.debug("no batch");
 							var sub = new CqlField(null,null,false,null,false,null);
 							sub.type = $(or).find(".token-type").first().val();
 							Whitelab.debug("sub type: "+sub.type);
@@ -503,6 +505,7 @@ Whitelab.cql = {
 							Whitelab.debug("sub quantifier: "+sub.quantifier);
 							f.addSubField(sub);
 						} else {
+							Whitelab.debug("batch");
 							f.batch = true;
 							var vals = Whitelab.search.advanced.getBoxValues(or);
 							for (var v = 0; v < vals.length; v++) {
@@ -517,6 +520,7 @@ Whitelab.cql = {
 						}
 					});
 				} else if (!$(and).find(".batchrow").first().hasClass("active")) {
+					Whitelab.debug("One field, no batch");
 					// 1 field filled, no batch
 					f.type = $(and).find(".token-type").first().val();
 					f.operator = $(and).find(".token-operator").first().val();
@@ -525,6 +529,7 @@ Whitelab.cql = {
 					f.value = Whitelab.cql.removeQuantifier(boxval);
 					f.quantifier = Whitelab.cql.removeValue(boxval);
 				} else {
+					Whitelab.debug("One field, batch");
 					// 1 field filled, batch
 					var vals = Whitelab.search.advanced.getBoxValues(and);
 					f.batch = true;
