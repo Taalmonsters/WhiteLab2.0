@@ -70,7 +70,7 @@ class Search::Query < ActiveRecord::Base
       :patt => URI.unescape(params[:patt]),
       :within => params.has_key?(:within) ? params[:within] : 'document',
       :filter => params.has_key?(:filter) && !params[:filter].blank? ? params[:filter] : nil,
-      :group => params.has_key?(:viewgroup) && !params[:viewgroup].blank? && params.has_key?(:group) && !params[:group].blank? ? params[:group] : nil,
+      :group => params.has_key?(:group) && !params[:group].blank? ? params[:group] : nil,
       :viewgroup => params.has_key?(:viewgroup) && !params[:viewgroup].blank? ? params[:viewgroup] : nil
     }
   end
