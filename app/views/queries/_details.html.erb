@@ -2,7 +2,7 @@
 	<div class="col-xs-12">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<label><%= t(:"queries.keys.query") %></label>
+				<label id="history-label"><%= t(:"queries.keys.query") %> <button class="btn btn-xs btn-info export"><%= t(:"button_labels.keys.export").capitalize %> <%= t(:"operators.keys.as") %> XML</button></label>
 			</div>
 			<div class="panel-body">
 				<div id="query-details" class="tab-content contrast" data-query-id="<%= @query.id %>">

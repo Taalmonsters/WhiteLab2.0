@@ -51,10 +51,10 @@
 						</div>
 					</div>
 					<div class="col-xs-12 right-aligned">
-						<div class="btn-group" role="group">
-							<button id="ngrams-submit-form" class="btn btn-primary submit"><%= t('button_labels.keys.go').capitalize %></button>
-							<button id="ngrams-reset-form" class="btn btn-default btn-reset" data-url="/explore/ngrams"><%= t('button_labels.keys.reset').capitalize %></button>
-						</div>
+						<button id="ngrams-submit-form" class="btn btn-primary submit"><%= t('button_labels.keys.go').capitalize %></button>
+						<button id="ngrams-reset-form" class="btn btn-default btn-reset" data-url="/explore/ngrams"><%= t('button_labels.keys.reset').capitalize %></button>
+						<input class="loadxml explore-xml" type="file" onchange="Whitelab.explore.importXMLQuery(event,this,'ngrams');">
+						<button type="button" class="btn btn-info btn-import"><%= t('button_labels.keys.import').capitalize %></button>
 					</div>
 				</div>
 			</div>

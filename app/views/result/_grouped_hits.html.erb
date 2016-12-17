@@ -31,7 +31,7 @@
 			<tbody>
 				<% @query.result(false)['results'].each_with_index do |group,i| %>
 					<% largest_group = @query.result(false)['largest_group_size'] %>
-					<% g = @query.group =~ /H(;|$)/ ? group[@group].sub(/(.+) - - - -(.*)/, '\1\2') : group[@group] %>
+					<% g = group[@group] %>
 					<tr class="clickable grouped-hit-row" data-group-value="<%= group[@group] %>" data-group-identity="<%= group["identity"] %>" data-group-id="<%= @query.group.gsub(/[\:;\.]/,'_')+i.to_s %>">
 						<td><%= g.kind_of?(Array) ? g[0].html_safe : g.html_safe %></td>
 						<td class="progress-field">

@@ -21,12 +21,15 @@ class QueriesController < ApplicationController
   
   # Start Query export
   def export
-    if !@query.blank?
-      @query.export
-    end
     respond_to do |format|
       format.js do
+        if !@query.blank?
+          @query.export
+        end
         render '/query/export'
+      end
+      format.xml do
+        send_data(@query.to_xml, :type=>"text/xml",:filename => "#{@query.generate_filename}.xml")
       end
     end
   end

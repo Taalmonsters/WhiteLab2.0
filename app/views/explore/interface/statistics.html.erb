@@ -16,10 +16,10 @@
 							</div>
 						</div>
 						<div class="col-xs-12 right-aligned">
-							<div class="btn-group" role="group">
-								<button class="btn btn-primary submit"><%= t('button_labels.keys.go').capitalize %></button>
-								<button class="btn btn-default btn-reset" data-url="/explore/statistics"><%= t('button_labels.keys.reset').capitalize %></button>
-							</div>
+							<button class="btn btn-primary submit"><%= t('button_labels.keys.go').capitalize %></button>
+							<button class="btn btn-default btn-reset" data-url="/explore/statistics"><%= t('button_labels.keys.reset').capitalize %></button>
+							<input class="loadxml explore-xml" type="file" onchange="Whitelab.explore.importXMLQuery(event,this,'statistics');">
+							<button type="button" class="btn btn-info btn-import"><%= t('button_labels.keys.import').capitalize %></button>
 						</div>
 					<% end %>
 				</div>

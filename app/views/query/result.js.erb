@@ -1,5 +1,7 @@
 <!-- query details -->
-$('div#query-details').html("<%= escape_javascript(raw render partial: "/query/details", layout: false) %>");
+<% unless @namespace.eql?("explore") && @query.input_page.eql?("ngrams") && @query.waiting? %>
+	$('div#query-details').html("<%= escape_javascript(raw render partial: "/query/details", layout: false) %>");
+<% end %>
 
 <!-- query results -->
 <% if @query.view == 4 %>

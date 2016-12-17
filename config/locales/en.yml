@@ -38,6 +38,7 @@ en:
       from2: from
       the_start: the start
       the_end: the end
+      as: as
   data_labels:
     title: Data labels
     description: Translations of data labels and model names

@@ -31,6 +31,30 @@ Whitelab.explore = {
 		$.getScript('/explore/result/id/'+id+'.js?number='+number+'&offset='+offset);
 	},
 	
+	importXMLQuery: function(e, el, page) {
+		e.stopPropagation();
+		var file = el.files[0];
+		if (file["name"].indexOf("xml") == file["name"].length - 3 || file["name"].indexOf("XML") == file["name"].length - 3) {
+			var formData = new FormData();
+			formData.append('file', file);
+			$.ajax({
+		       url : '/explore/'+page+'.json',
+		       type : 'POST',
+		       data : formData,
+		       processData: false,  // tell jQuery not to process the data
+		       contentType: false,  // tell jQuery not to set contentType
+		       success : function(data) {
+		    	   console.log(data);
+		           if (data["error"])
+		        	   alert(data["error"]);
+		           else if (data["url"])
+		        	   window.location = data["url"];
+		       }
+			});
+		} else
+			alert("Only XML files allowed!");
+	},
+	
 	removeQuery : function(queryId) {
 		$.getScript('/explore/remove/id/'+queryId+'.js');
 	},
@@ -262,4 +286,9 @@ $(document).on('click', '#main-div[data-namespace="explore"] tr.doc-row', functi
 		$.getScript('/explore/doc_hits/id/'+qid+'.js?view=1&docpid='+docpid+'&hits='+hits);
 	}
 	$("#"+docpid).toggleClass("hidden");
+});
+
+$(document).on("click", "#main-div[data-namespace=\"explore\"] #history-label button.export", function(e) {
+	e.preventDefault();
+	window.location = '/explore/export/id/'+$("#result-pane").data("query-id")+'.xml';
 });

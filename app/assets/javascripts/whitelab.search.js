@@ -767,3 +767,8 @@ function hover_metadata(e, el) {
     $("#"+el).toggleClass("hidden");
     return false;
 }
+
+$(document).on("click", "#main-div[data-namespace=\"search\"] #history-label button.export", function(e) {
+	e.preventDefault();
+	window.location = '/search/export/id/'+$("#result-pane").data("query-id")+'.xml';
+});

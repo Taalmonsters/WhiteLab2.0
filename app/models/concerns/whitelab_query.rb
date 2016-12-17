@@ -33,6 +33,87 @@ module WhitelabQuery
     return query
   end
   
+  module ClassMethods
+    def filter_xml_to_url_params(filter_xml)
+      if filter_xml.css("filter").any?
+        arr = []
+        filter_xml.css("filter").each do |filter|
+          if filter.css("values value").any?
+            filter.css("values value").each do |value|
+              arr << "#{filter.at_css("field").content}=\"#{value.content}\""
+            end
+          else
+            return "", true
+          end
+        end
+        return "filter=(#{arr.join(")AND(")})", false
+      elsif filter_xml.content.length > 0
+        return "filter=#{filter_xml.content.sub(':','=')}", false
+      end
+      return "", false
+    end
+    
+    def get_tokens_from_xml(tokens)
+      arr = []
+      tokens.css("> token").each do |token|
+        arr << "[#{self.get_token_from_xml(token)}]#{token.css("> repeat").any? ? self.get_quantifier_from_token_xml(token) : ""}"
+      end
+      return arr.join("")
+    end
+    
+    def get_token_from_xml(token)
+      if token.css("> value").any?
+        return "#{token.css("type").any? && ["word","lemma","pos","phonetic"].include?(token.at_css("type").content) ? token.at_css("type").content : "word"}#{token.css("operator").any? && token.at_css("operator").include?("not") ? "!=" : "="}\"#{self.get_token_value_from_xml(token)}\""
+      elsif token.css("> and > token").any?
+        arr = []
+        token.css("> and > token").each do |token2|
+          arr << self.get_token_from_xml(token2)
+        end
+        return "(#{arr.join("&")})"
+      elsif token.css("> or > token").any?
+        arr = []
+        token.css("> or > token").each do |token2|
+          arr << self.get_token_from_xml(token2)
+        end
+        return "(#{arr.join("|")})"
+      end
+    end
+    
+    def get_token_value_from_xml(token)
+      op = token.at_css("operator").content if token.css("operator").any?
+      return "#{["ends", "contains"].include?(op) ? ".*" : ""}#{token.at_css("value").content}#{["starts", "contains"].include?(op) ? ".*" : ""}"
+    end
+    
+    def self.get_quantifier_from_token_xml(token)
+      from = token.css("> repeat from").any? ? token.at_css("> repeat from").content.to_i : 0
+      to = token.css("> repeat to").any? ? token.at_css("> repeat to").content.to_i : 0
+      if to > 0
+        return "{#{from > 0 && from < to ? "#{from}," : from > 0 && from == to ? "" : ","}#{to}}"
+      elsif from == 0
+        return "*"
+      else
+        return ""
+      end
+    end
+  
+    def xml_to_url_params(xml)
+      return "Invalid XML format! No query patt found.", 0 unless xml.css("query patt").any?
+      arr, error = self.query_xml_to_url_params(xml.at_css("query"))
+      if error
+        return "Invalid query format! #{arr[0]}", 0 if error
+      elsif xml.css("filters").any?
+        filter, error = self.filter_xml_to_url_params(xml.at_css("filters"))
+        return "Invalid filter format!", 0 if error
+        arr << filter unless filter.blank?
+      end
+      if error
+        return "Invalid XML format!", 0
+      else
+        return arr.join("&"), 1
+      end
+    end
+  end
+  
   def self.history(user_id, hist_offset = 0, hist_number = 5)
     return self.class.name.constantize.where(:user_id => user_id).sort("updated_at desc").limit(hist_number).offset(hist_offset)
   end

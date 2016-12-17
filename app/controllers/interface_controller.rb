@@ -25,4 +25,23 @@ class InterfaceController < ApplicationController
     end
   end
   
+  protected
+  
+  def check_query_import
+    if params.has_key?(:file)
+      @data = {}
+      xml = Nokogiri::XML(params[:file].read)
+      if xml && xml.css(@namespace).any?
+        url_params, status = "#{@namespace.capitalize}::Query".constantize.xml_to_url_params(xml.css(@namespace).first)
+        if status == 1
+          @data["url"] = "/#{@namespace}/#{action_name}?#{url_params}"
+        else
+          @data["error"] = url_params
+        end
+      else
+        @data["error"] = "Invalid XML format! No explore tag found."
+      end
+    end
+  end
+  
 end

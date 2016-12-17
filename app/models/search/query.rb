@@ -41,6 +41,14 @@ class Search::Query < ActiveRecord::Base
     return filename
   end
   
+  def to_xml
+    hash = { search: { query: { patt: self.patt, within: self.within, view: self.view, offset: self.offset, number: self.number } } }
+    hash[:search][:query][:group] = self.group unless self.group.blank?
+    hash[:search][:query][:viewgroup] = self.viewgroup unless self.viewgroup.blank?
+    hash[:search][:filters] = self.filter unless self.filter.blank?
+    return hash.to_xml(:root => 'whitelab')
+  end
+  
   def self.find_from_params(page, user, params)
     params[:group] = params[:group].gsub('%3B',';') if params.has_key?(:group)
     if params.has_key?(:id)
@@ -75,55 +83,20 @@ class Search::Query < ActiveRecord::Base
     }
   end
   
-  def self.xml_to_url_params(xml)
-    return "Invalid XML format! No query patt found.", 0 unless xml.css("query patt").any?
-    arr, error = self.query_xml_to_url_params(xml.at_css("query"))
-    if error
-      return "Invalid query format! #{arr[0]}", 0 if error
-    elsif xml.css("filters").any?
-      filter, error = self.filter_xml_to_url_params(xml.at_css("filters"))
-      return "Invalid filter format!", 0 if error
-      arr << filter unless filter.blank?
-    end
-    if error
-      return "Invalid XML format!", 0
-    else
-      return arr.join("&"), 1
-    end
-  end
-  
-  def self.filter_xml_to_url_params(filter_xml)
-    if filter_xml.css("filter").any?
-      arr = []
-      filter_xml.css("filter").each do |filter|
-        if filter.css("values value").any?
-          filter.css("values value").each do |value|
-            arr << "#{filter.at_css("field").content}:#{value.content}"
-          end
-        else
-          return "", true
-        end
-      end
-      return "filter=(#{arr.join(")AND(")})", false
-    elsif filter_xml.content.length > 0
-      return "filter=#{filter_xml.content}", false
-    end
-    return "", false
-  end
-  
   def self.query_xml_to_url_params(query_xml)
     arr = []
-    if query_xml.css("patt tokens").any?
-      # TODO
+    if query_xml.css("patt tokens token").any?
+      arr << "patt=#{URI.escape(self.get_tokens_from_xml(query_xml.css("patt > tokens"))).gsub('&','%26')}"
     elsif query_xml.at_css("patt").content.length > 0
       arr << "patt=#{URI.escape(query_xml.at_css("patt").content).gsub('&','%26')}"
     else
       return ["No valid patt"], true
     end
     if query_xml.css("group context").any?
-      # TODO
+      group, error = self.get_complex_group_from_xml(query_xml)
+      return [group], true if error
+      arr << "group=#{URI.escape(group).gsub(';','%3B')}"
     elsif query_xml.css("group").any? && query_xml.at_css("group").content.length > 0
-      puts "GROUP = #{query_xml.at_css("group").content}"
       group = query_xml.at_css("group").content
       arr << "group=#{URI.escape(group).gsub(';','%3B')}"
       if query_xml.css("viewgroup").any?
@@ -132,12 +105,57 @@ class Search::Query < ActiveRecord::Base
         arr << "view=8"
       end
     end
-    arr << "within=#{query_xml.at_css("within").content}" if query_xml.css("within").any?
-    arr << "viewgroup=#{query_xml.at_css("viewgroup").content}" if query_xml.css("viewgroup").any?
+    ["within","viewgroup","offset"].each do |param|
+      arr << "#{param}=#{query_xml.at_css(param).content}" if query_xml.css(param).any?
+    end
     arr << "view=#{query_xml.at_css("view").content}" if query_xml.css("view").any? && !arr.select{|str| str.start_with?("view=") }.any?
     arr << "number=#{query_xml.at_css("number").content}" if query_xml.css("number").any? && [50,100,200].include?(query_xml.at_css("number").content.to_i)
-    arr << "offset=#{query_xml.at_css("offset").content}" if query_xml.css("offset").any?
     return arr, false
+  end
+  
+  def self.get_complex_group_from_xml(query_xml)
+    group = query_xml.at_css("group context").content
+    if group.eql?("field")
+      return "Missing field for grouping!", true unless query_xml.css("group field").any?
+      group = query_xml.at_css("group field").content
+    else
+      group = query_xml.css("group type").any? ? "#{group}:#{query_xml.at_css("group type").content}" : "word"
+      group = query_xml.css("group case").any? ? "#{group}:#{query_xml.at_css("group case").content}" : "s"
+      if query_xml.at_css("group context").content.eql?("context")
+        if query_xml.css("group left set").any? || query_xml.css("group hit full").any? || query_xml.css("group hit set").any? || query_xml.css("group right set").any?
+          first = true
+          group, first = self.add_context_to_group(group, "L", query_xml.css("group left set"), first, true) if query_xml.css("group left set").any?
+          if query_xml.css("group hit full").any?
+            group = "#{group}#{first ? ':' : ';'}H"
+            first = false
+          else
+            group, first = self.add_context_to_group(group, set.at_css("direction").content.eql?('start') ? 'H' : 'E', query_xml.css("group hit set"), first, set.at_css("direction").content.eql?('end')) if query_xml.css("group hit set").any?
+          end
+          group, first = self.add_context_to_group(group, "R", query_xml.css("group right set"), first, false) if query_xml.css("group right set").any?
+        else
+          return "Missing group context specification!", true
+        end
+      end
+    end
+    return group, false
+  end
+  
+  def self.add_context_to_group(group, letter, sets, first, reverse)
+    sets.each do |set|
+      if reverse
+        from = set.at_css("from").content.to_i
+        to = set.at_css("to").content.to_i
+        range = to < from ? [to..from] : [from..to]
+        range.to_a.reverse.each do |i|
+          group = "#{group}#{first ? ':' : ';'}#{letter}#{i}-#{i}"
+          first = false
+        end
+      else
+        group = "#{group}#{first ? ':' : ';'}#{letter}#{set.at_css("from").content}-#{set.at_css("to").content}"
+        first = false
+      end
+    end
+    return group, first
   end
   
   def add_hits_group(hits_group)

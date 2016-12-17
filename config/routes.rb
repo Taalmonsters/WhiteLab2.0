@@ -52,10 +52,12 @@ Rails.application.routes.draw do
     get '/treemap/option/:option' => 'queries#treemap'
     get '/bubble/option/:option' => 'queries#bubble'
     get '/statistics' => 'interface#statistics'
+    post '/statistics' => 'interface#statistics'
     scope '/statistics' do
       get '/vocabulary_growth' => 'queries#vocabulary_growth', as: 'explore_vocabulary_growth'
     end
     get '/ngrams' => 'interface#ngrams'
+    post '/ngrams' => 'interface#ngrams'
     get '/document' => 'interface#document'
     get '/pos/select' => 'interface#pos_select_options'
     get '/history' => 'queries#history'

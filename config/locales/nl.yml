@@ -38,6 +38,7 @@ nl:
       from2: vanaf
       the_start: het begin
       the_end: het einde
+      as: als
   data_labels:
     title: Data labels
     description: Vertalingen van data labels en model namen

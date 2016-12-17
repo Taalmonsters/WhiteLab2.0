@@ -316,8 +316,8 @@ var Whitelab = {
 				closeOnEscape: true,
 				draggable: true,
 				autoOpen: false,
-				width: 1000,
-				minHeight: 500,
+				width: $("body").innerWidth() - 200,
+				minHeight: $("body").innerHeight() - 200,
 				modal: true,
 				resizable: false,
 				buttons: {

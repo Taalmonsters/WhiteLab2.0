@@ -4,6 +4,7 @@ class Explore::InterfaceController < InterfaceController
   before_action :set_page
   before_action :set_tab, :only => [:document]
   before_action :set_listtype_options, :only => [:statistics, :ngrams]
+  before_action :check_query_import, :only => [:statistics, :ngrams]
   
   # Redirect from /explore to /explore/corpora
   def explore
@@ -20,6 +21,7 @@ class Explore::InterfaceController < InterfaceController
   def statistics
     respond_to do |format|
       format.html
+      format.json { render json: @data }
     end
   end
   
@@ -27,6 +29,7 @@ class Explore::InterfaceController < InterfaceController
     @size = params.has_key?(:size) ? params[:size].to_i : 5
     respond_to do |format|
       format.html
+      format.json { render json: @data }
     end
   end
   

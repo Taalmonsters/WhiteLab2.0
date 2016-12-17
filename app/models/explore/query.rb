@@ -42,6 +42,13 @@ class Explore::Query < ActiveRecord::Base
     return filename
   end
   
+  def to_xml
+    hash = { explore: { query: { page: self.page, patt: self.patt, within: self.within, view: self.view, listtype: self.listtype, offset: self.offset, number: self.number } } }
+    hash[:explore][:query][:group] = self.group unless self.group.blank?
+    hash[:explore][:filters] = self.filter unless self.filter.blank?
+    return hash.to_xml(:root => 'whitelab')
+  end
+  
   def self.find_from_params(page, user, params)
     query = user.explore_queries.find(params[:id].to_i) if params.has_key?(:id)
     return query ? query : WhitelabQuery.find_from_params(Explore::Query, page, user.id, params)
@@ -78,12 +85,47 @@ class Explore::Query < ActiveRecord::Base
     elsif page.eql?('ngrams')
       return {
         :user_id => user_id,
-        :patt => URI.unescape(params[:patt]),
+        :patt => params.has_key?(:patt) ? URI.unescape(params[:patt]) : nil,
         :filter => params[:filter],
         :listtype => params.has_key?(:listtype) ? params[:listtype] : 'word',
         :input_page => page
       }
     end
+  end
+  
+  def self.query_xml_to_url_params(query_xml)
+    arr = []
+    page = query_xml.css("page").any? ? query_xml.at_css("page").content : nil
+    return ["No page tag found in query!"], true unless page
+    return ["Invalid page value!"], true unless ["ngrams","statistics"].include?(page)
+    if page.eql?("ngrams") && query_xml.css("patt tokens token").any?
+      arr << "patt=#{URI.escape(self.get_tokens_from_xml(query_xml.css("patt > tokens"))).gsub('&','%26')}"
+    elsif page.eql?("ngrams") && query_xml.at_css("patt").content.length > 0
+      arr << "patt=#{URI.escape(query_xml.at_css("patt").content).gsub('&','%26')}"
+    elsif page.eql?("ngrams")
+      return ["Invalid patt value!"], true
+    end
+    if query_xml.css("group context").any?
+      group, error = self.get_complex_group_from_xml(query_xml)
+      return [group], true if error
+      arr << "group=#{URI.escape(group).gsub(';','%3B')}"
+    elsif query_xml.css("group").any? && query_xml.at_css("group").content.length > 0
+      group = query_xml.at_css("group").content
+      arr << "group=#{URI.escape(group).gsub(';','%3B')}"
+    end
+    ["within","offset"].each do |param|
+      arr << "#{param}=#{query_xml.at_css(param).content}" if query_xml.css(param).any?
+    end
+    arr << "view=#{query_xml.at_css("view").content}" if query_xml.css("view").any? && !arr.select{|str| str.start_with?("view=") }.any?
+    arr << "number=#{query_xml.at_css("number").content}" if query_xml.css("number").any? && [50,100,200].include?(query_xml.at_css("number").content.to_i)
+    return arr, false
+  end
+  
+  def self.get_complex_group_from_xml(query_xml)
+    group = query_xml.at_css("group context").content
+    group = query_xml.css("group type").any? ? "#{group}:#{query_xml.at_css("group type").content}" : "word"
+    group = query_xml.css("group case").any? ? "#{group}:#{query_xml.at_css("group case").content}" : "s"
+    return group, false
   end
   
   def is_changed?(page, params)

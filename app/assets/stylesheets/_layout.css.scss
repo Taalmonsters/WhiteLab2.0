@@ -743,3 +743,12 @@ a.show-history {
 #main-div > div.row:nth-child(2) {
     margin-top: -60px;
 }
+
+#history-label {
+  width: 100%;
+  position: relative;
+  > button {
+    position: absolute;
+    right: 0;
+  }
+}

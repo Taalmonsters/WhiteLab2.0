@@ -105,7 +105,7 @@ module BlacklabHelper
       'results' => data.map { |group|
         {
           "identity" => group["identity"].sub(/^str:/,''),
-          "#{query.group}" => group["identityDisplay"],
+          "#{query.group}" => query.group =~ /H(;|$)/ ? group["identityDisplay"].gsub(/ \-/, '') : group["identityDisplay"],
           "#{view == 8 ? 'hit_count' : 'document_count'}" => group["size"],
           "relative_#{view == 8 ? 'hit_count' : 'document_count'}" => view == 8 ? (group["size"].to_f / hits) * 100 : (group["size"].to_f / docs) * 100
         }

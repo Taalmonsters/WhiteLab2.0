@@ -70,23 +70,6 @@ class Search::InterfaceController < InterfaceController
   
   protected
   
-  def check_query_import
-    if params.has_key?(:file)
-      @data = {}
-      xml = Nokogiri::XML(params[:file].read)
-      if xml && xml.css("search").any?
-        url_params, status = Search::Query.xml_to_url_params(xml.css("search").first)
-        if status == 1
-          @data["url"] = "/search/expert?#{url_params}"
-        else
-          @data["error"] = url_params
-        end
-      else
-        @data["error"] = "Invalid XML format! No search tag found."
-      end
-    end
-  end
-  
   # Get field values from parameters
   def set_field_values
     @field = {
