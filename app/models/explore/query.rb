@@ -113,7 +113,7 @@ class Explore::Query < ActiveRecord::Base
       group = query_xml.at_css("group").content
       arr << "group=#{URI.escape(group).gsub(';','%3B')}"
     end
-    ["within","offset"].each do |param|
+    ["within","listtype","size","offset"].each do |param|
       arr << "#{param}=#{query_xml.at_css(param).content}" if query_xml.css(param).any?
     end
     arr << "view=#{query_xml.at_css("view").content}" if query_xml.css("view").any? && !arr.select{|str| str.start_with?("view=") }.any?
