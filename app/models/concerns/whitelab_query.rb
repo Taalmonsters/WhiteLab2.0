@@ -164,6 +164,7 @@ module WhitelabQuery
             self.hit_count = res['hit_count']
             self.document_count = res['document_count']
             self.group_count = res['group_count'] if res.has_key?('group_count')
+            self.sampleseed = res['sampleseed'] unless res['sampleseed'].blank?
             self.save
           end
         end
@@ -178,6 +179,7 @@ module WhitelabQuery
           self.hit_count = res['hit_count']
           self.document_count = res['document_count']
           self.group_count = res['group_count'] if res.has_key?('group_count')
+          self.sampleseed = res['sampleseed'] unless res['sampleseed'].blank?
           self.save
         end
       end

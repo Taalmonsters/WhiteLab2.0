@@ -65,6 +65,7 @@ module BlacklabHelper
       'hit_count' => hits,
       'document_count' => docs,
       'documents' => response['docInfos'],
+      'sampleseed' => response['summary'].has_key?('sampleSeed') ? response['summary']['sampleSeed'] : nil,
       'results' => data.map { |hit|
         {
           "corpus" => response['docInfos'][hit["docPid"]][CORPUS_TITLE_FIELD],
@@ -86,6 +87,7 @@ module BlacklabHelper
     return {
       'hit_count' => hits,
       'document_count' => docs,
+      'sampleseed' => response['summary'].has_key?('sampleSeed') ? response['summary']['sampleSeed'] : nil,
       'results' => data.map { |doc|
         {
           "corpus" => doc["docInfo"][CORPUS_TITLE_FIELD],
@@ -102,6 +104,7 @@ module BlacklabHelper
       'document_count' => docs,
       'group_count' => summary['numberOfGroups'],
       'largest_group_size' => summary['largestGroupSize'],
+      'sampleseed' => response['summary'].has_key?('sampleSeed') ? response['summary']['sampleSeed'] : nil,
       'results' => data.map { |group|
         {
           "identity" => group["identity"].sub(/^str:/,''),
