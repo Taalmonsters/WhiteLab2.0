@@ -139,7 +139,7 @@ $(document).on('change', 'select.metadata-operator', function(e) {
 	Whitelab.metadata.updateCoverage();
 });
 
-$(document).on('change', '#sample', function(e) {
+$(document).on('change', '#sample_type', function(e) {
 	var val = $(this).val();
 	if (!val || val.length == 0)
 	    val = "sample";

@@ -9,6 +9,9 @@
 						<%= hidden_field_tag :view, @query && [2,8,4].include?(@query.view) ? @query.view : 8 %>
 						<%= hidden_field_tag :offset, @view == 4 ? 0 : 0 %>
 						<%= hidden_field_tag :number, @view == 4 ? 100000 : 50 %>
+                        <%= hidden_field_tag :sample, "" %>
+                        <%= hidden_field_tag :samplesum, "" %>
+                        <%= hidden_field_tag :seed, "" %>
 						<div class="form-group">
 							<label for="listtype" class="col-xs-4 col-sm-3"><%= t(:"form_labels.keys.freq_list_type") %></label>
 							<div class="col-xs-6 col-sm-7">

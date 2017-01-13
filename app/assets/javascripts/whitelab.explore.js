@@ -133,7 +133,16 @@ Whitelab.explore = {
 		    var listType = $("#listtype").val();
 		    if (listType.length > 0 && patt.length > 0) {
 		    	var selectedTokenCount = $('span.metadata-selected-absolute').data('selected-tokens');
-		    	if (selectedTokenCount <= Whitelab.metadata.filterTokenSafeLimit || confirm("You have selected a subcorpus of over "+Whitelab.metadata.filterTokenSafeLimit+" tokens. Please note that this query, on first execution, may take a considerable amount of time to complete. Proceed with caution.\n\nContinue?")) {
+		    	var withinSafeLimit = selectedTokenCount <= Whitelab.metadata.filterTokenSafeLimit;
+		    	if ($("#sample_type").val() === "sample" && $("#sample_size").val()) {
+		    	    $('#ngrams-input-form #sample').val($("#sample_size").val());
+		    	    withinSafeLimit = ($("#sample_size").val() / 100) * selectedTokenCount <= Whitelab.metadata.filterTokenSafeLimit;
+		    	} else if ($("#sample_type").val() === "samplenum" && $("#samplenum_size").val()) {
+                    $('#ngrams-input-form #samplenum').val($("#samplenum_size").val());
+		    	    withinSafeLimit = $("#samplenum_size").val() <= Whitelab.metadata.filterTokenSafeLimit;
+		    	}
+		    	$('#ngrams-input-form #seed').val($("#sample_seed").val());
+		    	if (withinSafeLimit || confirm("You have selected a subcorpus of over "+Whitelab.metadata.filterTokenSafeLimit+" tokens. Please note that this query, on first execution, may take a considerable amount of time to complete. Proceed with caution.\n\nContinue?")) {
 		    		$('#ngrams-input-form #patt').val(patt);
 			    	$('#ngrams-input-form #filter').val(filterString);
 			    	$('#ngrams-input-form').submit();
@@ -160,7 +169,16 @@ Whitelab.explore = {
 		    var listType = $("#listtype").val();
 		    if (filterString.length > 0 && listType.length > 0) {
 		    	var selectedTokenCount = $('span.metadata-selected-absolute').data('selected-tokens');
-		    	if (selectedTokenCount <= Whitelab.metadata.filterTokenSafeLimit || confirm("You have selected a subcorpus of over "+Whitelab.metadata.filterTokenSafeLimit+" tokens. Please note that this query, on first execution, may take a considerable amount of time to complete. Proceed with caution.\n\nContinue?")) {
+		    	var withinSafeLimit = selectedTokenCount <= Whitelab.metadata.filterTokenSafeLimit;
+		    	if ($("#sample_type").val() === "sample" && $("#sample_size").val().length > 0) {
+		    	    $('#statistics-input-form #sample').val($("#sample_size").val());
+		    	    withinSafeLimit = ($("#sample_size").val() / 100) * selectedTokenCount <= Whitelab.metadata.filterTokenSafeLimit;
+		    	} else if ($("#sample_type").val() === "samplenum" && $("#samplenum_size").val().length > 0) {
+                    $('#statistics-input-form #samplenum').val($("#samplenum_size").val());
+		    	    withinSafeLimit = $("#samplenum_size").val() <= Whitelab.metadata.filterTokenSafeLimit;
+		    	}
+		    	$('#statistics-input-form #seed').val($("#sample_seed").val());
+		    	if (withinSafeLimit || confirm("You have selected a subcorpus of over "+Whitelab.metadata.filterTokenSafeLimit+" tokens. Please note that this query, on first execution, may take a considerable amount of time to complete. Proceed with caution.\n\nContinue?")) {
 		    		$('#statistics-input-form #filter').val(filterString);
 			    	$('#statistics-input-form').submit();
 		    	}

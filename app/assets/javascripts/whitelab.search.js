@@ -276,18 +276,17 @@ Whitelab.search = {
 		},
 		
 		parseQuery : function() {
-			var patt = Whitelab.cql.advancedQueryStringToCQL();
-			Whitelab.search.advanced.debug("QUERY: "+patt);
-			var filter = Whitelab.metadata.getFilterString();
-			Whitelab.search.advanced.debug("FILTER: "+filter);
-			var within = $("#within").val();
 			var view = Whitelab.metadata.getView();
-			if (view == 1 || view == 2)
-				window.location = '/search/advanced?patt='+encodeURIComponent(patt)+'&filter='+encodeURIComponent(filter)+'&within='+within+'&view='+view+'#results';
-			else {
-				var group = $("#metadata-options #group").val();
-				window.location = '/search/advanced?patt='+encodeURIComponent(patt)+'&filter='+encodeURIComponent(filter)+'&within='+within+'&view='+view+'&group='+encodeURIComponent(group)+'#results';
-			}
+			var url = '/search/advanced?patt='+encodeURIComponent(Whitelab.cql.advancedQueryStringToCQL())+'&filter='+encodeURIComponent(Whitelab.metadata.getFilterString())+'&within='+$("#within").val()+'&view='+view;
+			url = url+'&group='+encodeURIComponent($("#metadata-options #group").val()) if (view > 2);
+            if ($("#sample_type").val() === "sample" && $("#sample_size").val().length > 0) {
+                url = url+'&sample='+$("#sample_size").val();
+                url = url+'&seed='+$("#sample_seed").val() if $("#sample_seed").val().length > 0;
+            } else if ($("#sample_type").val() === "samplenum" && $("#samplenum_size").val().length > 0) {
+                url = url+'&samplenum='+$("#samplenum_size").val();
+                url = url+'&seed='+$("#sample_seed").val() if $("#sample_seed").val().length > 0;
+            }
+			window.location = url+'#results';
 		},
 		
 		///////////////////////////////////////////////////////////////////////////
@@ -351,16 +350,17 @@ Whitelab.search = {
 		},
 		
 		parseQuery : function() {
-			var patt = $("#expert-input").val();
-			var filter = Whitelab.metadata.getFilterString();
-			var within = $("#within").val();
 			var view = Whitelab.metadata.getView();
-			if (view == 1 || view == 2)
-				window.location = '/search/expert?patt='+encodeURIComponent(patt)+'&filter='+encodeURIComponent(filter)+'&within='+within+'&view='+view+'#results';
-			else {
-				var group = $("#metadata-options #group").val();
-				window.location = '/search/expert?patt='+encodeURIComponent(patt)+'&filter='+encodeURIComponent(filter)+'&within='+within+'&view='+view+'&group='+encodeURIComponent(group)+'#results';
-			}
+			var url = '/search/expert?patt='+encodeURIComponent($("#expert-input").val())+'&filter='+encodeURIComponent(Whitelab.metadata.getFilterString())+'&within='+$("#within").val()+'&view='+view;
+			url = url+'&group='+encodeURIComponent($("#metadata-options #group").val()) if (view > 2);
+            if ($("#sample_type").val() === "sample" && $("#sample_size").val().length > 0) {
+                url = url+'&sample='+$("#sample_size").val();
+                url = url+'&seed='+$("#sample_seed").val() if $("#sample_seed").val().length > 0;
+            } else if ($("#sample_type").val() === "samplenum" && $("#samplenum_size").val().length > 0) {
+                url = url+'&samplenum='+$("#samplenum_size").val();
+                url = url+'&seed='+$("#sample_seed").val() if $("#sample_seed").val().length > 0;
+            }
+            window.location = url+'#results';
 		}
 		
 	},
@@ -400,17 +400,17 @@ Whitelab.search = {
 		},
 		
 		parseQuery : function() {
-			var patt = Whitelab.cql.extendedQueryStringToCQL();
-			var filter = Whitelab.metadata.getFilterString();
-			var within = $("#within").val();
-			Whitelab.debug("PATTERN: "+patt);
 			var view = Whitelab.metadata.getView();
-			if (view == 1 || view == 2)
-				window.location = '/search/extended?patt='+encodeURIComponent(patt)+'&filter='+encodeURIComponent(filter)+'&within='+within+'&view='+view+'#results';
-			else {
-				var group = $("#metadata-options #group").val();
-				window.location = '/search/extended?patt='+encodeURIComponent(patt)+'&filter='+encodeURIComponent(filter)+'&within='+within+'&view='+view+'&group='+encodeURIComponent(group)+'#results';
-			}
+			var url = '/search/extended?patt='+encodeURIComponent(Whitelab.cql.extendedQueryStringToCQL())+'&filter='+encodeURIComponent(Whitelab.metadata.getFilterString())+'&within='+$("#within").val()+'&view='+view;
+			url = url+'&group='+encodeURIComponent($("#metadata-options #group").val())+'#results' if (view > 2);
+            if ($("#sample_type").val() === "sample" && $("#sample_size").val().length > 0) {
+                url = url+'&sample='+$("#sample_size").val();
+                url = url+'&seed='+$("#sample_seed").val() if $("#sample_seed").val().length > 0;
+            } else if ($("#sample_type").val() === "samplenum" && $("#samplenum_size").val().length > 0) {
+                url = url+'&samplenum='+$("#samplenum_size").val();
+                url = url+'&seed='+$("#sample_seed").val() if $("#sample_seed").val().length > 0;
+            }
+            window.location = url+'#results';
 		},
 		
 		parseQueryToInterface : function(pattern) {
