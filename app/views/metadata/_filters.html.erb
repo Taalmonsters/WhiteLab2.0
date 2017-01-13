@@ -21,8 +21,8 @@
 	<div class="row padding-bottom-15">
 		<div id="metadata-rules" class="col-xs-12 col-sm-10 col-sm-offset-1"></div>
 	</div>
-	<div class="row shaded border-top padding-top-10 padding-bottom-10">
-		<div id="metadata-options" class="col-xs-12 col-sm-10 col-sm-offset-1">
+	<div class="shaded border-top">
+		<div id="metadata-options">
 			<% if @namespace.eql?('search') %>
 			<%= t(:'navigation.keys.show').capitalize %>&nbsp;&nbsp;
 			<%= select_tag(:'show', options_for_select([[t(:'data_labels.keys.hit').pluralize, 'hits'],[t(:'data_labels.keys.document').pluralize]], ['hits'])) %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
