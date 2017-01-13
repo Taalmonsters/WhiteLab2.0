@@ -52,7 +52,7 @@
 							<% if !@query.sample.blank? || !@query.samplenum.blank? %>
 							<tr>
 								<th><%= t(:'metadata_filters.keys.random_sample').capitalize %></th>
-								<td class="samplesize"><%= !@query.sample.blank? ? "#{@query.sample} %" : "#{@query.samplenum} #{t(:'results.keys.hits')}" %></td>
+								<td class="samplesize"><%= !@query.sample.blank? ? "<span class='sample'>#{@query.sample}</span> %".html_safe : "<span class='samplenum'>#{@query.samplenum}</span> #{t(:'results.keys.hits')}".html_safe %></td>
 							</tr>
 							    <% if !@query.sampleseed.blank? %>
                                 <tr>

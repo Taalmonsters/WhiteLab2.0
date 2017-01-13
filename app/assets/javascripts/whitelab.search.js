@@ -489,7 +489,10 @@ Whitelab.search = {
 				'patt': $("#result-pane").data('query-patt'), 
 				'filter': $("#result-pane").data('query-filter'), 
 				'within': $("#result-pane").data('query-within'), 
-				'view': $("#result-pane").data('query-view')+"", 
+				'view': $("#result-pane").data('query-view')+"",
+				'sample': $("#query-details").find("td.samplesize > span.sample").first().html(),
+				'samplenum': $("#query-details").find("td.samplesize > span.samplenum").first().html(),
+				'sampleseed': $("#query-details").find("td.sampleseed").first().html(),
 				'group': group, 
 				'offset': "0", 
 				'number': "50"
