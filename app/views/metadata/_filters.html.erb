@@ -36,7 +36,7 @@
 			<%= number_field_tag :samplenum_size, nil, :min => 1, :max => @filtered_total_abs - 1, :class => "sample-size-input hidden" %>
 			<%= select_tag(:sample_type, options_for_select([[t(:'results.keys.percent'), 'sample'],[t(:'results.keys.hits'), 'samplenum']]), :include_blank => true) %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<%= t(:'metadata_filters.keys.seed').capitalize %>&nbsp;&nbsp;
-			<%= number_field_tag :sample_seed, nil, :min => -2147483648, :max => 2147483647 %>
+			<%= number_field_tag :seed, nil, :min => -9223372036854775808, :max => 9223372036854775807 %>
 			</p>
 		</div>
 	</div>

@@ -281,10 +281,10 @@ Whitelab.search = {
 			url = url+'&group='+encodeURIComponent($("#metadata-options #group").val()) if (view > 2);
             if ($("#sample_type").val() === "sample" && $("#sample_size").val().length > 0) {
                 url = url+'&sample='+$("#sample_size").val();
-                url = url+'&seed='+$("#sample_seed").val() if $("#sample_seed").val().length > 0;
+                url = url+'&sampleseed='+$("#seed").val() if $("#seed").val().length > 0;
             } else if ($("#sample_type").val() === "samplenum" && $("#samplenum_size").val().length > 0) {
                 url = url+'&samplenum='+$("#samplenum_size").val();
-                url = url+'&seed='+$("#sample_seed").val() if $("#sample_seed").val().length > 0;
+                url = url+'&sampleseed='+$("#seed").val() if $("#seed").val().length > 0;
             }
 			window.location = url+'#results';
 		},
@@ -355,10 +355,10 @@ Whitelab.search = {
 			url = url+'&group='+encodeURIComponent($("#metadata-options #group").val()) if (view > 2);
             if ($("#sample_type").val() === "sample" && $("#sample_size").val().length > 0) {
                 url = url+'&sample='+$("#sample_size").val();
-                url = url+'&seed='+$("#sample_seed").val() if $("#sample_seed").val().length > 0;
+                url = url+'&sampleseed='+$("#seed").val() if $("#seed").val().length > 0;
             } else if ($("#sample_type").val() === "samplenum" && $("#samplenum_size").val().length > 0) {
                 url = url+'&samplenum='+$("#samplenum_size").val();
-                url = url+'&seed='+$("#sample_seed").val() if $("#sample_seed").val().length > 0;
+                url = url+'&sampleseed='+$("#seed").val() if $("#seed").val().length > 0;
             }
             window.location = url+'#results';
 		}
@@ -405,10 +405,10 @@ Whitelab.search = {
 			url = url+'&group='+encodeURIComponent($("#metadata-options #group").val())+'#results' if (view > 2);
             if ($("#sample_type").val() === "sample" && $("#sample_size").val().length > 0) {
                 url = url+'&sample='+$("#sample_size").val();
-                url = url+'&seed='+$("#sample_seed").val() if $("#sample_seed").val().length > 0;
+                url = url+'&sampleseed='+$("#seed").val() if $("#seed").val().length > 0;
             } else if ($("#sample_type").val() === "samplenum" && $("#samplenum_size").val().length > 0) {
                 url = url+'&samplenum='+$("#samplenum_size").val();
-                url = url+'&seed='+$("#sample_seed").val() if $("#sample_seed").val().length > 0;
+                url = url+'&sampleseed='+$("#seed").val() if $("#seed").val().length > 0;
             }
             window.location = url+'#results';
 		},

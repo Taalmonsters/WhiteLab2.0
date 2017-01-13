@@ -60,7 +60,10 @@ class Explore::Query < ActiveRecord::Base
       :within => params.has_key?(:within) ? params[:within] : 'document', 
       :filter => params.has_key?(:filter) ? params[:filter] : nil, 
       :listtype => params.has_key?(:listtype) ? params[:listtype] : 'word', 
-      :ngram_size => params.has_key?(:size) ? params[:size] : nil, 
+      :ngram_size => params.has_key?(:size) ? params[:size].to_i : nil,
+      :sample => params.has_key?(:sample) && !params[:sample].blank? ? params[:sample].to_i : nil,
+      :samplenum => params.has_key?(:samplenum) && !params[:samplenum].blank? ? params[:samplenum].to_i : nil,
+      :sampleseed => params.has_key?(:sampleseed) && !params[:sampleseed].blank? ? params[:sampleseed].to_i : nil,
       :input_page => page,
       :view => 8,
       :group => "hit:#{params[:listtype] || 'word'}",
@@ -80,7 +83,10 @@ class Explore::Query < ActiveRecord::Base
         :user_id => user_id,
         :filter => params[:filter],
         :listtype => params.has_key?(:listtype) ? params[:listtype] : 'word',
-        :input_page => page
+        :input_page => page,
+        :sample => params.has_key?(:sample) && !params[:sample].blank? ? params[:sample].to_i : nil,
+        :samplenum => params.has_key?(:samplenum) && !params[:samplenum].blank? ? params[:samplenum].to_i : nil,
+        :sampleseed => params.has_key?(:sampleseed) && !params[:sampleseed].blank? ? params[:sampleseed].to_i : nil
       }
     elsif page.eql?('ngrams')
       return {
@@ -88,7 +94,10 @@ class Explore::Query < ActiveRecord::Base
         :patt => params.has_key?(:patt) ? URI.unescape(params[:patt]) : nil,
         :filter => params[:filter],
         :listtype => params.has_key?(:listtype) ? params[:listtype] : 'word',
-        :input_page => page
+        :input_page => page,
+        :sample => params.has_key?(:sample) && !params[:sample].blank? ? params[:sample].to_i : nil,
+        :samplenum => params.has_key?(:samplenum) && !params[:samplenum].blank? ? params[:samplenum].to_i : nil,
+        :sampleseed => params.has_key?(:sampleseed) && !params[:sampleseed].blank? ? params[:sampleseed].to_i : nil
       }
     end
   end

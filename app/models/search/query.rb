@@ -66,6 +66,9 @@ class Search::Query < ActiveRecord::Base
       :filter => params.has_key?(:filter) && !params[:filter].blank? ? params[:filter] : nil, 
       :group => params.has_key?(:group) ? params[:group] : nil,
       :viewgroup => params.has_key?(:viewgroup) ? params[:viewgroup] : nil,
+      :sample => params.has_key?(:sample) && !params[:sample].blank? ? params[:sample].to_i : nil,
+      :samplenum => params.has_key?(:samplenum) && !params[:samplenum].blank? ? params[:samplenum].to_i : nil,
+      :sampleseed => params.has_key?(:sampleseed) && !params[:sampleseed].blank? ? params[:sampleseed].to_i : nil,
       :view => params.has_key?(:view) ? params[:view].to_i : 1, 
       :input_page => page,
       :status => 0
@@ -79,7 +82,10 @@ class Search::Query < ActiveRecord::Base
       :within => params.has_key?(:within) ? params[:within] : 'document',
       :filter => params.has_key?(:filter) && !params[:filter].blank? ? params[:filter] : nil,
       :group => params.has_key?(:group) && !params[:group].blank? ? params[:group] : nil,
-      :viewgroup => params.has_key?(:viewgroup) && !params[:viewgroup].blank? ? params[:viewgroup] : nil
+      :viewgroup => params.has_key?(:viewgroup) && !params[:viewgroup].blank? ? params[:viewgroup] : nil,
+      :sample => params.has_key?(:sample) && !params[:sample].blank? ? params[:sample].to_i : nil,
+      :samplenum => params.has_key?(:samplenum) && !params[:samplenum].blank? ? params[:samplenum].to_i : nil,
+      :sampleseed => params.has_key?(:sampleseed) && !params[:sampleseed].blank? ? params[:sampleseed].to_i : nil
     }
   end
   
