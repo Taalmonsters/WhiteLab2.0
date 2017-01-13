@@ -427,8 +427,12 @@ span.tiny {
 }
 
 #metadata-options {
-  padding: 10px;
+  padding-top: 10px;
   padding-left: 60px;
+  p {
+    margin: 0;
+    padding-bottom: 10px;
+  }
   select, input {
     font-size: small;
     max-height: 20px;

@@ -99,6 +99,8 @@ nl:
       grouped_by: gegroepeerd per
       within: binnen
       selected: geselecteerd
+      random_sample: Willekeurige sample van grootte
+      seed: Seed
   page_titles:
     title: Pagina titels
     description: Vertalingen van pagina titels
@@ -147,6 +149,7 @@ nl:
       context: context
       left: links
       right: rechts
+      percent: procent
   form_labels:
     title: Formulier labels
     description: Vertalingen van formulier labels

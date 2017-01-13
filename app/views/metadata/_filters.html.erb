@@ -1,6 +1,6 @@
 <div id="metadata-filters" data-filter="<%= !@filter.blank? ? @filter : "" %>" data-total-tokens="<%= @total_tokens %>" data-total-tokens-delimited="<%= number_with_delimiter(@total_tokens, :delimiter => t(:'other.keys.numeric_delimiter')) %>">
 	<%= accordion "metadata-accordion" do |a| %>
-	<% a.group image_tag('plus.png')+" "+t(:'metadata_filters.keys.metadata_filters').capitalize+" "+
+	<% a.group image_tag('plus.png', :class => "metadata-header-img")+image_tag('minus.png', :class => "metadata-header-img hidden")+" "+t(:'metadata_filters.keys.metadata_filters').capitalize+" "+
 	content_tag(:label, content_tag(:span, @filtered_total_perc.to_s, :class => "metadata-selected-percentage")+" "+t(:'metadata_filters.keys.selected')+" ("+
 	content_tag(:span, number_with_delimiter(@filtered_total_abs, :delimiter => t(:'other.keys.numeric_delimiter')).to_s, 
 	:class => "metadata-selected-absolute", :data => { "selected-tokens" => @filtered_total_abs })+" "+t(:'data_labels.keys.word_token').pluralize+")", :class => "metadata-selected-label") do %>
@@ -24,13 +24,20 @@
 	<div class="shaded border-top">
 		<div id="metadata-options">
 			<% if @namespace.eql?('search') %>
-			<%= t(:'navigation.keys.show').capitalize %>&nbsp;&nbsp;
-			<%= select_tag(:'show', options_for_select([[t(:'data_labels.keys.hit').pluralize, 'hits'],[t(:'data_labels.keys.document').pluralize]], ['hits'])) %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<%= t(:'metadata_filters.keys.within') %>&nbsp;&nbsp;
-			<%= select_tag(:'within', options_for_select([[t(:'data_labels.keys.document'), 'document'],[t(:'data_labels.keys.paragraph'), 'paragraph'],[t(:'data_labels.keys.sentence'), 'sentence']], [@query ? @query.within : 'document'])) %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<%= t(:'metadata_filters.keys.grouped_by') %>&nbsp;&nbsp;
-			<%= select_tag(:'group', grouped_options_for_select(@metadata_preselect_groups, ''), :include_blank => true) %>
+                <p><%= t(:'navigation.keys.show').capitalize %>&nbsp;&nbsp;
+                <%= select_tag(:show, options_for_select([[t(:'data_labels.keys.hit').pluralize, 'hits'],[t(:'data_labels.keys.document').pluralize]], ['hits'])) %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <%= t(:'metadata_filters.keys.within') %>&nbsp;&nbsp;
+                <%= select_tag(:within, options_for_select([[t(:'data_labels.keys.document'), 'document'],[t(:'data_labels.keys.paragraph'), 'paragraph'],[t(:'data_labels.keys.sentence'), 'sentence']], [@query ? @query.within : 'document'])) %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <%= t(:'metadata_filters.keys.grouped_by') %>&nbsp;&nbsp;
+                <%= select_tag(:group, grouped_options_for_select(@metadata_preselect_groups, ''), :include_blank => true) %></p>
 			<% end %>
+			<p><%= t(:'metadata_filters.keys.random_sample').capitalize %>&nbsp;&nbsp;
+			<%= number_field_tag :sample_size, nil, :min => 1, :max => 99, :class => "sample-size-input" %>
+			<%= number_field_tag :samplenum_size, nil, :min => 1, :max => @filtered_total_abs - 1, :class => "sample-size-input hidden" %>
+			<%= select_tag(:sample, options_for_select([[t(:'results.keys.percent'), 'sample'],[t(:'results.keys.hits'), 'samplenum']]), :include_blank => true) %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<%= t(:'metadata_filters.keys.seed').capitalize %>&nbsp;&nbsp;
+			<%= number_field_tag :sample_seed, nil, :min => -2147483648, :max => 2147483647 %>
+			</p>
 		</div>
 	</div>
 	<% end %>

@@ -138,3 +138,15 @@ $(document).on('change', 'select.metadata-operator', function(e) {
 	e.stopPropagation();
 	Whitelab.metadata.updateCoverage();
 });
+
+$(document).on('change', '#sample', function(e) {
+	var val = $(this).val();
+	if (!val || val.length == 0)
+	    val = "sample";
+	$("#metadata-filters").find(".sample-size-input").addClass("hidden");
+	$("#"+val+"_size").removeClass("hidden");
+});
+
+$(document).on('click', '#metadata-accordion .accordion-toggle', function(e) {
+    $(this).find(".metadata-header-img").toggleClass("hidden");
+});

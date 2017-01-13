@@ -99,6 +99,8 @@ en:
       grouped_by: grouped by
       within: within
       selected: selected
+      random_sample: Random sample of size
+      seed: Seed
   page_titles:
     title: Page titles
     description: Translations of page titles
@@ -147,6 +149,7 @@ en:
       context: context
       left: left
       right: right
+      percent: percent
   form_labels:
     title: Form labels
     description: Translations of form labels
