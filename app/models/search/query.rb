@@ -111,7 +111,7 @@ class Search::Query < ActiveRecord::Base
         arr << "view=8"
       end
     end
-    ["within","viewgroup","offset"].each do |param|
+    ["within","viewgroup","offset","sample","samplenum","sampleseed"].each do |param|
       arr << "#{param}=#{query_xml.at_css(param).content}" if query_xml.css(param).any?
     end
     arr << "view=#{query_xml.at_css("view").content}" if query_xml.css("view").any? && !arr.select{|str| str.start_with?("view=") }.any?
