@@ -11,7 +11,7 @@ module BlacklabHelper
   
   def reformat_query_attributes(query)
     attrs = { 'outputformat' => 'json' }
-    query.as_json.select{|key,_| ['patt', 'filter', 'group', 'sort', 'order', 'offset', 'number', 'docpid', 'viewgroup'].include?(key) }.each do |key, value|
+    query.as_json.select{|key,_| ['patt', 'filter', 'group', 'sort', 'order', 'offset', 'number', 'docpid', 'viewgroup', 'sample', 'samplenum', 'sampleseed'].include?(key) }.each do |key, value|
       unless value.blank?
         if ['filter', 'group'].include?(key)
           attrs[key] = reformat_filters(value) if key.eql?('filter')

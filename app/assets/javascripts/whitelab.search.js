@@ -278,13 +278,16 @@ Whitelab.search = {
 		parseQuery : function() {
 			var view = Whitelab.metadata.getView();
 			var url = '/search/advanced?patt='+encodeURIComponent(Whitelab.cql.advancedQueryStringToCQL())+'&filter='+encodeURIComponent(Whitelab.metadata.getFilterString())+'&within='+$("#within").val()+'&view='+view;
-			url = url+'&group='+encodeURIComponent($("#metadata-options #group").val()) if (view > 2);
+			if (view > 2)
+    			url = url+'&group='+encodeURIComponent($("#metadata-options #group").val());
             if ($("#sample_type").val() === "sample" && $("#sample_size").val().length > 0) {
                 url = url+'&sample='+$("#sample_size").val();
-                url = url+'&sampleseed='+$("#seed").val() if $("#seed").val().length > 0;
+                if ($("#seed").val().length > 0)
+                    url = url+'&sampleseed='+$("#seed").val();
             } else if ($("#sample_type").val() === "samplenum" && $("#samplenum_size").val().length > 0) {
                 url = url+'&samplenum='+$("#samplenum_size").val();
-                url = url+'&sampleseed='+$("#seed").val() if $("#seed").val().length > 0;
+                if ($("#seed").val().length > 0)
+                    url = url+'&sampleseed='+$("#seed").val();
             }
 			window.location = url+'#results';
 		},
@@ -352,13 +355,16 @@ Whitelab.search = {
 		parseQuery : function() {
 			var view = Whitelab.metadata.getView();
 			var url = '/search/expert?patt='+encodeURIComponent($("#expert-input").val())+'&filter='+encodeURIComponent(Whitelab.metadata.getFilterString())+'&within='+$("#within").val()+'&view='+view;
-			url = url+'&group='+encodeURIComponent($("#metadata-options #group").val()) if (view > 2);
+			if (view > 2)
+    			url = url+'&group='+encodeURIComponent($("#metadata-options #group").val());
             if ($("#sample_type").val() === "sample" && $("#sample_size").val().length > 0) {
                 url = url+'&sample='+$("#sample_size").val();
-                url = url+'&sampleseed='+$("#seed").val() if $("#seed").val().length > 0;
+                if ($("#seed").val().length > 0)
+                    url = url+'&sampleseed='+$("#seed").val();
             } else if ($("#sample_type").val() === "samplenum" && $("#samplenum_size").val().length > 0) {
                 url = url+'&samplenum='+$("#samplenum_size").val();
-                url = url+'&sampleseed='+$("#seed").val() if $("#seed").val().length > 0;
+                if ($("#seed").val().length > 0)
+                    url = url+'&sampleseed='+$("#seed").val();
             }
             window.location = url+'#results';
 		}
@@ -402,13 +408,16 @@ Whitelab.search = {
 		parseQuery : function() {
 			var view = Whitelab.metadata.getView();
 			var url = '/search/extended?patt='+encodeURIComponent(Whitelab.cql.extendedQueryStringToCQL())+'&filter='+encodeURIComponent(Whitelab.metadata.getFilterString())+'&within='+$("#within").val()+'&view='+view;
-			url = url+'&group='+encodeURIComponent($("#metadata-options #group").val())+'#results' if (view > 2);
+			if (view > 2)
+			    url = url+'&group='+encodeURIComponent($("#metadata-options #group").val())+'#results';
             if ($("#sample_type").val() === "sample" && $("#sample_size").val().length > 0) {
                 url = url+'&sample='+$("#sample_size").val();
-                url = url+'&sampleseed='+$("#seed").val() if $("#seed").val().length > 0;
+                if ($("#seed").val().length > 0)
+                    url = url+'&sampleseed='+$("#seed").val();
             } else if ($("#sample_type").val() === "samplenum" && $("#samplenum_size").val().length > 0) {
                 url = url+'&samplenum='+$("#samplenum_size").val();
-                url = url+'&sampleseed='+$("#seed").val() if $("#seed").val().length > 0;
+                if ($("#seed").val().length > 0)
+                    url = url+'&sampleseed='+$("#seed").val();
             }
             window.location = url+'#results';
 		},
