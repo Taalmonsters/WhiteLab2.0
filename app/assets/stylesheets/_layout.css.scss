@@ -83,7 +83,9 @@ table {
 a {
   text-decoration: none !important;
   cursor: pointer;
-  color: inherit !important;
+  &.accordion-toggle {
+      color: inherit !important;
+  }
   outline: none;
 }
 

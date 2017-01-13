@@ -67,16 +67,6 @@ class MetadataHandler
   def get_filtered_group_composition(option, filter)
     no_filter = !filter || filter.eql?("")
     group, key = get_group_and_key_from_label(option)
-    # label = "#{group}_#{key}"
-    # return [] if !@fields.has_key?(label)
-    # list = @fields[label]
-    # field_values = @metadata[label]['values']
-    # if no_filter
-      # return list.each_index.group_by{|i| list[i] }.select{|value,doc_indices| !value.nil? }.map{|value,doc_indices| { option => field_values[value], 'hit_count' => doc_indices.map{|d| @token_counts[d] }.reduce(:+), 'document_count' => doc_indices.size } }
-    # else
-      # return filter_documents(filter).group_by{|i| list[i] }.select{|value,doc_indices| !value.nil? }.map{|value,doc_indices| { option => field_values[value], 'hit_count' => doc_indices.map{|d| @token_counts[d] }.reduce(:+), 'document_count' => doc_indices.size } }
-    # end
-    
     labels = get_labels_from_group_and_key(group, key).select{|label| @fields.has_key?(label) }
     return [] unless labels.any?
     return filter_documents(filter).group_by{|i| labels.map{|label| @metadata[label]['values'][@fields[label][i]] }.select{|value| !value.nil? && !value.eql?('Unknown')}.join(",") }.map{|value,doc_indices| { option => value, 'hit_count' => doc_indices.map{|d| @token_counts[d] }.reduce(:+), 'document_count' => doc_indices.size } }
@@ -260,6 +250,8 @@ class MetadataHandler
   
   def generate_metadata_files(backend)
     @logger.info "Generating metadata files..."
+    output_dir = Rails.root.join("config", "metadata_#{backend}")
+    FileUtils.mkpath(output_dir) unless File.exists?(output_dir)
     documents = {
       'document_ids' => [],
       'token_counts' => [],
