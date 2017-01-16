@@ -123,20 +123,6 @@ input.small-loadlist {
   padding-left: 20px;
 }
 
-.batchWordListBtn {
-  position:absolute;
-  top:0;
-  left:0;
-  height: 36px;
-}
-
-#advanced .batchWordListBtn {
-    height: 22px;
-    button.load-small {
-        vertical-align: top;
-    }
-}
-
 .inputrow, .batchrow, .batchrow .batchlist {
   display: none;
 }
