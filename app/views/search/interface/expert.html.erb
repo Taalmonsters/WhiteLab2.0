@@ -23,4 +23,4 @@
 		</div>
 	</div>
 </div>
-<%= render partial: "/queries/index", :locals => { :no_output => false } %>
+<%= render partial: "/queries/index", :locals => { :no_output => !@query || (@query.waiting? && ![8,16].include?(@query.view)) } %>
