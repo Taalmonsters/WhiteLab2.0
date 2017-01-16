@@ -40,7 +40,6 @@ class Search::QueriesController < QueriesController
       sub_query.view = 2
       sub_query.offset = @offset
       sub_query.number = 20
-      puts sub_query.to_json
       @docs = sub_query.result(false)
       sub_query.destroy
     end

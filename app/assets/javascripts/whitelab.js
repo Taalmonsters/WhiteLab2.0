@@ -416,18 +416,7 @@ $(document).on( "click", "a.download", function(e) {
 
 $(document).on('click', 'div#query-list tr.clickable', function(e) {
 	e.preventDefault();
-	var id = $(this).data("query-id");
-	var page = $(this).data("query-view-page");
-	var ns = $(this).data("namespace");
-	window.location = '/'+ns+'/'+page+'?'+Whitelab.assembleQueryParams({
-		'patt': $(this).find("td.patt").first().data('patt'), 
-		'filter': $(this).find("td.filter").first().data('filter'), 
-		'within': $(this).find("td.within").first().data('within'), 
-		'view': $(this).data("view")+"", 
-		'group': $(this).find("td.group").first().data('group'), 
-		'offset': $(this).data("offset")+"", 
-		'number': $(this).data("number")+""
-	});
+	window.location = $(this).data("url");
 });
 
 $(document).on('click', 'a.remove-query', function(e) {

@@ -50,7 +50,6 @@ module BlacklabHelper
     unless status == 4
       summary = response['summary']
       output = reformat_output(response, key, query)
-      puts output
       status = summary['stillCounting'] ? 2 : 3
     end
     Rails.logger.debug "QUERY STATUS = #{status}"

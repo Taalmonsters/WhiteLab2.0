@@ -20,7 +20,7 @@
 				</thead>
 				<tbody>
 					<% @search_queries.each do |query| %>
-						<tr id="<%= query.id %>" class="clickable" data-namespace="search" data-query-id="<%= query.id %>" data-offset="<%= query.offset %>" data-number="<%= query.number %>" data-view="<%= query.view %>" data-query-view-page="<%= query.page %>">
+						<tr id="<%= query.id %>" class="clickable" data-url="<%= "/search/#{query.page}?#{query.assemble_url_params(['id', 'patt', 'filter', 'within', 'view', 'group', 'viewgroup', 'sample', 'samplenum', 'sampleseed', 'page', 'number', 'offset'])}" %>" data-namespace="search" data-query-id="<%= query.id %>">
 							<td class="patt" data-patt="<%= query.patt %>"><%= query.patt %></td>
 							<td class="within" data-within="<%= query.within %>"><%= query.within %></td>
 							<td class="filter" data-filter="<%= query.filter %>"><%= query.filter %></td>
@@ -70,7 +70,7 @@
 			</thead>
 			<tbody>
 				<% @explore_queries.each do |query| %>
-					<tr id="<%= query.id %>" class="clickable" data-namespace="explore" data-query-id="<%= query.id %>" data-offset="<%= query.offset %>" data-number="<%= query.number %>" data-view="<%= query.view %>" data-query-view-page="<%= query.page %>">
+					<tr id="<%= query.id %>" class="clickable" data-url="<%= "/explore/#{query.page}?#{query.assemble_url_params(['id', 'patt', 'filter', 'within', 'view', 'group', 'sample', 'samplenum', 'sampleseed', 'page', 'number', 'offset', 'listtype'])}" %>" data-namespace="explore" data-query-id="<%= query.id %>">
 						<td class="patt" data-patt="<%= query.patt %>"><%= query.patt %></td>
 						<td class="page" data-page="<%= query.page %>"><%= query.page %></td>
 						<td class="filter" data-filter="<%= query.filter %>"><%= query.filter %></td>
