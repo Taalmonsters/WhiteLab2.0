@@ -13,6 +13,7 @@ $wlgray-lighter: lighten($gray-light, 52%);
 html, body {
   height: 100%;
   font-size: small;
+  overflow-x: hidden;
 }
 
 select {
@@ -37,7 +38,7 @@ table {
     padding: 0;
 }
 
-#extended .form-control {
+#document .form-control, #extended .form-control, #simple .form-control {
     height: 34px;
 }
 

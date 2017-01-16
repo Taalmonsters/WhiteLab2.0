@@ -8,7 +8,7 @@ Whitelab.layout = {
 
 	adapted_full_width : function() {
 		$('.full-width-minus-siblings').each(function() {
-			var w = Whitelab.layout.get_all_siblings_width(this);
+			var w = Whitelab.layout.get_all_siblings_width(this)+8;
 			var d = $(this).outerWidth() - $(this).width();
 			var ww = $(this).parent().innerWidth()-w-d-25;
 		    $(this).css('width', Math.max(0,ww));
