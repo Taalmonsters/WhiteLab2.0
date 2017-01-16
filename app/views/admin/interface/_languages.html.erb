@@ -8,7 +8,6 @@
 					<label for="default" class="padding-bottom-10"><%= t(:"instructions.keys.select_default_language") %></label>
 					<div class="selectpicker">
 						<%= select_tag(:default, options_for_select(@available_languages, [I18n.default_locale.to_s])) %>
-						<span class="glyphicon glyphicon-chevron-down select-thingy"></span>
 						<%= submit_tag(t(:"button_labels.keys.select").capitalize, :class => "btn btn-xs btn-primary") %>
 					</div>
 				</div>
@@ -20,7 +19,6 @@
 					<label for="add" class="padding-bottom-10"><%= t(:"instructions.keys.add_new_language") %></label>
 					<div class="selectpicker">
 						<%= select_tag(:add, options_for_select(@all_languages)) %>
-						<span class="glyphicon glyphicon-chevron-down select-thingy"></span>
 						<%= submit_tag(t(:"button_labels.keys.add").capitalize, :class => "btn btn-xs btn-primary") %>
 					</div>
 				</div>
@@ -33,7 +31,6 @@
 						<label for="remove" class="padding-bottom-10"><%= t(:"instructions.keys.remove_language") %></label>
 						<div class="selectpicker">
 							<%= select_tag(:remove, options_for_select(@available_languages)) %>
-							<span class="glyphicon glyphicon-chevron-down select-thingy"></span>
 						<%= submit_tag(t(:"button_labels.keys.remove").capitalize, :class => "btn btn-xs btn-primary") %>
 						</div>
 					</div>

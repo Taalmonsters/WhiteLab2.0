@@ -4,7 +4,6 @@
 		<div class="col-xs-8 padding-top-10">
 			<div class="selectpicker">
 				<%= select_tag(:"#{feat}", options_for_select(options, values ? options.select{|arr| values.include?(arr[1]) }.first : nil), :class => 'form-control pos-feat-select', :include_blank => true) %>
-				<span class="glyphicon glyphicon-chevron-down select-thingy"></span>
 			</div>
 		</div>
 	</div>
