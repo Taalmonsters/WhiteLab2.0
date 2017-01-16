@@ -583,6 +583,20 @@ $(document).on('click', '#advanced button.btn-submit', function(e) {
 	Whitelab.search.advanced.parseQuery();
 });
 
+$(document).on('change', '#advanced input.from', function(e) {
+	var from = $(this).val();
+	var to_element = $(this).parent().find("input.to").first();
+	if (from > $(to_element).val())
+	    $(to_element).val(from);
+});
+
+$(document).on('change', '#advanced input.to', function(e) {
+	var to = $(this).val();
+    var from_element = $(this).parent().find("input.from").first();
+    if (to < $(from_element).val())
+        $(from_element).val(to);
+});
+
 $(document).keypress(function(e) {
 	if (e.which == 13) {
 		if ($("#advanced").length > 0)
