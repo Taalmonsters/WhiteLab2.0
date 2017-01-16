@@ -517,6 +517,10 @@ Whitelab.search = {
 		
 };
 
+$(document).on('click', 'html', function(e) {
+    $("ul.options").addClass("hidden");
+});
+
 $(document).on('click', '#advanced a.add-column', function(e) {
 	e.preventDefault();
 	Whitelab.search.advanced.addColumn();
@@ -544,6 +548,7 @@ $(document).on('click', '#advanced a.remove-field', function(e) {
 
 $(document).on('click', '#advanced a.toggle-settings', function(e) {
 	e.preventDefault();
+	e.stopPropagation();
 	Whitelab.search.advanced.toggleSettingsOnColumn($(this).data('column'));
 });
 
