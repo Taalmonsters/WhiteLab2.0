@@ -81,10 +81,10 @@ Whitelab.cql = {
 				startsen = true;
 				qua1 = '';
 			}
-			
-			if (quant && quant.indexOf('</s>') > 1) {
+
+			if (quant && quant.indexOf('</s>') > -1) {
 				endsen = true;
-			} else if (quant && quant.indexOf('<s>') > 1) {
+			} else if (quant && quant.indexOf('<s>') > -1) {
 				qua1 = quant;
 			} else if (quant && quant.indexOf('{') > -1) {
 				$("#column"+c).find("div.repeat").addClass("active");
@@ -213,7 +213,7 @@ Whitelab.cql = {
 		var wordsensitive = false;
 		var lemmasensitive = false;
 		var phoneticsensitive = false;
-		if (query.indexOf("|") > 1) {
+		if (query.indexOf("|") > -1) {
 			batch = true;
 		}
 		while (n > -1) {
