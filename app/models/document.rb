@@ -51,7 +51,7 @@ class Document
         y2: ((l.to_f / total_unique_lemmas) * 100).round(1)
       }
     end
-    return { document_count: d, hit_count: total, title: 'Vocabulary growth', data: [{ name: 'word_types', color: '#A90C28', data: vocab_growth['types'] }, { name: 'lemmas', color: '#53c4c3', data: vocab_growth['lemmas'] }] }
+    return { document_count: d, hit_count: total, title: I18n.t(:"chart_labels.keys.growth_title"), labels: { unique: I18n.t(:"other.keys.unique").capitalize, progress: I18n.t(:"other.keys.progress").capitalize }, data: [{ name: I18n.t(:"data_labels.keys.word_type").pluralize, color: '#A90C28', data: vocab_growth['types'] }, { name: I18n.t(:"data_labels.keys.lemma").pluralize, color: '#53c4c3', data: vocab_growth['lemmas'] }] }
   end
   
   def audio_file(format = 'mp3')

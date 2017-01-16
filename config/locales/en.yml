@@ -159,6 +159,16 @@ en:
       freq_list_type: Type of frequency list
       ngram_size: N-gram size
       ngram_type: N-gram type
+  chart_labels:
+    title: Chart labels
+    description: Translations of chart labels
+    keys:
+      bubble_title: Total size versus average document size
+      bubble_x_title: Total size
+      bubble_y_title: Avg. document size
+      bubble_z_title: Document count
+      bubble_unit: tokens
+      growth_title: Vocabulary growth
   button_labels:
     title: Button labels
     description: Translations of button labels
@@ -310,6 +320,8 @@ en:
       scale: scale
       logaritmic: log
       absolute: absolute
+      unique: unique
+      progress: progress
   metadata_groups:
     title: Metadata groups
     description: Translations of metadata group labels

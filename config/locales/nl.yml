@@ -156,9 +156,19 @@ nl:
     keys:
       enter_query: Voer CQL query in
       upload_file: Upload een batch file
-      freq_list_type: Frequencylijst type
+      freq_list_type: Frequentielijst type
       ngram_size: N-gram grootte
       ngram_type: N-gram type
+  chart_labels:
+    title: Chart labels
+    description: Translations of chart labels
+    keys:
+      bubble_title: Totale grootte versus gemiddelde document grootte
+      bubble_x_title: Totale grootte
+      bubble_y_title: Gem. document grootte
+      bubble_z_title: Aantal documenten
+      bubble_unit: tokens
+      growth_title: Vocabulaire groei
   button_labels:
     title: Button labels
     description: Vertalingen van button labels
@@ -311,6 +321,8 @@ nl:
       scale: schaal
       logaritmic: log
       absolute: absoluut
+      unique: unieke
+      progress: voortgang
   metadata_groups:
     title: Metadata groepen
     description: Vertalingen van metadata groep labels

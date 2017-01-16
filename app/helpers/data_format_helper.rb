@@ -54,7 +54,7 @@ module DataFormatHelper
     else
       data = [{ 'name' => 'Unknown', 'x' => filtered_token_count, 'y' => 0, 'z' => 0 }]
     end
-    return { "title" => title, "data" => data, "max_doc_count" => max_doc_count }
+    return { "title" => t(:"chart_labels.keys.bubble_title"), "x-title" => t(:"chart_labels.keys.bubble_x_title"), "y-title" => t(:"chart_labels.keys.bubble_y_title"), "z-title" => t(:"chart_labels.keys.bubble_z_title"), "unit" => t(:"chart_labels.keys.bubble_unit"), "data" => data, "max_doc_count" => max_doc_count }
   end
   
   # Format corpus composition as Highcharts treemap

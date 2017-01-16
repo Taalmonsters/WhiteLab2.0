@@ -18,7 +18,7 @@ Whitelab.statistics = {
 	        },
 
 	        title: {
-	            text: "Total size versus average document size"
+	            text: json['title']
 	        },
 
 	        xAxis: {
@@ -27,7 +27,7 @@ Whitelab.statistics = {
 	            endOnTick: false,
 	            gridLineWidth: 1,
 	            title: {
-	                text: 'Total size (tokens)'
+	                text: json["x-title"]+" ("+json["unit"]+")"
 	            },
 	            labels: {
 	                format: '{value:,.0f}'
@@ -39,7 +39,7 @@ Whitelab.statistics = {
 	            startOnTick: true,
 	            endOnTick: false,
 	            title: {
-	                text: 'Avg. document size (tokens)'
+	                text: json["y-title"]+" ("+json["unit"]+")"
 	            },
 	            labels: {
 	                format: '{value:,.0f}'
@@ -52,9 +52,9 @@ Whitelab.statistics = {
 	            useHTML: true,
 	            headerFormat: '<table class="table">',
 	            pointFormat: '<tr><th colspan="2"><h3>{point.name}</h3></th></tr>' +
-	            	'<tr><th>Document count:</th><td>{point.z:,.0f}</td><td>({point.z2} %)</td></tr>' +
-	                '<tr><th>Total size:</th><td>{point.x:,.0f} tokens</td><td>({point.x2} %)</td></tr>' +
-	                '<tr><th>Average document size:</th><td>{point.y:,.0f} tokens</td></tr>',
+	            	'<tr><th>'+json["z-title"]+':</th><td>{point.z:,.0f}</td><td>({point.z2} %)</td></tr>' +
+	                '<tr><th>'+json["x-title"]+':</th><td>{point.x:,.0f} tokens</td><td>({point.x2} %)</td></tr>' +
+	                '<tr><th>'+json["y-title"]+':</th><td>{point.y:,.0f} tokens</td></tr>',
 	            footerFormat: '</table>',
 	            followPointer: false
 	        },
@@ -204,8 +204,8 @@ Whitelab.statistics = {
 	            useHTML: true,
 	            headerFormat: '<table class="table">',
 	            pointFormat: '<tr><th colspan="2"><h3>{point.name}</h3></th></tr>' +
-	            	'<tr><th>Unique {point.ggroup}:</th><td>{point.y}</td><td>({point.y2} %)</td></tr>' +
-	                '<tr><th>Progress:</th><td>{point.x} tokens</td><td>({point.x2} %)</td></tr>',
+	            	'<tr><th>'+json['labels']['unique']+' {point.ggroup}:</th><td>{point.y}</td><td>({point.y2} %)</td></tr>' +
+	                '<tr><th>'+json['labels']['progress']+':</th><td>{point.x} tokens</td><td>({point.x2} %)</td></tr>',
 	            footerFormat: '</table>',
 	            followPointer: false
             },
