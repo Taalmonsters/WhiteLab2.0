@@ -32,6 +32,15 @@ table {
   }
 }
 
+.form-control {
+    height: auto;
+    padding: 0;
+}
+
+#extended .form-control {
+    height: 34px;
+}
+
 .inline {
   display: inline-block;
 }
@@ -545,6 +554,10 @@ ul.examples {
 
 .inputrow.active, .batchrow.active, .batchrow.active .batchlist {
     display: block;
+    > div {
+        vertical-align: top;
+        margin-top: 4px;
+    }
 }
 
 #document-content {

@@ -5,7 +5,7 @@
 	<div class="inline">
 		<div>
 			<div class="inline type-select">
-				<select class="token-type" data-column="<%= @field[:column] %>" data-box="<%= @field[:box] %>" data-field="<%= @field[:field] %>">
+				<select class="token-type form-control" data-column="<%= @field[:column] %>" data-box="<%= @field[:box] %>" data-field="<%= @field[:field] %>">
 					<option value="word" <%= @field_values[:token_type].eql?('word') ? 'selected="true"' : '' %>><%= t(:"data_labels.keys.word") %></option>
 					<option value="lemma" <%= @field_values[:token_type].eql?('lemma') ? 'selected="true"' : '' %>><%= t(:"data_labels.keys.lemma") %></option>
 					<option value="phonetic" <%= @field_values[:token_type].eql?('phonetic') ? 'selected="true"' : '' %>><%= t(:"data_labels.keys.phonetic") %></option>
@@ -18,7 +18,7 @@
 				</select>
 			</div>
 			<div class="inline operator-select">
-				<select class="token-operator">
+				<select class="token-operator form-control">
 					<option value="is" <%= @field_values[:operator].eql?('is') ? 'selected="true"' : '' %>><%= t(:"operators.keys.is") %></option>
 					<option value="not" <%= @field_values[:operator].eql?('not') ? 'selected="true"' : '' %>><%= t(:"operators.keys.not") %></option>
 					<option value="contains" <%= @field_values[:operator].eql?('contains') ? 'selected="true"' : '' %>><%= t(:"operators.keys.contains") %></option>
