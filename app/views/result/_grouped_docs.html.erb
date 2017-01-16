@@ -24,8 +24,9 @@
 				</tr>
 			</thead>
 			<tbody>
-				<% @query.result(false)['results'].each_with_index do |group,i| %>
-					<% largest_group = @query.result(false)['largest_group_size'] %>
+			    <% docs = @query.result(false) %>
+				<% docs['results'].each_with_index do |group,i| %>
+					<% largest_group = docs['largest_group_size'] %>
 					<tr class="clickable grouped-doc-row" data-group-value="<%= group[@group] %>" data-group-identity="<%= group["identity"] %>" data-group-id="<%= @query.group+i.to_s %>">
 						<td><%= group[@group].html_safe %></td>
 						<td class="progress-field">

@@ -127,24 +127,18 @@ var Whitelab = {
 	},
 
 	loadGroupedDocs : function(group_id,group_value) {
-		var qid = $("#result-pane").data("query-id");
-		var o = $("#"+group_id).data("offset");
-		group_value = encodeURIComponent(group_value.replace(/\./g,'\\.'));
-		if ($("#main-div[data-namespace='search']").length > 0)
-			$.getScript('/search/result/id/'+qid+'/groupdocs.js?group_id='+group_id+'&docs_group='+group_value+'&offset='+o+'&number=20');
-		else if ($("#main-div[data-namespace='explore']").length > 0)
-			$.getScript('/explore/result/id/'+qid+'/groupdocs.js?group_id='+group_id+'&docs_group='+group_value+'&offset='+o+'&number=20');
+		Whitelab.loadGroupedResults(group_id,group_value,"docs");
 	},
 	
 	loadGroupedHits : function(group_id,group_value) {
-		Whitelab.debug("loadGroupedHits");
-		var qid = $("#result-pane").data("query-id");
-		var o = $("#"+group_id).data("offset");
-		group_value = group_id.indexOf("context") == 0 ? group_value : encodeURIComponent(group_value.replace(/\./g,'\\.'));
-		if ($("#main-div[data-namespace='search']").length > 0)
-			$.getScript('/search/result/id/'+qid+'/grouphits.js?group_id='+group_id+'&hits_group='+group_value+'&offset='+o+'&number=20');
-		else if ($("#main-div[data-namespace='explore']").length > 0)
-			$.getScript('/explore/result/id/'+qid+'/grouphits.js?group_id='+group_id+'&hits_group='+group_value+'&offset='+o+'&number=20');
+		Whitelab.loadGroupedResults(group_id,group_value,"hits");
+	},
+
+	loadGroupedResults : function(group_id,group_value,type) {
+	    var qid = $("#result-pane").data("query-id");
+        var o = $("#"+group_id).data("offset");
+		group_value = encodeURIComponent(group_value.replace(/\./g,'\\.'));
+        $.getScript('/'+$("#main-div").data("namespace")+'/result/id/'+qid+'/group'+type+'.js?group_id='+group_id+'&'+type+'_group='+group_value+'&offset='+o+'&number=20');
 	},
 	
 	readFile : function(f, callback) {
@@ -171,99 +165,36 @@ var Whitelab = {
 	},
 
 	showGroupedDocs : function(group_value) {
-		Whitelab.debug("showGroupedDocs");
-		var patt = $("#query-details td.patt").html();
-		var within = $("#query-details td.within").html();
-		var filter = $("#query-details td.filter").html();
-		if (typeof filter === 'undefined')
-			filter = '';
-		var group = $("#query-details td.group").html().replace(/;/g,'%3B');
-		if (group.indexOf("hit_") > -1) {
-			group_value = encodeURIComponent(group_value.replace(/\./g,'\\.'));
-			patt = "[word=\"(?c)"+group_value+"\"]";
-		} else if (group.indexOf("_left") > -1) {
-			group_value = encodeURIComponent(group_value.replace(/\./g,'\\.'));
-			if (group.indexOf("lemma_") > -1)
-				patt = "[lemma=\"(?c)"+group_value+"\"]"+patt;
-			else if (group.indexOf("pos_") > -1)
-				patt = "[pos=\""+group_value+"\"]"+patt;
-			else if (group.indexOf("phonetic_") > -1)
-				patt = "[phonetic=\"(?c)"+group_value+"\"]"+patt;
-			else
-				patt = "[word=\"(?c)"+group_value+"\"]"+patt;
-		} else if (group.indexOf("_right") > -1) {
-			group_value = encodeURIComponent(group_value.replace(/\./g,'\\.'));
-			if (group.indexOf("lemma_") > -1)
-				patt = patt+"[lemma=\"(?c)"+group_value+"\"]";
-			else if (group.indexOf("pos_") > -1)
-				patt = patt+"[pos=\"(?c)"+group_value+"\"]";
-			else if (group.indexOf("phonetic_") > -1)
-				patt = patt+"[phonetic=\"(?c)"+group_value+"\"]";
-			else
-				patt = patt+"[word=\"(?c)"+group_value+"\"]";
-		} else {
-			if (filter.length > 0)
-				filter = filter+"AND("+group+"="+"\""+group_value+"\")";
-			else
-				filter = "("+group+"="+"\""+group_value+"\")";
-		}
-		window.location = "/search/expert?view=2&patt="+patt+"&within="+within+"&filter="+filter;
+		Whitelab.showGroupedResults(group_value,2);
 	},
 
 	showGroupedHits : function(group_value) {
-		Whitelab.debug("showGroupedHits");
-		var patt = $("#query-details td.patt").html();
-		var within = $("#query-details td.within").html();
-		var filter = $("#query-details td.filter").html();
-		if (typeof filter === 'undefined')
-			filter = '';
-		var group = $("#query-details td.group").html().replace(/;/g,'%3B');
-		if (group.indexOf("hit") == 0) {
-			group_value = encodeURIComponent(group_value.replace(/\./g,'\\.'));
-			patt_parts = patt.substring(1,patt.length - 1).split('][');
-			group_parts = group_value.replace(/([\(\)\'\"\[\]])/g,'\\'+"$1").split(' ');
-			qgroup = group.split(/[\:_]/)[1].replace('text','word');
-			new_parts = [];
-			for (var i = 0; i < patt_parts.length; i++) {
-			    if (patt_parts[i].indexOf(qgroup+'=') > -1 && group_parts.length > i)
-			    	new_parts.push('['+qgroup+'="(?c)'+group_parts[i]+'"]');
-			    else if (group_parts.length > i)
-			    	new_parts.push("["+patt_parts[i]+"&"+qgroup+"=\"(?c)"+group_parts[i]+"\"]");
-			    else
-			    	new_parts.push("["+patt_parts[i]+"]");
-			}
-			patt = encodeURIComponent(new_parts.join("")).replace(/\=/g,'%3D').replace(/\%252C/g,'%2C');
-		} else if (group.indexOf("wordleft") == 0) {
-			group_value = encodeURIComponent(group_value.replace(/\./g,'\\.'));
-			if (group.indexOf("lemma") > -1)
-				patt = "[lemma=\"(?c)"+group_value+"\"]"+patt;
-			else if (group.indexOf("pos") > -1)
-				patt = "[pos=\""+group_value+"\"]"+patt;
-			else if (group.indexOf("phonetic") > -1)
-				patt = "[phonetic=\"(?c)"+group_value+"\"]"+patt;
-			else
-				patt = "[word=\"(?c)"+group_value+"\"]"+patt;
-		} else if (group.indexOf("wordright") == 0) {
-			group_value = encodeURIComponent(group_value.replace(/\./g,'\\.'));
-			if (group.indexOf("lemma") > -1)
-				patt = patt+"[lemma=\"(?c)"+group_value+"\"]";
-			else if (group.indexOf("pos") > -1)
-				patt = patt+"[pos=\"(?c)"+group_value+"\"]";
-			else if (group.indexOf("phonetic") > -1)
-				patt = patt+"[phonetic=\"(?c)"+group_value+"\"]";
-			else
-				patt = patt+"[word=\"(?c)"+group_value+"\"]";
-		} else if (group.indexOf("context") == 0) {
-		} else {
-			if (filter.length > 0)
-				filter = filter+"AND("+group+"="+"\""+group_value+"\")";
-			else
-				filter = "("+group+"="+"\""+group_value+"\")";
-		}
-		if (group.indexOf("context") == 0)
-			window.location = "/search/expert?view=1&patt="+patt+"&within="+within+"&filter="+filter+"&group="+group+"&viewgroup="+group_value;
-		else
-			window.location = "/search/expert?view=1&patt="+patt+"&within="+within+"&filter="+filter;
+		Whitelab.showGroupedResults(group_value,1);
+	},
+
+	showGroupedResults : function(group_value, view) {
+	    var patt = $("#query-details td.patt").html();
+        var within = $("#query-details td.within").html();
+        var filter = $("#query-details td.filter").html();
+        if (typeof filter === 'undefined')
+            filter = '';
+        var group = $("#query-details td.group").html().replace(/;/g,'%3B');
+//        if (group.indexOf("hit") == -1 && group.indexOf("wordleft") == -1 && group.indexOf("wordright") == -1 && group.indexOf("context") == -1) {
+//            if (filter.length > 0)
+//                filter = filter+"AND("+group+"="+"\""+group_value+"\")";
+//            else
+//                filter = "("+group+"="+"\""+group_value+"\")";
+//        }
+		var sample = $("#query-details").find("td.samplesize > span.sample").first().html();
+        if (typeof sample === 'undefined')
+            sample = '';
+		var samplenum = $("#query-details").find("td.samplesize > span.samplenum").first().html();
+        if (typeof samplenum === 'undefined')
+            samplenum = '';
+	    var sampleseed = $("#query-details").find("td.sampleseed").first().html();
+        if (typeof sampleseed === 'undefined')
+            sampleseed = '';
+        window.location = "/search/expert?view="+view+"&patt="+patt+"&within="+within+"&filter="+filter+"&group="+group+"&viewgroup="+group_value+"&sample="+sample+"&samplenum="+samplenum+"&sampleseed="+sampleseed;
 	},
 	
 	sleep : function(ms) {
@@ -375,25 +306,22 @@ $(document).on('click', 'button.btn-pagination', function(e) {
 
 $(document).on('click', 'button.load-grouped-docs', function(e) {
 	var group_id = $(this).data("group-id");
-	var group_value = $(this).data("group-value");
+	var group_value = $(this).data("group-identity");
 	Whitelab.loadGroupedDocs(group_id,group_value);
 });
 
 $(document).on('click', 'button.load-grouped-hits', function(e) {
 	var group_id = $(this).data("group-id");
-	var identity = group_id.indexOf("context") == 0 ? $(this).data("group-identity") : $(this).data("group-value");
+	var identity = $(this).data("group-identity");
 	Whitelab.loadGroupedHits(group_id,identity);
 });
 
 $(document).on('click', 'button.show-grouped-docs', function(e) {
-	var group_value = $(this).data("group-value");
-	Whitelab.showGroupedDocs(group_value);
+	Whitelab.showGroupedDocs($(this).data("group-identity"));
 });
 
 $(document).on('click', 'button.show-grouped-hits', function(e) {
-	var group_id = $(this).data("group-id");
-	var identity = group_id.indexOf("context") == 0 ? $(this).data("group-identity") : $(this).data("group-value");
-	Whitelab.showGroupedHits(identity);
+	Whitelab.showGroupedHits($(this).data("group-identity"));
 });
 
 $(document).on('click', '.info-panel-toggle', function(e) {
@@ -448,7 +376,7 @@ $(document).on('click', 'tr.grouped-hit-row', function(e) {
 	e.preventDefault();
 	e.stopPropagation();
 	var group_id = $(this).data("group-id");
-	var identity = group_id.indexOf("context") == 0 ? $(this).data("group-identity") : $(this).data("group-value");
+	var identity = $(this).data("group-identity");
 	if ($("#"+group_id+" div.hits > table > tbody").html().length == 0) {
 		Whitelab.loadGroupedHits(group_id,identity);
 	}

@@ -36,12 +36,12 @@ class Search::QueriesController < QueriesController
     @offset = params[:offset].to_i || 0
     if @query
       sub_query = @query.dup
-      sub_query.group = nil
-      sub_query.filter = @query.filter.blank? ? "("+@query.group+"=\""+params[:docs_group]+"\")" : @query.filter+"AND("+@query.group+"=\""+params[:docs_group]+"\")"
+      sub_query.viewgroup = params[:docs_group]
       sub_query.view = 2
       sub_query.offset = @offset
       sub_query.number = 20
-      @docs = sub_query.result(false)["results"]
+      puts sub_query.to_json
+      @docs = sub_query.result(false)
       sub_query.destroy
     end
     respond_to do |format|
@@ -57,12 +57,7 @@ class Search::QueriesController < QueriesController
     @offset = params[:offset].to_i || 0
     if @query
       sub_query = @query.dup
-      if @group_id.start_with?("context")
-        sub_query.viewgroup = params[:hits_group]
-      else
-        sub_query.add_hits_group(params[:hits_group])
-        sub_query.group = nil
-      end
+      sub_query.viewgroup = params[:hits_group]
       sub_query.view = 1
       sub_query.offset = @offset
       sub_query.number = 20

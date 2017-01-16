@@ -1,6 +1,7 @@
-<% if @docs && @docs.any? %>
-	<% @docs.each_with_index do |doc, i| %>
+<% if @docs && @docs['results'].any? %>
+	<% @docs['results'].each_with_index do |doc, i| %>
 		<tr class="tooltip-hover" data-tooltip="<%= @group_id %>_tooltip<%= i + @offset %>">
+		    <% puts doc %>
 			<td class="doc"><%= doc['docpid'] %></td>
 			<td><%= doc['collection'] %></td>
 			<td><%= doc['corpus'] %></td>

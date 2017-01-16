@@ -1,6 +1,6 @@
-<% if @docs && @docs.any? %>
+<% if @docs && @docs['results'].any? %>
 	<% hoverable = @metadata_handler.get_hoverable_metadata %>
-	<% @docs.each_with_index do |doc, i| %>
+	<% @docs['results'].each_with_index do |doc, i| %>
 		<span id="<%= @group_id %>_tooltip<%= i %>" class="hidden wl-tooltip">
 			<h5>Metadata</h5>
 			<ul class="list-unstyled">

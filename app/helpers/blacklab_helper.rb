@@ -23,7 +23,7 @@ module BlacklabHelper
         end
       end
     end
-    attrs["sort"] = "size" unless !attrs.has_key?("group") || attrs.has_key?("sort")
+    attrs["sort"] = "size" unless !attrs.has_key?("group") || attrs.has_key?("sort") || (attrs.has_key?("viewgroup") && query.view == 2)
     return attrs
   end
   
@@ -43,12 +43,14 @@ module BlacklabHelper
     hits = [1,8].include?(view)
     key = hits ? "hit" : "doc"
     key = grouped ? "#{key}Groups" : "#{key}s"
+    Rails.logger.debug "KEY: #{key}"
     Rails.logger.warn "Response does not have key #{key}:" if !response.has_key?(key)
     Rails.logger.warn response.to_json if !response.has_key?(key)
     output, status = {}, 4 if !response.has_key?(key)
     unless status == 4
       summary = response['summary']
       output = reformat_output(response, key, query)
+      puts output
       status = summary['stillCounting'] ? 2 : 3
     end
     Rails.logger.debug "QUERY STATUS = #{status}"
@@ -94,7 +96,7 @@ module BlacklabHelper
           "collection" => doc["docInfo"][COLLECTION_TITLE_FIELD],
           "docpid" => doc["docPid"],
           "hit_count" => doc["numberOfHits"],
-          "relative_hit_count" => (doc["numberOfHits"].to_f / hits) * 100,
+          "relative_hit_count" => doc.has_key?("numberOfHits") && !hits.blank? ? (doc["numberOfHits"].to_f / hits) * 100 : 0,
           "metadata" => doc["docInfo"]
         }
       }
@@ -107,7 +109,7 @@ module BlacklabHelper
       'sampleseed' => response['summary'].has_key?('sampleSeed') ? response['summary']['sampleSeed'] : nil,
       'results' => data.map { |group|
         {
-          "identity" => group["identity"].sub(/^str:/,''),
+          "identity" => group["identity"],
           "#{query.group}" => query.group =~ /H(;|$)/ ? group["identityDisplay"].gsub(/ \-/, '') : group["identityDisplay"],
           "#{view == 8 ? 'hit_count' : 'document_count'}" => group["size"],
           "relative_#{view == 8 ? 'hit_count' : 'document_count'}" => view == 8 ? (group["size"].to_f / hits) * 100 : (group["size"].to_f / docs) * 100
