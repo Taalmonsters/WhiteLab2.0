@@ -15,14 +15,12 @@ html, body {
   font-size: small;
 }
 
-*:focus {
-    outline: none;
+select {
+    background: #fff;
 }
 
-select {
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
+*:focus {
+    outline: none;
 }
 
 table {
@@ -398,11 +396,6 @@ span.tiny {
       height: 20px;
       border: 1px solid rgb(166, 166, 166);
     }
-    select {
-      -webkit-border-radius: 10px;
-      -moz-border-radius: 10px;
-      border-radius: 10px;
-    }
   }
 }
 
@@ -415,13 +408,7 @@ span.tiny {
   }
   select, input {
     font-size: small;
-    max-height: 20px;
     border: 1px solid rgb(166, 166, 166);
-  }
-  select {
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
   }
 }
 

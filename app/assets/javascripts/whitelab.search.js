@@ -79,7 +79,6 @@ Whitelab.search = {
 				Whitelab.search.advanced.addFieldToBoxInColumn(0, 0);
 			
 			$( "#advanced-canvas" ).sortable();
-		    $( "#advanced-canvas" ).disableSelection();
 		    $( "#advanced-canvas" ).sortable({
 		        stop: function( ) {
 		        	Whitelab.search.advanced.resetElementIds()
@@ -571,18 +570,11 @@ $(document).on('click', '#advanced a.endsen', function(e) {
 	$(column).find('span.endsen').first().toggleClass('active');
 });
 
-$(document).on('change', '#advanced select.token-type', function(e) {
-	e.preventDefault();
-	Whitelab.search.advanced.setTokenInput(this);
-});
-
 $(document).on('change', '#advanced select.token-operator', function(e) {
-	e.preventDefault();
 	Whitelab.search.advanced.setTokenInput(this);
 });
 
 $(document).on('click', '#advanced div.batchrow .erase', function(e) {
-	e.preventDefault();
 	Whitelab.search.advanced.eraseBatchList(this);
 });
 
@@ -593,7 +585,6 @@ $(document).on('change', '#advanced input.small-loadlist', function(e) {
 
 $(document).on('click', '#advanced button.btn-submit', function(e) {
 	e.preventDefault();
-	Whitelab.debug('FORM CLICK ADVANCED');
 	Whitelab.search.advanced.parseQuery();
 });
 
@@ -732,6 +723,8 @@ $(document).on('change', 'div.search-input-display input, div.search-input-displ
 	var searchpage = $("#main-div[data-namespace='search'] div.search-input-display").attr("id");
 	if (searchpage === 'extended' && $(this).attr("id") === 'pos-text') {
 		$.getScript("/search/pos/features.js?pos="+$(this).val());
+	} else if (searchpage === 'advanced') {
+	    Whitelab.search.advanced.setTokenInput(this);
 	}
 	var func = searchpage+"QueryStringToCQL";
 	var patt = window["Whitelab"]["cql"][func]();

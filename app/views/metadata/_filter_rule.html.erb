@@ -1,13 +1,13 @@
 <div id="rule<%= rule_id %>" class="rule">
 	<div class="col-xs-3 col-md-3 adjust-padding">
 		<% if group && !group.blank? && key && !key.blank? %>
-			<%= select_tag(:"key", grouped_options_for_select(filters,group+"_"+key), :class => "metadata-key-select", :include_blank => true) %>
+			<%= select_tag(:"key", grouped_options_for_select(filters,group+"_"+key), :class => "metadata-key-select form-control", :include_blank => true) %>
 		<% else %>
-			<%= select_tag(:"key", grouped_options_for_select(filters), :class => "metadata-key-select", :include_blank => true) %>
+			<%= select_tag(:"key", grouped_options_for_select(filters), :class => "metadata-key-select form-control", :include_blank => true) %>
 		<% end %>
 	</div>
 	<div class="col-xs-2 col-md-1 adjust-padding">
-		<select class="metadata-operator">
+		<select class="metadata-operator form-control">
 			<option value="is" <%= !defined? operator || operator.blank? || operator.eql?('is') ? 'selected="true"' : '' %>><%= t(:"operators.keys.is") %></option>
 			<option value="not" <%= defined? operator && operator.eql?('not') ? 'selected="true"' : '' %>><%= t(:"operators.keys.not") %></option>
 			<option value="contains" <%= defined? operator && operator.eql?('contains') ? 'selected="true"' : '' %>><%= t(:"operators.keys.contains") %></option>
@@ -20,7 +20,7 @@
 		<% if values && values.length > 0 %>
 			<%= render partial: "/metadata/values", layout: false, locals: { values: values, value: value } %>
 		<% else %>
-			<input class="metadata-input" type="text">
+			<input class="metadata-input form-control" type="text">
 		<% end %>
 	</div>
 	<div class="col-xs-2 col-md-1 adjust-padding">

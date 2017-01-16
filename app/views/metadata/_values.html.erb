@@ -1,5 +1,5 @@
 <% if !(defined?(value)).nil? && !value.blank? %>
-	<%= select_tag(:"value", options_for_select(values, value), :class => "metadata-input", :include_blank => true) %>
+	<%= select_tag(:"value", options_for_select(values, value), :class => "metadata-input form-control", :include_blank => true) %>
 <% else %>
-	<%= select_tag(:"value", options_for_select(values), :class => "metadata-input", :include_blank => true) %>
+	<%= select_tag(:"value", options_for_select(values), :class => "metadata-input form-control", :include_blank => true) %>
 <% end %>
