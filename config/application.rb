@@ -37,7 +37,7 @@ module WhitelabV20
     #config.x.database_url = 'http://localhost:7474/'
     config.x.total_token_count = -1
     config.x.audio_dir = ENV['WHITELAB_AUDIO_DIR']
-    config.x.max_count = 100
+    config.x.max_count = 1000000
   end
 end
 
