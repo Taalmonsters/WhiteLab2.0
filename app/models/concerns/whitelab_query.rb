@@ -40,7 +40,7 @@ module WhitelabQuery
         filter_xml.css("filter").each do |filter|
           if filter.css("values value").any?
             filter.css("values value").each do |value|
-              arr << "#{filter.at_css("field").content}=\"#{value.content}\""
+              arr << URI.escape("#{filter.at_css("field").content}=\"#{value.content}\"", Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
             end
           else
             return "", true
@@ -84,7 +84,7 @@ module WhitelabQuery
       return "#{["ends", "contains"].include?(op) ? ".*" : ""}#{token.at_css("value").content}#{["starts", "contains"].include?(op) ? ".*" : ""}"
     end
     
-    def self.get_quantifier_from_token_xml(token)
+    def get_quantifier_from_token_xml(token)
       from = token.css("> repeat from").any? ? token.at_css("> repeat from").content.to_i : 0
       to = token.css("> repeat to").any? ? token.at_css("> repeat to").content.to_i : 0
       if to > 0
@@ -112,10 +112,10 @@ module WhitelabQuery
         return arr.join("&"), 1
       end
     end
-  end
-  
-  def self.history(user_id, hist_offset = 0, hist_number = 5)
-    return self.class.name.constantize.where(:user_id => user_id).sort("updated_at desc").limit(hist_number).offset(hist_offset)
+
+    def history(user_id, hist_offset = 0, hist_number = 5)
+      return self.class.name.constantize.where(:user_id => user_id).sort("updated_at desc").limit(hist_number).offset(hist_offset)
+    end
   end
   
   # Create URL parameter string for query with selected properties

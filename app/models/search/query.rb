@@ -43,8 +43,12 @@ class Search::Query < ActiveRecord::Base
   
   def to_xml
     hash = { search: { query: { patt: self.patt, within: self.within, view: self.view, offset: self.offset, number: self.number } } }
+    hash[:search][:query][:gap_values_tsv] = self.gap_values_tsv unless self.gap_values_tsv.blank?
     hash[:search][:query][:group] = self.group unless self.group.blank?
     hash[:search][:query][:viewgroup] = self.viewgroup unless self.viewgroup.blank?
+    hash[:search][:query][:sample] = self.sample unless self.sample.blank?
+    hash[:search][:query][:samplenum] = self.samplenum unless self.samplenum.blank?
+    hash[:search][:query][:sampleseed] = self.sampleseed unless self.sampleseed.blank?
     hash[:search][:filters] = self.filter unless self.filter.blank?
     return hash.to_xml(:root => 'whitelab')
   end
@@ -94,27 +98,27 @@ class Search::Query < ActiveRecord::Base
   def self.query_xml_to_url_params(query_xml)
     arr = []
     if query_xml.css("patt tokens token").any?
-      arr << "patt=#{URI.escape(self.get_tokens_from_xml(query_xml.css("patt > tokens"))).gsub('&','%26')}"
+      arr << "patt=#{URI.escape(self.get_tokens_from_xml(query_xml.css("patt > tokens")), Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))}"
     elsif query_xml.at_css("patt").content.length > 0
-      arr << "patt=#{URI.escape(query_xml.at_css("patt").content).gsub('&','%26')}"
+      arr << "patt=#{URI.escape(query_xml.at_css("patt").content, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))}"
     else
       return ["No valid patt"], true
     end
     if query_xml.css("group context").any?
       group, error = self.get_complex_group_from_xml(query_xml)
       return [group], true if error
-      arr << "group=#{URI.escape(group).gsub(';','%3B')}"
+      arr << "group=#{URI.escape(group, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))}"
     elsif query_xml.css("group").any? && query_xml.at_css("group").content.length > 0
       group = query_xml.at_css("group").content
-      arr << "group=#{URI.escape(group).gsub(';','%3B')}"
+      arr << "group=#{URI.escape(group, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))}"
       if query_xml.css("viewgroup").any?
         arr << "view=1"
       elsif !query_xml.css("view").any?
         arr << "view=8"
       end
     end
-    ["within","viewgroup","offset","sample","samplenum","sampleseed"].each do |param|
-      arr << "#{param}=#{query_xml.at_css(param).content}" if query_xml.css(param).any?
+    ["within","viewgroup","offset","sample","samplenum","sampleseed","gap_values_tsv"].each do |param|
+      arr << "#{param}=#{URI.escape(query_xml.at_css(param).content, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))}" if query_xml.css(param).any?
     end
     arr << "view=#{query_xml.at_css("view").content}" if query_xml.css("view").any? && !arr.select{|str| str.start_with?("view=") }.any?
     arr << "number=#{query_xml.at_css("number").content}" if query_xml.css("number").any? && [50,100,200].include?(query_xml.at_css("number").content.to_i)

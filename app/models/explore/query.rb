@@ -44,7 +44,11 @@ class Explore::Query < ActiveRecord::Base
   
   def to_xml
     hash = { explore: { query: { page: self.page, patt: self.patt, within: self.within, view: self.view, listtype: self.listtype, offset: self.offset, number: self.number } } }
+    hash[:explore][:query][:gap_values_tsv] = self.group unless self.gap_values_tsv.blank?
     hash[:explore][:query][:group] = self.group unless self.group.blank?
+    hash[:explore][:query][:sample] = self.sample unless self.sample.blank?
+    hash[:explore][:query][:samplenum] = self.samplenum unless self.samplenum.blank?
+    hash[:explore][:query][:sampleseed] = self.sampleseed unless self.sampleseed.blank?
     hash[:explore][:filters] = self.filter unless self.filter.blank?
     return hash.to_xml(:root => 'whitelab')
   end
@@ -110,22 +114,22 @@ class Explore::Query < ActiveRecord::Base
     return ["No page tag found in query!"], true unless page
     return ["Invalid page value!"], true unless ["ngrams","statistics"].include?(page)
     if page.eql?("ngrams") && query_xml.css("patt tokens token").any?
-      arr << "patt=#{URI.escape(self.get_tokens_from_xml(query_xml.css("patt > tokens"))).gsub('&','%26')}"
+      arr << "patt=#{URI.escape(self.get_tokens_from_xml(query_xml.css("patt > tokens")), Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))}"
     elsif page.eql?("ngrams") && query_xml.at_css("patt").content.length > 0
-      arr << "patt=#{URI.escape(query_xml.at_css("patt").content).gsub('&','%26')}"
+      arr << "patt=#{URI.escape(query_xml.at_css("patt").content, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))}"
     elsif page.eql?("ngrams")
       return ["Invalid patt value!"], true
     end
     if query_xml.css("group context").any?
       group, error = self.get_complex_group_from_xml(query_xml)
       return [group], true if error
-      arr << "group=#{URI.escape(group).gsub(';','%3B')}"
+      arr << "group=#{URI.escape(group, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))}"
     elsif query_xml.css("group").any? && query_xml.at_css("group").content.length > 0
       group = query_xml.at_css("group").content
-      arr << "group=#{URI.escape(group).gsub(';','%3B')}"
+      arr << "group=#{URI.escape(group, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))}"
     end
-    ["within","listtype","size","offset","sample","samplenum","sampleseed"].each do |param|
-      arr << "#{param}=#{query_xml.at_css(param).content}" if query_xml.css(param).any?
+    ["within","listtype","size","offset","sample","samplenum","sampleseed","gap_values_tsv"].each do |param|
+      arr << "#{param}=#{URI.escape(query_xml.at_css(param).content, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))}" if query_xml.css(param).any?
     end
     arr << "view=#{query_xml.at_css("view").content}" if query_xml.css("view").any? && !arr.select{|str| str.start_with?("view=") }.any?
     arr << "number=#{query_xml.at_css("number").content}" if query_xml.css("number").any? && [50,100,200].include?(query_xml.at_css("number").content.to_i)
