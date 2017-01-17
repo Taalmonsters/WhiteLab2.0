@@ -21,7 +21,7 @@
 					<span id="extended-refine-pos" class="tiny red hidden"><a href="#" onclick="event.preventDefault(); $('#refine-pos').toggleClass('hidden')"><%= t(:'button_labels.keys.refine').capitalize %></a></span>
 					<div id="refine-pos" class="hidden margin-bottom-10"></div>
 				<% else %>
-					<input type="text" class="form-control padding-bottom-10" id="<%= field %>-text" />
+					<input type="text" class="form-control" id="<%= field %>-text" />
 					<span class="tiny"><input class="wordcase" type="checkbox" /> <%= t(:'data_labels.keys.case_sensitive').capitalize %></span>
 				<% end %>
 			</div>

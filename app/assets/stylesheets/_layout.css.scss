@@ -35,11 +35,16 @@ table {
 
 .form-control {
     height: auto;
-    padding: 0;
+    padding: 0 4px;
 }
 
 #document .form-control, #extended .form-control, #simple .form-control {
     height: 34px;
+    padding: 0 8px;
+}
+
+#corpora-treemap-select, #listtype {
+    width: auto;
 }
 
 .inline {

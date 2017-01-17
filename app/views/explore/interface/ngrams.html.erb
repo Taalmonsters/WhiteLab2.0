@@ -16,13 +16,13 @@
 							<div class="form-group col-xs-12">
 								<label for="size" class="col-xs-6 col-md-2"><%= t(:"form_labels.keys.ngram_size") %></label>
 								<div class="col-xs-6 col-md-2">
-									<%= number_field_tag(:"size", value = size, options = { :max => 5, :min => 1}) %>
+									<%= number_field_tag(:"size", value = size, options = { :max => 5, :min => 1, :class => "form-control"}) %>
 								</div>
 							</div>
 							<div class="form-group col-xs-12">
 								<label for="listtype" class="col-xs-6 col-md-2"><%= t(:"form_labels.keys.ngram_type") %></label>
 								<div class="col-xs-6 col-md-2">
-									<%= select_tag(:"listtype", options_for_select(@listtype_options,@listtype), :include_blank => true) %>
+									<%= select_tag(:"listtype", options_for_select(@listtype_options,@listtype), :include_blank => true, :class => "form-control") %>
 								</div>
 							</div>
 						</div>
@@ -34,18 +34,18 @@
 									<tr>
 										<% (1..5).each do |n| %>
 											<% if n > size %>
-												<td><%= select_tag(:"type-#{n}", options_for_select(@listtype_options), {:class => "token-type", :data => { "field" => n }, :include_blank => false, :disabled => true}) %></td>
+												<td><%= select_tag(:"type-#{n}", options_for_select(@listtype_options), {:class => "token-type form-control", :data => { "field" => n }, :include_blank => false, :disabled => true}) %></td>
 											<% else %>
-												<td><%= select_tag(:"type-#{n}", options_for_select(@listtype_options), {:class => "token-type", :data => { "field" => n }, :include_blank => false}) %></td>
+												<td><%= select_tag(:"type-#{n}", options_for_select(@listtype_options), {:class => "token-type form-control", :data => { "field" => n }, :include_blank => false}) %></td>
 											<% end %>
 										<% end %>
 									</tr>
 									<tr>
 										<% (1..5).each do |n| %>
 											<% if n > size %>
-												<td id="field-<%= n %>"><input class="field-input" type="text" disabled></td>
+												<td id="field-<%= n %>"><input class="field-input form-control" type="text" disabled></td>
 											<% else %>
-												<td id="field-<%= n %>"><input class="field-input" type="text"></td>
+												<td id="field-<%= n %>"><input class="field-input form-control" type="text"></td>
 											<% end %>
 										<% end %>
 									</tr>

@@ -1,6 +1,7 @@
 	</div>
 	<%= render partial: "layouts/dialogs" %>
 	<%= render partial: "layouts/tour" if !@tour_title.blank? %>
+	<%= render 'cookies_eu/consent_banner' %>
 	<script>
 		start_tour = <%= @tour_start ? 'true' : 'false' %>;
 		Whitelab.namespace = '<%= @namespace %>';
