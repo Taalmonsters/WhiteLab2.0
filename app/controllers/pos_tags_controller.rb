@@ -9,7 +9,7 @@ class PosTagsController < ApplicationController
     if !@admin_logged_in
       redirect_to 'admin/login'
     end
-    set_pagination_params(0, 10, 'label')
+    set_pagination_params(0, 10, 'identity')
     data = @whitelab.get_pos_tags(@number, @offset, @sort, @order)
     @postags = data['pos_tags']
     @total = data['total']

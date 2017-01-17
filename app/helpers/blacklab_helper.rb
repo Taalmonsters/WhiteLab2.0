@@ -378,6 +378,8 @@ module BlacklabHelper
     data[offset..offset+number-1].each do |head|
       ph["pos_heads"] << get_pos_head_counts(head)
     end
+    ph["pos_heads"].sort_by!{|obj| obj[sort] }
+    ph["pos_heads"] = ph["pos_heads"].reverse if order.eql?("desc")
     return ph
   end
   
@@ -445,7 +447,7 @@ module BlacklabHelper
           "group" => "hit:pos",
           "number" => number,
           "first" => offset,
-          "sort" => order.eql?("desc") ? "-identity" : "identity"
+          "sort" => order.eql?("desc") ? "-#{sort}" : sort
         }
       })
       summary = resp["summary"]

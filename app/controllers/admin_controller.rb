@@ -28,7 +28,7 @@ class AdminController < ApplicationController
         elsif @page.eql?('index') && @tab.eql?('posheads')
           set_pagination_params(0, 0, 'label')
         elsif @page.eql?('index') && @tab.eql?('postags')
-          set_pagination_params(0, 10, 'label')
+          set_pagination_params(0, 10, 'identity')
         elsif @page.eql?('interface') && (!@tab || @tab.eql?('language'))
           @all_languages = load_all_languages
           @available_languages = load_available_languages

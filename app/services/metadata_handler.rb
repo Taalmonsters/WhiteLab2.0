@@ -127,7 +127,9 @@ class MetadataHandler
   # Load paginated list of metadata in index
   def get_metadata(number, offset, sort, order)
     fields = @metadata.values.select{|data| !data['key'].include?("\.") }
-    return { 'total' => fields.size, 'metadata' => fields[offset..offset+number] }
+    total = fields.size
+    fields = order.eql?("desc") ? fields.sort_by{|x| x[sort] }.reverse : fields.sort_by{|x| x[sort] }
+    return { 'total' => total, 'metadata' => fields[offset..offset+number] }
   end
   
   def get_metadatum(group, key)
