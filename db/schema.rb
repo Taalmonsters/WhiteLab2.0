@@ -11,32 +11,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170113140720) do
+ActiveRecord::Schema.define(version: 20170117111323) do
 
   create_table "explore_queries", force: :cascade do |t|
-    t.integer  "user_id",        limit: 4,                        null: false
+    t.integer  "user_id",        limit: 4,                          null: false
     t.string   "patt",           limit: 255
     t.string   "filter",         limit: 255
-    t.string   "within",         limit: 255, default: "document"
-    t.integer  "view",           limit: 4,   default: 1
-    t.string   "listtype",       limit: 255, default: "word"
-    t.integer  "ngram_size",     limit: 4,   default: 1
+    t.string   "within",         limit: 255,   default: "document"
+    t.integer  "view",           limit: 4,     default: 1
+    t.string   "listtype",       limit: 255,   default: "word"
+    t.integer  "ngram_size",     limit: 4,     default: 1
     t.string   "group",          limit: 255
     t.string   "sort",           limit: 255
     t.string   "order",          limit: 255
-    t.integer  "status",         limit: 4,   default: 0
-    t.integer  "export_status",  limit: 4,   default: 0
-    t.integer  "offset",         limit: 4,   default: 0
-    t.integer  "number",         limit: 4,   default: 50
+    t.integer  "status",         limit: 4,     default: 0
+    t.integer  "export_status",  limit: 4,     default: 0
+    t.integer  "offset",         limit: 4,     default: 0
+    t.integer  "number",         limit: 4,     default: 50
     t.string   "input_page",     limit: 255
     t.integer  "hit_count",      limit: 4
     t.integer  "document_count", limit: 4
     t.integer  "group_count",    limit: 4
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
     t.integer  "sample",         limit: 4
     t.integer  "samplenum",      limit: 4
     t.integer  "sampleseed",     limit: 8
+    t.text     "gap_values_tsv", limit: 65535
   end
 
   add_index "explore_queries", ["created_at"], name: "index_explore_queries_on_created_at", using: :btree
@@ -46,28 +47,29 @@ ActiveRecord::Schema.define(version: 20170113140720) do
   add_index "explore_queries", ["user_id"], name: "index_explore_queries_on_user_id", using: :btree
 
   create_table "search_queries", force: :cascade do |t|
-    t.integer  "user_id",        limit: 4,                        null: false
-    t.string   "patt",           limit: 255,                      null: false
+    t.integer  "user_id",        limit: 4,                          null: false
+    t.string   "patt",           limit: 255,                        null: false
     t.string   "filter",         limit: 255
-    t.string   "within",         limit: 255, default: "document"
-    t.integer  "view",           limit: 4,   default: 1
+    t.string   "within",         limit: 255,   default: "document"
+    t.integer  "view",           limit: 4,     default: 1
     t.string   "group",          limit: 255
     t.string   "sort",           limit: 255
     t.string   "order",          limit: 255
-    t.integer  "status",         limit: 4,   default: 0
-    t.integer  "export_status",  limit: 4,   default: 0
-    t.integer  "offset",         limit: 4,   default: 0
-    t.integer  "number",         limit: 4,   default: 50
-    t.string   "input_page",     limit: 255, default: "expert"
+    t.integer  "status",         limit: 4,     default: 0
+    t.integer  "export_status",  limit: 4,     default: 0
+    t.integer  "offset",         limit: 4,     default: 0
+    t.integer  "number",         limit: 4,     default: 50
+    t.string   "input_page",     limit: 255,   default: "expert"
     t.integer  "hit_count",      limit: 4
     t.integer  "document_count", limit: 4
     t.integer  "group_count",    limit: 4
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
     t.string   "viewgroup",      limit: 255
     t.integer  "sample",         limit: 4
     t.integer  "samplenum",      limit: 4
     t.integer  "sampleseed",     limit: 8
+    t.text     "gap_values_tsv", limit: 65535
   end
 
   add_index "search_queries", ["created_at"], name: "index_search_queries_on_created_at", using: :btree

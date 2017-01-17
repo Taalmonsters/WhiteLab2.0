@@ -54,7 +54,7 @@
 							</table>
 						</div>
                         <div class="col-xs-12 <%= !@query || @query.gap_values_tsv.blank? ? 'hidden' : '' %>">
-                            <h5>Gap values</h5>
+                            <h5><%= t(:"queries.keys.gap_values_tsv") %></h5>
                             <textarea id="gap_values_tsv_input"><%= !@query || @query.gap_values_tsv.blank? ? nil : @query.gap_values_tsv %></textarea>
                         </div>
 					</div>

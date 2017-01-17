@@ -1,4 +1,4 @@
-<%= render partial: "/search/queries/result_tabs", layout: false, locals: { view: @query.view, viewgroup: @query.viewgroup, url_params: @query.assemble_url_params(['patt', 'filter', 'within', 'group', 'viewgroup', 'sample', 'samplenum', 'sampleseed']) } %>
+<%= render partial: "/search/queries/result_tabs", layout: false, locals: { view: @query.view, viewgroup: @query.viewgroup, url_params: @query.assemble_url_params(['patt', 'filter', 'within', 'group', 'viewgroup', 'sample', 'samplenum', 'sampleseed', 'gap_values_tsv']) } %>
 <div id="query-result" class="tab-content">
 	<% if @query.view == 1 %>
 		<%= render partial: "/result/hits" %>

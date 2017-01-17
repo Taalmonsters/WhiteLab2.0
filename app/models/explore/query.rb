@@ -71,8 +71,9 @@ class Explore::Query < ActiveRecord::Base
     }
     if page.eql?('statistics')
       hash[:patt] = "[]"
-    elsif page.eql?('ngrams') && params.has_key?(:patt) && !params[:patt].blank?
-      hash[:patt] = params[:patt]
+    elsif page.eql?('ngrams')
+      hash[:patt] = params[:patt] if params.has_key?(:patt) && !params[:patt].blank?
+      hash[:gap_values_tsv] = params[:gap_values_tsv] if params.has_key?(:gap_values_tsv) && !params[:gap_values_tsv].blank?
     end
     return hash
   end
@@ -97,7 +98,8 @@ class Explore::Query < ActiveRecord::Base
         :input_page => page,
         :sample => params.has_key?(:sample) && !params[:sample].blank? ? params[:sample].to_i : nil,
         :samplenum => params.has_key?(:samplenum) && !params[:samplenum].blank? ? params[:samplenum].to_i : nil,
-        :sampleseed => params.has_key?(:sampleseed) && !params[:sampleseed].blank? ? params[:sampleseed].to_i : nil
+        :sampleseed => params.has_key?(:sampleseed) && !params[:sampleseed].blank? ? params[:sampleseed].to_i : nil,
+        :gap_values_tsv => params.has_key?(:gap_values_tsv) && !params[:gap_values_tsv].blank? ? params[:gap_values_tsv] : nil
       }
     end
   end

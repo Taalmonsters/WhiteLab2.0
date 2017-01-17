@@ -125,7 +125,7 @@ module WhitelabQuery
       if only.include?(name) && !value.blank?
         name = translations.keys.include?(name) ? translations[name] : name
         value = translations.keys.include?("#{name}_value") ? translations["#{name}_value"] : value
-        prms << "#{name}=#{value.to_s.gsub('&','%26').gsub('\\','%5C').gsub(';','%3B')}"
+        prms << "#{name}=#{URI.escape(value.to_s, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))}"
       end
     end
     return prms.join('&')

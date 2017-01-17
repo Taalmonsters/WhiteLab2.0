@@ -291,6 +291,7 @@ en:
       query_history: Query history
       show_query_list: Show query list
       hide_query_list: Hide query list
+      gap_values_tsv: Gap values
       pattern: pattern
       within: searched within
       filter: filter

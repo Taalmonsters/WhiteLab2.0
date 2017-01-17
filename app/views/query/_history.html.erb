@@ -6,6 +6,7 @@
 				<thead>
 					<tr>
 						<th>CQL <%= t(:"queries.keys.pattern").capitalize %></th>
+						<th><%= t(:"queries.keys.gap_values_tsv") %></th>
 						<th><%= t(:"queries.keys.within").capitalize %></th>
 						<th><%= t(:"queries.keys.filter").capitalize %></th>
 						<th><%= t(:"queries.keys.group").capitalize %></th>
@@ -20,12 +21,13 @@
 				</thead>
 				<tbody>
 					<% @search_queries.each do |query| %>
-						<tr id="<%= query.id %>" class="clickable" data-url="<%= "/search/#{query.page}?#{query.assemble_url_params(['id', 'patt', 'filter', 'within', 'view', 'group', 'viewgroup', 'sample', 'samplenum', 'sampleseed', 'page', 'number', 'offset'])}" %>" data-namespace="search" data-query-id="<%= query.id %>">
+						<tr id="<%= query.id %>" class="clickable" data-url="<%= "/search/#{query.page}?#{query.assemble_url_params(['id', 'patt', 'filter', 'within', 'view', 'group', 'viewgroup', 'sample', 'samplenum', 'sampleseed', 'page', 'number', 'offset', 'gap_values_tsv'])}" %>" data-namespace="search" data-query-id="<%= query.id %>">
 							<td class="patt" data-patt="<%= query.patt %>"><%= query.patt %></td>
-							<td class="within" data-within="<%= query.within %>"><%= query.within %></td>
-							<td class="filter" data-filter="<%= query.filter %>"><%= query.filter %></td>
-							<td class="group" data-group="<%= query.group %>"><%= query.group %></td>
-							<td class="viewgroup" data-viewgroup="<%= query.viewgroup %>"><%= query.viewgroup %></td>
+                            <td class="gap_values_tsv"><%= query.gap_values_tsv.blank? ? '-' : '<span class="glyphicon glyphicon-ok"></span>'.html_safe %></td>
+                            <td class="within" data-within="<%= query.within %>"><%= query.within %></td>
+							<td class="filter" data-filter="<%= query.filter %>"><%= query.filter.blank? ? '-' : query.filter %></td>
+							<td class="group" data-group="<%= query.group %>"><%= query.group.blank? ? '-' : query.group %></td>
+							<td class="viewgroup" data-viewgroup="<%= query.viewgroup %>"><%= query.viewgroup.blank? ? '-' : query.viewgroup %></td>
 							<td><%= query.hit_count.blank? ? '-' : number_with_delimiter(query.hit_count, :delimiter => t(:'other.keys.numeric_delimiter')) %></td>
 							<td><%= query.document_count.blank? ? '-' : number_with_delimiter(query.document_count, :delimiter => t(:'other.keys.numeric_delimiter')) %></td>
 							<td><%= query.group_count.blank? ? '-' : number_with_delimiter(query.group_count, :delimiter => t(:'other.keys.numeric_delimiter')) %></td>
@@ -57,6 +59,7 @@
 			<thead>
 				<tr>
 					<th>CQL <%= t(:"queries.keys.pattern").capitalize %></th>
+					<th><%= t(:"queries.keys.gap_values_tsv") %></th>
 					<th><%= "page".capitalize %></th>
 					<th><%= t(:"queries.keys.filter").capitalize %></th>
 					<th><%= "list type".capitalize %></th>
@@ -70,11 +73,12 @@
 			</thead>
 			<tbody>
 				<% @explore_queries.each do |query| %>
-					<tr id="<%= query.id %>" class="clickable" data-url="<%= "/explore/#{query.page}?#{query.assemble_url_params(['id', 'patt', 'filter', 'within', 'view', 'group', 'sample', 'samplenum', 'sampleseed', 'page', 'number', 'offset', 'listtype'])}" %>" data-namespace="explore" data-query-id="<%= query.id %>">
+					<tr id="<%= query.id %>" class="clickable" data-url="<%= "/explore/#{query.page}?#{query.assemble_url_params(['id', 'patt', 'filter', 'within', 'view', 'group', 'sample', 'samplenum', 'sampleseed', 'page', 'number', 'offset', 'listtype', 'gap_values_tsv'])}" %>" data-namespace="explore" data-query-id="<%= query.id %>">
 						<td class="patt" data-patt="<%= query.patt %>"><%= query.patt %></td>
+                        <td class="gap_values_tsv"><%= query.gap_values_tsv.blank? ? '-' : '<span class="glyphicon glyphicon-ok"></span>'.html_safe %></td>
 						<td class="page" data-page="<%= query.page %>"><%= query.page %></td>
-						<td class="filter" data-filter="<%= query.filter %>"><%= query.filter %></td>
-						<td class="listtype" data-listtype="<%= query.listtype %>"><%= query.listtype %></td>
+						<td class="filter" data-filter="<%= query.filter %>"><%= query.filter.blank? ? '-' : query.filter %></td>
+						<td class="listtype" data-listtype="<%= query.listtype %>"><%= query.listtype.blank? ? '-' : query.listtype %></td>
 						<td><%= query.hit_count.blank? ? '-' : number_with_delimiter(query.hit_count, :delimiter => t(:'other.keys.numeric_delimiter')) %></td>
 						<td><%= query.document_count.blank? ? '-' : number_with_delimiter(query.document_count, :delimiter => t(:'other.keys.numeric_delimiter')) %></td>
 						<td><%= query.group_count.blank? ? '-' : number_with_delimiter(query.group_count, :delimiter => t(:'other.keys.numeric_delimiter')) %></td>

@@ -5,7 +5,7 @@
 			<h4>Corpus Query Language:</h4><a class="expert-info-icon"><%= image_tag 'info_icon.png', :class => 'icon' %></a>
 			<textarea id="expert-input"><%= @query ? @query.patt : '' %></textarea>
 			<div class="<%= !@query || @query.gap_values_tsv.blank? ? 'hidden' : '' %>">
-			    <h5>Gap values</h5>
+			    <h5><%= t(:"queries.keys.gap_values_tsv") %></h5>
 			    <textarea id="gap_values_tsv"><%= !@query || @query.gap_values_tsv.blank? ? nil : @query.gap_values_tsv %></textarea>
 			</div>
 			<div class="full-width text-right padding-top-15" style="position: relative;">

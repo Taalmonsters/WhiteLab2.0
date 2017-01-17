@@ -69,6 +69,7 @@ class Search::Query < ActiveRecord::Base
       :sample => params.has_key?(:sample) && !params[:sample].blank? ? params[:sample].to_i : nil,
       :samplenum => params.has_key?(:samplenum) && !params[:samplenum].blank? ? params[:samplenum].to_i : nil,
       :sampleseed => params.has_key?(:sampleseed) && !params[:sampleseed].blank? ? params[:sampleseed].to_i : nil,
+      :gap_values_tsv => params.has_key?(:gap_values_tsv) && !params[:gap_values_tsv].blank? ? params[:gap_values_tsv] : nil,
       :view => params.has_key?(:view) ? params[:view].to_i : 1, 
       :input_page => page,
       :status => 0
@@ -85,7 +86,8 @@ class Search::Query < ActiveRecord::Base
       :viewgroup => params.has_key?(:viewgroup) && !params[:viewgroup].blank? ? params[:viewgroup] : nil,
       :sample => params.has_key?(:sample) && !params[:sample].blank? ? params[:sample].to_i : nil,
       :samplenum => params.has_key?(:samplenum) && !params[:samplenum].blank? ? params[:samplenum].to_i : nil,
-      :sampleseed => params.has_key?(:sampleseed) && !params[:sampleseed].blank? ? params[:sampleseed].to_i : nil
+      :sampleseed => params.has_key?(:sampleseed) && !params[:sampleseed].blank? ? params[:sampleseed].to_i : nil,
+      :gap_values_tsv => params.has_key?(:gap_values_tsv) && !params[:gap_values_tsv].blank? ? params[:gap_values_tsv] : nil
     }
   end
   

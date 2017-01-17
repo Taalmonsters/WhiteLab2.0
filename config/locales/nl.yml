@@ -292,6 +292,7 @@ nl:
       query_history: Zoekgeschiedenis
       show_query_list: Toon query lijst
       hide_query_list: Verberg query lijst
+      gap_values_tsv: Gap waarden
       pattern: patroon
       within: gezocht binnen
       filter: filter
