@@ -19,7 +19,7 @@ Whitelab.explore = {
 		if ($("#main-div[data-namespace='explore'] div#statistics").length > 0)
 			Whitelab.explore.statistics.init();
 		
-		if ($("#main-div[data-namespace='explore'] div#results").length > 0)
+		if ($("#main-div[data-namespace='explore'] #results").length > 0)
 			Whitelab.explore.result.init();
 		
 		if ($('#corpora div#display').length > 0)

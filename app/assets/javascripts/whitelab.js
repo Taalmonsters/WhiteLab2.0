@@ -34,7 +34,7 @@ var Whitelab = {
 		}
 		
 		Whitelab.layout.resize();
-		
+
 	},
 	
 	assembleQueryParams : function(data) {

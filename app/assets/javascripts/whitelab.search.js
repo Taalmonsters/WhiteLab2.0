@@ -5,7 +5,7 @@ Whitelab.search = {
 		if ($('#metadata-filters').length > 0)
 			Whitelab.metadata.init();
 		
-		if ($("#main-div[data-namespace='search'] div#results").length > 0)
+		if ($("#main-div[data-namespace='search'] #results").length > 0)
 			Whitelab.search.result.init();
 
 		if ($('div#expert').length > 0)

@@ -150,11 +150,11 @@ module WhitelabQuery
   end
   
   def execute(threaded = true, max_count = nil)
+    self.running!
     if !self.patt.nil? && ([1,2].include?(self.view) || !self.group.blank?)
       Rails.logger.debug "EXECUTING QUERY"
       if threaded
         Thread.new do
-          self.running!
           res, backend_status = self.run
           self.output = res
           self.counting! if backend_status == 2
@@ -169,7 +169,6 @@ module WhitelabQuery
           end
         end
       else
-        self.running!
         res, backend_status = self.run
         self.output = res
         self.counting! if backend_status == 2
@@ -191,8 +190,8 @@ module WhitelabQuery
   def export
     Rails.logger.debug("EXPORTING WL QUERY")
     if self.finished? && !self.exporting?
+      self.exporting!
       Thread.new do
-        self.exporting!
         n_start = self.number
         o_start = self.offset
         status_start = self.status

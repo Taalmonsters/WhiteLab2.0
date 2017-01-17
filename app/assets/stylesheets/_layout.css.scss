@@ -13,7 +13,10 @@ $wlgray-lighter: lighten($gray-light, 52%);
 html, body {
   height: 100%;
   font-size: small;
-  overflow-x: hidden;
+}
+
+body {
+    overflow-x: hidden;
 }
 
 select {

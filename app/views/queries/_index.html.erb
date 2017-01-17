@@ -1,6 +1,8 @@
 <a id="history-toggle" href="#" class="show-history btn btn-info <%= @user.has_queries? ? '' : 'hidden' %>" data-query-id="<%= @query.id if @query %>"><span class="glyphicon glyphicon-time"></span></a>
 <% if @query %>
-	<% unless (@namespace.eql?('explore') && @query.waiting? && (!@query.view == 4 || @query.input_page.eql?("ngrams"))) || no_output %>
+	<% if (@namespace.eql?('explore') && @query.waiting? && (!@query.view == 4 || @query.input_page.eql?("ngrams"))) || no_output %>
+	    <p>WAITING</p>
+	<% else %>
 		<%= render partial: '/queries/details' %>
 		<%= render partial: '/queries/results' %>
 	<% end %>
