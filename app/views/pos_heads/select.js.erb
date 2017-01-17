@@ -1,3 +1,3 @@
 <% if !@element.blank? %>
-	$("<%= @element %>").html('<%= escape_javascript(select_tag(:"pos", options_for_select(@pos_heads, @value), :class => @element_class, :include_blank => true)) %>');
+	$("<%= @element %>").html('<%= escape_javascript(select_tag(:"pos", options_for_select(@pos_heads, @value), :class => "#{@element_class} form-control", :include_blank => true)) %>');
 <% end %>

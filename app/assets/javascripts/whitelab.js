@@ -349,10 +349,8 @@ $(document).on('change', 'select.lang-select', function(e) {
 $(document).on('change', 'select.pagination-size-select', function(e) {
 	if ($("#main-div[data-namespace='search'] div#result-pane").length > 0)
 		window.location = $(this).data("url")+'&offset=0&number='+$(this).val();
-//		Whitelab.search.getQueryResult($(this).val(),0);
 	else if ($("#main-div[data-namespace='explore'] div#result-pane").length > 0)
 		window.location = $(this).data("url")+'&offset=0&number='+$(this).val();
-//		Whitelab.explore.getQueryResult($(this).val(),0);
 	else
 		window.location = Whitelab.getListPage('#'+$("div.page-list-main").attr('id'),$("div.page-list-main").data('url'),$(this).val(),0,null,null);
 });
@@ -362,10 +360,8 @@ $(document).on('change', '.pagination-go-to', function(e) {
 	var o = ($(this).val() - 1) * n;
 	if ($("#main-div[data-namespace='search'] div#result-pane").length > 0)
 		window.location = $(this).data("url")+'&offset='+o+'&number='+n;
-//		Whitelab.search.getQueryResult(n,o);
 	else if ($("#main-div[data-namespace='explore'] div#result-pane").length > 0)
 		window.location = $(this).data("url")+'&offset='+o+'&number='+n;
-//		Whitelab.explore.getQueryResult(n,o);
 	else if ($("#document-display").length > 0)
 		Whitelab.document.loadDocument($("#main-div").data("namespace"),$("#document-display").data("tab"), $("#document-display").data("xmlid"), $("#document-display").data("query-id"),o,n);
 	else
