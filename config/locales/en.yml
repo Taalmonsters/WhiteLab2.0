@@ -55,7 +55,9 @@ en:
       sentence: sentence
       word: word
       word_token: word token
+      token: token
       word_type: word type
+      type: type
       lemma: lemma
       pos: part of speech
       pos_tag: part of speech
@@ -115,6 +117,7 @@ en:
       explore: explore
       corpora: corpora
       statistics: statistics
+      document_statistics: document statistics
       ngrams: n-grams
       document: document
       results: results
@@ -169,6 +172,7 @@ en:
       bubble_z_title: Document count
       bubble_unit: tokens
       growth_title: Vocabulary growth
+      pos_pie_title: Token/POS Distribution
   button_labels:
     title: Button labels
     description: Translations of button labels

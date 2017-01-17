@@ -55,7 +55,9 @@ nl:
       sentence: zin
       word: woord
       word_token: woord token
+      token: token
       word_type: woord type
+      type: type
       lemma: lemma
       pos: woordsoort
       pos_tag: woordsoort
@@ -115,6 +117,7 @@ nl:
       explore: verken
       corpora: corpora
       statistics: statistieken
+      document_statistics: document statistieken
       ngrams: n-grammen
       document: document
       results: resultaten
@@ -169,6 +172,7 @@ nl:
       bubble_z_title: Aantal documenten
       bubble_unit: tokens
       growth_title: Vocabulaire groei
+      pos_pie_title: Token/POS Distributie
   button_labels:
     title: Button labels
     description: Vertalingen van button labels

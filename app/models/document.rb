@@ -92,7 +92,7 @@ class Document
         y2: ActionController::Base.helpers.number_with_precision((l.to_f / total_unique_lemmas) * 100, precision: 1, separator: I18n.t(:"other.keys.numeric_separator"))
       }
     end
-    return { title: 'Vocabulary growth', data: [{ name: 'word_types', color: '#A90C28', data: vocab_growth['types'] }, { name: 'lemmas', color: '#53c4c3', data: vocab_growth['lemmas'] }] }
+    return { title: I18n.t(:"chart_labels.keys.growth_title"), labels: { unique: I18n.t(:"other.keys.unique").capitalize, progress: I18n.t(:"other.keys.progress").capitalize }, data: [{ name: I18n.t(:"data_labels.keys.word_type").pluralize, color: '#A90C28', data: vocab_growth['types'] }, { name: I18n.t(:"data_labels.keys.lemma").pluralize, color: '#53c4c3', data: vocab_growth['lemmas'] }] }
   end
   
   def statistics
@@ -107,7 +107,7 @@ class Document
   end
   
   def pos_distribution
-    return { title: 'Token/POS Distribution', data: self.get_content['pos'].group_by{|pos| pos.split('(')[0] }.each{|_,list| list.size }.sort_by{|_, freq| freq }.reverse.map{|pos_head,freq| { name: pos_head, y: freq.size } } }
+    return { title: I18n.t(:"chart_labels.keys.pos_pie_title"), data: self.get_content['pos'].group_by{|pos| pos.split('(')[0] }.each{|_,list| list.size }.sort_by{|_, freq| freq }.reverse.map{|pos_head,freq| { name: pos_head, y: freq.size } } }
   end
   
   def content(offset = 0, number = 50)

@@ -2,13 +2,13 @@
 	<div class="col-xs-12 col-sm-6" style="height: 300px; margin: 25px auto;">
 		<table class="table" id="doc-stats">
 			<thead>
-				<tr><th colspan="2" class="center-aligned">Document statistics</th></tr>
+				<tr><th colspan="2" class="center-aligned"><%= t(:"page_titles.keys.document_statistics").titleize %></th></tr>
 			</thead>
 			<tbody>
-				<tr><th>Tokens</th><td><%= data['token_count'] %></td></tr>
-				<tr><th>Types</th><td><%= data['type_count'] %></td></tr>
-				<tr><th>Lemmas</th><td><%= data['lemma_count'] %></td></tr>
-				<tr><th>Type/token ratio</th><td>1/<%= '%.1f' % (data['token_count']/(data['type_count']*1.0)) %> (<%= '%.2f' % (1 / (data['token_count']/(data['type_count']*1.0))) %>)</td></tr>
+				<tr><th><%= t(:"data_labels.keys.token").pluralize.titleize %></th><td><%= data['token_count'] %></td></tr>
+				<tr><th><%= t(:"data_labels.keys.type").pluralize.titleize %></th><td><%= data['type_count'] %></td></tr>
+				<tr><th><%= t(:"data_labels.keys.lemma").pluralize.titleize %></th><td><%= data['lemma_count'] %></td></tr>
+				<tr><th><%= t(:"data_labels.keys.type").titleize %>/<%= t(:"data_labels.keys.token") %> ratio</th><td>1/<%= '%.1f' % (data['token_count']/(data['type_count']*1.0)) %> (<%= '%.2f' % (1 / (data['token_count']/(data['type_count']*1.0))) %>)</td></tr>
 			</tbody>
 		</table>
 	</div>
