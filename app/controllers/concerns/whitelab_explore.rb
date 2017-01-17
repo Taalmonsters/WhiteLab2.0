@@ -50,7 +50,7 @@ module WhitelabExplore
   
   # Check allowed parameters for query creation
   def query_create_params
-    params.permit(:_, :format, :patt, :id, :within, :filter, :view, :listtype, :size, :group, :sort, :order, :offset, :number, :input_page, :sample, :samplenum, :sampleseed)
+    params.permit(:_, :format, :patt, :id, :within, :filter, :view, :listtype, :size, :group, :sort, :order, :offset, :number, :input_page, :sample, :samplenum, :sampleseed, :gap_values_tsv)
   end
   
 end

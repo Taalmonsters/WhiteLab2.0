@@ -79,23 +79,6 @@
   position: relative;
 }
 
-input.loadxml {
-  z-index:50;
-  opacity:0;
-  margin: 0;
-  cursor: default;
-  width: 87px !important;
-  height: 34px;
-  overflow: hidden;
-  position: absolute;
-  right: 0;
-  top: 15px;
-  &.explore-xml {
-    top: 0px;
-    right: 15px;
-  }
-}
-
 input.loadlist {
   z-index:2;
   opacity:0;

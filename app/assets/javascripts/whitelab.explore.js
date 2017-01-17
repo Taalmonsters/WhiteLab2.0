@@ -87,10 +87,30 @@ Whitelab.explore = {
 			Whitelab.explore.ngrams.parseQueryToInterface($('#ngrams').data('query-pattern'),$('#ngrams').data('ngram-size'),$('#ngrams').data('query-group'));
 			
 		},
-		
-		parseQueryToInterface : function(pattern, size, group) {
-			Whitelab.cql.cqlToNgramsInterface(pattern, size, group);
-		},
+
+        importGapQuery: function(e, el) {
+            e.preventDefault();
+            alert("Sorry! This functionality has yet to be implemented on the backend. Once it has, you will be able to "+
+            "use this button to upload a TSV file with terms to complete a query with marked gaps. For instance, given a query:\n\n"+
+            "[lemma=~][pos=\"LID.*\"][lemma=~]\n\n"+
+            "you would supply a list with two tab-separated columns of terms, where the terms in the first column will be "+
+            "entered at the position of the first gap (~) and the words in the second column at the position of the second gap. "+
+            "This mimics the batch functionality of the Extended and Advanced search interfaces.\n\n"+
+            "Please note that for this to work, you do need to enter a tilde (~) in the field where you want the substitution to take place. "+
+            "An empty field will match any term.");
+            e.stopPropagation();
+ //			var file = el.files[0];
+ //			var ext = file["name"].length - 3;
+ //			if (file["name"].toLowerCase().indexOf("tsv") == ext || file["name"].toLowerCase().indexOf("txt") == ext) {
+ //				var fr = new FileReader();
+ //				fr.onload = function(e) {
+ //				    $("#gap_values_tsv_input").parent().removeClass("hidden");
+ //				    $("#gap_values_tsv_input").val(e.target.result);
+ //                }
+ //                fr.readAsText(file);
+ //			} else
+ //				alert("Only TSV or TXT files allowed!");
+        },
 		
 		getPatternFromInput : function() {
 			var parts = new Array();
@@ -102,9 +122,11 @@ Whitelab.explore = {
 					value = $("#field-"+i+" .field-input").find(':selected').val();
 				if (value.length == 0) {
 					parts.push("[]");
-				} else if (value.match(/^\$[1-5]$/)) {
-					parts.push("["+value+"]");
-				} else {
+				} else if (value.match(/^\~$/)) {
+					parts.push("["+type+'='+value+']');
+                } else if (value.match(/^\$[1-5]$/)) {
+                    parts.push("["+value+"]");
+                } else {
 					parts.push("["+type+'="'+value+'"]');
 				}
 			}
@@ -115,6 +137,10 @@ Whitelab.explore = {
 			query = query.replace(/\[\]\[\]/g,"[]{2}");
 			
 			return query;
+		},
+
+		parseQueryToInterface : function(pattern, size, group) {
+			Whitelab.cql.cqlToNgramsInterface(pattern, size, group);
 		},
 		
 		setTokenInput : function(item, value) {
@@ -145,6 +171,7 @@ Whitelab.explore = {
 		    	if (withinSafeLimit || confirm("You have selected a subcorpus of over "+Whitelab.metadata.filterTokenSafeLimit+" tokens. Please note that this query, on first execution, may take a considerable amount of time to complete. Proceed with caution.\n\nContinue?")) {
 		    		$('#ngrams-input-form #patt').val(patt);
 			    	$('#ngrams-input-form #filter').val(filterString);
+			    	$('#ngrams-input-form #gap_values_tsv').val($("#gap_values_tsv_input").val());
 			    	$('#ngrams-input-form').submit();
 		    	}
 		    } else {
