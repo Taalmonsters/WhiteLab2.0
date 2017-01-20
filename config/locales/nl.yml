@@ -46,6 +46,7 @@ nl:
       corpus: corpus
       collection: collectie
       document: document
+      documents: documenten
       actor: actor
       speaker: spreker
       author: auteur
@@ -86,6 +87,7 @@ nl:
       case_sensitive: hoofdlettergevoelig
       case_insensitive: niet hoofdlettergevoelig
       hit: hit
+      hits: hits
       left: links
       right: rechts
       value_type: waarde type

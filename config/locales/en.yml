@@ -46,6 +46,7 @@ en:
       corpus: corpus
       collection: collection
       document: document
+      documents: documents
       actor: actor
       speaker: speaker
       author: author
@@ -86,6 +87,7 @@ en:
       case_sensitive: case sensitive
       case_insensitive: case insensitive
       hit: hit
+      hits: hits
       left: left
       right: right
       value_type: value type
