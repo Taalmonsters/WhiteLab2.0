@@ -9,19 +9,45 @@
 	</div>
 <% elsif !@query.failed? %>
 	<div class="row pagination-row pagination-top">
-		<%= render partial: "/layouts/pagination_with_url", layout: false, locals: { numbarr: [50, 100, 200], url: "/#{@namespace}/#{@query.page}?#{@query.assemble_url_params(['patt', 'filter', 'within', 'view', 'group', 'sample', 'samplenum', 'sampleseed', 'gap_values_tsv'])}", total: @query.total, offset: @query.offset, number: @query.number } %>
+	    <%= render partial: "/layouts/pagination_with_url", layout: false, locals: { numbarr: [50, 100, 200], url: "/#{@namespace}/#{@query.page}?#{@query.assemble_url_params(['patt', 'filter', 'within', 'view', 'group', 'viewgroup', 'sort', 'sample', 'samplenum', 'sampleseed', 'gap_values_tsv'])}", total: @query.total, offset: @query.offset, number: @query.number } %>
 	</div>
 	<div class="row" id="docs">
 		<table class="table table-hover table-striped">
+		    <% sort_url = @query.assemble_url_params(['patt', 'filter', 'within', 'view', 'group', 'offset', 'number', 'sample', 'samplenum', 'sampleseed', 'gap_values_tsv']) %>
 			<thead>
 				<tr>
-					<th><%= t(:"data_labels.keys.document").capitalize %></th>
+					<th>
+					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('field:id') ? '-' : ''}field:id" %>">
+					        <span class="glyphicon glyphicon-sort"></span>
+					    </a>
+					    <%= t(:"data_labels.keys.document").capitalize %>
+					</th>
 					<% if ENABLE_METADATA_FILTERING %>
-					<th><%= t(:"data_labels.keys.collection").capitalize %></th>
-					<th><%= t(:"data_labels.keys.corpus").capitalize %></th>
+					<th>
+					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('field:Collection_title') ? '-' : ''}field:Collection_title" %>">
+					        <span class="glyphicon glyphicon-sort"></span>
+					    </a>
+					    <%= t(:"data_labels.keys.collection").capitalize %>
+					</th>
+					<th>
+					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('field:Corpus_title') ? '-' : ''}field:Corpus_title" %>">
+					        <span class="glyphicon glyphicon-sort"></span>
+					    </a>
+					    <%= t(:"data_labels.keys.corpus").capitalize %>
+					</th>
 					<% end %>
-					<th># <%= t(:"results.keys.hits").capitalize %></th>
-					<th><%= t(:"results.keys.relative_hits").capitalize %></th>
+					<th>
+					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('numhits') ? '-' : ''}numhits" %>">
+					        <span class="glyphicon glyphicon-sort"></span>
+					    </a>
+					    # <%= t(:"results.keys.hits").capitalize %>
+					</th>
+					<th>
+					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('numhits') ? '-' : ''}numhits" %>">
+					        <span class="glyphicon glyphicon-sort"></span>
+					    </a>
+					    <%= t(:"results.keys.relative_hits").capitalize %>
+					</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -55,6 +81,6 @@
 		</table>
 	</div>
 	<div class="row pagination-row">
-		<%= render partial: "/layouts/pagination_with_url", layout: false, locals: { numbarr: [50, 100, 200], url: "/#{@namespace}/#{@query.page}?#{@query.assemble_url_params(['patt', 'filter', 'within', 'view', 'group', 'sample', 'samplenum', 'sampleseed', 'gap_values_tsv'])}", total: @query.total, offset: @query.offset, number: @query.number } %>
+		<%= render partial: "/layouts/pagination_with_url", layout: false, locals: { numbarr: [50, 100, 200], url: "/#{@namespace}/#{@query.page}?#{@query.assemble_url_params(['patt', 'filter', 'within', 'view', 'group', 'viewgroup', 'sort', 'sample', 'samplenum', 'sampleseed', 'gap_values_tsv'])}", total: @query.total, offset: @query.offset, number: @query.number } %>
 	</div>
 <% end %>

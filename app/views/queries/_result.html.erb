@@ -3,7 +3,7 @@
 		<%= render partial: "/"+@namespace+"/queries/result_tabs", layout: false, locals: { view: query.view } %>
 	<% end %>
 <% elsif @namespace.eql?('search') %>
-	<%= render partial: "/"+@namespace+"/queries/result_tabs", layout: false, locals: { view: @query.view, viewgroup: @query.viewgroup, url_params: @query.assemble_url_params(['patt', 'filter', 'within', 'sample', 'samplenum', 'sampleseed', 'gap_values_tsv']) } %>
+	<%= render partial: "/"+@namespace+"/queries/result_tabs", layout: false, locals: { view: @query.view, viewgroup: @query.viewgroup, url_params: @query.assemble_url_params(['patt', 'filter', 'within', 'sort', 'sample', 'samplenum', 'sampleseed', 'gap_values_tsv']) } %>
 <% end %>
 <div id="query-result" class="tab-content">
 	<% if query.view == 1 %>

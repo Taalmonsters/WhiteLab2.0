@@ -21,7 +21,7 @@
 				</thead>
 				<tbody>
 					<% @search_queries.each do |query| %>
-						<tr id="<%= query.id %>" class="clickable" data-url="<%= "/search/#{query.page}?#{query.assemble_url_params(['id', 'patt', 'filter', 'within', 'view', 'group', 'viewgroup', 'sample', 'samplenum', 'sampleseed', 'page', 'number', 'offset', 'gap_values_tsv'])}" %>" data-namespace="search" data-query-id="<%= query.id %>">
+						<tr id="<%= query.id %>" class="clickable" data-url="<%= "/search/#{query.page}?#{query.assemble_url_params(['id', 'patt', 'filter', 'within', 'view', 'group', 'sort', 'viewgroup', 'sample', 'samplenum', 'sampleseed', 'page', 'number', 'offset', 'gap_values_tsv'])}" %>" data-namespace="search" data-query-id="<%= query.id %>">
 							<td class="patt" data-patt="<%= query.patt %>"><%= query.patt %></td>
                             <td class="gap_values_tsv"><%= query.gap_values_tsv.blank? ? '-' : '<span class="glyphicon glyphicon-ok"></span>'.html_safe %></td>
                             <td class="within" data-within="<%= query.within %>"><%= query.within %></td>
@@ -73,7 +73,7 @@
 			</thead>
 			<tbody>
 				<% @explore_queries.each do |query| %>
-					<tr id="<%= query.id %>" class="clickable" data-url="<%= "/explore/#{query.page}?#{query.assemble_url_params(['id', 'patt', 'filter', 'within', 'view', 'group', 'sample', 'samplenum', 'sampleseed', 'page', 'number', 'offset', 'listtype', 'gap_values_tsv'])}" %>" data-namespace="explore" data-query-id="<%= query.id %>">
+					<tr id="<%= query.id %>" class="clickable" data-url="<%= "/explore/#{query.page}?#{query.assemble_url_params(['id', 'patt', 'filter', 'within', 'view', 'group', 'sort', 'sample', 'samplenum', 'sampleseed', 'page', 'number', 'offset', 'listtype', 'gap_values_tsv'])}" %>" data-namespace="explore" data-query-id="<%= query.id %>">
 						<td class="patt" data-patt="<%= query.patt %>"><%= query.patt %></td>
                         <td class="gap_values_tsv"><%= query.gap_values_tsv.blank? ? '-' : '<span class="glyphicon glyphicon-ok"></span>'.html_safe %></td>
 						<td class="page" data-page="<%= query.page %>"><%= query.page %></td>

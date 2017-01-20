@@ -7,21 +7,57 @@
 <% elsif !@query.failed? %>
 	<% docs = [] %>
 	<div class="row pagination-row pagination-top">
-		<%= render partial: "/layouts/pagination_with_url", layout: false, locals: { numbarr: [50, 100, 200], url: "/#{@namespace}/#{@query.page}?#{@query.assemble_url_params(['patt', 'filter', 'within', 'view', 'group', 'sample', 'samplenum', 'sampleseed', 'gap_values_tsv'])}", total: @query.total, offset: @query.offset, number: @query.number } %>
+		<%= render partial: "/layouts/pagination_with_url", layout: false, locals: { numbarr: [50, 100, 200], url: "/#{@namespace}/#{@query.page}?#{@query.assemble_url_params(['patt', 'filter', 'within', 'view', 'group', 'viewgroup', 'sort', 'sample', 'samplenum', 'sampleseed', 'gap_values_tsv'])}", total: @query.total, offset: @query.offset, number: @query.number } %>
 	</div>
 	<div class="row" id="hits">
 		<table class="table table-hover table-striped">
+		    <% sort_url = @query.assemble_url_params(['patt', 'filter', 'within', 'view', 'group', 'viewgroup', 'offset', 'number', 'sample', 'samplenum', 'sampleseed', 'gap_values_tsv']) %>
 			<thead>
 				<tr>
 					<% if ENABLE_METADATA_FILTERING %>
-					<th><%= t(:"data_labels.keys.corpus").capitalize %></th>
+					<th>
+					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('field:Corpus_title') ? '-' : ''}field:Corpus_title" %>">
+					        <span class="glyphicon glyphicon-sort"></span>
+					    </a>
+					    <%= t(:"data_labels.keys.corpus").capitalize %>
+					</th>
 					<% end %>
-					<th class="right-aligned"><%= t(:"results.keys.context").capitalize+" "+t(:"results.keys.left") %></th>
-					<th class="center-aligned"><%= t(:"data_labels.keys.hit").capitalize %></th>
-					<th><%= t(:"results.keys.context").capitalize+" "+t(:"results.keys.right") %></th>
-					<th><%= t(:"data_labels.keys.hit").capitalize+" "+t(:"data_labels.keys.lemma").capitalize %></th>
-					<th><%= t(:"data_labels.keys.hit").capitalize+" "+t(:"data_labels.keys.pos").capitalize %></th>
-					<th><%= t(:"data_labels.keys.hit").capitalize+" "+t(:"data_labels.keys.phonetic").capitalize %></th>
+					<th class="right-aligned">
+					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.start_with?('context') ? '-' : ''}context:word:s:L5-5%3BL4-4%3BL3-3%3BL2-2%3BL1-1" %>">
+					        <span class="glyphicon glyphicon-sort"></span>
+					    </a>
+					    <%= t(:"results.keys.context").capitalize+" "+t(:"results.keys.left") %>
+					</th>
+					<th class="center-aligned">
+					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('hit:word:s') ? '-' : ''}hit:word:s" %>">
+					        <span class="glyphicon glyphicon-sort"></span>
+					    </a>
+					    <%= t(:"data_labels.keys.hit").capitalize %>
+					</th>
+					<th>
+					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('right') ? '-' : ''}right" %>">
+					        <span class="glyphicon glyphicon-sort"></span>
+					    </a>
+					    <%= t(:"results.keys.context").capitalize+" "+t(:"results.keys.right") %>
+					</th>
+					<th>
+					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('hit:lemma:s') ? '-' : ''}hit:lemma:s" %>">
+					        <span class="glyphicon glyphicon-sort"></span>
+					    </a>
+					    <%= t(:"data_labels.keys.hit").capitalize+" "+t(:"data_labels.keys.lemma").capitalize %>
+					</th>
+					<th>
+					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('hit:pos:s') ? '-' : ''}hit:pos:s" %>">
+					        <span class="glyphicon glyphicon-sort"></span>
+					    </a>
+					    <%= t(:"data_labels.keys.hit").capitalize+" "+t(:"data_labels.keys.pos").capitalize %>
+					</th>
+					<th>
+					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('hit:phonetic:s') ? '-' : ''}hit:phonetic:s" %>">
+					        <span class="glyphicon glyphicon-sort"></span>
+					    </a>
+					    <%= t(:"data_labels.keys.hit").capitalize+" "+t(:"data_labels.keys.phonetic").capitalize %>
+					</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -74,6 +110,6 @@
 		</table>
 	</div>
 	<div class="row pagination-row">
-		<%= render partial: "/layouts/pagination_with_url", layout: false, locals: { numbarr: [50, 100, 200], url: "/#{@namespace}/#{@query.page}?#{@query.assemble_url_params(['patt', 'filter', 'within', 'view', 'group', 'sample', 'samplenum', 'sampleseed', 'gap_values_tsv'])}", total: @query.total, offset: @query.offset, number: @query.number } %>
+		<%= render partial: "/layouts/pagination_with_url", layout: false, locals: { numbarr: [50, 100, 200], url: "/#{@namespace}/#{@query.page}?#{@query.assemble_url_params(['patt', 'filter', 'within', 'view', 'group', 'viewgroup', 'sort', 'sample', 'samplenum', 'sampleseed', 'gap_values_tsv'])}", total: @query.total, offset: @query.offset, number: @query.number } %>
 	</div>
 <% end %>
