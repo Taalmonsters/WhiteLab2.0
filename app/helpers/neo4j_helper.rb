@@ -347,6 +347,10 @@ module Neo4jHelper
       return { "results" => get_grouped_results(key, search_obj)[key] }
     end
   end
+
+  def name
+    return "Neo4J"
+  end
   
   # Run CQL query on server for set amount of iterations
   def run_benchmark_test(cql,iterations)
@@ -375,6 +379,11 @@ module Neo4jHelper
         :method => 'post'
       })
     end
+  end
+
+  def version
+    response = get_headers({ :url => "#{backend.backend_url}db/data/" }).parsed_response
+    return response.has_key?("neo4j_version") ? response["neo4j_version"] : "UNKNOWN"
   end
   
 end

@@ -30,6 +30,7 @@ module WhitelabV20
     config.i18n.enforce_available_locales = false
     config.i18n.default_locale = :nl
     config.i18n.load_path += Dir["#{Rails.root.to_s}/config/locales/**/*.{rb,yml}"]
+    config.whitelab_version = File.read(Rails.root.join("VERSION.txt"))
     config.x.metadata_file_format = :json # :json or :yml
     config.x.database_type = 'blacklab'
     config.x.database_url = 'http://localhost:8080/blacklab-server/cgnsonar/'

@@ -455,6 +455,10 @@ module BlacklabHelper
     end
     return { 'total' => summary["numberOfGroups"], 'pos_tags' => resp["hitGroups"].map{|hit_group| reformat_pos_tag(hit_group) } }
   end
+
+  def name
+    return "BlackLab Server"
+  end
   
   # Reformat BlackLab content output to same format as Neo4J
   def reformat_content(xmlid, data)
@@ -577,6 +581,11 @@ module BlacklabHelper
   
   # Run CQL query on server for set amount of iterations, not implemented for BlackLab
   def run_benchmark_test(cql,iterations)
+  end
+
+  def version
+    response = get_headers({ :url => backend_url }).parsed_response
+    return response.has_key?("blacklabVersion") ? response["blacklabVersion"] : "1.5.0"
   end
   
 end

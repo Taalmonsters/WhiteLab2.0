@@ -2,10 +2,11 @@ backend = WhitelabBackend.instance
 logger = Logger.new STDOUT
 logger.formatter = Logger::Formatter.new
 
-logger.info "Using backend '"+backend.get_backend_type+"'"
+logger.info "Initializing Whitelab version #{Rails.application.config.whitelab_version}"
+logger.info "Using backend '#{backend.get_backend_type}' version #{backend.version}"
 
 data = {
-  :url => backend.get_backend_type.eql?('neo4j') ? backend.backend_url+'db/data/' : backend.backend_url,
+  :url => backend.get_backend_type.eql?('neo4j') ? "#{backend.backend_url}db/data/" : backend.backend_url,
   :headers => backend.headers
 }
 

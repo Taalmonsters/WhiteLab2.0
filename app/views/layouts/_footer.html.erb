@@ -1,4 +1,8 @@
-	</div>
+</div>
+       	<div class="footer">
+	        <p><%= t("instructions.keys.footer_text", whitelab_version: Rails.application.config.whitelab_version, backend_name: @whitelab.name, backend_version: @whitelab.version) %></p>
+	    </div>
+
 	<%= render partial: "layouts/dialogs" %>
 	<%= render partial: "layouts/tour" if !@tour_title.blank? %>
 	<%= render 'cookies_eu/consent_banner' %>

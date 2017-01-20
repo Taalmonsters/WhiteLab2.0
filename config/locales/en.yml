@@ -242,6 +242,7 @@ en:
         until all queries are finished. Queries are not saved across sessions.
       export_alert: Your export has been added to your search history. Once it is
         completed you can download the results from there.
+      footer_text: This application runs on WhiteLab version %{whitelab_version} and %{backend_name} version %{backend_version}
   cql_info:
     title: CQL info
     description: Translations of CQL instructions in Expert Search

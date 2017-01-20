@@ -243,6 +243,7 @@ nl:
         until all queries are finished. Queries are not saved across sessions.
       export_alert: Uw export is toegevoegd aan uw zoekgeschiedenis. Wanneer de export
         compleet is, kunt u deze daar downloaden.
+      footer_text: Deze applicatie gebruikt WhiteLab versie %{whitelab_version} en %{backend_name} versie %{backend_version}
   cql_info:
     title: CQL info
     description: Vertalingen van CQL instructies in Expert Zoeken
