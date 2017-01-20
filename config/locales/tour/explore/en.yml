@@ -15,13 +15,13 @@ en:
       content: "Here you can use simple selections to define the subcorpus that you wish to query. Use the plus- and minus-buttons to add/remove rules."
       position: left
     - target: "#metadata-options #sample_size"
-      content: ""
+      content: "Besides searching all corpora, you can also draw results from a random sample. Use this option to define the size of the random sample to return."
       position: bottom
     - target: "#metadata-options #sample_type"
-      content: ""
+      content: "Use this option to define whether to interpret the sample size as a percentage or absolute value (tokens)."
       position: bottom
     - target: "#metadata-options #seed"
-      content: ""
+      content: "Samples are generated using unique seed numbers, which is reported back to you on retrieving a sample. Enter a number between -9223372036854775808 and 9223372036854775807 in this field to set the seed to retrieve a specific sample."
       position: bottom
     - target: ".treemap-controls li.grouping"
       position: left

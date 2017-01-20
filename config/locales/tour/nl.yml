@@ -8,16 +8,19 @@ nl:
   after_ns:
     - target: ".btn-import-xml"
       position: bottom
-      content: ""
+      content: "Gebruik deze knop om een XML bestand te uploaden met daarin een query definitie. Query definities kunnen worden gedownload via het Zoekopdracht overzicht voor iedere zoekopdracht die wordt uitgevoerd in WhiteLab. U heeft ook de optie om zelf een query definitie samen te stellen met behulp van <a href=\"#\">deze handleiding</a>."
     - target: ".btn-import-tsv"
       position: bottom
-      content: ""
+      content: "Gebruik deze knop om een TSV bestand te uploaden met daarin termen om een query met gemarkeerde gaps aan te vullen. Bijvoorbeeld, gegeven een query:<ul class=\"list-unstyled\"><li>[lemma=~][pos=\"LID.*\"][lemma=~]</li></ul>zou u een lijst aanleveren met twee tab-gescheiden kolommen met termen, waarbij de termen in de eerste kolom ingevuld zullen worden op de positie van de eerste gap (~) aen de woorden in de tweede kolom op de positie van de tweede gap. Dit bootst de batch functionaliteit van de Uitgebreid en Geavanceerd zoek interfaces.<br/><br/>NB: dit werkt alleen wanneer u een tilde (~) invult in het veld waar u de substitutie toe wil passen. Een leeg veld ([]) zal matchen op iedere term."
+    - target: "#gap_values_tsv"
+      position: left
+      content: "Na het uploaden van een TSV bestand verschijnt hier de inhoud van het bestand. U kunt deze wijzigen, indien nodig, voordat u de zoekopdracht uitvoert."
     - target: "#history-label .btn-export-xml"
       position: top
-      content: ""
+      content: "Gebruik deze knop om een XML bestand te downloaden met daarin een definitie van uw huidige zoekopdracht. U kunt deze file ten alle tijden weer uploaden via de Expert zoek interface om de zoekopdracht te herhalen."
     - target: "#max_count"
       position: top
-      content: ""
+      content: "Voor langdurende zoekopdrachten kunt u dit vakje aanvinken om het tellen van resultaten voortijdig te stoppen."
     - target: "#query-details table"
       content: "Hier wordt een samenvatting van uw huidige zoekopdracht weergegeven."
       position: bottom
@@ -27,44 +30,35 @@ nl:
     - target: "#results .nav.custom1"
       content: "De resultaten zijn onderverdeeld in 3 secties: frequentielijst, documentenlijst en vocabulaire groei."
       position: top
-    - target: ".pagination-row .pagination-size-select"
-      position: bottom
-      content: ""
-    - target: ".pagination-row .btn-group"
-      position: bottom
-      content: ""
-    - target: ".pagination-row #go_to"
-      position: bottom
-      content: ""
     - target: "#hits thead"
       content: "De <b>hits</b> weergave toont alle afzonderlijke hits in het corpus."
       position: top
     - target: "#hits .clickable"
-      content: ""
+      content: "Wanneer u met uw muis over een rij in de Hits tabel beweegt ziet u een selectie van de metadata van het document. Klik op een rij om de hit in zijn context te zien."
       position: left
     - target: "#docs thead"
       content: "De <b>documenten</b> weergave toont alle documenten waarin hits gevonden zijn."
       position: top
     - target: "#docs .clickable"
-      content: ""
+      content: "Wanneer u met uw muis over een rij in de Documenten tabel beweegt ziet u een selectie van de metadata van het document. Klik op een rij om de hits in het document te zien in hun context."
       position: left
     - target: "#query-result select#group"
       content: "Zowel in de <b>gegroepeerde hits</b> weergave als de <b>gegroepeerde documenten</b> weergave kunt u kiezen uit meerdere attributen om de hits of documenten te groeperen."
       position: top
     - target: "#query-result #group_case"
-      content: ""
+      content: "Vink dit vakje aan om hoofdlettergevoelig te groeperen."
       position: bottom
     - target: "#query-result #context_type"
-      content: ""
+      content: "Selecteer of u de context wil groeperen op woord, lemma, woordsoort or fonetische transcriptie."
       position: top
     - target: "#query-result #context-left th"
-      content: ""
+      content: "Hier kunt u delen van de context links van de hit selecteren om op te groeperen. De matches worden teruggegeven in dezelfde volgorde als waarin u ze ingeeft. Bijvoorbeeld, als u eerst het eerste woord links van de hit (L1-1) ingeeft, en vervolgens het derde woord links van de hit (L3-3), dan worden de resultaten gegroepeerd op 'L1-1 L3-3', ook al komt L3-3 in de originele context vóór L1-1 komt. Voor meer informatie, zie <a href=\"http://inl.github.io/BlackLab/blacklab-server-overview.html\#sorting-grouping-faceting\">hier</a>."
       position: top
     - target: "#query-result #context-hit th"
-      content: ""
+      content: "Hier kunt selecteren of u de hele hit, of specifieke delen van de hit wil gebruiken om op te groeperen. De matches worden teruggegeven in dezelfde volgorde als waarin u ze ingeeft. Bijvoorbeeld, als u eerst het derde woord van de hit (H3-3) ingeeft, en vervolgens het eerste woord van de hit (H1-1), dan worden de resultaten gegroepeerd op 'H3-3 H1-1', ook al komt H1-1 in de originele context vóór H3-3 komt. Voor meer informatie, zie <a href=\"http://inl.github.io/BlackLab/blacklab-server-overview.html\#sorting-grouping-faceting\">hier</a>."
       position: top
     - target: "#query-result #context-right th"
-      content: ""
+      content: "Hier kunt u delen van de context rechts van de hit selecteren om op te groeperen. De matches worden teruggegeven in dezelfde volgorde als waarin u ze ingeeft. Bijvoorbeeld, als u eerst het derde woord rechts van de hit (R3-3) ingeeft, en vervolgens het eerste woord rechts van de hit (R1-1), dan worden de resultaten gegroepeerd op 'R3-3 R1-1', ook al komt R1-1 in de originele context vóór R3-3 komt. Voor meer informatie, zie <a href=\"http://inl.github.io/BlackLab/blacklab-server-overview.html\#sorting-grouping-faceting\">hier</a>."
       position: top
     - target: "#grouped-hits thead"
       content: "Deze weergave toont alle gevonden hits gegroepeerd volgens het geselecteerde attribuut."

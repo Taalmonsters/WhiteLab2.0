@@ -17,26 +17,23 @@ nl:
     - target: "#metadata-filters .rule"
       content: "Hier definieert u met behulp van gemakkelijke selecties welk deel van de corpora u wilt doorzoeken. Gebruik de plus- en min-knoppen om regels toe te voegen/te verwijderen."
       position: left
-#    - target: "#metadata-options"
-#      content: "U kunt er ook voor kiezen om de resultaten onmiddellijk te groeperen op basis van verschillende kenmerken, en aangeven of een match zins- of paragraafgrenzen mag overschrijden met 'Zoek binnen'."
-#      position: left
     - target: "#metadata-options #show"
-      content: ""
+      content: "Selecteer of u hits of documenten wilt ophalen."
       position: top
     - target: "#metadata-options #within"
-      content: ""
+      content: "Hier kunt u aangeven of een match zins- of paragraafgrenzen mag overschrijden."
       position: top
     - target: "#metadata-options #group"
-      content: ""
+      content: "Gebruik deze optie om de resultaten onmiddellijk te groeperen."
       position: top
     - target: "#metadata-options #sample_size"
-      content: ""
+      content: "Behalve zoeken in alle corpora kunt u de resultaten ook uit een willekeurige sample laten extraheren. Gebruik deze optie om de grootte van de gebruikte sample te definiëren."
       position: bottom
     - target: "#metadata-options #sample_type"
-      content: ""
+      content: "Gebruik deze optie om aan te geven of de sample grootte als een percentage of een absolute waarde (tokens) geïnterpreteerd moet worden."
       position: bottom
     - target: "#metadata-options #seed"
-      content: ""
+      content: "Samples worden gegenereerd met unieke seed nummers, welke aan u gerapporteerd wordt wanneer u een sample ophaalt. Vul hier een getal tussen -9223372036854775808 en 9223372036854775807 in om een specifieke sample op te halen."
       position: bottom
     - target: "#extended #word-text"
       content: "Bij <b>uitgebreid</b> zoeken kunt u zoeken naar een term of frase in zijn oppervlaktevorm (woord) of zijn gelemmatiseerde vorm (lemma), of om een specifieke woordsoort te selecteren.
@@ -50,18 +47,18 @@ Het is ook mogelijk om de velden te combineren en een meer precieze zoekopdracht
       position: right
     - target: "#extended #pos-text"
       position: left
-      content: ""
+      content: "Gebruik deze optie om een specifieke Part-of-Speech hoofd tag to selecteren."
     - target: "#extended #extended-refine-pos"
       position: left
-      content: ""
+      content: "Klik op deze link om de geselecteerde Part-of-Speech tag te verfijnen."
     - target: "#extended .pos-feat-select"
       position: right
-      content: ""
+      content: "Gebruik deze opties om specifieke waarden te selecteren voor ieder attribuut van de geselecteerde Part-of-Speech tag."
     - target: "#advanced .advanced-column"
       position: left
-      content: ""
+      content: "Bij <b>geavanceerd</b> zoeken kunt u complexe zoekopdrachten op een visuele manier samenstellen. Elke kolom staat gelijk aan een positie in de frase. U kunt de kolommen verslepen om ze horizontaal te herordenen."
     - target: "#advanced .add-column"
-      content: "Bij <b>geavanceerd</b> zoeken kunt u complexe zoekopdrachten op een visuele manier samenstellen. Elke kolom staat gelijk aan een positie in de frase. Klik op deze knop om een kolom toe te voegen."
+      content: "Klik op deze knop om een kolom toe te voegen."
       position: top
     - target: "#advanced .token-type"
       content: "Hier selecteert u of u wilt matchen met een woord, lemma, Part-of-Speech tag of fonetische transcriptie."

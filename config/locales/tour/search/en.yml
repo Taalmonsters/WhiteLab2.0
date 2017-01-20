@@ -17,26 +17,23 @@ en:
     - target: "#metadata-filters .rule"
       content: "Here you can use simple selections to define the subcorpus that you wish to query. Use the plus- and minus-buttons to add/remove rules."
       position: left
-#    - target: "#metadata-options"
-#      content: "You can also choose to immediately group the results, or define whether a match is allowed to cross a sentence or paragraph boundary using 'within'."
-#      position: left
     - target: "#metadata-options #show"
-      content: ""
+      content: "Use this option to return either hits or documents."
       position: top
     - target: "#metadata-options #within"
-      content: ""
+      content: "Use this option to define whether a match is allowed to cross a sentence or paragraph boundary."
       position: top
     - target: "#metadata-options #group"
-      content: ""
+      content: "Use this option to immediately group the results."
       position: top
     - target: "#metadata-options #sample_size"
-      content: ""
+      content: "Besides searching all corpora, you can also draw results from a random sample. Use this option to define the size of the random sample to return."
       position: bottom
     - target: "#metadata-options #sample_type"
-      content: ""
+      content: "Use this option to define whether to interpret the sample size as a percentage or absolute value (tokens)."
       position: bottom
     - target: "#metadata-options #seed"
-      content: ""
+      content: "Samples are generated using unique seed numbers, which is reported back to you on retrieving a sample. Enter a number between -9223372036854775808 and 9223372036854775807 in this field to set the seed to retrieve a specific sample."
       position: bottom
     - target: "#extended #word-text"
       content: "In the <b>extended</b> view, you have the option to search for a word or phrase in its surface form (word) or its lemmatized form (lemma), or to select a specific part of speech. It is also possible to combine the fields to create a more precise query. Be aware that the term length of the phrases in each field must match for the query to be successful."
@@ -49,18 +46,18 @@ en:
       position: right
     - target: "#extended #pos-text"
       position: left
-      content: ""
+      content: "Use this option to select a specific Part-of-Speech head tag to match."
     - target: "#extended #extended-refine-pos"
       position: left
-      content: ""
+      content: "Click this link to refine the selected Part-of-Speech tag."
     - target: "#extended .pos-feat-select"
       position: right
-      content: ""
+      content: "Use these options to select specific values for each attribute of the selected Part-of-Speech tag."
     - target: "#advanced .advanced-column"
       position: left
-      content: ""
+      content: "In the <b>advanced</b> view, complex queries can be constructed in a visual manner. Each column represents one position in a phrase. You can drag the columns to reorder them horizontally."
     - target: "#advanced .add-column"
-      content: "In the <b>advanced</b> view, complex queries can be constructed in a visual manner. Each column represents one position in a phrase. Click this button to add a column."
+      content: "Click this button to add a column."
       position: top
     - target: "#advanced .token-type"
       content: "Here you select whether you want to match on word, lemma, Part-of-Speech tag or phonetic transcription."

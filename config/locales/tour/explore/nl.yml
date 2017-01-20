@@ -15,13 +15,13 @@ nl:
       content: "Hier definieert u met behulp van gemakkelijke selecties welk deel van de corpora u wilt doorzoeken. Gebruik de plus- en min-knoppen om regels toe te voegen/te verwijderen."
       position: left
     - target: "#metadata-options #sample_size"
-      content: ""
+      content: "Behalve zoeken in alle corpora kunt u de resultaten ook uit een willekeurige sample laten extraheren. Gebruik deze optie om de grootte van de gebruikte sample te definiëren."
       position: bottom
     - target: "#metadata-options #sample_type"
-      content: ""
+      content: "Gebruik deze optie om aan te geven of de sample grootte als een percentage of een absolute waarde (tokens) geïnterpreteerd moet worden."
       position: bottom
     - target: "#metadata-options #seed"
-      content: ""
+      content: "Samples worden gegenereerd met unieke seed nummers, welke aan u gerapporteerd wordt wanneer u een sample ophaalt. Vul hier een getal tussen -9223372036854775808 en 9223372036854775807 in om een specifieke sample op te halen."
       position: bottom
     - target: ".treemap-controls li.grouping"
       position: left
