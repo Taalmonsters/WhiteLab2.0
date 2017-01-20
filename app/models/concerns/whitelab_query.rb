@@ -148,6 +148,21 @@ module WhitelabQuery
   def columns
     self.patt.scan(/\]\[/).count + 1
   end
+
+  def do_run(max_count = nil)
+    res, backend_status = self.run
+    self.output = res
+    self.counting! if backend_status == 2
+    self.finished! if backend_status == 3 || (max_count && res.has_key?('hit_count') && res['hit_count'] >= max_count)
+    self.failed! if backend_status == 4
+    unless self.failed?
+      self.hit_count = res['hit_count']
+      self.document_count = res['document_count']
+      self.group_count = res['group_count'] if res.has_key?('group_count')
+      self.sampleseed = res['sampleseed'] unless res['sampleseed'].blank?
+      self.save
+    end
+  end
   
   def execute(threaded = true, max_count = nil)
     self.running!
@@ -155,32 +170,10 @@ module WhitelabQuery
       Rails.logger.debug "EXECUTING QUERY"
       if threaded
         Thread.new do
-          res, backend_status = self.run
-          self.output = res
-          self.counting! if backend_status == 2
-          self.finished! if backend_status == 3 || (max_count && res['hit_count'] >= max_count)
-          self.failed! if backend_status == 4
-          if [2,3].include?(backend_status)
-            self.hit_count = res['hit_count']
-            self.document_count = res['document_count']
-            self.group_count = res['group_count'] if res.has_key?('group_count')
-            self.sampleseed = res['sampleseed'] unless res['sampleseed'].blank?
-            self.save
-          end
+          self.do_run(max_count)
         end
       else
-        res, backend_status = self.run
-        self.output = res
-        self.counting! if backend_status == 2
-        self.finished! if backend_status == 3 || (max_count && res['hit_count'] >= max_count)
-        self.failed! if backend_status == 4
-        if [2,3].include?(backend_status)
-          self.hit_count = res['hit_count']
-          self.document_count = res['document_count']
-          self.group_count = res['group_count'] if res.has_key?('group_count')
-          self.sampleseed = res['sampleseed'] unless res['sampleseed'].blank?
-          self.save
-        end
+        self.do_run(max_count)
       end
     else
       Rails.logger.debug "NOT EXECUTING QUERY"

@@ -1,0 +1,4 @@
+<% query_result = @query.result(false) %>
+<div class='col-xs-12'>
+    <%= query_result.has_key?('error') ? query_result["error"] : "Failed to execute query." %>
+</div>

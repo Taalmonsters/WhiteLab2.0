@@ -44,20 +44,17 @@ module BlacklabHelper
     key = hits ? "hit" : "doc"
     key = grouped ? "#{key}Groups" : "#{key}s"
     Rails.logger.debug "KEY: #{key}"
-    Rails.logger.warn "Response does not have key #{key}:" if !response.has_key?(key)
-    Rails.logger.warn response.to_json if !response.has_key?(key)
-    output, status = {}, 4 if !response.has_key?(key)
-    unless status == 4
-      summary = response['summary']
-      output = reformat_output(response, key, query)
-      status = summary['stillCounting'] ? 2 : 3
-    end
+    status = response.has_key?(key) ? response['summary']['stillCounting'] ? 2 : 3 : 4
+    output = reformat_output(response, key, query)
     Rails.logger.debug "QUERY STATUS = #{status}"
     return output, status
   end
   
   def reformat_output(response, key, query)
     view = query.view
+    return {
+      'error' => "#{response['error']['code']}: #{response['error']['message']}"
+    } unless response.has_key?(key)
     summary = response['summary']
     hits = summary['numberOfHits']
     docs = summary['numberOfDocs']
