@@ -5,6 +5,9 @@ en:
     - position: bottom
       target: "#main-search"
       content: "You are currently in the WhiteLab Search interface. Here you will find different interfaces for different types of users and search strategies:<ul><li>Simple search for beginners</li><li>Extended search for intermediate users</li><li>Advanced search for experienced users</li><li>Expert search for expert users</li></ul>"
+    - position: bottom
+      target: "#search-nav"
+      content: "#search-nav"
     - position: left
       target: "#simple #patt"
       content: "<b>Simple</b> search offers a single input box. Here you can enter a word or a phrase to search for its occurrence throughout the entire corpus."
@@ -14,9 +17,27 @@ en:
     - target: "#metadata-filters .rule"
       content: "Here you can use simple selections to define the subcorpus that you wish to query. Use the plus- and minus-buttons to add/remove rules."
       position: left
-    - target: "#metadata-options"
-      content: "You can also choose to immediately group the results, or define whether a match is allowed to cross a sentence or paragraph boundary using 'within'."
-      position: left
+#    - target: "#metadata-options"
+#      content: "You can also choose to immediately group the results, or define whether a match is allowed to cross a sentence or paragraph boundary using 'within'."
+#      position: left
+    - target: "#metadata-options #show"
+      content: ""
+      position: top
+    - target: "#metadata-options #within"
+      content: ""
+      position: top
+    - target: "#metadata-options #group"
+      content: ""
+      position: top
+    - target: "#metadata-options #sample_size"
+      content: ""
+      position: bottom
+    - target: "#metadata-options #sample_type"
+      content: ""
+      position: bottom
+    - target: "#metadata-options #seed"
+      content: ""
+      position: bottom
     - target: "#extended #word-text"
       content: "In the <b>extended</b> view, you have the option to search for a word or phrase in its surface form (word) or its lemmatized form (lemma), or to select a specific part of speech. It is also possible to combine the fields to create a more precise query. Be aware that the term length of the phrases in each field must match for the query to be successful."
       position: left
@@ -26,6 +47,18 @@ en:
     - target: "#extended .loadbutton"
       content: "To perform queries in batches, press the batch button and select a file (.txt) from your hard drive that contains the terms or phrases that you want to search for. After loading the file, the contents are displayed in the input field and can be adjusted if needed. A batch list may contain multiple terms per line. Be aware that the term length of the phrases in each field must match for the query to be successful."
       position: right
+    - target: "#extended #pos-text"
+      position: left
+      content: ""
+    - target: "#extended #extended-refine-pos"
+      position: left
+      content: ""
+    - target: "#extended .pos-feat-select"
+      position: right
+      content: ""
+    - target: "#advanced .advanced-column"
+      position: left
+      content: ""
     - target: "#advanced .add-column"
       content: "In the <b>advanced</b> view, complex queries can be constructed in a visual manner. Each column represents one position in a phrase. Click this button to add a column."
       position: top

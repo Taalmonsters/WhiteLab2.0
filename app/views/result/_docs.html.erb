@@ -65,7 +65,7 @@
 							<% end %>
 						</ul>
 					</span>
-					<tr class="clickable doc-row tooltip-hover" data-tooltip="tooltip<%= i %>" data-docpid="<%= doc["docpid"] %>" data-hits="<%= doc["hit_count"] %>">
+					<tr class="<%= 'clickable' unless @namespace.eql?('explore') %> doc-row tooltip-hover" data-tooltip="tooltip<%= i %>" data-docpid="<%= doc["docpid"] %>" data-hits="<%= doc["hit_count"] %>">
 						<td><b><%= doc["docpid"] %></b></td>
 						<% if ENABLE_METADATA_FILTERING %>
 						<td><%= doc["collection"] %></td>

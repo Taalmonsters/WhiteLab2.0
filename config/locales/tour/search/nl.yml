@@ -5,6 +5,9 @@ nl:
     - position: bottom
       target: "#main-search"
       content: "U bevindt zich in de WhiteLab Zoek interface. Hier vindt u verschillende interfaces voor verschillende soorten gebruikers en zoekstrategieën:<ul><li>Simpel zoeken voor beginners</li><li>Uitgebreid zoeken voor gevorderde gebruikers</li><li>Geavanceerd zoeken voor ervaren gebruikers</li><li>Expert zoeken voor experts</li></ul>"
+    - position: bottom
+      target: "#search-nav"
+      content: "#search-nav"
     - position: left
       target: "#simple #patt"
       content: "<b>Simpel</b> zoeken geeft slechts één zoekveld. Hier kunt u een term of frase invullen om te zoeken naar alle voorkomens in het gehele corpus."
@@ -14,9 +17,27 @@ nl:
     - target: "#metadata-filters .rule"
       content: "Hier definieert u met behulp van gemakkelijke selecties welk deel van de corpora u wilt doorzoeken. Gebruik de plus- en min-knoppen om regels toe te voegen/te verwijderen."
       position: left
-    - target: "#metadata-options"
-      content: "U kunt er ook voor kiezen om de resultaten onmiddellijk te groeperen op basis van verschillende kenmerken, en aangeven of een match zins- of paragraafgrenzen mag overschrijden met 'Zoek binnen'."
-      position: left
+#    - target: "#metadata-options"
+#      content: "U kunt er ook voor kiezen om de resultaten onmiddellijk te groeperen op basis van verschillende kenmerken, en aangeven of een match zins- of paragraafgrenzen mag overschrijden met 'Zoek binnen'."
+#      position: left
+    - target: "#metadata-options #show"
+      content: ""
+      position: top
+    - target: "#metadata-options #within"
+      content: ""
+      position: top
+    - target: "#metadata-options #group"
+      content: ""
+      position: top
+    - target: "#metadata-options #sample_size"
+      content: ""
+      position: bottom
+    - target: "#metadata-options #sample_type"
+      content: ""
+      position: bottom
+    - target: "#metadata-options #seed"
+      content: ""
+      position: bottom
     - target: "#extended #word-text"
       content: "Bij <b>uitgebreid</b> zoeken kunt u zoeken naar een term of frase in zijn oppervlaktevorm (woord) of zijn gelemmatiseerde vorm (lemma), of om een specifieke woordsoort te selecteren.
 Het is ook mogelijk om de velden te combineren en een meer precieze zoekopdracht te creëren. Let op dat het aantal termen in ieder veld overeen moet komen om de zoekopdracht succesvol uit te voeren."
@@ -27,6 +48,18 @@ Het is ook mogelijk om de velden te combineren en een meer precieze zoekopdracht
     - target: "#extended .loadbutton"
       content: "Om meerdere zoekopdrachten als een batch uit te voeren klikt u op de batch knop en selecteert u een bestand (.txt) van uw harde schijf met de termen of frases waar u naar wilt zoeken. Nadat het bestand geladen is wordt de inhoud weergegeven in het zoekveld en kunt u deze nog aanpassen indien nodig. Een batch lijst mag meerdere termen per regel mag bevatten. Let op dat het aantal termen in ieder veld overeen moet komen om de zoekopdracht succesvol uit te voeren."
       position: right
+    - target: "#extended #pos-text"
+      position: left
+      content: ""
+    - target: "#extended #extended-refine-pos"
+      position: left
+      content: ""
+    - target: "#extended .pos-feat-select"
+      position: right
+      content: ""
+    - target: "#advanced .advanced-column"
+      position: left
+      content: ""
     - target: "#advanced .add-column"
       content: "Bij <b>geavanceerd</b> zoeken kunt u complexe zoekopdrachten op een visuele manier samenstellen. Elke kolom staat gelijk aan een positie in de frase. Klik op deze knop om een kolom toe te voegen."
       position: top

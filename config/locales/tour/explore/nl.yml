@@ -5,12 +5,24 @@ nl:
     - target: "#main-explore"
       position: bottom
       content: "U bevindt zich in de WhiteLab Verken interface. Hier kunt u:<ul><li>Corpusverdelingen bekijken</li><li>Statistieken van subcorpora opvragen</li><li>N-grammen van subcorpora ophalen</li><li>Specifieke documenten opzoeken met behulp van de document ID</li></ul>"
+    - position: bottom
+      target: "#explore-nav"
+      content: "#explore-nav"
     - target: "#metadata-filters .accordion-heading"
       content: "Onder <b>corpora</b>, <b>statistieken</b> en <b>n-grammen</b> kunt u verschillende filters selecteren en zo naar eigen wens een subcorpus samenstellen. Klik op deze balk om de filters te tonen/verbergen."
       position: bottom
     - target: "#metadata-filters .rule"
       content: "Hier definieert u met behulp van gemakkelijke selecties welk deel van de corpora u wilt doorzoeken. Gebruik de plus- en min-knoppen om regels toe te voegen/te verwijderen."
       position: left
+    - target: "#metadata-options #sample_size"
+      content: ""
+      position: bottom
+    - target: "#metadata-options #sample_type"
+      content: ""
+      position: bottom
+    - target: "#metadata-options #seed"
+      content: ""
+      position: bottom
     - target: ".treemap-controls li.grouping"
       position: left
       content: "Hier selecteert u het metadata veld waarvan u de verdeling wil zien."

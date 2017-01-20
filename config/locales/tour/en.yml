@@ -9,23 +9,65 @@ en:
         <li>Consult the <a href=\"http://whitelab.taalmonsters.nl/doc/api/index.html\" target=\"_blank\">WhiteLab 2.0 API documentation</a></li>
         <li><a href=\"mailto:whitelab@taalmonsters.nl\">Report a bug or submit a feature request</a></li></ul>"
   after_ns:
+    - target: ".btn-import-xml"
+      position: bottom
+      content: ""
+    - target: ".btn-import-tsv"
+      position: bottom
+      content: ""
+    - target: "#history-label .btn-export-xml"
+      position: top
+      content: ""
+    - target: "#max_count"
+      position: top
+      content: ""
     - target: "#query-details table"
       content: "A summary of your current query is displayed here."
-      position: top
+      position: bottom
     - target: "#results .nav.default"
       content: "The results are divided into 4 sections: hits, documents, grouped hits, and grouped documents."
       position: top
+    - target: ".pagination-row .pagination-size-select"
+      position: bottom
+      content: ""
+    - target: ".pagination-row .btn-group"
+      position: bottom
+      content: ""
+    - target: ".pagination-row #go_to"
+      position: bottom
+      content: ""
     - target: "#results .nav.custom1"
       content: "The results are divided into 3 sections: frequency list, document list, and vocabulary growth."
       position: top
     - target: "#hits thead"
       content: "The <b>hits</b> view shows all hits in the corpus."
       position: top
+    - target: "#hits .clickable"
+      content: ""
+      position: left
     - target: "#docs thead"
       content: "The <b>documents</b> view shows all documents from the corpus that contain hits."
       position: top
+    - target: "#docs .clickable"
+      content: ""
+      position: left
     - target: "#query-result select#group"
       content: "In the <b>grouped hits</b> view and the <b>grouped documents</b> view you can select several attributes to group the hits or documents by."
+      position: top
+    - target: "#query-result #group_case"
+      content: ""
+      position: bottom
+    - target: "#query-result #context_type"
+      content: ""
+      position: top
+    - target: "#query-result #context-left th"
+      content: ""
+      position: top
+    - target: "#query-result #context-hit th"
+      content: ""
+      position: top
+    - target: "#query-result #context-right th"
+      content: ""
       position: top
     - target: "#grouped-hits thead"
       content: "This view shows all hits grouped by the selected attribute."
@@ -33,27 +75,27 @@ en:
     - target: "#grouped-docs thead"
       content: "This view shows all documents with hits grouped by the selected attribute."
       position: top
-    - target: "#search #hits tr.hit-row"
+    - target: ".hit-row.clickable"
       content: "Click on a row in the table to view the context of that hit."
-      position: top
-    - target: "#search #docs tr.doc-row"
+      position: left
+    - target: ".doc-row.clickable"
       content: "Click on a row in the table to view the hits in that document."
-      position: top
+      position: left
     - target: ".show-document"
       content: "Click 'Show document' to view the document in which the hits were found."
       position: top
-    - target: "#search .grouped-hit-row"
+    - target: ".grouped-hit-row.clickable"
       content: "Click on a row in the table to view the first 20 concordances in that group."
-      position: top
+      position: left
     - target: ".show-grouped-hits"
       content: "Click this button to execute a separate query only for the hits in this group."
       position: left
     - target: ".load-grouped-hits"
       content: "Click this button to load more concordances."
       position: right
-    - target: ".grouped-doc-row"
+    - target: ".grouped-doc-row.clickable"
       content: "Click on a row in the table to view the first 20 documents in that group."
-      position: top
+      position: left
     - target: ".show-grouped-docs"
       content: "Click this button to execute a separate query only for the documents in this group."
       position: left

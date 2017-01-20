@@ -5,12 +5,24 @@ en:
     - target: "#main-explore"
       position: bottom
       content: "You are currently in the WhiteLab Explore interface. Here you can:<ul><li>Investigate corpus composition</li><li>Look up statistics of subcorpora</li><li>Gather n-grams of subcorpora</li><li>Look up specific documents by their document ID</li></ul>"
+    - position: bottom
+      target: "#explore-nav"
+      content: "#explore-nav"
     - target: "#metadata-filters .accordion-heading"
       content: "Under <b>corpora</b>, <b>statistics</b> en <b>n-grams</b> you can select different filters to create a subcorpus. Click on this banner to show/hide the metadata filters."
       position: bottom
     - target: "#metadata-filters .rule"
       content: "Here you can use simple selections to define the subcorpus that you wish to query. Use the plus- and minus-buttons to add/remove rules."
       position: left
+    - target: "#metadata-options #sample_size"
+      content: ""
+      position: bottom
+    - target: "#metadata-options #sample_type"
+      content: ""
+      position: bottom
+    - target: "#metadata-options #seed"
+      content: ""
+      position: bottom
     - target: ".treemap-controls li.grouping"
       position: left
       content: "Here you can select the metadata field of which you want to see the distribution over the corpus."

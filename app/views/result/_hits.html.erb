@@ -23,7 +23,7 @@
 					</th>
 					<% end %>
 					<th class="right-aligned">
-					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.start_with?('context') ? '-' : ''}context:word:s:L5-5%3BL4-4%3BL3-3%3BL2-2%3BL1-1" %>">
+					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{!@query.sort.blank? && @query.sort.start_with?('context') ? '-' : ''}context:word:s:L5-5%3BL4-4%3BL3-3%3BL2-2%3BL1-1" %>">
 					        <span class="glyphicon glyphicon-sort"></span>
 					    </a>
 					    <%= t(:"results.keys.context").capitalize+" "+t(:"results.keys.left") %>
@@ -79,7 +79,7 @@
 						<% end %>
 						</ul>
 					</span>
-					<tr class="clickable hit-row tooltip-hover" data-tooltip="tooltip<%= i %>" data-docpid="<%= hit["docpid"] %>" data-first-index="<%= hit["first_index"] %>" data-last-index="<%= hit["last_index"] %>">
+					<tr class="<%= 'clickable' unless @namespace.eql?('explore') %> hit-row tooltip-hover" data-tooltip="tooltip<%= i %>" data-docpid="<%= hit["docpid"] %>" data-first-index="<%= hit["first_index"] %>" data-last-index="<%= hit["last_index"] %>">
 						<% if ENABLE_METADATA_FILTERING %>
 						<td>
 							<%= hit["corpus"] %>

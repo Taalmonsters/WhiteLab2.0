@@ -62,9 +62,9 @@
 						<button id="ngrams-submit-form" class="btn btn-primary submit"><%= t('button_labels.keys.go').capitalize %></button>
 						<button id="ngrams-reset-form" class="btn btn-default btn-reset" data-url="/explore/ngrams"><%= t('button_labels.keys.reset').capitalize %></button>
 						<input class="loadxml explore-xml" type="file" onchange="Whitelab.explore.importXMLQuery(event,this,'ngrams');">
-						<button type="button" class="btn btn-info btn-import"><%= t('button_labels.keys.import').capitalize %> XML</button>
+						<button type="button" class="btn btn-info btn-import btn-import-xml"><%= t('button_labels.keys.import').capitalize %> XML</button>
 				        <input class="loadtsv explore-xml hidden" type="file" onchange="Whitelab.explore.ngrams.importGapQuery(event,this);">
-				        <button type="button" class="btn btn-info btn-import" onclick="Whitelab.explore.ngrams.importGapQuery(event,this);"><%= t('button_labels.keys.import').capitalize %> TSV</button>
+				        <button type="button" class="btn btn-info btn-import btn-import-tsv" onclick="Whitelab.explore.ngrams.importGapQuery(event,this);"><%= t('button_labels.keys.import').capitalize %> TSV</button>
 					</div>
 				</div>
 			</div>

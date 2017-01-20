@@ -12,9 +12,9 @@
 				<button type="button" class="btn btn-primary btn-submit"><%= t('button_labels.keys.search').capitalize %></button>
 				<button type="button" class="btn btn-default btn-reset" data-url="/search/expert"><%= t('button_labels.keys.reset').capitalize %></button>
 				<input class="loadxml" type="file" onchange="Whitelab.search.expert.importXMLQuery(event,this);">
-				<button type="button" class="btn btn-info btn-import"><%= t('button_labels.keys.import').capitalize %> XML</button>
+				<button type="button" class="btn btn-info btn-import btn-import-xml"><%= t('button_labels.keys.import').capitalize %> XML</button>
 				<input class="loadtsv hidden" type="file" onchange="Whitelab.search.expert.importGapQuery(event,this);">
-				<button type="button" class="btn btn-info btn-import" onclick="Whitelab.search.expert.importGapQuery(event,this);"><%= t('button_labels.keys.import').capitalize %> TSV</button>
+				<button type="button" class="btn btn-info btn-import btn-import-tsv" onclick="Whitelab.search.expert.importGapQuery(event,this);"><%= t('button_labels.keys.import').capitalize %> TSV</button>
 			</div>
 		</div>
 		<div class="col-xs-12 col-sm-6">

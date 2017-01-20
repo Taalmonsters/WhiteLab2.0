@@ -6,23 +6,65 @@ nl:
       target: "#start-tour"
       content: "Met deze knop zet u de instructies voor de huidige pagina aan of uit. Klik op de pijltjes hiernaast om door de instructies te bladeren, of klik direct op de cijfers in de interface.<br/>Overige opties:<ul><li>Raadpleeg de <a href=\"http://whitelab.taalmonsters.nl/doc/manual/index.html\" target=\"_blank\">WhiteLab 2.0 Gebruikershandleiding</a></li><li>Raadpleeg de <a href=\"http://whitelab.taalmonsters.nl/doc/api/index.html\" target=\"_blank\">WhiteLab 2.0 API documentatie</a></li><li><a href=\"mailto:whitelab@taalmonsters.nl\">Meld een bug of feature request</a></li></ul>"
   after_ns:
+    - target: ".btn-import-xml"
+      position: bottom
+      content: ""
+    - target: ".btn-import-tsv"
+      position: bottom
+      content: ""
+    - target: "#history-label .btn-export-xml"
+      position: top
+      content: ""
+    - target: "#max_count"
+      position: top
+      content: ""
     - target: "#query-details table"
       content: "Hier wordt een samenvatting van uw huidige zoekopdracht weergegeven."
-      position: top
+      position: bottom
     - target: "#results .nav.default"
       content: "De resultaten zijn onderverdeeld in 4 secties: hits, documenten, gegroepeerde hits en gegroepeerde documenten."
       position: top
     - target: "#results .nav.custom1"
       content: "De resultaten zijn onderverdeeld in 3 secties: frequentielijst, documentenlijst en vocabulaire groei."
       position: top
+    - target: ".pagination-row .pagination-size-select"
+      position: bottom
+      content: ""
+    - target: ".pagination-row .btn-group"
+      position: bottom
+      content: ""
+    - target: ".pagination-row #go_to"
+      position: bottom
+      content: ""
     - target: "#hits thead"
       content: "De <b>hits</b> weergave toont alle afzonderlijke hits in het corpus."
       position: top
+    - target: "#hits .clickable"
+      content: ""
+      position: left
     - target: "#docs thead"
       content: "De <b>documenten</b> weergave toont alle documenten waarin hits gevonden zijn."
       position: top
+    - target: "#docs .clickable"
+      content: ""
+      position: left
     - target: "#query-result select#group"
       content: "Zowel in de <b>gegroepeerde hits</b> weergave als de <b>gegroepeerde documenten</b> weergave kunt u kiezen uit meerdere attributen om de hits of documenten te groeperen."
+      position: top
+    - target: "#query-result #group_case"
+      content: ""
+      position: bottom
+    - target: "#query-result #context_type"
+      content: ""
+      position: top
+    - target: "#query-result #context-left th"
+      content: ""
+      position: top
+    - target: "#query-result #context-hit th"
+      content: ""
+      position: top
+    - target: "#query-result #context-right th"
+      content: ""
       position: top
     - target: "#grouped-hits thead"
       content: "Deze weergave toont alle gevonden hits gegroepeerd volgens het geselecteerde attribuut."
@@ -30,27 +72,27 @@ nl:
     - target: "#grouped-docs thead"
       content: "Deze weergave toont alle documenten waarin hits gevonden zijn gegroepeerd volgens het geselecteerde attribuut."
       position: top
-    - target: "#search #hits tr.hit-row"
+    - target: ".hit-row.clickable"
       content: "Klik op een rij in de tabel om de context waarin de hit gevonden is weer te geven."
-      position: top
-    - target: "#search #docs tr.doc-row"
+      position: left
+    - target: ".doc-row.clickable"
       content: "Klik op een rij in de tabel om de specifieke hits in dat document weer te geven."
-      position: top
+      position: left
     - target: ".show-document"
       content: "Klik op 'Toon document' om het document waarin de hits gevonden zijn te bekijken."
       position: top
-    - target: "#search .grouped-hit-row"
+    - target: ".grouped-hit-row.clickable"
       content: "Klik op een rij in de tabel om de eerste 20 concordanties in die groep te bekijken."
-      position: top
+      position: left
     - target: ".show-grouped-hits"
       content: "Klik op deze knop om een aparte zoekopdracht uit te voeren naar alleen de hits in deze groep."
       position: left
     - target: ".load-grouped-hits"
       content: "Klik op deze knop om meer concordanties te laden."
       position: right
-    - target: ".grouped-doc-row"
+    - target: ".grouped-doc-row.clickable"
       content: "Klik op een rij in de tabel om de eerste 20 documenten in die groep te bekijken."
-      position: top
+      position: left
     - target: ".show-grouped-docs"
       content: "Klik op deze knop om een aparte zoekopdracht uit te voeren naar alleen de documenten in deze groep."
       position: left
