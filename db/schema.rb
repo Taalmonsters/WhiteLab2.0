@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170117111323) do
+ActiveRecord::Schema.define(version: 20170121171757) do
 
   create_table "explore_queries", force: :cascade do |t|
     t.integer  "user_id",        limit: 4,                          null: false
-    t.string   "patt",           limit: 255
-    t.string   "filter",         limit: 255
+    t.text     "patt",           limit: 65535
+    t.text     "filter",         limit: 65535
     t.string   "within",         limit: 255,   default: "document"
     t.integer  "view",           limit: 4,     default: 1
     t.string   "listtype",       limit: 255,   default: "word"
@@ -41,15 +41,14 @@ ActiveRecord::Schema.define(version: 20170117111323) do
   end
 
   add_index "explore_queries", ["created_at"], name: "index_explore_queries_on_created_at", using: :btree
-  add_index "explore_queries", ["filter"], name: "index_explore_queries_on_filter", using: :btree
   add_index "explore_queries", ["input_page"], name: "index_explore_queries_on_input_page", using: :btree
   add_index "explore_queries", ["updated_at"], name: "index_explore_queries_on_updated_at", using: :btree
   add_index "explore_queries", ["user_id"], name: "index_explore_queries_on_user_id", using: :btree
 
   create_table "search_queries", force: :cascade do |t|
     t.integer  "user_id",        limit: 4,                          null: false
-    t.string   "patt",           limit: 255,                        null: false
-    t.string   "filter",         limit: 255
+    t.text     "patt",           limit: 65535,                      null: false
+    t.text     "filter",         limit: 65535
     t.string   "within",         limit: 255,   default: "document"
     t.integer  "view",           limit: 4,     default: 1
     t.string   "group",          limit: 255
@@ -73,8 +72,6 @@ ActiveRecord::Schema.define(version: 20170117111323) do
   end
 
   add_index "search_queries", ["created_at"], name: "index_search_queries_on_created_at", using: :btree
-  add_index "search_queries", ["filter"], name: "index_search_queries_on_filter", using: :btree
-  add_index "search_queries", ["patt"], name: "index_search_queries_on_patt", using: :btree
   add_index "search_queries", ["updated_at"], name: "index_search_queries_on_updated_at", using: :btree
   add_index "search_queries", ["user_id"], name: "index_search_queries_on_user_id", using: :btree
 
