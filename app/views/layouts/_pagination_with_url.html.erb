@@ -5,7 +5,6 @@
 <% min_page = (current_page - 3) < 1 ? 1 : current_page - 3 %>
 <% max_page = (current_page + 3) > pages ? pages : current_page + 3 %>
 <% numbarr = [10,20,50] unless numbarr && numbarr.size > 0 %>
-<% puts "URL: #{url}" %>
 <div class="col-xs-12 pagination">
 	<div class="col-sm-3 left-aligned">
 		<%= t(:'navigation.keys.show').capitalize %>

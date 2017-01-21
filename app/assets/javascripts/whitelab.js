@@ -350,9 +350,9 @@ $(document).on('change', 'select.pagination-size-select', function(e) {
 	if ($("#main-div[data-namespace='search'] div#result-pane").length > 0)
 		window.location = $(this).data("url")+'&offset=0&number='+$(this).val();
 	else if ($("#main-div[data-namespace='explore'] div#result-pane").length > 0)
-		window.location = $(this).data("url")+'&offset=0&number='+$(this).val();
+		window.location = $(this).data("url")+'&offset=0&number='+$(this).val()+'#results';
 	else
-		window.location = Whitelab.getListPage('#'+$("div.page-list-main").attr('id'),$("div.page-list-main").data('url'),$(this).val(),0,null,null);
+		window.location = Whitelab.getListPage('#'+$("div.page-list-main").attr('id'),$("div.page-list-main").data('url'),$(this).val(),0,null,null)+'#results';
 });
 
 $(document).on('change', '.pagination-go-to', function(e) {
@@ -361,11 +361,11 @@ $(document).on('change', '.pagination-go-to', function(e) {
 	if ($("#main-div[data-namespace='search'] div#result-pane").length > 0)
 		window.location = $(this).data("url")+'&offset='+o+'&number='+n;
 	else if ($("#main-div[data-namespace='explore'] div#result-pane").length > 0)
-		window.location = $(this).data("url")+'&offset='+o+'&number='+n;
+		window.location = $(this).data("url")+'&offset='+o+'&number='+n+'#results';
 	else if ($("#document-display").length > 0)
 		Whitelab.document.loadDocument($("#main-div").data("namespace"),$("#document-display").data("tab"), $("#document-display").data("xmlid"), $("#document-display").data("query-id"),o,n);
 	else
-		window.location = Whitelab.getListPage('#'+$("div.page-list-main").attr('id'),$("div.page-list-main").data('url'),n,o,null,null);
+		window.location = Whitelab.getListPage('#'+$("div.page-list-main").attr('id'),$("div.page-list-main").data('url'),n,o,null,null)+'#results';
 });
 
 $(document).on('click', 'tr.grouped-hit-row', function(e) {
