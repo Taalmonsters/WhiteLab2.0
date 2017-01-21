@@ -34,9 +34,8 @@ Whitelab.metadata = {
 	getFilterString : function() {
 		var filters = new Array();
 		$("#metadata-rules .rule").each(function( index ) {
-			var label = $(this).find(".metadata-key-select").val();
+			var label = $(this).find(".metadata-key-select").val().replace("Metadata_", "");
 			var input = $(this).find(".metadata-input").val().replace(/&/g,"%26").replace(/\\/g,"%5C");
-			console.log("INPUT = "+input);
 			var op = $(this).find(".metadata-operator").val();
 			if (op === 'not') {
 				op = '!=';
