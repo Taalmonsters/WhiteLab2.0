@@ -51,6 +51,9 @@ $(document).on('click', 'a.metadata-remove-rule', function(e) {
 	if ($('div.rule').length > 1) {
 		$(this).parent().parent().remove();
 		Whitelab.metadata.updateCoverage();
+	} else {
+        $("#key option[value='']").attr('selected', true);
+        $("#key").change();
 	}
 });
 $(document).on('click', 'a.metadata-add-rule', function(e) {
