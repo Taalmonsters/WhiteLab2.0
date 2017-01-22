@@ -59,6 +59,16 @@ class Search::Query < ActiveRecord::Base
       query = user.search_queries.find(params[:id].to_i)
       query = nil if query && query.is_changed?(page, params)
     end
+    if !query && params[:patt].include?(';')
+      params[:patt].split(';').each_with_index do |patt,i|
+        params[:patt] = patt
+        if i == 0
+          query = WhitelabQuery.find_from_params(Search::Query, page, user.id, params)
+        else
+          WhitelabQuery.find_from_params(Search::Query, page, user.id, params).execute
+        end
+      end
+    end
     return query ? query : WhitelabQuery.find_from_params(Search::Query, page, user.id, params)
   end
   

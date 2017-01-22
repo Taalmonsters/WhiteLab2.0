@@ -90,7 +90,7 @@ CqlColumn.prototype.addField = function(f) {
 
 Cql.prototype.getQuery = function() {
 	var queries = null;
-	if (this.split) {
+	if (this.batch) {
 		for (var c = 0; c < this.columns.length; c++) {
 			queries = combineOptions(queries,this.columns[c].stringValues());
 		}
@@ -196,16 +196,16 @@ CqlColumn.prototype.stringValues = function() {
 CqlColumn.prototype.toCqlString = function() {
 	
 	this.setQuantifier();
-	
+
 	var vals = new Array();
 	for (var f = 0; f < this.fields.length; f++) {
-		var echk = 0;
+		var check = 0;
 		if (this.fields[f].subfields.length > 0) {
 			var subvals = new Array();
 			for (var s = 0; s < this.fields[f].subfields.length; s++) {
 				var subval = this.fields[f].subfields[s].toCqlString();
 				if (this.fields[f].subfields[s].value === "[]" || this.fields[f].subfields[s].value === "[word=\".*\"]") {
-					echk = 1;
+					check = 1;
 					vals = new Array();
 					vals.push(subval);
 					break;
@@ -213,13 +213,13 @@ CqlColumn.prototype.toCqlString = function() {
 					subvals.push(subval);
 				}
 			}
-			if (echk == 0) {
+			if (check == 0) {
 				vals.push("("+subvals.join(" | ")+")");
 			}
 		} else {
 			var val = this.fields[f].toCqlString();
 			if (this.fields[f].value === "[]" || this.fields[f].value === "[word=\".*\"]") {
-				echk = 1;
+				check = 1;
 				vals = new Array();
 				vals.push(val);
 			} else {
@@ -228,7 +228,7 @@ CqlColumn.prototype.toCqlString = function() {
 				}
 			}
 		}
-		if (echk == 1) {
+		if (check == 1) {
 			break;
 		}
 	}
@@ -284,6 +284,8 @@ CqlColumn.prototype.setQuantifier = function() {
 };
 
 function combineOptions(arr1,arr2) {
+    console.log(arr1);
+    console.log(arr2);
 	var combined = new Array();
 	if (arr1 == null) {
 		for (var i = 0; i < arr2.length; i++) {
@@ -291,9 +293,9 @@ function combineOptions(arr1,arr2) {
 		}
 	} else {
 		for (var i = 0; i < arr1.length; i++) {
-			for (var j = 0; j < arr2.length; j++) {
-				combined.push(arr1[i]+arr2[j]);
-			}
+//			for (var j = 0; j < arr2.length; j++) {
+				combined.push(arr1[i]+arr2[i]);
+//			}
 		}
 	}
 	return combined;
