@@ -284,8 +284,6 @@ CqlColumn.prototype.setQuantifier = function() {
 };
 
 function combineOptions(arr1,arr2) {
-    console.log(arr1);
-    console.log(arr2);
 	var combined = new Array();
 	if (arr1 == null) {
 		for (var i = 0; i < arr2.length; i++) {
