@@ -44,7 +44,6 @@ Whitelab.explore = {
 		       processData: false,  // tell jQuery not to process the data
 		       contentType: false,  // tell jQuery not to set contentType
 		       success : function(data) {
-		    	   console.log(data);
 		           if (data["error"])
 		        	   alert(data["error"]);
 		           else if (data["url"])

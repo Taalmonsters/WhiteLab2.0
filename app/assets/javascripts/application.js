@@ -36,13 +36,10 @@ ready = function() {
 };
 
 function start_site_tour() {
-	if ($('#start-tour').length) {
-		console.log("Starting tour");
+	if ($('#start-tour').length)
 		setTimeout(function(){ $('#start-tour').click(); }, 1000);
-	} else {
-		console.log("Not starting tour");
+	else
 		setTimeout(function(){ start_site_tour(); }, 1000);
-	}
 }
 
 $(document).on('click', 'a.metadata-remove-rule', function(e) {

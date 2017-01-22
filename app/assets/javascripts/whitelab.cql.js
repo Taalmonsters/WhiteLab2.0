@@ -22,44 +22,109 @@ Whitelab.cql = {
 		}
 		return query;
 	},
+
+	getColumns : function(query) {
+	    var n = query.indexOf("[");
+        var m = -1;
+        var columns = [];
+        var quants = [];
+        var qua1 = '';
+        if (n > 1) {
+            qua1 = query.substring(0,n);
+            if (qua1.indexOf('<s>') == -1) {
+                qua1 = '';
+            }
+        }
+        while (n > -1) {
+            m = query.indexOf("]",n);
+            var c = query.substring(n,m+1);
+            var count = (c.match(/"/g) || []).length;
+            while (count == 1) {
+                m = query.indexOf("]",m+1);
+                c = query.substring(n,m+1);
+                count = (c.match(/"/g) || []).length;
+            }
+            columns.push(c);
+            n = query.indexOf("[",m+1);
+            if (n == -1) {
+                if (query.length > m+1) {
+                    quants.push(query.substring(m+1));
+                } else {
+                    quants.push('');
+                }
+            } else {
+                if (n-m > 1) {
+                    quants.push(query.substring(m+1,n));
+                } else {
+                    quants.push('');
+                }
+            }
+        }
+        return {
+            columns: columns,
+            quants: quants,
+            qua1: qua1
+        };
+	},
+
+	getSubQueries : function(query) {
+	    var arr = new Array();
+	    var splits = query.split(/\][\*\{\}0-9\,\+]*\)*\|\(*\[/);
+	    for (var i = 0; i < splits.length; i++) {
+	        var str = splits[i];
+	        if (str.indexOf("[") != 0)
+	            str = "["+str;
+	        if (str.substr(str.length - 1,1) !== "]")
+	            str = str+"]";
+	        query = query.substr(str.length + 1, query.length - str.length);
+	        var j = query.indexOf("[");
+	        if (j > 0) {
+	            str = str + query.substr(0,j);
+	            query = query.substr(j, query.length - j);
+	        }
+	        arr.push(str);
+	    }
+	    return arr;
+	},
+
+	combineColumns : function(c1, c2) {
+	    var c1_opts = c1.match(/((word|lemma|pos|phonetic)|(\".+\"))/g);
+	    c1_opts[1] = c1_opts[1].substr(1,c1_opts[1].length-2);
+	    var c2_opts = c2.match(/((word|lemma|pos|phonetic)|(\".+\"))/g);
+	    c2_opts[1] = c2_opts[1].substr(1,c2_opts[1].length-2);
+//	    if (c1_opts[0] === c2_opts[0]) {
+//	        if (c1_opts[1].indexOf(c2_opts[1]) > -1)
+//	            return c1;
+//	        else
+//	            return "["+c1_opts[0]+"=\""+c1_opts[1]+"|"+c2_opts[0]+"=\""+c2_opts[1]+"\"]";
+//	    } else
+	    if (c1 !== c2 && c1_opts[1].indexOf(c2_opts[1]) == -1)
+	        return "["+c1_opts[0]+"=\""+c1_opts[1]+"\"|"+c2_opts[0]+"=\""+c2_opts[1]+"\"]";
+	    else
+	        return c1;
+	},
 	
 	cqlToAdvancedInterface : function(query) {
 		Whitelab.debug("cqlToAdvancedInterface("+query+")");
-		
-		var n = query.indexOf("[");
-		var m = -1;
-		var columns = [];
-		var quants = [];
-		var qua1 = '';
-		if (n > 1) {
-			qua1 = query.substring(0,n);
-			if (qua1.indexOf('<s>') == -1) {
-				qua1 = '';
-			}
-		}
-		while (n > -1) {
-			m = query.indexOf("]",n);
-			var c = query.substring(n,m+1);
-			var count = (c.match(/"/g) || []).length;
-			while (count == 1) {
-				m = query.indexOf("]",m+1);
-				c = query.substring(n,m+1);
-				count = (c.match(/"/g) || []).length;
-			}
-			columns.push(c);
-			n = query.indexOf("[",m+1);
-			if (n == -1) {
-				if (query.length > m+1) {
-					quants.push(query.substring(m+1));
-				}
-			} else {
-				if (n-m > 1) {
-					quants.push(query.substring(m+1,n));
-				} else {
-					quants.push('');
-				}
-			}
-		}
+
+        var subqueries = Whitelab.cql.getSubQueries(query);
+        for (var i = 0; i < subqueries.length; i++) {
+            subqueries[i] = Whitelab.cql.getColumns(subqueries[i]);
+        }
+
+        if (subqueries.length > 1) {
+            for (var i = 1; i < subqueries.length; i++) {
+                for (var j = 0; j < subqueries[i].columns.length; j++) {
+                    subqueries[0].columns[j] = Whitelab.cql.combineColumns(subqueries[0].columns[j],subqueries[i].columns[j]);
+                    if (subqueries[i].quants[j].length > 0)
+                        subqueries[0].quants[j] = subqueries[i].quants[j];
+                }
+            }
+        }
+        var columns = subqueries[0].columns;
+        var quants = subqueries[0].quants;
+        var qua1 = subqueries[0].qua1;
+
 		var c = -1;
 		while (columns.length > 0) {
 			var column = columns.shift();
@@ -73,10 +138,10 @@ Whitelab.cql = {
 			var token_type = 'word';
 			var operator = 'is';
 			var input = null;
-			
+
 			c++;
 			var b = -1;
-			
+
 			if (qua1.length > 0) {
 				startsen = true;
 				qua1 = '';
@@ -113,13 +178,13 @@ Whitelab.cql = {
 					$("#search-within").val('paragraph');
 				}
 			}
-			
+
 			var ands = column.split('&');
 			while (ands.length > 0) {
 				b++;
 				var f = -1;
 				var and = ands.shift();
-				
+
 				var ors = and.split('|');
 				while (ors.length > 0) {
 					f++;
@@ -135,12 +200,12 @@ Whitelab.cql = {
 						} else if (or.indexOf('phonetic') > -1) {
 							token_type = 'phonetic';
 						}
-						
+
 						var not = 0;
 						if (or.indexOf('!=') > -1) {
 							not = 1;
 						}
-						
+
 						var term = or.substring(or.indexOf('"')+1);
 						var q2 = term.indexOf('"');
 						term = term.substring(0,q2);
@@ -153,7 +218,7 @@ Whitelab.cql = {
 							}
 						}
 						input = term;
-						
+
 						var dd = 1;
 						if (not == 1) {
 							operator = 'not';
@@ -174,7 +239,7 @@ Whitelab.cql = {
 									operator = 'ends';
 								} else if (indices[0] == term.length - 2) {
 									if (token_type === 'pos' && term.match(/^[A-Z]+\.\*/)) {
-										dd = 1;	
+										dd = 1;
 									} else {
 										dd = 0;
 										operator = 'starts';
@@ -188,16 +253,16 @@ Whitelab.cql = {
 						if (input.length > 0)
 							Whitelab.search.advanced.addFieldToBoxInColumn(b, c, token_type, operator, input, batch, sensitive, startsen, endsen, repeat_from, repeat_to);
 					}
-					
+
 					if (ors.length > 0) {
 						$("#advanced-canvas .advanced-column a.add-or").last().click();
 					}
 				}
-				
+
 				if (ands.length > 0) {
 					$("#advanced-canvas .advanced-column a.add-and").last().click();
 				}
-				
+
 				Whitelab.sleep(100);
 			}
 		}

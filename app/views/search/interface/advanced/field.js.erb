@@ -1,3 +1,12 @@
+function getBatchBoxForType(box, type) {
+    var batch_boxes = $(box).find("div.box-body").first().find("textarea.batchlist");
+    for (var i = 0; i < batch_boxes.length; i++) {
+        if ($(batch_boxes[i]).parent().parent().parent().parent().find("select.token-type").first().val() === type)
+            return batch_boxes[i];
+    }
+    return null;
+}
+
 var box = document.getElementById('column<%= @field[:column] %>-box<%= @field[:box] %>');
 if (box == null) {
 	var column = document.getElementById('column<%= @field[:column] %>');
@@ -6,7 +15,18 @@ if (box == null) {
 	else
 		$(column).find("div.panel-body").first().append('<%= escape_javascript(raw render partial: "/search/interface/advanced/box", layout: false) %>');
 } else {
+    <% if @field_values[:batch] %>
+    var batch_box = getBatchBoxForType(box, '<%= @field_values[:token_type] %>');
+    if (batch_box)
+        $(batch_box).append("\n<%= @field_values[:input] %>");
+    else {
+        $(box).find("div.box-body").first().append('<%= escape_javascript(raw render partial: "/search/interface/advanced/field", layout: false) %>');
+        Whitelab.search.advanced.resetBoxHeader(<%= @field[:box] %>, <%= @field[:column] %>);
+        Whitelab.search.advanced.resetButtonsOnColumn(<%= @field[:column] %>);
+    }
+    <% else %>
 	$(box).find("div.box-body").first().append('<%= escape_javascript(raw render partial: "/search/interface/advanced/field", layout: false) %>');
 	Whitelab.search.advanced.resetBoxHeader(<%= @field[:box] %>, <%= @field[:column] %>);
 	Whitelab.search.advanced.resetButtonsOnColumn(<%= @field[:column] %>);
+	<% end %>
 }

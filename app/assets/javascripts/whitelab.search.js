@@ -357,7 +357,6 @@ Whitelab.search = {
 			       processData: false,  // tell jQuery not to process the data
 			       contentType: false,  // tell jQuery not to set contentType
 			       success : function(data) {
-			    	   console.log(data);
 			           if (data["error"])
 			        	   alert(data["error"]);
 			           else if (data["url"])
@@ -701,10 +700,8 @@ $(document).on('click', '#context-options .update-context-options', function(e) 
 		group = Whitelab.search.result.getContextGroupFromInput();
 		var set = $(this).data("set");
 		if ($(this).hasClass("first")) {
-			if (set === "H") {
-				console.log("hit");
+			if (set === "H")
 				group = group.replace(/(;H$|H;)/,'');
-			}
 			group = group[group.length-1] == ':' ? group+set+'1-1' : group+';'+set+'1-1';
 		} else {
 			// Get max value of highest entered in same set
@@ -718,7 +715,6 @@ $(document).on('click', '#context-options .update-context-options', function(e) 
 			group = group =~ /[LHER]/ ? group+';'+set+max+'-'+max : group+':'+set+max+'-'+max;
 		}
 	}
-	console.log(group);
 	// Regenerate context options partial with new group
 	var qid = $("#result-pane").data("query-id");
 	group = group.replace(/;/g,'%3B');
