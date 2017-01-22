@@ -348,7 +348,7 @@ $(document).on('change', 'select.lang-select', function(e) {
 
 $(document).on('change', 'select.pagination-size-select', function(e) {
 	if ($("#main-div[data-namespace='search'] div#result-pane").length > 0)
-		window.location = $(this).data("url")+'&offset=0&number='+$(this).val();
+		window.location = $(this).data("url")+'&offset=0&number='+$(this).val()+'#results';
 	else if ($("#main-div[data-namespace='explore'] div#result-pane").length > 0)
 		window.location = $(this).data("url")+'&offset=0&number='+$(this).val()+'#results';
 	else
@@ -359,7 +359,7 @@ $(document).on('change', '.pagination-go-to', function(e) {
 	var n = $(this).data('number');
 	var o = ($(this).val() - 1) * n;
 	if ($("#main-div[data-namespace='search'] div#result-pane").length > 0)
-		window.location = $(this).data("url")+'&offset='+o+'&number='+n;
+		window.location = $(this).data("url")+'&offset='+o+'&number='+n+'#results';
 	else if ($("#main-div[data-namespace='explore'] div#result-pane").length > 0)
 		window.location = $(this).data("url")+'&offset='+o+'&number='+n+'#results';
 	else if ($("#document-display").length > 0)
