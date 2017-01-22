@@ -21,13 +21,13 @@
 			<thead>
 				<tr>
 					<th>
-					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('identity') ? '-' : ''}identity" %>">
+					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('identity') ? '-' : ''}identity" %>#results">
 					        <span class="glyphicon glyphicon-sort"></span>
 					    </a>
 					    <%= @group %>
 					</th>
 					<th>
-					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.blank? || @query.sort.eql?('size') ? '-' : ''}size" %>">
+					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.blank? || @query.sort.eql?('size') ? '-' : ''}size" %>#results">
 					        <span class="glyphicon glyphicon-sort"></span>
 					    </a>
 					    <%= t(:"data_labels.keys.document").pluralize.capitalize %>

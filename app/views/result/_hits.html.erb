@@ -16,44 +16,44 @@
 				<tr>
 					<% if ENABLE_METADATA_FILTERING %>
 					<th>
-					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('field:Corpus_title') ? '-' : ''}field:Corpus_title" %>">
+					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('field:Corpus_title') ? '-' : ''}field:Corpus_title" %>#results">
 					        <span class="glyphicon glyphicon-sort"></span>
 					    </a>
 					    <%= t(:"data_labels.keys.corpus").capitalize %>
 					</th>
 					<% end %>
 					<th class="right-aligned">
-					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{!@query.sort.blank? && @query.sort.start_with?('context') ? '-' : ''}context:word:s:L5-5%3BL4-4%3BL3-3%3BL2-2%3BL1-1" %>">
+					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{!@query.sort.blank? && @query.sort.start_with?('context') ? '-' : ''}context:word:s:L5-5%3BL4-4%3BL3-3%3BL2-2%3BL1-1" %>#results">
 					        <span class="glyphicon glyphicon-sort"></span>
 					    </a>
 					    <%= t(:"results.keys.context").capitalize+" "+t(:"results.keys.left") %>
 					</th>
 					<th class="center-aligned">
-					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('hit:word:s') ? '-' : ''}hit:word:s" %>">
+					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('hit:word:s') ? '-' : ''}hit:word:s" %>#results">
 					        <span class="glyphicon glyphicon-sort"></span>
 					    </a>
 					    <%= t(:"data_labels.keys.hit").capitalize %>
 					</th>
 					<th>
-					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('right') ? '-' : ''}right" %>">
+					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('right') ? '-' : ''}right" %>#results">
 					        <span class="glyphicon glyphicon-sort"></span>
 					    </a>
 					    <%= t(:"results.keys.context").capitalize+" "+t(:"results.keys.right") %>
 					</th>
 					<th>
-					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('hit:lemma:s') ? '-' : ''}hit:lemma:s" %>">
+					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('hit:lemma:s') ? '-' : ''}hit:lemma:s" %>#results">
 					        <span class="glyphicon glyphicon-sort"></span>
 					    </a>
 					    <%= t(:"data_labels.keys.hit").capitalize+" "+t(:"data_labels.keys.lemma").capitalize %>
 					</th>
 					<th>
-					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('hit:pos:s') ? '-' : ''}hit:pos:s" %>">
+					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('hit:pos:s') ? '-' : ''}hit:pos:s" %>#results">
 					        <span class="glyphicon glyphicon-sort"></span>
 					    </a>
 					    <%= t(:"data_labels.keys.hit").capitalize+" "+t(:"data_labels.keys.pos").capitalize %>
 					</th>
 					<th>
-					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('hit:phonetic:s') ? '-' : ''}hit:phonetic:s" %>">
+					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('hit:phonetic:s') ? '-' : ''}hit:phonetic:s" %>#results">
 					        <span class="glyphicon glyphicon-sort"></span>
 					    </a>
 					    <%= t(:"data_labels.keys.hit").capitalize+" "+t(:"data_labels.keys.phonetic").capitalize %>
