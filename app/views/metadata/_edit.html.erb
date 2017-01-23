@@ -5,14 +5,14 @@
 			<div class="form-group">
 				<%= label_tag :group, t(:'data_labels.keys.group').capitalize, class: 'control-label' %> <a class="info-panel-toggle">?</a>
 				<div class="panel panel-info hidden">
-					<div class="panel-body"><%= t(:'instructions.keys.metadatum_group_description') %></div>
+					<div class="panel-body"><%= t(:'instructions.keys.metadatum_group_description').html_safe %></div>
 				</div>
 				<%= text_field_tag :group, metadatum['group'], class: 'form-control' %>
 			</div>
 			<div class="form-group">
 				<%= label_tag :key, t(:'data_labels.keys.key').capitalize, class: 'control-label' %> <a class="info-panel-toggle">?</a>
 				<div class="panel panel-info hidden">
-					<div class="panel-body"><%= t(:'instructions.keys.metadatum_key_description') %></div>
+					<div class="panel-body"><%= t(:'instructions.keys.metadatum_key_description').html_safe %></div>
 				</div>
 				<div class="panel panel-error hidden">
 					<div class="panel-body"><%= t(:'instructions.keys.metadatum_key_error') %></div>
@@ -22,7 +22,7 @@
 			<div class="form-group">
 				<%= label_tag :explorable, t(:'data_labels.keys.explorable').capitalize, class: 'control-label' %> <a class="info-panel-toggle">?</a>
 				<div class="panel panel-info hidden">
-					<div class="panel-body"><% if metadatum['explorable'].blank? || metadatum['explorable'] == true %><%= t(:'instructions.keys.metadatum_explorable_description_checked') %><% else %><%= t(:'instructions.keys.metadatum_explorable_description_unchecked') %><% end %></div>
+					<div class="panel-body"><% if metadatum['explorable'].blank? || metadatum['explorable'] == true %><%= t(:'instructions.keys.metadatum_explorable_description_checked').html_safe %><% else %><%= t(:'instructions.keys.metadatum_explorable_description_unchecked').html_safe %><% end %></div>
 				</div>
 				<% if metadatum.has_key?('explorable') && (metadatum['explorable'].eql?(false) || metadatum['explorable'].eql?('false')) %>
 					<%= select_tag :explorable, options_for_select([['true', 'true'], ['false', 'false']], 'false'), class: 'form-control' %>
@@ -43,7 +43,7 @@
 			<div class="form-group">
 				<%= label_tag :searchable, t(:'data_labels.keys.searchable').capitalize, class: 'control-label' %> <a class="info-panel-toggle">?</a>
 				<div class="panel panel-info hidden">
-					<div class="panel-body"><% if metadatum['searchable'].blank? || metadatum['searchable'] == true %><%= t(:'instructions.keys.metadatum_searchable_description_checked') %><% else %><%= t(:'instructions.keys.metadatum_searchable_description_unchecked') %><% end %></div>
+					<div class="panel-body"><% if metadatum['searchable'].blank? || metadatum['searchable'] == true %><%= t(:'instructions.keys.metadatum_searchable_description_checked').html_safe %><% else %><%= t(:'instructions.keys.metadatum_searchable_description_unchecked').html_safe %><% end %></div>
 				</div>
 				<% if metadatum.has_key?('searchable') && (metadatum['searchable'].eql?(false) || metadatum['searchable'].eql?('false')) %>
 					<%= select_tag :searchable, options_for_select([['true', 'true'], ['false', 'false']], 'false'), class: 'form-control' %>
@@ -54,7 +54,7 @@
 			<div class="form-group">
 				<%= label_tag :hoverable, t(:'data_labels.keys.hoverable').capitalize, class: 'control-label' %> <a class="info-panel-toggle">?</a>
 				<div class="panel panel-info hidden">
-					<div class="panel-body"><% if metadatum['hoverable'].blank? || metadatum['hoverable'] == false %><%= t(:'instructions.keys.metadatum_hoverable_description_unchecked') %><% else %><%= t(:'instructions.keys.metadatum_hoverable_description_checked') %><% end %></div>
+					<div class="panel-body"><% if metadatum['hoverable'].blank? || metadatum['hoverable'] == false %><%= t(:'instructions.keys.metadatum_hoverable_description_unchecked').html_safe %><% else %><%= t(:'instructions.keys.metadatum_hoverable_description_checked').html_safe %><% end %></div>
 				</div>
 				<% if !metadatum.has_key?('hoverable') || metadatum['hoverable'].eql?(false) || metadatum['hoverable'].eql?('false') %>
 					<%= select_tag :hoverable, options_for_select([['true', 'true'], ['false', 'false']], 'false'), class: 'form-control' %>

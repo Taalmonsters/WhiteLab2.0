@@ -216,26 +216,24 @@ en:
       corpora_explore_select: Show comparison of number of tokens per
       cql_tester_header: Input a CQL query to test its validity and inspect preliminary
         results.
-      metadatum_group_description: Label used to group together different metadata
-        fields in the user interface.
-      metadatum_key_description: Parameter name of the metadata filter used in URLs.
-        It may only contain alphanumeric characters (a-z, A-Z, 0-9).
+      metadatum_group_description: This label is used to group together different metadata fields in the user interface.
+      metadatum_key_description: This label is used to group together different metadata fields within the same group. Which means: fields with the same group and field name will be merge into a single field in the interface.
       metadatum_key_error: This field may only contain alphanumeric characters (a-z,
         A-Z, 0-9).
       metadatum_display_name_description: Name of the metadata filter as it is displayed
         to the user.
-      metadatum_explorable_description_checked: Uncheck this box to hide the metadata
+      metadatum_explorable_description_checked: Set this option to false to hide the metadata
         field in the Explore Corpora interface.
-      metadatum_explorable_description_unchecked: Check this box to show the metadata
+      metadatum_explorable_description_unchecked: Set this option to true to show the metadata
         field in the Explore Corpora interface.
-      metadatum_searchable_description_checked: Uncheck this box to hide the metadata
+      metadatum_searchable_description_checked: Set this option to false to hide the metadata
         field from the user.
-      metadatum_searchable_description_unchecked: Check this box to show the metadata
+      metadatum_searchable_description_unchecked: Set this option to true to show the metadata
         field to the user.
-      metadatum_hoverable_description_checked: Uncheck this box to hide the metadata
-        field in the metadata pop-up for a hit.
-      metadatum_hoverable_description_unchecked: Check this box to show the metadata
-        field in the metadata pop-up for a hit.
+      metadatum_hoverable_description_checked: Set this option to false to hide the metadata
+        field in the metadata pop-up for a hit or document.
+      metadatum_hoverable_description_unchecked: Set this option to true to show the metadata
+        field in the metadata pop-up for a hit or document.
       batch_cql_description: A CQL batch file contains 1 CQL query per line and has
         extension '.txt'.
       benchmarker: The Query Benchmarker can be used to test WhiteLab's speed when

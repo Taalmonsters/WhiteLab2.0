@@ -204,7 +204,7 @@ nl:
     description: Vertalingen van instructies die in de applicatie verschijnen
     keys:
       no_results: Uw zoekopdracht leverde geen resultaten op.
-      no_neo: This function is only available when using Neo4j as the backend.
+      no_neo: Deze functie is alleen beschikbaar wanneer Neo4j als backend gebruikt wordt.
       search_for_word: Zoek een woord...
       split_batch_queries: Split batch queries
       select_default_language: Selecteer standaard taal
@@ -214,28 +214,26 @@ nl:
       advanced_search_box_header: Match <b>&eacute;&eacute;n of meer</b> van deze
         regels
       corpora_explore_select: Toon vergelijking van aantal tokens per
-      cql_tester_header: Input a CQL query to test its validity and inspect preliminary
-        results.
-      metadatum_group_description: Dit label wordt gebruikt om metadata velden te
+      cql_tester_header: Voer een CQL query in om zijn validiteit te testen en eerste resultaten te inspecteren.
+      metadatum_group_description: Dit label wordt gebruikt om metadatavelden te
         groeperen in de gebruikersinterface.
-      metadatum_key_description: Parameter naam van het metadata filter zoals gebruikt
-        in URLs. Dit veld mag alleen letters en cijfers bevatten (a-z, A-Z, 0-9).
+      metadatum_key_description: "Dit label wordt gebruikt om metadatavelden binnen dezelfde groep te groeperen. Dat wil zeggen: velden met dezelfde groep en veldnaam worden in de interface samengevoegd tot &eacute;&eacute;n veld."
       metadatum_key_error: Dit veld mag alleen letters en cijfers bevatten (a-z, A-Z,
         0-9).
       metadatum_display_name_description: Naam van het metadata filter zoals het getoond
         wordt aan de gebruiker.
-      metadatum_explorable_description_checked: Schakel deze checkbox uit om dit metadata
+      metadatum_explorable_description_checked: Zet deze optie uit om dit metadata
         veld te verbergen in de Verken Corpora interface.
-      metadatum_explorable_description_unchecked: Schakel deze checkbox in om dit
+      metadatum_explorable_description_unchecked: Zet deze optie aan om dit
         metadata veld te tonen in de Verken Corpora interface.
-      metadatum_searchable_description_checked: Schakel deze checkbox uit om dit metadata
+      metadatum_searchable_description_checked: Zet deze optie uit om dit metadata
         veld te verbergen in de gebruikersinterface.
-      metadatum_searchable_description_unchecked: Schakel deze checkbox in om dit
+      metadatum_searchable_description_unchecked: Zet deze optie aan om dit
         metadata veld te tonen in de gebruikersinterface.
-      metadatum_hoverable_description_checked: Schakel deze checkbox uit om dit metadata
-        veld te verbergen in de metadata pop-up van een hit.
-      metadatum_hoverable_description_unchecked: Schakel deze checkbox in om dit metadata
-        veld te tonen in de metadata pop-up van een hit.
+      metadatum_hoverable_description_checked: Zet deze optie uit om dit metadata
+        veld te verbergen in de metadata pop-up van een hit of document.
+      metadatum_hoverable_description_unchecked: Zet deze optie aan om dit metadata
+        veld te tonen in de metadata pop-up van een hit of document.
       batch_cql_description: Een batch CQL bestand bevat 1 CQL query per regel en
         heeft de extensie '.txt'.
       benchmarker: The Query Benchmarker can be used to test WhiteLab's speed when
