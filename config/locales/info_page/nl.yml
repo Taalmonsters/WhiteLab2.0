@@ -9,16 +9,16 @@ nl:
     Ineke Schuurman</p><p>Dit is hoofdstuk 13 van het STEVIN boek "Essential Speech
     and Language Technology for Dutch: Results by the STEVIN-programme", redactie:
     Peter Spyns, Jan Odijk.</p><p><b>Bibtex referentie:</b></p><p>@incollection{StevinSONAR2013,<br>
-    booktitle = {Essential Speech and Language Technology for Dutch: Results by the
-    STEVIN-programme},<br> chapter = {13},<br> keywords = {Dutch corpus written contemporary
-    reference},<br> publisher = {Springer Verlag},<br> author = {Oostdijk, Nelleke
-    and Reynaert, Martin and Hoste, V''{e}ronique and Schuurman, Ineke},<br> title
-    = {The construction of a 500-million-word reference corpus of contemporary written
-    {D}utch},<br> year = {2013},<br> }</p><p><b>Handleiding:</b></p><p>Een handleiding
-    in het Nederlands over de OpenSoNaR interface vindt u <a target="_blank" rel="nofollow"
-    href="http://black.uvt.nl/opensonar/OpenSoNaR%20Manual.pdf">hier</a>.<br> Een
-    handleiding in het Engels over het SoNaR corpus vindt u <a target="_blank" rel="nofollow"
-    href="http://ticclops.uvt.nl/SoNaR_end-user_documentation_v.1.0.4.pdf">hier</a>.</p><p><b>Dankwoord:</b></p><p>CQL
+      booktitle = {Essential Speech and Language Technology for Dutch: Results by
+    the STEVIN-programme},<br>   chapter = {13},<br>   keywords = {Dutch corpus written
+    contemporary reference},<br>   publisher = {Springer Verlag},<br>   author = {Oostdijk,
+    Nelleke and Reynaert, Martin and Hoste, V''{e}ronique and Schuurman, Ineke},<br>
+      title = {The construction of a 500-million-word reference corpus of contemporary
+    written {D}utch},<br>   year = {2013},<br> }</p><p><b>Handleiding:</b></p><p>Een
+    handleiding in het Nederlands over de OpenSoNaR interface vindt u <a target="_blank"
+    rel="nofollow" href="http://black.uvt.nl/opensonar/OpenSoNaR%20Manual.pdf">hier</a>.<br>
+    Een handleiding in het Engels over het SoNaR corpus vindt u <a target="_blank"
+    rel="nofollow" href="http://ticclops.uvt.nl/SoNaR_end-user_documentation_v.1.0.4.pdf">hier</a>.</p><p><b>Dankwoord:</b></p><p>CQL
     is ontwikkeld door de goede mensen van <a target="_blank" rel="nofollow" href="http://cwb.sourceforge.net/">IMS
     Open Corpus Workbench</a>. Een mooie tutorial over CQL door Stefan Evert &amp;
     het OCWB Development Team vindt u <a target="_blank" rel="nofollow" href="http://cwb.sourceforge.net/files/CQP_Tutorial/">hier</a>.</p><p>We

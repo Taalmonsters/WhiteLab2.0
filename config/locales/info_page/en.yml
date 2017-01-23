@@ -8,13 +8,13 @@ en:
     Reynaert, Véronique Hoste and Ineke Schuurman</p><p>This is chapter 13 of the
     STEVIN book "Essential Speech and Language Technology for Dutch: Results by the
     STEVIN-programme", editors: Peter Spyns, Jan Odijk.</p><p><b>Bibtex reference:</b></p><p>@incollection{StevinSONAR2013,<br>
-    booktitle = {Essential Speech and Language Technology for Dutch: Results by the
-    STEVIN-programme},<br> chapter = {13},<br> keywords = {Dutch corpus written contemporary
-    reference},<br> publisher = {Springer Verlag},<br> author = {Oostdijk, Nelleke
-    and Reynaert, Martin and Hoste, V''{e}ronique and Schuurman, Ineke},<br> title
-    = {The construction of a 500-million-word reference corpus of contemporary written
-    {D}utch},<br> year = {2013},<br> }</p><p><b>Manual:</b></p><p>A manual regarding
-    the use of the OpenSoNaR interface is located <a target="_blank" rel="nofollow"
+      booktitle = {Essential Speech and Language Technology for Dutch: Results by
+    the STEVIN-programme},<br>   chapter = {13},<br>   keywords = {Dutch corpus written
+    contemporary reference},<br>   publisher = {Springer Verlag},<br>   author = {Oostdijk,
+    Nelleke and Reynaert, Martin and Hoste, V''{e}ronique and Schuurman, Ineke},<br>
+      title = {The construction of a 500-million-word reference corpus of contemporary
+    written {D}utch},<br>   year = {2013},<br> }</p><p><b>Manual:</b></p><p>A manual
+    regarding the use of the OpenSoNaR interface is located <a target="_blank" rel="nofollow"
     href="http://black.uvt.nl/opensonar/OpenSoNaR%20Manual.pdf">here</a>.<br> A manual
     about the SoNaR corpus can be found <a target="_blank" rel="nofollow" href="http://ticclops.uvt.nl/SoNaR_end-user_documentation_v.1.0.4.pdf">here</a>.</p><p><b>Acknowledgements:</b></p><p>CQL
     has been developed by the good people of <a target="_blank" rel="nofollow" href="http://cwb.sourceforge.net/">IMS
