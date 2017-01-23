@@ -181,14 +181,15 @@ module WhitelabQuery
   end
   
   def export
-    Rails.logger.debug("EXPORTING WL QUERY")
-    unless !self.exporting?
+    if self.failed? || self.exporting?
+      Rails.logger.debug("NOT EXPORTING WL QUERY. STATUS: #{self.status}")
+    else
+      Rails.logger.debug("EXPORTING WL QUERY")
       self.exporting!
       Thread.new do
         n_start = self.number
         o_start = self.offset
         status_start = self.status
-        self.waiting!
         max = [EXPORT_LIMIT,self.total].min
         self.number = 1000
         o = 0
@@ -200,16 +201,17 @@ module WhitelabQuery
         while o < max
           self.offset = o
           res = self.result(false)
+          header_keys = res['results'].first.keys.select{|key| !key.eql?("metadata")}
           CSV.open(csv_file, "a", force_quotes: true) do |csv|
-            csv << res['results'].first.keys.except("metadata") if o == 0
+            csv << header_keys if o == 0
             res['results'].each do |hash|
-              csv << hash.except("metadata").values
+              csv << header_keys.map{|key| hash[key]}
             end
           end
           File.open(tsv_file, "a") do |tsv|
-            tsv.write res['results'].first.keys.except("metadata").join("\t")+"\n" if o == 0
+            tsv.write header_keys.join("\t")+"\n" if o == 0
             res['results'].each do |hash|
-              tsv.write hash.except("metadata").values.join("\t")+"\n"
+              tsv.write header_keys.map{|key| hash[key]}.join("\t")+"\n"
             end
           end
           o += self.number
