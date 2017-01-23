@@ -217,7 +217,7 @@ en:
       cql_tester_header: Input a CQL query to test its validity and inspect preliminary
         results.
       metadatum_group_description: This label is used to group together different metadata fields in the user interface.
-      metadatum_key_description: This label is used to group together different metadata fields within the same group. Which means: fields with the same group and field name will be merge into a single field in the interface.
+      metadatum_key_description: "This label is used to group together different metadata fields within the same group. Which means: fields with the same group and field name will be merge into a single field in the interface."
       metadatum_key_error: This field may only contain alphanumeric characters (a-z,
         A-Z, 0-9).
       metadatum_display_name_description: Name of the metadata filter as it is displayed
