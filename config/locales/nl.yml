@@ -210,6 +210,7 @@ nl:
       select_default_language: Selecteer standaard taal
       add_new_language: Voeg nieuwe taal toe
       remove_language: Verwijder bestaande taal
+      remove_language_description: Om een bestaande taal te verwijderen uit de interface dient u alle bestanden genaamd <b>[LANGUAGE_CODE].yml</b> in de &quot;config/locales&quot; map van uw WhiteLab installatie te verwijderen en de applicatie te herstarten.
       advanced_search_box_header: Match <b>&eacute;&eacute;n of meer</b> van deze
         regels
       corpora_explore_select: Toon vergelijking van aantal tokens per

@@ -90,14 +90,25 @@ class AdminController < ApplicationController
   # Update page translations to user selected language
   def update_language_settings
     @languages = load_translation_data
+    @info_pages = load_info_page_data
+    @tour_data = load_tour_data
     @available_languages = load_available_languages
     if params[:default]
       I18n.default_locale = params[:default]
     elsif params[:add]
       @languages[params[:add]] = @languages['en']
       save_languages
+      save_info_page({ :lang => params[:add], :data => @info_pages['en']['info_page'] })
+      @tour_data[params[:add]] = @tour_data['en']
+      @tour_data['explore'][params[:add]] = @tour_data['explore']['en']
+      @tour_data['search'][params[:add]] = @tour_data['search']['en']
+      save_tour_data(@tour_data)
     elsif params[:remove] && @available_languages.length > 1 && !params[:remove].eql?(I18n.default_locale)
-      File.delete(Rails.root.join('config', 'locales').to_s+"/"+params[:remove]+".yml")
+      File.delete(Rails.root.join('config', 'locales', "#{params[:remove]}.yml"))
+      File.delete(Rails.root.join('config', 'locales', 'info_page', "#{params[:remove]}.yml"))
+      File.delete(Rails.root.join('config', 'locales', 'tour', "#{params[:remove]}.yml"))
+      File.delete(Rails.root.join('config', 'locales', 'tour', 'explore', "#{params[:remove]}.yml"))
+      File.delete(Rails.root.join('config', 'locales', 'tour', 'search', "#{params[:remove]}.yml"))
     end
     I18n.backend.reload!
     redirect_to admin_page_path(:page => 'interface', :tab => 'language')

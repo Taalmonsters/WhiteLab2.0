@@ -7,7 +7,7 @@
 				<div class="form-group col-xs-12 col-sm-8 col-md-6">
 					<label for="default" class="padding-bottom-10"><%= t(:"instructions.keys.select_default_language") %></label>
 					<div class="selectpicker">
-						<%= select_tag(:default, options_for_select(@available_languages, [I18n.default_locale.to_s])) %>
+						<%= select_tag(:default, options_for_select(@available_languages.sort, [I18n.default_locale.to_s])) %>
 						<%= submit_tag(t(:"button_labels.keys.select").capitalize, :class => "btn btn-xs btn-primary") %>
 					</div>
 				</div>
@@ -28,11 +28,8 @@
 			<div class="row">
 				<%= form_tag('/admin/interface/language', :method => :post) do %>
 					<div class="form-group col-xs-12 col-sm-8 col-md-6">
-						<label for="remove" class="padding-bottom-10"><%= t(:"instructions.keys.remove_language") %></label>
-						<div class="selectpicker">
-							<%= select_tag(:remove, options_for_select(@available_languages)) %>
-						<%= submit_tag(t(:"button_labels.keys.remove").capitalize, :class => "btn btn-xs btn-primary") %>
-						</div>
+						<label class="padding-bottom-10"><%= t(:"instructions.keys.remove_language") %></label>
+						<p><%= t(:"instructions.keys.remove_language_description").html_safe %></p>
 					</div>
 				<% end %>
 			</div>

@@ -27,7 +27,7 @@ Bundler.require(*Rails.groups)
 
 module WhitelabV20
   class Application < Rails::Application
-    config.i18n.enforce_available_locales = true
+    config.i18n.enforce_available_locales = false
     config.i18n.default_locale = :nl
     config.i18n.fallbacks =[:en, :nl]
     config.i18n.load_path += Dir["#{Rails.root.to_s}/config/locales/**/*.{rb,yml}"]

@@ -210,6 +210,8 @@ en:
       select_default_language: Select default language
       add_new_language: Add new language
       remove_language: Remove existing language
+      remove_language_description: To remove an existing language from the interface you need to delete all files named <b>[LANGUAGE_CODE].yml</b> from the
+       &quot;config/locales&quot; directory of your WhiteLab installation and restart the application.
       advanced_search_box_header: Match <b>one or more</b> of these rules
       corpora_explore_select: Show comparison of number of tokens per
       cql_tester_header: Input a CQL query to test its validity and inspect preliminary

@@ -24,16 +24,29 @@ module ApplicationHelper
   
   # Load translated info page content from configuration file
   def load_info_page_data
-    load_page_data('info')
+    load_page_data('info_page')
   end
   
   def load_page_data(page)
     data = {}
-    files = Dir.glob(Rails.root.join('config', 'locales', page+'_page').to_s+"/*.yml")
-    files.each do |yml|
-      lang = File.basename(yml, ".yml")
-      data[lang] = YAML.load_file(yml)[lang]
+    dir = Rails.root.join('config', 'locales', page)
+    Dir.entries(dir).select{|entry| !entry.start_with?('.') && (entry.end_with?(".yml") || File.directory?("#{dir}/#{entry}")) }.each do |entry|
+      if File.directory?("#{dir}/#{entry}")
+        data[entry] = {}
+        Dir.entries("#{dir}/#{entry}").select{|entry2| !entry.start_with?('.') && entry2.end_with?(".yml") }.each do |entry2|
+          lang = File.basename(entry2, ".yml")
+          data[entry][lang] = YAML.load_file("#{dir}/#{entry}/#{entry2}")[lang]
+        end
+      else
+        lang = File.basename(entry, ".yml")
+        data[lang] = YAML.load_file("#{dir}/#{entry}")[lang]
+      end
     end
+#    files = Dir.glob(Rails.root.join('config', 'locales', page).to_s+"/*.yml")
+#    files.each do |yml|
+#      lang = File.basename(yml, ".yml")
+#      data[lang] = YAML.load_file(yml)[lang]
+#    end
     data
   end
   
@@ -76,6 +89,10 @@ module ApplicationHelper
       end
     end
     return data.uniq
+  end
+
+  def load_tour_data
+    load_page_data('tour')
   end
   
   # Load data for label and keys translations
@@ -149,17 +166,35 @@ module ApplicationHelper
   
   # Save info page translation to configuration file
   def save_info_page(lang_obj)
-    save_page('info', lang_obj)
+    save_page('info_page', lang_obj)
   end
   
   def save_page(page, lang_obj)
     lang = lang_obj[:lang]
     new_data = {
       lang => {
-        "#{page}_page" => lang_obj[:data]
+        "#{page}" => lang_obj[:data]
       }
     }
-    File.open(Rails.root.join('config', 'locales', "#{page}_page").to_s+"/"+lang+".yml", 'w', external_encoding: 'ASCII-8BIT') { |file| YAML.dump(new_data, file) }
+    File.open(Rails.root.join('config', 'locales', page).to_s+"/"+lang+".yml", 'w', external_encoding: 'ASCII-8BIT') { |file| YAML.dump(new_data, file) }
+  end
+
+  def save_tour_data(tour_data)
+    tour_data.each do |key, data|
+      if ['explore','search'].include?(key)
+        data.each do |lang, ldata|
+          new_data = {
+            lang => ldata
+          }
+          File.open(Rails.root.join('config', 'locales', 'tour', key, "#{lang}.yml"), 'w', external_encoding: 'ASCII-8BIT') { |file| YAML.dump(new_data, file) }
+        end
+      else
+        new_data = {
+          key => data
+        }
+        File.open(Rails.root.join('config', 'locales', 'tour', "#{key}.yml"), 'w', external_encoding: 'ASCII-8BIT') { |file| YAML.dump(new_data, file) }
+      end
+    end
   end
   
 end

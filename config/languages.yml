@@ -99,7 +99,7 @@ languages:
   Nauru: na
   Nepali: ne
   Dutch: nl
-  Norwegian: no
+  Norwegian: "no"
   Occitan: oc
   Oromo (Afaan Oromo): om
   Oriya: or
