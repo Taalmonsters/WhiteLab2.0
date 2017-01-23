@@ -135,6 +135,7 @@ nl:
       node_counts: aantallen nodes in database
       pos_heads: woordsoorten (hoofd)
       pos_tags: woordsoort annotaties
+      language: taal
       languages: talen
       translations: vertalingen
       info_page: info page
@@ -245,7 +246,8 @@ nl:
         until all queries are finished. Queries are not saved across sessions.
       export_alert: Uw export is toegevoegd aan uw zoekgeschiedenis. Wanneer de export
         compleet is, kunt u deze daar downloaden.
-      footer_text: Deze applicatie gebruikt WhiteLab versie %{whitelab_version} en %{backend_name} versie %{backend_version}
+      footer_text: Deze applicatie gebruikt WhiteLab versie %{whitelab_version} en
+        %{backend_name} versie %{backend_version}
       stop_counting_after: Stop met tellen na
   cql_info:
     title: CQL info
@@ -337,16 +339,16 @@ nl:
     description: Vertalingen van metadata groep labels
     keys:
       Metadata: Metadata
-      Collection: Collection
+      Collection: Collectie
       Corpus: Corpus
-      Location: Location
-      Language: Language
+      Location: Locatie
+      Language: Taal
   metadata_keys:
     title: Metadata keys
     description: Vertalingen van metadata key labels
     keys:
-      Address: Address
-      Age: Age
+      Address: Adres
+      Age: Leeftijd
       AnnotationType-SoNaR: AnnotationType-SoNaR
       Anonymized: Anonymized
       AudioExportFormat: AudioExportFormat

@@ -18,8 +18,8 @@
 		<div class="content">
 			<% selected_lang = !@hlang.blank? ? @hlang : first_lang %>
 			<%= form_tag('/admin/interface/info_page?hlang='+selected_lang, :class => "remote-form", :method => :post, :remote => true) do %>
-				<%= text_area_tag 'info_page', @info_pages[selected_lang]["info_page"].html_safe %>
-				<%= submit_tag(t(:'button_labels.keys.save').capitalize, :class => "btn btn-xs btn-primary") %>
+				<%= text_area_tag 'info_page', @info_pages[selected_lang]["info_page"].html_safe, :class => 'wysihtml5' %>
+				<%= submit_tag(t(:'button_labels.keys.save').capitalize, :class => "btn btn-primary") %>
 			<% end %>
 		</div>
 	</div>

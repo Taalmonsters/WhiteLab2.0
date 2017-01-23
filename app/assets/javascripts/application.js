@@ -13,6 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap-sprockets
+//= require bootstrap-wysihtml5
+//= require bootstrap-wysihtml5/locales
 //= require jquery-ui
 //= require d3.min
 //= require whitelab

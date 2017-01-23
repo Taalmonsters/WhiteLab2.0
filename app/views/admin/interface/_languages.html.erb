@@ -18,7 +18,7 @@
 				<div class="form-group col-xs-12 col-sm-8 col-md-6">
 					<label for="add" class="padding-bottom-10"><%= t(:"instructions.keys.add_new_language") %></label>
 					<div class="selectpicker">
-						<%= select_tag(:add, options_for_select(@all_languages)) %>
+						<%= select_tag(:add, options_for_select(@all_languages.sort)) %>
 						<%= submit_tag(t(:"button_labels.keys.add").capitalize, :class => "btn btn-xs btn-primary") %>
 					</div>
 				</div>

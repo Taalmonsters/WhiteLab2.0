@@ -44,6 +44,9 @@ class ApplicationController < ActionController::Base
   
   # Set the current locale based on the user's preferences or the default
   def set_locale
+    rroot = Rails.root
+    files = Dir.glob(rroot.join('config', 'locales').to_s+"/*.yml")
+    I18n.backend.load_translations(files)
     plocale = params[:locale]
     default_locale = @user.default_locale
     if plocale && @user && !plocale.eql?(default_locale)

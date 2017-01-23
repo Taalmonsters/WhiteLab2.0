@@ -357,11 +357,16 @@ button.info-panel-toggle {
   border-radius: 11px !important;
 }
 
-// .nav {
-  // li.active > a {
-    // color: #FFF !important;
-  // }
-// }
+textarea#info_page {
+    height: 320px;
+}
+
+ul.wysihtml5-toolbar {
+    padding-top: 3px;
+    .btn-group {
+      margin-top: 0px;
+    }
+}
 
 .accordion {
   @extend .panel-group;
@@ -374,6 +379,13 @@ button.info-panel-toggle {
 
 .accordion-heading {
   @extend .panel-heading;
+  padding: 0;
+  a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 10px 15px;
+  }
 }
 
 .accordion-body {
@@ -406,12 +418,7 @@ span.tiny {
   }
   .accordion-heading {
     border-bottom: 1px solid #ddd;
-    padding: 0;
     a {
-      display: block;
-      width: 100%;
-      height: 100%;
-      padding: 10px;
       padding-left: 60px;
     }
   }

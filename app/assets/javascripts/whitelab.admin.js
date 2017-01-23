@@ -69,7 +69,12 @@ Whitelab.admin = {
 		if ($("tr.benchmark-query.waiting").length > 0) {
 			Whitelab.admin.performBenchmarkTests();
 		}
-		
+
+		if ($(".wysihtml5").length > 0) {
+		    $('.wysihtml5').each(function(i, elem) {
+                $(elem).wysihtml5();
+            });
+		}
 	},
 	
 	performBenchmarkTests : function() {

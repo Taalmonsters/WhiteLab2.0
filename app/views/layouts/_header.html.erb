@@ -30,7 +30,7 @@
 
 				<% if @interface_languages.length > 3 %>
 				<li class="left-spaced">
-					<a data-url="<%= request.original_url %>" onclick="event.preventDefault();" disabled>Language: <%= select_tag(:default, options_for_select(@interface_languages, [@current_language]), :class => 'lang-select') %></a>
+					<a data-url="<%= request.original_url %>" onclick="event.preventDefault();" disabled><%= t(:"page_titles.keys.language").capitalize %>: <%= select_tag(:default, options_for_select(@interface_languages, [@current_language]), :class => 'lang-select') %></a>
 				</li>
 				<% else %>
 				<% @interface_languages.each do |lang| %>
