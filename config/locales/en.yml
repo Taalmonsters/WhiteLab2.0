@@ -245,6 +245,7 @@ en:
       export_alert: Your export has been added to your search history. Once it is
         completed you can download the results from there.
       footer_text: This application runs on WhiteLab version %{whitelab_version} and %{backend_name} version %{backend_version}
+      stop_counting_after: Stop counting after
   cql_info:
     title: CQL info
     description: Translations of CQL instructions in Expert Search

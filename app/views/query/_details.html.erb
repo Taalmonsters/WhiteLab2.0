@@ -1,5 +1,5 @@
 <div class="form-group">
-	<%= check_box_tag :max_count, Rails.application.config.x.max_count, @max_count %> Stop counting after <%= number_with_delimiter(Rails.application.config.x.max_count, delimiter: t(:"other.keys.numeric_delimiter")) %> hits
+	<%= check_box_tag :max_count, Rails.application.config.x.max_count, @max_count %> <%= t(:"instructions.keys.stop_counting_after") %> <%= number_with_delimiter(Rails.application.config.x.max_count, delimiter: t(:"other.keys.numeric_delimiter")) %> <%= t(:"data_labels.keys.hits") %>
 </div> 
 <table class="table table-striped">
 	<thead><tr><th colspan="2"></th></tr></thead>

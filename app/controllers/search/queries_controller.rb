@@ -17,6 +17,7 @@ class Search::QueriesController < QueriesController
       @target = params[:docpid]
       field, id = @metadata_handler.docpid_to_id(@target)
       sub_query.view = 1
+      sub_query.sort = nil
       sub_query.filter = "(#{field}:#{id})"
       sub_query.offset = 0
       sub_query.number = params[:hits]
@@ -38,6 +39,7 @@ class Search::QueriesController < QueriesController
       sub_query = @query.dup
       sub_query.viewgroup = params[:docs_group]
       sub_query.view = 2
+      sub_query.sort = nil
       sub_query.offset = @offset
       sub_query.number = 20
       @docs = sub_query.result(false)
@@ -58,6 +60,7 @@ class Search::QueriesController < QueriesController
       sub_query = @query.dup
       sub_query.viewgroup = params[:hits_group]
       sub_query.view = 1
+      sub_query.sort = nil
       sub_query.offset = @offset
       sub_query.number = 20
       @hits = sub_query.result(false)

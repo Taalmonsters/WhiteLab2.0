@@ -2,23 +2,25 @@ Whitelab.cql = {
 		
 	simpleQueryStringToCQL : function(str, caseSensitive) {
 		Whitelab.debug("simpleQueryStringToCQL");
-		var terms = str.split(" ");
 		var query = "";
-		var c = "";
-		if (caseSensitive)
-			c = "(?c)";
-		for (var i = 0; i < terms.length; i++) {
-			if (terms[i].length > 0) {
-				var sub = terms[i].substring(0,2);
-				if (sub === '[]' || sub === '[word=\".*\"]') {
-					if (terms[i].indexOf('{,') > -1) {
-						terms[i] = terms[i].replace('{,','{1,');
-					}
-					query = query + terms[i];
-				} else {
-					query = query + "[word=\""+c+terms[i]+"\"]";
-				}
-			}
+		if (str) {
+            var terms = str.split(" ");
+            var c = "";
+            if (caseSensitive)
+                c = "(?c)";
+            for (var i = 0; i < terms.length; i++) {
+                if (terms[i].length > 0) {
+                    var sub = terms[i].substring(0,2);
+                    if (sub === '[]' || sub === '[word=\".*\"]') {
+                        if (terms[i].indexOf('{,') > -1) {
+                            terms[i] = terms[i].replace('{,','{1,');
+                        }
+                        query = query + terms[i];
+                    } else {
+                        query = query + "[word=\""+c+terms[i]+"\"]";
+                    }
+                }
+            }
 		}
 		return query;
 	},

@@ -44,7 +44,7 @@ module DataFormatHelper
       max_doc_count = data[0]['document_count']
       data.each{|group| total_doc_count += group['document_count'] }
       data.map!{|group| {
-        'name' => group[title],
+        'name' => group[title].length > 0 ? group[title] : "Unknown",
         'x' => group['hit_count'],
         'x2' => ActionController::Base.helpers.number_with_precision((group['hit_count'].to_f / filtered_token_count) * 100, precision: 1, separator: t(:"other.keys.numeric_separator")),
         'y' => group['hit_count'] / group['document_count'],
@@ -60,7 +60,7 @@ module DataFormatHelper
   # Format corpus composition as Highcharts treemap
   def format_for_treemap(data, title, filtered_token_count)
     if data.any?
-      data.map!{|group| { 'name' => group[title], 'size' => group['hit_count'] } }
+      data.map!{|group| { 'name' => group[title].length > 0 ? group[title] : "Unknown", 'size' => group['hit_count'] } }
     else
       data = [{ 'name' => 'Unknown', 'size' => 0 }]
     end

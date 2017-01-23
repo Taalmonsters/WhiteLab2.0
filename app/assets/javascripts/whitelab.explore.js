@@ -189,32 +189,40 @@ Whitelab.explore = {
 		
 		init : function() {
 		},
+
+		checkSafeLimit : function() {
+		    var selectedTokenCount = $('span.metadata-selected-absolute').data('selected-tokens');
+            var withinSafeLimit = selectedTokenCount <= Whitelab.metadata.filterTokenSafeLimit;
+            if ($("#sample_type").val() === "sample" && $("#sample_size").val().length > 0) {
+                $('#statistics-input-form #sample').val($("#sample_size").val());
+                withinSafeLimit = ($("#sample_size").val() / 100) * selectedTokenCount <= Whitelab.metadata.filterTokenSafeLimit;
+            } else if ($("#sample_type").val() === "samplenum" && $("#samplenum_size").val().length > 0) {
+                $('#statistics-input-form #samplenum').val($("#samplenum_size").val());
+                withinSafeLimit = $("#samplenum_size").val() <= Whitelab.metadata.filterTokenSafeLimit;
+            }
+            if (withinSafeLimit || confirm("You have selected a subcorpus of over "+Whitelab.metadata.filterTokenSafeLimit+" tokens. Please note that this query, on first execution, may take a considerable amount of time to complete. Proceed with caution.\n\nContinue?")) {
+            $('#statistics-input-form #sampleseed').val($("#seed").val());
+                return true;
+            }
+            return false;
+		},
 		
 		submitForm : function() {
 			var filterString = Whitelab.metadata.getFilterString();
 		    var listType = $("#listtype").val();
 		    if (filterString.length > 0 && listType.length > 0) {
-		    	var selectedTokenCount = $('span.metadata-selected-absolute').data('selected-tokens');
-		    	var withinSafeLimit = selectedTokenCount <= Whitelab.metadata.filterTokenSafeLimit;
-		    	if ($("#sample_type").val() === "sample" && $("#sample_size").val().length > 0) {
-		    	    $('#statistics-input-form #sample').val($("#sample_size").val());
-		    	    withinSafeLimit = ($("#sample_size").val() / 100) * selectedTokenCount <= Whitelab.metadata.filterTokenSafeLimit;
-		    	} else if ($("#sample_type").val() === "samplenum" && $("#samplenum_size").val().length > 0) {
-                    $('#statistics-input-form #samplenum').val($("#samplenum_size").val());
-		    	    withinSafeLimit = $("#samplenum_size").val() <= Whitelab.metadata.filterTokenSafeLimit;
-		    	}
-		    	$('#statistics-input-form #sampleseed').val($("#seed").val());
-		    	if (withinSafeLimit || confirm("You have selected a subcorpus of over "+Whitelab.metadata.filterTokenSafeLimit+" tokens. Please note that this query, on first execution, may take a considerable amount of time to complete. Proceed with caution.\n\nContinue?")) {
+		    	if (Whitelab.explore.statistics.checkSafeLimit()) {
 		    		$('#statistics-input-form #filter').val(filterString);
 			    	$('#statistics-input-form').submit();
 		    	}
 		    } else {
-		    	var msg = [];
-		    	if (filterString.length == 0)
-		    		msg.push("Please define a metadata filter.");
-		    	if (listType.length == 0)
-		    		msg.push("Please select a list type.");
-		    	alert(msg.join("\n"));
+		    	if (filterString.length == 0) {
+                    if (Whitelab.explore.statistics.checkSafeLimit()) {
+                        $('#statistics-input-form #filter').val(filterString);
+                        $('#statistics-input-form').submit();
+                    } else
+    		    		alert("Please define a metadata filter.");
+		    	}
 		    }
 		}
 		
@@ -283,22 +291,6 @@ $(document).on('click', '#statistics-input-form button.submit', function(e) {
 $(document).on('click', '#statistics-input-form button.reset', function(e) {
     e.preventDefault();
     window.location = '/explore/statistics';
-});
-
-$(document).on('click', 'a.explore-statistics-tab', function(e) {
-	e.preventDefault();
-    e.stopPropagation();
-	if (!$(this).parent().hasClass("active")) {
-		$(this).parent().parent().find("li.active").first().removeClass("active");
-		$(this).parent().addClass("active");
-		$("#document-display div.tab-content").html('<span class="loading"></span>');
-    	$('#statistics-input-form #view').val($(this).data("view"));
-    	if ($(this).data("offset") != null) {
-    		$('#statistics-input-form #offset').val($(this).data("offset"));
-    		$('#statistics-input-form #number').val($(this).data("number"));
-    	}
-	    Whitelab.explore.statistics.submitForm();
-	}
 });
 
 $(document).on('click', '#main-div[data-namespace="explore"] button.show-document', function(e) {

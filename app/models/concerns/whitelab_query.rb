@@ -182,7 +182,7 @@ module WhitelabQuery
   
   def export
     Rails.logger.debug("EXPORTING WL QUERY")
-    if self.finished? && !self.exporting?
+    unless !self.exporting?
       self.exporting!
       Thread.new do
         n_start = self.number
@@ -200,26 +200,22 @@ module WhitelabQuery
         while o < max
           self.offset = o
           res = self.result(false)
-          Rails.logger.debug "RESULT: #{res}"
           CSV.open(csv_file, "a", force_quotes: true) do |csv|
-            csv << res['results'].first.keys if o == 0
+            csv << res['results'].first.keys.except("metadata") if o == 0
             res['results'].each do |hash|
-              csv << hash.values
+              csv << hash.except("metadata").values
             end
           end
           File.open(tsv_file, "a") do |tsv|
-            tsv.write res['results'].first.keys.join("\t")+"\n" if o == 0
+            tsv.write res['results'].first.keys.except("metadata").join("\t")+"\n" if o == 0
             res['results'].each do |hash|
-              tsv.write hash.values.join("\t")+"\n"
+              tsv.write hash.except("metadata").values.join("\t")+"\n"
             end
           end
           o += self.number
         end
         self.number = n_start
         self.offset = o_start
-        # File.open(self.metadata_file, "w") do |xml|
-          # xml.write(self.metadata)
-        # end
         self.finished!
         self.exported!
       end

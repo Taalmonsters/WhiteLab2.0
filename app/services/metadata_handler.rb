@@ -70,8 +70,6 @@ class MetadataHandler
     labels = get_labels_from_group_and_key(group, key).select{|label| @fields.has_key?(label) }
     return [] unless labels.any?
     return filter_documents(filter).group_by{|i| labels.map{|label| @metadata[label]['values'][@fields[label][i]] }.select{|value| !value.nil? && !value.eql?('Unknown')}.join(",") }.map{|value,doc_indices| { option => value, 'hit_count' => doc_indices.map{|d| @token_counts[d] }.reduce(:+), 'document_count' => doc_indices.size } }
-    
-    
   end
   
   def get_filtered_word_count(filter)

@@ -286,8 +286,6 @@ Whitelab.search = {
 			window.location = url+'#results';
 		},
 		
-		///////////////////////////////////////////////////////////////////////////
-		
 		getBoxValue : function(box,type,op) {
 			if ($(box).find(".advanced-pos-select").length > 0) {
 				var term = $(box).find(".advanced-pos-select").first().val();
@@ -516,7 +514,7 @@ Whitelab.search = {
 				'number': "50"
 			});
 			Whitelab.debug(params);
-			window.location = '/search/'+page+'?'+params;
+			window.location = '/search/'+page+'?'+params+'#results';
 		}
 		
 	},
@@ -532,7 +530,6 @@ Whitelab.search = {
 		},
 		
 		parseQuery : function() {
-//			Whitelab.debug("PATTERN: "+$("#patt").val());
 			var patt = Whitelab.cql.simpleQueryStringToCQL($("#patt").val(), false);
 			window.location = '/search/simple?patt='+encodeURIComponent(patt)+'&view=1#results';
 		}
@@ -787,7 +784,7 @@ $(document).on('click', '#main-div[data-namespace="search"] a.tablink', function
 	if (filter.length > 0)
 		url = url+connector+"filter="+filter;
 		
-	window.location = url;
+	window.location = url+"#results";
 });
 
 $(document).on('mouseover', '.tooltip-hover', function(e) {

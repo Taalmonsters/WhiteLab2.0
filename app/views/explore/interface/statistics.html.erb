@@ -4,7 +4,7 @@
 		<div class="col-xs-10 col-xs-offset-1">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<%= form_tag("/explore/statistics", id: "statistics-input-form", method: "get", :class => "full-height form-horizontal") do %>
+					<%= form_tag("/explore/statistics#results", id: "statistics-input-form", method: "get", :class => "full-height form-horizontal") do %>
 						<%= hidden_field_tag :filter, "" %>
 						<%= hidden_field_tag :view, @query && [2,8,4].include?(@query.view) ? @query.view : 8 %>
 						<%= hidden_field_tag :offset, @view == 4 ? 0 : 0 %>

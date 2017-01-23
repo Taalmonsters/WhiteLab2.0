@@ -15,7 +15,7 @@ module BlacklabHelper
       unless value.blank?
         if ['filter', 'group'].include?(key)
           attrs[key] = reformat_filters(value) if key.eql?('filter')
-          attrs[key] = reformat_group(value) if key.eql?('group')
+          attrs[key] = reformat_group(value) if key.eql?('group') && [8,16].include?(query.view)
         else
           key = 'first' if key.eql?('offset')
           value = combine_patt_and_within(query) if key.eql?('patt')

@@ -34,7 +34,7 @@ class InterfaceController < ApplicationController
       if xml && xml.css(@namespace).any?
         url_params, status = "#{@namespace.capitalize}::Query".constantize.xml_to_url_params(xml.css(@namespace).first)
         if status == 1
-          @data["url"] = "/#{@namespace}/#{action_name}?#{url_params}"
+          @data["url"] = "/#{@namespace}/#{action_name}?#{url_params}#results"
         else
           @data["error"] = url_params
         end

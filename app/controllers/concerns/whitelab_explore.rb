@@ -30,16 +30,18 @@ module WhitelabExplore
       end
       unless ['corpora','document'].include?(action_name)
         @query = Explore::Query.find_from_params(action_name, @user, query_create_params)
-        if @query && @query.patt && (!@query.finished? || !@query.output) && !@query.failed?
-          if @query.view == 4
-            @query.running!
-            @result = Document.growth(@query)
-            @query.hit_count = @result[:hit_count]
-            @query.document_count = @result[:document_count]
-            @query.finished!
-          else
-            threaded = !action_name.eql?('result')
-            @query.execute(threaded) if @query && !@query.running? && !@query.failed? && !@query.output
+        unless ['download','export'].include?(action_name)
+          if @query && @query.patt && (!@query.finished? || !@query.output) && !@query.failed?
+            if @query.view == 4
+              @query.running!
+              @result = Document.growth(@query)
+              @query.hit_count = @result[:hit_count]
+              @query.document_count = @result[:document_count]
+              @query.finished!
+            else
+              threaded = !action_name.eql?('result')
+              @query.execute(threaded) if @query && !@query.running? && !@query.failed? && !@query.output
+            end
           end
         end
       end

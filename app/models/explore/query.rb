@@ -9,25 +9,8 @@ class Explore::Query < ActiveRecord::Base
     FileUtils.rm_r(dir) if File.exists?(dir)
   end
   
-  def result_file
-    return Rails.root.join('data','explore',self.id.to_s,'result.csv')
-  end
-  
-  def metadata_file
-    return Rails.root.join('data','explore',self.id.to_s,'metadata.xml')
-  end
-  
-  def metadata
-    return {
-      :page => self.input_page,
-      :patt => self.patt,
-      :within => self.within,
-      :filter => self.filter,
-      :view => self.view,
-      :group => self.group,
-      :listtype => self.listtype,
-      :size => self.size
-    }.to_xml(:root => 'explore_query')
+  def result_file(tsv = false)
+    return tsv ? Rails.root.join('data','explore',self.id.to_s,'result.tsv') : Rails.root.join('data','explore',self.id.to_s,'result.csv')
   end
   
   # Generate filename for download

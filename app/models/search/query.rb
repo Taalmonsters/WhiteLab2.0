@@ -10,21 +10,7 @@ class Search::Query < ActiveRecord::Base
   end
   
   def result_file(tsv = false)
-    return Rails.root.join('data','search',self.id.to_s,tsv ? 'result.tsv' : 'result.csv')
-  end
-  
-  def metadata_file
-    return Rails.root.join('data','search',self.id.to_s,'metadata.xml')
-  end
-  
-  def metadata
-    return {
-      :patt => self.patt,
-      :within => self.within,
-      :filter => self.filter,
-      :view => self.view,
-      :group => self.group
-    }.to_xml
+    return tsv ? Rails.root.join('data','search',self.id.to_s,'result.tsv') : Rails.root.join('data','search',self.id.to_s,'result.csv')
   end
   
   # Generate filename for download
@@ -36,7 +22,7 @@ class Search::Query < ActiveRecord::Base
       filename = filename+'_p='+patt.gsub(/\]\[/,' ').gsub(/\[*(word|lemma|pos|phonetic)=\"/,'').gsub(/\"\]*/,'')
     end
     filename = filename+'_w='+within if !within.eql?('document')
-    filename = filename+'_f='+filter if !filter.blank?
+    filename = filename+'_f='+filter.gsub(/\"/,'') if !filter.blank?
     filename = filename+'_g='+group if !group.blank?
     return filename
   end

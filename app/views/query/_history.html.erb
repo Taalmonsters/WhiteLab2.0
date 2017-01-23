@@ -34,13 +34,15 @@
 							<td><%= query.status %></td>
 							<td><a href="#" class="remove-query" data-query-id="<%= query.id %>"><span class="glyphicon glyphicon-remove"></span></a></td>
 							<td class="export">
-								<% if query.not_exported? %>
-								<a class="btn btn-xs btn-info export" data-namespace="search" data-query-id="<%= query.id %>" href="#"><%= t(:"button_labels.keys.export").capitalize %></a>
-								<% elsif query.exporting? %>
-								<img src="<%= image_url('spinner.gif') %>" />
-								<% elsif query.exported? %>
-								<a class="btn btn-xs btn-info download" data-format="csv" href="/search/download/id/<%= query.id %>.csv" style="z-index:2000;">CSV</a>
-								<a class="btn btn-xs btn-info download" data-format="tsv" href="/search/download/id/<%= query.id %>.tsv" style="z-index:2000;">TSV</a>
+							    <% unless query.running? || query.waiting? || query.failed? %>
+                                    <% if query.not_exported? %>
+                                        <a class="btn btn-xs btn-info export" data-namespace="search" data-query-id="<%= query.id %>" href="#"><%= t(:"button_labels.keys.export").capitalize %></a>
+                                    <% elsif query.exporting? %>
+                                        <img src="<%= image_url('spinner.gif') %>" />
+                                    <% elsif query.exported? %>
+                                        <a class="btn btn-xs btn-info download" data-format="csv" href="/search/download/id/<%= query.id %>.csv" style="z-index:2000;">CSV</a>
+                                        <a class="btn btn-xs btn-info download" data-format="tsv" href="/search/download/id/<%= query.id %>.tsv" style="z-index:2000;">TSV</a>
+                                    <% end %>
 								<% end %>
 							</td>
 						</tr>
@@ -85,13 +87,15 @@
 						<td><%= query.status %></td>
 						<td><a href="#" class="remove-query" data-query-id="<%= query.id %>"><span class="glyphicon glyphicon-remove"></span></a></td>
 						<td class="export">
-							<% if query.not_exported? %>
-							<a class="btn btn-xs btn-info export" href="#"><%= t(:"button_labels.keys.export").capitalize %></a>
-							<% elsif query.exporting? %>
-							<img src="<%= image_url('spinner.gif') %>" />
-							<% elsif query.exported? %>
-							<a class="btn btn-xs btn-info download" data-format="csv" href="/explore/download/id/<%= query.id %>.csv" style="z-index:2000;">CSV</a>
-							<a class="btn btn-xs btn-info download" data-format="tsv" href="/explore/download/id/<%= query.id %>.tsv" style="z-index:2000;">TSV</a>
+							<% unless query.running? || query.waiting? || query.failed? %>
+                                <% if query.not_exported? %>
+                                    <a class="btn btn-xs btn-info export" data-namespace="explore" data-query-id="<%= query.id %>" href="#"><%= t(:"button_labels.keys.export").capitalize %></a>
+                                <% elsif query.exporting? %>
+                                    <img src="<%= image_url('spinner.gif') %>" />
+                                <% elsif query.exported? %>
+                                    <a class="btn btn-xs btn-info download" data-format="csv" href="/explore/download/id/<%= query.id %>.csv" style="z-index:2000;">CSV</a>
+                                    <a class="btn btn-xs btn-info download" data-format="tsv" href="/explore/download/id/<%= query.id %>.tsv" style="z-index:2000;">TSV</a>
+                                <% end %>
 							<% end %>
 						</td>
 					</tr>

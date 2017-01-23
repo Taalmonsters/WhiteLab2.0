@@ -1,11 +1,11 @@
 <ul class="nav nav-tabs nav-justified custom1">
-	<li role="presentation" class="<%= view == 8 ? "active" : "" %>">
-		<a href="#" class="explore-statistics-tab" data-view="8"><%= t(:"results.keys.frequency_list").capitalize %></a>
+    <li role="presentation" class="<%= "active" if view == 8 %>">
+        <a href="#" <%= "data-params=#{url_params}&view=8&offset=0&number=50" unless view == 8 %>><%= t(:"results.keys.frequency_list").capitalize %></a>
+    </li>
+	<li role="presentation" class="<%= "active" if view == 2 %>">
+		<a href="#" <%= "data-params=#{url_params}&view=2&offset=0&number=50" unless view == 2 %>><%= t(:"results.keys.document_list").capitalize %></a>
 	</li>
-	<li role="presentation" class="<%= view == 2 ? "active" : "" %>">
-		<a href="#" class="explore-statistics-tab" data-view="2"><%= t(:"results.keys.document_list").capitalize %></a>
-	</li>
-	<li role="presentation" class="<%= view == 4 ? "active" : "" %>">
-		<a href="#" class="explore-statistics-tab" data-view="4" data-offset="0" data-number="<%= @query && @query.hit_count ? @query.hit_count : 100000 %>"><%= t(:"results.keys.vocabulary_growth").capitalize %></a>
+	<li role="presentation" class="<%= "active" if view == 4 %>">
+		<a href="#" <%= "data-params=#{url_params}&view=4&offset=0&number=#{@query && @query.hit_count ? @query.hit_count : 100000}" unless view == 4 %>><%= t(:"results.keys.vocabulary_growth").capitalize %></a>
 	</li>
 </ul>
