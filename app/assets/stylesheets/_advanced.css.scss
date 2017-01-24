@@ -9,6 +9,17 @@ div.advanced-column {
     font-size: small;
     padding: 0;
     height: 24px;
+    .close {
+        width: 100%;
+        .drag-column {
+            color: initial;
+            margin-left: 2px;
+            cursor: initial;
+        }
+        .remove-column {
+            float: right;
+        }
+    }
   }
   .panel-body {
     background-color: #eaeaea;

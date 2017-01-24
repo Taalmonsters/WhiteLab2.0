@@ -1,6 +1,9 @@
 <div id="column<%= @field[:column] %>" class="advanced-column panel panel-default">
 	<div class="panel-heading">
-		<div class="close hidden"><a href="#" class="remove-column" data-column="<%= @field[:column] %>"><span class="glyphicon glyphicon-remove"></span></a></div>
+		<div class="close hidden">
+		    <a href="#" onclick="event.preventDefault();" class="drag-column"><%= fa_icon "arrows-h" %></span></a>
+		    <a href="#" class="remove-column" data-column="<%= @field[:column] %>"><span class="glyphicon glyphicon-remove"></span></a>
+		</div>
 	</div>
 	<div class="panel-body">
 		<%= render partial: "/search/interface/advanced/box", layout: false %>
