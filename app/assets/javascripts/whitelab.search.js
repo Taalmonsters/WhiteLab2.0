@@ -320,26 +320,30 @@ Whitelab.search = {
 			
 		},
 
-		importGapQuery: function(e, el) {
-		    e.preventDefault();
-		    alert("Sorry! This functionality has yet to be implemented on the backend. Once it has, you will be able to "+
-		    "use this button to upload a TSV file with terms to complete a query with marked gaps. For instance, given a query:\n\n"+
-		    "[lemma=~][pos=\"LID.*\"][lemma=~]\n\n"+
-		    "you would supply a list with two tab-separated columns of terms, where the terms in the first column will be "+
-		    "entered at the position of the first gap (~) and the words in the second column at the position of the second gap. "+
-		    "This mimics the batch functionality of the Extended and Advanced interfaces.");
-		    e.stopPropagation();
-//			var file = el.files[0];
-//			var ext = file["name"].length - 3;
-//			if (file["name"].toLowerCase().indexOf("tsv") == ext || file["name"].toLowerCase().indexOf("txt") == ext) {
-//				var fr = new FileReader();
-//				fr.onload = function(e) {
-//				    $("#gap_values_tsv").parent().removeClass("hidden");
-//				    $("#gap_values_tsv").val(e.target.result);
-//                }
-//                fr.readAsText(file);
-//			} else
-//				alert("Only TSV or TXT files allowed!");
+		importGapQuery: function(e, el, run) {
+		    if (run) {
+		        e.stopPropagation();
+                var file = el.files[0];
+                var ext = file["name"].length - 3;
+                if (file["name"].toLowerCase().indexOf("tsv") == ext || file["name"].toLowerCase().indexOf("txt") == ext) {
+                    var fr = new FileReader();
+                    fr.onload = function(e) {
+                        $("#gap_values_tsv").parent().removeClass("hidden");
+                        $("#gap_values_tsv").val(e.target.result);
+                    }
+                    fr.readAsText(file);
+                } else
+                    alert("Only TSV or TXT files allowed!");
+		    } else {
+                e.preventDefault();
+                alert("Sorry! This functionality has yet to be implemented on the backend. Once it has, you will be able to "+
+                "use this button to upload a TSV file with terms to complete a query with marked gaps. For instance, given a query:\n\n"+
+                "[lemma=~][pos=\"LID.*\"][lemma=~]\n\n"+
+                "you would supply a list with two tab-separated columns of terms, where the terms in the first column will be "+
+                "entered at the position of the first gap (~) and the words in the second column at the position of the second gap. "+
+                "This mimics the batch functionality of the Extended and Advanced interfaces.");
+                e.stopPropagation();
+		    }
 		},
 		
 		importXMLQuery: function(e, el) {

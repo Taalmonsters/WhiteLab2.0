@@ -8,6 +8,10 @@ module BackendHelper
   def backend_url
     Rails.configuration.x.database_url
   end
+
+  def gap_values_enabled
+    return false
+  end
   
   def headers
     return { 'Content-Type' => 'application/json' }

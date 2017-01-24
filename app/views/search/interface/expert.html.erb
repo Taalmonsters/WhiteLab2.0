@@ -13,8 +13,9 @@
 				<button type="button" class="btn btn-default btn-reset" data-url="/search/expert"><%= t('button_labels.keys.reset').capitalize %></button>
 				<input class="loadxml" type="file" onchange="Whitelab.search.expert.importXMLQuery(event,this);">
 				<button type="button" class="btn btn-info btn-import btn-import-xml"><%= t('button_labels.keys.import').capitalize %> XML</button>
-				<input class="loadtsv hidden" type="file" onchange="Whitelab.search.expert.importGapQuery(event,this);">
-				<button type="button" class="btn btn-info btn-import btn-import-tsv" onclick="Whitelab.search.expert.importGapQuery(event,this);"><%= t('button_labels.keys.import').capitalize %> TSV</button>
+				<% gap_values_enabled = @whitelab.gap_values_enabled %>
+				<input class="loadtsv <%= 'hidden' unless gap_values_enabled %>" type="file" onchange="Whitelab.search.expert.importGapQuery(event,this,true);">
+				<button type="button" class="btn btn-info btn-import btn-import-tsv" onclick="<%= 'Whitelab.search.expert.importGapQuery(event,this,false);' unless gap_values_enabled %>"><%= t('button_labels.keys.import').capitalize %> TSV</button>
 			</div>
 		</div>
 		<div class="col-xs-12 col-sm-6">

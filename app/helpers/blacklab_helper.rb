@@ -3,6 +3,10 @@ module BlacklabHelper
   
   include BackendHelper
   include DataFormatHelper
+
+  def gap_values_enabled
+    return self.version.gsub('.','').to_i > 150
+  end
   
   def query_to_url(query)
     page = [1,8].include?(query.view) ? "hits" : "docs"
