@@ -1,3 +1,5 @@
+<% pos_type = -1 %>
+<% selected_feat = nil %>
 <div id="column<%= @field[:column] %>-box<%= @field[:box] %>-field<%= @field[:field] %>" class="advanced-field">
 	<div class="field-left inline top-aligned">
 		<div class="field-remove hidden"><a href="#" class="remove-field" data-column="<%= @field[:column] %>" data-box="<%= @field[:box] %>" data-field="<%= @field[:field] %>"><%= image_tag 'minus.png' %></a></div>
@@ -9,22 +11,41 @@
 					<option value="word" <%= @field_values[:token_type].eql?('word') ? 'selected="true"' : '' %>><%= t(:"data_labels.keys.word") %></option>
 					<option value="lemma" <%= @field_values[:token_type].eql?('lemma') ? 'selected="true"' : '' %>><%= t(:"data_labels.keys.lemma") %></option>
 					<option value="phonetic" <%= @field_values[:token_type].eql?('phonetic') ? 'selected="true"' : '' %>><%= t(:"data_labels.keys.phonetic") %></option>
-					<option value="pos" <%= @field_values[:token_type].eql?('pos') ? 'selected="true"' : '' %>><%= t(:"data_labels.keys.pos") %></option>
-					<optgroup label="<%= t(:"data_labels.keys.pos") %> <%= t(:"pos_features.keys.features") %>">
-					<% @pos_feat_keys.each do |feat| %>
-						<option value="<%= feat %>" <%= @field_values[:token_type].eql?(feat) ? 'selected="true"' : '' %>><%= t(:"pos_features.keys.#{feat}").eql?("type") ? feat.downcase : t(:"pos_features.keys.#{feat}") %></option>
+					<% if @field_values[:token_type].eql?('pos') %>
+					    <% exact_feat_match = @pos_feat_keys.values.flatten.uniq.select{|opt| @field_values[:input] =~ /\]#{opt}\[/ }.any? %>
+                        <% pos_type = @pos_heads.select{|opt| opt[1].eql?(@field_values[:input]) }.any? ? 0 : exact_feat_match ? 1 : 2  %>
+                        <% check = pos_type != 1 %>
+                        <option value="pos" <%= check ? 'selected="true"' : '' %>><%= t(:"data_labels.keys.pos") %></option>
+                        <optgroup label="<%= t(:"data_labels.keys.pos") %> <%= t(:"pos_features.keys.features") %>">
+                            <% @pos_feat_keys.keys.each do |feat| %>
+                                <% selected = @pos_feat_keys[feat].select{|opt| @field_values[:input] =~ /\]#{opt}\[/ }.any? unless check %>
+                                <% selected_feat = feat if selected %>
+                                <option value="<%= feat %>" <%= selected ? 'selected="true"' : '' %>>
+                                    <%= t(:"pos_features.keys.#{feat}").eql?("type") ? feat.downcase : t(:"pos_features.keys.#{feat}") %>
+                                </option>
+                                <% check = true if selected %>
+                            <% end %>
+                        </optgroup>
+					<% else %>
+					    <option value="pos"><%= t(:"data_labels.keys.pos") %></option>
+                        <optgroup label="<%= t(:"data_labels.keys.pos") %> <%= t(:"pos_features.keys.features") %>">
+                            <% @pos_feat_keys.keys.each do |feat| %>
+                                <option value="<%= feat %>">
+                                    <%= t(:"pos_features.keys.#{feat}").eql?("type") ? feat.downcase : t(:"pos_features.keys.#{feat}") %>
+                                </option>
+                            <% end %>
+                        </optgroup>
 					<% end %>
-					</optgroup>
 				</select>
 			</div>
 			<div class="inline operator-select">
 				<select class="token-operator form-control">
-					<option value="is" <%= @field_values[:operator].eql?('is') ? 'selected="true"' : '' %>><%= t(:"operators.keys.is") %></option>
+					<option value="is" <%= @field_values[:operator].eql?('is') || (!['is','not'].include?(@field_values[:operator]) && [0,1].include?(pos_type)) ? 'selected="true"' : '' %>><%= t(:"operators.keys.is") %></option>
 					<option value="not" <%= @field_values[:operator].eql?('not') ? 'selected="true"' : '' %>><%= t(:"operators.keys.not") %></option>
-					<option value="contains" <%= @field_values[:operator].eql?('contains') ? 'selected="true"' : '' %>><%= t(:"operators.keys.contains") %></option>
-					<option value="starts" <%= @field_values[:operator].eql?('starts') ? 'selected="true"' : '' %>><%= t(:"operators.keys.starts") %></option>
-					<option value="ends" <%= @field_values[:operator].eql?('ends') ? 'selected="true"' : '' %>><%= t(:"operators.keys.ends") %></option>
-					<option value="regex" <%= @field_values[:operator].eql?('regex') ? 'selected="true"' : '' %>><%= t(:"operators.keys.regex") %></option>
+					<option value="contains" <%= @field_values[:operator].eql?('contains') && ![0,1].include?(pos_type) ? 'selected="true"' : '' %>><%= t(:"operators.keys.contains") %></option>
+					<option value="starts" <%= @field_values[:operator].eql?('starts') && ![0,1].include?(pos_type) ? 'selected="true"' : '' %>><%= t(:"operators.keys.starts") %></option>
+					<option value="ends" <%= @field_values[:operator].eql?('ends') && ![0,1].include?(pos_type) ? 'selected="true"' : '' %>><%= t(:"operators.keys.ends") %></option>
+					<option value="regex" <%= @field_values[:operator].eql?('regex') && ![0,1].include?(pos_type) ? 'selected="true"' : '' %>><%= t(:"operators.keys.regex") %></option>
 				</select>
 			</div>
 		</div>
@@ -40,7 +61,13 @@
 			</div>
 			<div class="inputrow <%= @field_values[:batch] ? '' : 'active' %>">
 				<div class="token-input-field inline">
-					<input placeholder="<any>" type="text" value="<%= @field_values[:batch] ? '' : @field_values[:input] %>">
+				    <% if pos_type == 0 %>
+                        <%= select_tag(:"pos", options_for_select(@pos_heads, @field_values[:input]), :class => "advanced-pos-select form-control", :include_blank => true) %>
+				    <% elsif pos_type == 1 %>
+                        <%= select_tag(:"pos", options_for_select(load_pos_feature_value_data(selected_feat), @field_values[:input].gsub(/[^0-9a-z\-]/i, '')), :class => "advanced-pos-select form-control", :include_blank => true) %>
+				    <% else %>
+    					<input placeholder="<any>" type="text" value="<%= @field_values[:batch] ? '' : @field_values[:input] %>">
+    			    <% end %>
 				</div>
 				<div class="loadbutton inline">
 					<div class="batchWordListBtn">

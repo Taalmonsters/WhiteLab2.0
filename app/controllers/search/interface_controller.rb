@@ -77,9 +77,11 @@ class Search::InterfaceController < InterfaceController
       :box => params[:box] ? params[:box].to_i : 0,
       :field => params[:field] ? params[:field].to_i : 0
     }
-    @pos_feat_keys = load_pos_feature_keys
+    token_type = !params[:token_type] || !(['word', 'lemma', 'pos', 'phonetic']).include?(params[:token_type]) ? 'word' : params[:token_type]
+    @pos_heads = get_translated_pos_heads
+    @pos_feat_keys = load_pos_feature_keys.map{|feat| [feat, @pos_heads.map{|arr| load_pos_feature_data(arr[1].sub(/\.\*$/,'')) }.select{|pfeat| pfeat.keys.include?(feat) }.map{|pfeat| pfeat[feat].map{|val| val[1] } }.flatten.uniq] }.to_h
     @field_values = {
-      :token_type => !params[:token_type] || !(['word', 'lemma', 'pos', 'phonetic'] + @pos_feat_keys).include?(params[:token_type]) ? 'word' : params[:token_type],
+      :token_type => token_type,
       :operator => !params[:operator] || !['is', 'not', 'starts', 'ends', 'contains', 'regex'].include?(params[:operator]) ? 'is' : params[:operator],
       :input => params[:input],
       :batch => params[:batch] && params[:batch].eql?('true') ? true : false,

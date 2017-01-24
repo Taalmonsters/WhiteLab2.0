@@ -236,13 +236,10 @@ CqlColumn.prototype.toCqlString = function() {
 	if (this.quantifier != null) {
 		q = this.quantifier;
 	}
-	var res = "[("+vals.join(" & ")+")]"+q;
+	var res = "["+vals.join(" & ")+"]"+q;
 	if (vals.length == 1)
 		res = "["+vals[0]+"]"+q;
-	res = res.replace("[[]]","[word=\".*\"]");
-	res = res.replace("[([])]","[word=\".*\"]");
-	res = res.replace("[[word=\".*\"]]","[word=\".*\"]");
-	res = res.replace("[([word=\".*\"])]","[word=\".*\"]");
+	res = res.replace("[[]]","[word=\".*\"]").replace("[([])]","[word=\".*\"]").replace("[[word=\".*\"]]","[word=\".*\"]").replace("[([word=\".*\"])]","[word=\".*\"]");
 	
 	if (this.before != null) {
 		res = this.before+" "+res;

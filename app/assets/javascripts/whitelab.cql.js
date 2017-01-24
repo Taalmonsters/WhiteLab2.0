@@ -442,6 +442,7 @@ Whitelab.cql = {
 					var column = cql.columns[i];
 					var field = column.getFieldByType(type);
 					if (field != null) {
+						Whitelab.debug("field is of type "+type);
 						if (type === "pos" && field.subfields.length > 1) {
 							for (var j = 0; j < field.subfields.length; j++) {
 								if (field.subfields[j].value.length > 0)
@@ -629,6 +630,11 @@ Whitelab.cql = {
 			
 		});
 		return query.getQuery();
+	},
+
+	expertQueryStringToCQL : function() {
+		Whitelab.debug("expertQueryStringToCQL");
+	    return $("#expert-input").val();
 	},
 	
 	extendedQueryStringToCQL : function() {

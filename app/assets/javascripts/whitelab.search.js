@@ -67,11 +67,11 @@ Whitelab.search = {
 		
 		init : function() {
 
-			var input_page = $('#advanced').data('query-input-page');
-			if (input_page === 'simple' || input_page === 'extended' || input_page === 'advanced')
+//			var input_page = $('#advanced').data('query-input-page');
+//			if (input_page === 'simple' || input_page === 'extended' || input_page === 'advanced')
 				Whitelab.search.advanced.parseQueryToInterface($('#advanced').data('query-pattern'));
-			else
-				Whitelab.search.advanced.addFieldToBoxInColumn(0, 0);
+//			else
+//				Whitelab.search.advanced.addFieldToBoxInColumn(0, 0);
 			
 			$( "#advanced-canvas" ).sortable();
 		    $( "#advanced-canvas" ).sortable({
@@ -391,11 +391,11 @@ Whitelab.search = {
 		
 		init : function() {
 
-			var input_page = $('#extended').data('query-input-page');
-			if (input_page === 'simple' || input_page === 'extended')
+//			var input_page = $('#extended').data('query-input-page');
+//			if (input_page === 'simple' || input_page === 'extended')
 				Whitelab.search.extended.parseQueryToInterface($('#extended').data('query-pattern'));
-			else
-				Whitelab.debug("Did not parse query from "+input_page+" in extended");
+//			else
+//				Whitelab.debug("Did not parse query from "+input_page+" in extended");
 			
 		},
 		
@@ -751,7 +751,7 @@ $(document).on('click', '#simple button.btn-submit', function(e) {
 	Whitelab.search.simple.parseQuery();
 });
 
-$(document).on('change', 'div.search-input-display input, div.search-input-display select', function(e) {
+$(document).on('change', 'div.search-input-display input, div.search-input-display select, #expert-input', function(e) {
 	var searchpage = $("#main-div[data-namespace='search'] div.search-input-display").attr("id");
 	if (searchpage === 'extended' && $(this).attr("id") === 'pos-text') {
 		$.getScript("/search/pos/features.js?pos="+$(this).val());
@@ -770,7 +770,7 @@ $(document).on('click', '#main-div[data-namespace="search"] a.tablink', function
 	e.stopPropagation();
 	var url = "/search/"+$(this).data('page');
 	var params = $(this).data("params");
-	var patt = $(this).data("patt").replace('&','%26');
+	var patt = $(this).data("patt");
 	var filter = Whitelab.metadata.getFilterString();
 	var connector = "?";
 	if (params.length > 0) {
@@ -778,13 +778,17 @@ $(document).on('click', '#main-div[data-namespace="search"] a.tablink', function
 		connector = "&";
 	}
 	if (patt.length > 0) {
-		url = url+connector+"patt="+patt;
+		url = url+connector+"patt="+encodeURIComponent(patt);
 		connector = "&";
 	}
-	if (filter.length > 0)
+	if (filter.length > 0) {
 		url = url+connector+"filter="+filter;
-		
-	window.location = url+"#results";
+		connector = "&";
+	}
+	if (connector === "&")
+	    url = url+"#results";
+
+    window.location = url;
 });
 
 $(document).on('mouseover', '.tooltip-hover', function(e) {
