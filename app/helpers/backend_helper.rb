@@ -9,6 +9,10 @@ module BackendHelper
     Rails.configuration.x.database_url
   end
 
+  def cql_info_url
+    return "http://inl.github.io/BlackLab/corpus-query-language.html"
+  end
+
   def gap_values_enabled
     return false
   end

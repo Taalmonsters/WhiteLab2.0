@@ -252,7 +252,7 @@ nl:
     title: CQL info
     description: Vertalingen van CQL instructies in Expert Zoeken
     keys:
-      intro: Voorbeelden van geldige queries in <a href="https://github.com/INL/BlackLab/wiki/Blacklab-query-tool#Corpus_Query_Language"
+      intro: Voorbeelden van geldige queries in <a href="https://www.sketchengine.co.uk/documentation/corpus-querying/"
         target="_blank">Corpus Query Language (CQL)</a>
       line1: <label>Zoek het woord "appel" of het woord "peer"</label><span class="cql">["appel"
         | "peer"] <span class="non_cql">of</span> ["(?i)appel"|"(?i)peer"] <span class="non_cql">(case
@@ -278,6 +278,8 @@ nl:
         "appel"</span>
       line10: <label>Zoek het woord "de" gevolgd door het woord "hond" met een afstand
         van max. 3 woorden</label><span class="cql">"de" []{0,3} "hond"</span>
+      backend_disclaimer: De gebruikte backend bepaalt exact welke CQL features ondersteund worden.
+      backend_more_info: Meer informatie over de CQL features ondersteund door %{backend_name} vindt u <a href="%{url}" target="_blank">hier</a>.
   documents:
     title: Documenten
     description: Vertalingen van labels in document display

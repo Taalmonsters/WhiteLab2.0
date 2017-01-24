@@ -252,7 +252,7 @@ en:
     title: CQL info
     description: Translations of CQL instructions in Expert Search
     keys:
-      intro: Examples of valid queries in <a href="https://github.com/INL/BlackLab/wiki/Blacklab-query-tool#Corpus_Query_Language"
+      intro: Examples of valid queries in <a href="https://www.sketchengine.co.uk/documentation/corpus-querying/"
         target="_blank">Corpus Query Language (CQL)</a>
       line1: <label>Search for the word "appel" or the word "peer"</label><span class="cql">["appel"
         | "peer"] <span class="non_cql">or</span> ["(?i)appel"|"(?i)peer"] <span class="non_cql">(case
@@ -278,6 +278,8 @@ en:
         "appel"</span>
       line10: <label>Search for the word "de" followed by the word "hond" with a distance
         of max. 3 words</label><span class="cql">"de" []{0,3} "hond"</span>
+      backend_disclaimer: The type of backend used determines exactly which CQL features are supported.
+      backend_more_info: For more information on the CQL features supported by %{backend_name}, please visit <a href="%{url}" target="_blank">this site</a>.
   documents:
     title: Documents
     description: Translations of labels specific to document display

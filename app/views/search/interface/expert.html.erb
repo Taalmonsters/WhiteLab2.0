@@ -20,6 +20,10 @@
 		</div>
 		<div class="col-xs-12 col-sm-6">
 			<div class="expert-info <%= @tour_data ? 'active' : '' %>">
+				<label>
+				    NB: <%= t(:"cql_info.keys.backend_disclaimer").html_safe %>
+                    <%= t(:"cql_info.keys.backend_more_info", url: @whitelab.cql_info_url, backend_name: @whitelab.name).html_safe %>
+                </label><br /><br />
 				<label><%= t(:"cql_info.keys.intro").html_safe %>:</label>
 				<ul class="examples">
 					<% (1..10).each do |i| %>
