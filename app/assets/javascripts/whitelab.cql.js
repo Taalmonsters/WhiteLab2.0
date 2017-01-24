@@ -26,6 +26,7 @@ Whitelab.cql = {
 	},
 
 	getColumns : function(query) {
+	    Whitelab.debug("Whitelab.cql.getColumns");
 	    var n = query.indexOf("[");
         var m = -1;
         var columns = [];
@@ -39,14 +40,14 @@ Whitelab.cql = {
         }
         while (n > -1) {
             m = query.indexOf("]",n);
-            var c = query.substring(n,m+1);
-            var count = (c.match(/"/g) || []).length;
-            while (count == 1) {
-                m = query.indexOf("]",m+1);
-                c = query.substring(n,m+1);
-                count = (c.match(/"/g) || []).length;
-            }
-            columns.push(c);
+			var c = query.substring(n,m+1);
+			var count = (c.match(/"/g) || []).length;
+			while (count % 2 == 1) {
+				m = query.indexOf("]",m+1);
+				c = query.substring(n,m+1);
+				count = (c.match(/"/g) || []).length;
+			}
+			columns.push(c);
             n = query.indexOf("[",m+1);
             if (n == -1) {
                 if (query.length > m+1) {
@@ -70,6 +71,7 @@ Whitelab.cql = {
 	},
 
 	getSubQueries : function(query) {
+	    Whitelab.debug("Whitelab.cql.getSubQueries");
 	    var arr = new Array();
 	    var splits = query.split(/\][\*\{\}0-9\,\+]*\)*\|\(*\[/);
 	    for (var i = 0; i < splits.length; i++) {
@@ -90,6 +92,7 @@ Whitelab.cql = {
 	},
 
 	combineColumns : function(c1, c2) {
+	    Whitelab.debug("Whitelab.cql.combineColumns");
 	    var c1_opts = c1.match(/((word|lemma|pos|phonetic)|(\".+\"))/g);
 	    c1_opts[1] = c1_opts[1].substr(1,c1_opts[1].length-2);
 	    var c2_opts = c2.match(/((word|lemma|pos|phonetic)|(\".+\"))/g);
@@ -109,165 +112,176 @@ Whitelab.cql = {
 	cqlToAdvancedInterface : function(query) {
 		Whitelab.debug("cqlToAdvancedInterface("+query+")");
 
-        var subqueries = Whitelab.cql.getSubQueries(query);
-        for (var i = 0; i < subqueries.length; i++) {
-            subqueries[i] = Whitelab.cql.getColumns(subqueries[i]);
-        }
+        if (query.length > 0) {
+            var subqueries = Whitelab.cql.getSubQueries(query);
+            for (var i = 0; i < subqueries.length; i++) {
+                subqueries[i] = Whitelab.cql.getColumns(subqueries[i]);
+            }
+            Whitelab.debug(subqueries);
 
-        if (subqueries.length > 1) {
-            for (var i = 1; i < subqueries.length; i++) {
-                for (var j = 0; j < subqueries[i].columns.length; j++) {
-                    subqueries[0].columns[j] = Whitelab.cql.combineColumns(subqueries[0].columns[j],subqueries[i].columns[j]);
-                    if (subqueries[i].quants[j].length > 0)
-                        subqueries[0].quants[j] = subqueries[i].quants[j];
+            if (subqueries.length > 1) {
+                for (var i = 1; i < subqueries.length; i++) {
+                    for (var j = 0; j < subqueries[i].columns.length; j++) {
+                        subqueries[0].columns[j] = Whitelab.cql.combineColumns(subqueries[0].columns[j],subqueries[i].columns[j]);
+                        Whitelab.debug(subqueries[0].columns[j]);
+                        if (subqueries[i].quants[j].length > 0)
+                            subqueries[0].quants[j] = subqueries[i].quants[j];
+                    }
                 }
             }
-        }
-        var columns = subqueries[0].columns;
-        var quants = subqueries[0].quants;
-        var qua1 = subqueries[0].qua1;
+            var columns = subqueries[0].columns;
+            var quants = subqueries[0].quants;
+            var qua1 = subqueries[0].qua1;
 
-		var c = -1;
-		while (columns.length > 0) {
-			var column = columns.shift();
-			var quant = quants.shift();
-			var repeat_from = 1;
-			var repeat_to = 1;
-			var startsen = false;
-			var endsen = false;
-			var batch = false;
-			var sensitive = false;
-			var token_type = 'word';
-			var operator = 'is';
-			var input = null;
+            var c = -1;
+            Whitelab.debug("columns: "+columns.length);
+            Whitelab.debug(columns);
+            while (columns.length > 0) {
+                var column = columns.shift();
+                Whitelab.debug("column:");
+                Whitelab.debug(column);
+                var quant = quants.shift();
+                var repeat_from = 1;
+                var repeat_to = 1;
+                var startsen = false;
+                var endsen = false;
+                var batch = false;
+                var sensitive = false;
+                var token_type = 'word';
+                var operator = 'is';
+                var input = null;
 
-			c++;
-			var b = -1;
+                c++;
+                var b = -1;
 
-			if (qua1.length > 0) {
-				startsen = true;
-				qua1 = '';
-			}
+                if (qua1.length > 0) {
+                    startsen = true;
+                    qua1 = '';
+                }
 
-			if (quant && quant.indexOf('</s>') > -1) {
-				endsen = true;
-			} else if (quant && quant.indexOf('<s>') > -1) {
-				qua1 = quant;
-			} else if (quant && quant.indexOf('{') > -1) {
-				$("#column"+c).find("div.repeat").addClass("active");
-				if (quant.indexOf('{,') > -1) {
-					repeat_from = 0;
-				} else {
-					var nrs = quant.match(/\d+/);
-					repeat_from = nrs[0];
-					quant = quant.replace(nrs[0],'');
-				}
-				var nrs = quant.match(/\d+/);
-				if (nrs != null && nrs.length > 0) {
-					repeat_to = nrs[0];
-				} else
-					repeat_to = '';
-			} else if (quant && quant.indexOf('+') > -1) {
-				repeat_from = 1;
-				repeat_to = '';
-			} else if (quant && quant.indexOf('*') > -1) {
-				repeat_from = 0;
-				repeat_to = '';
-			} else if (quant && quant.indexOf('within') > -1) {
-				if (quant.indexOf('s') > -1) {
-					$("#search-within").val('sentence');
-				} else if (quant.indexOf('p') > -1 || quant.indexOf('event') > -1) {
-					$("#search-within").val('paragraph');
-				}
-			}
+                if (quant && quant.indexOf('</s>') > -1) {
+                    endsen = true;
+                } else if (quant && quant.indexOf('<s>') > -1) {
+                    qua1 = quant;
+                } else if (quant && quant.indexOf('{') > -1) {
+                    $("#column"+c).find("div.repeat").addClass("active");
+                    if (quant.indexOf('{,') > -1) {
+                        repeat_from = 0;
+                    } else {
+                        var nrs = quant.match(/\d+/);
+                        repeat_from = nrs[0];
+                        quant = quant.replace(nrs[0],'');
+                    }
+                    var nrs = quant.match(/\d+/);
+                    if (nrs != null && nrs.length > 0) {
+                        repeat_to = nrs[0];
+                    } else
+                        repeat_to = '';
+                } else if (quant && quant.indexOf('+') > -1) {
+                    repeat_from = 1;
+                    repeat_to = '';
+                } else if (quant && quant.indexOf('*') > -1) {
+                    repeat_from = 0;
+                    repeat_to = '';
+                } else if (quant && quant.indexOf('within') > -1) {
+                    if (quant.indexOf('s') > -1) {
+                        $("#search-within").val('sentence');
+                    } else if (quant.indexOf('p') > -1 || quant.indexOf('event') > -1) {
+                        $("#search-within").val('paragraph');
+                    }
+                }
 
-			var ands = column.split('&');
-			while (ands.length > 0) {
-				b++;
-				var f = -1;
-				var and = ands.shift();
+                var ands = column.split('&');
+                Whitelab.debug("ands: "+ands.length);
+                while (ands.length > 0) {
+                    Whitelab.debug("and: "+ands[0]);
+                    b++;
+                    var f = -1;
+                    var and = ands.shift();
 
-				var ors = and.split('|');
-				while (ors.length > 0) {
-					f++;
-					var field = document.getElementById("column"+c+"-box"+b+"-field"+f);
-					var or = ors.shift();
-					if (or === '[]' || or === '[word=\".*\"]') {
-						Whitelab.search.advanced.addFieldToBoxInColumn(b, c, "word", "is", ".*", batch, sensitive, startsen, endsen, repeat_from, repeat_to);
-					} else {
-						if (or.indexOf('lemma') > -1) {
-							token_type = 'lemma';
-						} else if (or.indexOf('pos') > -1) {
-							token_type = 'pos';
-						} else if (or.indexOf('phonetic') > -1) {
-							token_type = 'phonetic';
-						}
+                    var ors = and.split('|');
+                    while (ors.length > 0) {
+                        f++;
+                        var field = document.getElementById("column"+c+"-box"+b+"-field"+f);
+                        var or = ors.shift();
+                        if (or === '[]' || or === '[word=\".*\"]') {
+                            Whitelab.search.advanced.addFieldToBoxInColumn(b, c, "word", "is", ".*", batch, sensitive, startsen, endsen, repeat_from, repeat_to);
+                        } else {
+                            if (or.indexOf('lemma') > -1) {
+                                token_type = 'lemma';
+                            } else if (or.indexOf('pos') > -1) {
+                                token_type = 'pos';
+                            } else if (or.indexOf('phonetic') > -1) {
+                                token_type = 'phonetic';
+                            }
 
-						var not = 0;
-						if (or.indexOf('!=') > -1) {
-							not = 1;
-						}
+                            var not = 0;
+                            if (or.indexOf('!=') > -1) {
+                                not = 1;
+                            }
 
-						var term = or.substring(or.indexOf('"')+1);
-						var q2 = term.indexOf('"');
-						term = term.substring(0,q2);
-						if (term.indexOf('(?i)') > -1) {
-							term = term.substring(4);
-						} else if (term.indexOf('(?c)') > -1) {
-							term = term.substring(5);
-							if (token_type === 'word' || token_type === 'lemma' || token_type === 'phonetic') {
-								sensitive = true;
-							}
-						}
-						input = term;
+                            var term = or.substring(or.indexOf('"')+1);
+                            var q2 = term.indexOf('"');
+                            term = term.substring(0,q2);
+                            if (term.indexOf('(?i)') > -1) {
+                                term = term.substring(4);
+                            } else if (term.indexOf('(?c)') > -1) {
+                                term = term.substring(5);
+                                if (token_type === 'word' || token_type === 'lemma' || token_type === 'phonetic') {
+                                    sensitive = true;
+                                }
+                            }
+                            input = term;
 
-						var dd = 1;
-						if (not == 1) {
-							operator = 'not';
-						} else {
-							var regex = /\.(\*|\+)/gi, result, indices = [];
-							while ( (result = regex.exec(term)) ) {
-							    indices.push(result.index);
-							}
-							if (indices.length == 2 && indices[0] == 0 && indices[1] == term.length - 2) {
-								dd = 0;
-								operator = 'contains';
-							} else if (indices.length > 2 || (indices.length == 2 && (indices[0] != 0 || indices[1] != term.length - 2))) {
-								dd = 0;
-								operator = 'regex';
-							} else if (indices.length == 1) {
-								if (indices[0] == 0) {
-									dd = 0;
-									operator = 'ends';
-								} else if (indices[0] == term.length - 2) {
-									if (token_type === 'pos' && term.match(/^[A-Z]+\.\*/)) {
-										dd = 1;
-									} else {
-										dd = 0;
-										operator = 'starts';
-									}
-								} else {
-									dd = 0;
-									operator = 'regex';
-								}
-							}
-						}
-						if (input.length > 0)
-							Whitelab.search.advanced.addFieldToBoxInColumn(b, c, token_type, operator, input, batch, sensitive, startsen, endsen, repeat_from, repeat_to);
-					}
+                            var dd = 1;
+                            if (not == 1) {
+                                operator = 'not';
+                            } else {
+                                var regex = /\.(\*|\+)/gi, result, indices = [];
+                                while ( (result = regex.exec(term)) ) {
+                                    indices.push(result.index);
+                                }
+                                if (indices.length == 2 && indices[0] == 0 && indices[1] == term.length - 2) {
+                                    dd = 0;
+                                    operator = 'contains';
+                                } else if (indices.length > 2 || (indices.length == 2 && (indices[0] != 0 || indices[1] != term.length - 2))) {
+                                    dd = 0;
+                                    operator = 'regex';
+                                } else if (indices.length == 1) {
+                                    if (indices[0] == 0) {
+                                        dd = 0;
+                                        operator = 'ends';
+                                    } else if (indices[0] == term.length - 2) {
+                                        if (token_type === 'pos' && term.match(/^[A-Z]+\.\*/)) {
+                                            dd = 1;
+                                        } else {
+                                            dd = 0;
+                                            operator = 'starts';
+                                        }
+                                    } else {
+                                        dd = 0;
+                                        operator = 'regex';
+                                    }
+                                }
+                            }
+                            if (input.length > 0)
+                                Whitelab.search.advanced.addFieldToBoxInColumn(b, c, token_type, operator, input, batch, sensitive, startsen, endsen, repeat_from, repeat_to);
+                        }
 
-					if (ors.length > 0) {
-						$("#advanced-canvas .advanced-column a.add-or").last().click();
-					}
-				}
+                        if (ors.length > 0) {
+                            $("#advanced-canvas .advanced-column a.add-or").last().click();
+                        }
+                    }
 
-				if (ands.length > 0) {
-					$("#advanced-canvas .advanced-column a.add-and").last().click();
-				}
+                    if (ands.length > 0) {
+                        $("#advanced-canvas .advanced-column a.add-and").last().click();
+                    }
 
-				Whitelab.sleep(100);
-			}
-		}
+                    Whitelab.sleep(100);
+                }
+            }
+        } else if ($(".advanced-column").length == 0)
+            Whitelab.search.advanced.addFieldToBoxInColumn(0, 0);
 	},
 	
 	cqlToExtendedInterface : function(query) {
@@ -465,7 +479,7 @@ Whitelab.cql = {
 							if (vals.length > 0) {
 								$("#refine-pos").removeClass("hidden");
 								for (var i = 0; i < vals.length; i++) {
-									vals[i] = vals[i].replace(/[\W_]/g, "");
+									vals[i] = vals[i].replace(/[^0-9a-z\-]/g, "");
 								}
 								$.getScript("/search/pos/features.js?pos="+pos+"&values="+vals.join(","));
 							}
