@@ -19,12 +19,12 @@
 @import "bootstrap";
 @import "bootstrap-wysihtml5/bootstrap3-wysihtml5";
 @import "font-awesome";
+@import "pageguide";
 @import "menus";
 @import "header";
 @import "advanced";
 @import "legacy";
 @import "static_pages";
-@import "pageguide";
 @import "treemap";
 @import "layout";
 @import "results";
@@ -145,7 +145,7 @@ a.remove-query {
   font-size: 14px;
 }
 
-#tlyPageGuideMessages ul li a {
+#tlyPageGuideMessages ul li a, #tlyPageGuideMessages .tlypageguide_text a {
   font-weight: bold;
   color: $brand-info !important;
 }
