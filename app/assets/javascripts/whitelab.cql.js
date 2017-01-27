@@ -226,7 +226,7 @@ Whitelab.cql = {
                             if (term.indexOf('(?i)') > -1) {
                                 term = term.substring(4);
                             } else if (term.indexOf('(?c)') > -1) {
-                                term = term.substring(5);
+                                term = term.substring(4);
                                 if (token_type === 'word' || token_type === 'lemma' || token_type === 'phonetic') {
                                     sensitive = true;
                                 }
