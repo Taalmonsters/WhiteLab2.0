@@ -16,9 +16,11 @@
 				<tr>
 					<% if ENABLE_METADATA_FILTERING %>
 					<th>
+					    <% if @whitelab.gap_values_enabled %>
 					    <a href="<%= "/#{@namespace}/#{@query.page}?#{sort_url}&sort=#{@query.sort.eql?('field:Corpus_title') ? '-' : ''}field:Corpus_title" %>#results">
 					        <span class="glyphicon glyphicon-sort"></span>
 					    </a>
+					    <% end %>
 					    <%= t(:"data_labels.keys.corpus").capitalize %>
 					</th>
 					<% end %>
