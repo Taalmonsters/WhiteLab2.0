@@ -7,7 +7,7 @@ Rails.application.load_tasks
 require 'sdoc'
 
 Rake::RDocTask.new("public_api") do |rdoc|
-  rdoc.title = "WhiteLab 2.0"
+  rdoc.title = "WhiteLab #{File.read(Rails.root.join("VERSION.txt"))}"
   rdoc.rdoc_dir = 'public/doc/api'
   rdoc.options << '--fmt' << 'shtml'
   
@@ -18,7 +18,7 @@ Rake::RDocTask.new("public_api") do |rdoc|
 end
 
 Rake::RDocTask.new("private_api") do |rdoc|
-  rdoc.title = "WhiteLab 2.0"
+  rdoc.title = "WhiteLab #{File.read(Rails.root.join("VERSION.txt"))}"
   rdoc.rdoc_dir = 'doc/api'
   rdoc.options << '--fmt' << 'shtml'
   
