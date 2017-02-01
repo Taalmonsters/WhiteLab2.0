@@ -4,23 +4,29 @@ require 'cgi'
 
 # Main backend helper module.
 module BackendHelper
-  
+
+  # Get the base URL for querying the backend from the application configuration
   def backend_url
     Rails.configuration.x.database_url
   end
 
+  # Get the URL where the CQL definition is hosted. This is added to the CQL info dialog on the Expert Search page
   def cql_info_url
     return "http://inl.github.io/BlackLab/corpus-query-language.html"
   end
 
+  # If gap values are enabled, the 'Import TSV' buttons in Expert Search and Explore N-grams are active.
+  # If gap values are disabled, the 'Import TSV' buttons show an alert explaining the functionality, but do not allow file upload.
   def gap_values_enabled
     return false
   end
-  
+
+  # Return the default headers to be sent to the backend with each request.
   def headers
     return { 'Content-Type' => 'application/json' }
   end
-  
+
+  # Execute a search on the backend
   def search(query, url)
     Rails.logger.debug "SEARCH ON BACKEND"
     data = { 
@@ -29,7 +35,8 @@ module BackendHelper
     }
     return finish_query(query, get_query(data))
   end
-  
+
+  # Execute a query on the backend
   def execute_query(data)
     has_query = data.has_key?(:query)
     unless data.has_key?(:method) && data[:method].eql?('post')
@@ -37,13 +44,15 @@ module BackendHelper
     end
     return has_query ? post_query(data).parsed_response : get_headers(data).parsed_response
   end
-  
+
+  # Send a request with only headers (no query) to the backend using GET
   def get_headers(data)
     HTTParty.get(data[:url], timeout: BACKEND_TIMEOUT_SECONDS,
       :headers => headers
     )
   end
-  
+
+  # Get the value for the number parameter for paginated queries
   def get_number(query, docpid, number)
     n = query.number
     if !number.blank?
@@ -53,7 +62,8 @@ module BackendHelper
     end
     return n
   end
-  
+
+  # Get the value for the offset parameter for paginated queries
   def get_offset(query, docpid, offset)
     o = query.offset
     if !offset.blank?
@@ -63,7 +73,8 @@ module BackendHelper
     end
     return o
   end
-  
+
+  # Send a request with both headers and a query to the backend using GET
   def get_query(data)
     Rails.logger.debug "GETTING QUERY WITH HEADERS (timeout = #{BACKEND_TIMEOUT_SECONDS} s):"
     Rails.logger.debug headers
@@ -77,7 +88,8 @@ module BackendHelper
     end
     return JSON.parse(resp.body.gsub(/\r/,''))
   end
-  
+
+  # Receive the backend response as a stream
   def get_response_stream(data, target)
     uri = URI(data[:url])
     uri.query = URI.encode_www_form(data[:query])
@@ -102,7 +114,8 @@ module BackendHelper
       end
     end
   end
-  
+
+  # Retrieve result counts for a query from the backend
   def get_search_result_counts_for_query(query, docpid, view, number, offset)
     count_obj = {
       :query => query,
@@ -118,7 +131,8 @@ module BackendHelper
       count_grouped_results(vview == 8 ? "hits" : "docs", count_obj)
     end
   end
-  
+
+  # Get the value for the view parameter for a query
   def get_view(query, docpid, view)
     v = query.view
     if !view.blank?
@@ -128,7 +142,8 @@ module BackendHelper
     end
     return v
   end
-  
+
+  # Get the value for the within parameter for a query
   def get_within(query, default)
     w = default
     if query.has_attribute?(:within) && !query.within.blank?
@@ -136,20 +151,23 @@ module BackendHelper
     end
     return w
   end
-  
+
+  # Send a request with only headers (no query) to the backend using POST
   def post_headers(data)
     HTTParty.post(data[:url], timeout: BACKEND_TIMEOUT_SECONDS,
       :headers => headers
     )
   end
-  
+
+  # Send a request with both headers and a query to the backend using POST
   def post_query(data)
     HTTParty.post(data[:url], timeout: BACKEND_TIMEOUT_SECONDS,
       :query => data[:query],
       :headers => headers
     )
   end
-  
+
+  # Default method to get a list of PoS head tags
   def get_pos_heads(number, offset, sort, order)
     data = ['ADJ', 'BW', 'LET', 'LID', 'N', 'SPEC', 'TW', 'TSW', 'VG', 'VNW', 'VZ', 'WW']
     ph = {

@@ -10,7 +10,7 @@ class AdminController < ApplicationController
     if !@admin_logged_in
       redirect_to('/admin/login') and return
     elsif !@page
-      redirect_to(admin_page_path(:page => 'overview')) and return
+      redirect_to(admin_page_path(:page => 'index')) and return
     end
     respond_to do |format|
       format.html do
@@ -42,35 +42,6 @@ class AdminController < ApplicationController
         elsif @page.eql?('interface') && @tab.eql?('info_page')
           @info_pages = load_info_page_data
           @hlang = params[:hlang]
-        elsif @page.eql?('overview') && (!@tab || @tab.eql?('cql'))
-          if params[:query]
-            begin
-              interpreter = Cql::Interpreter.new
-              params[:page] = 'cql'
-              @cql_query = Query::SearchQuery.new(params)
-              @cql_query.result = get_hits_for_cql_query(params[:query], 'document', 5, 0)
-              @cql_query.json = Yajl::Parser.parse(@cql_query.result['json'])
-              @cql_query.hits_json = @cql_query.result['hits']
-              @cql_query.cypher = @cql_query.result['cypher']
-            rescue JSON::ParserError
-              @cql_query.result = nil
-              @cql_query.json = { error: 'Invalid CQL query' }
-              @cql_query.cypher = ''
-              @cql_query.hits_json = []
-            end
-          end
-        elsif @page.eql?('overview') && @tab.eql?('qbm')
-          @queries = []
-          if params[:file] && !params[:file].blank?
-            file_data = params[:file].tempfile
-            File.open(file_data, 'r') do |file|
-              file.each do |line|
-                @queries << line.strip
-              end
-            end
-          elsif params[:query] && !params[:query].blank?
-            @queries << params[:query]
-          end
         end
       end
       format.json do
@@ -152,7 +123,6 @@ class AdminController < ApplicationController
   # Load login page
   def login
     if @admin_logged_in
-      redirect_to admin_page_path(:page => 'overview') if @whitelab.get_backend_type().eql?('neo4j')
       redirect_to admin_page_path(:page => 'index')
     end
   end
@@ -161,7 +131,6 @@ class AdminController < ApplicationController
   def signin
     if params[:user] && params[:user] == ADMIN_USER && params[:key] && params[:key] == ADMIN_PW
       session[:admin_active] = true
-      redirect_to admin_page_path(:page => 'overview') if @whitelab.get_backend_type().eql?('neo4j')
       redirect_to admin_page_path(:page => 'index')
     else
       redirect_to action: 'login'
@@ -202,14 +171,10 @@ class AdminController < ApplicationController
   
   # Set current active page
   def set_current_page
-    if params[:page] && ['overview','index','interface'].include?(params[:page])
+    if params[:page] && ['index','interface'].include?(params[:page])
       @page = params[:page]
     end
-    if @page && @page.eql?('overview')
-      if params[:tab] && ['cql','qbm'].include?(params[:tab])
-        @tab = params[:tab]
-      end
-    elsif @page && @page.eql?('index')
+    if @page && @page.eql?('index')
       if params[:tab] && ['counts','actors','metadata','posheads','postags'].include?(params[:tab])
         @tab = params[:tab]
       end

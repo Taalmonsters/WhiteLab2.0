@@ -1,11 +1,13 @@
 require 'singleton'
 require 'set'
 
-# The MetadataHandler class handles all document metadata
+# The MetadataHandler class handles all document metadata. It calculates the coverage (in tokens) of metadata filters and manages metadata field configurations,
+# such as whether the field is shown in Explore Corpora, in the metadata filters and/or when hovering a query result.
 class MetadataHandler
   include Singleton
   include DataFormatHelper
-  
+
+  # Initialize the metadata handler
   def initialize
     @logger = Logger.new STDOUT
     @logger.info "Initializing metadata handler..."
@@ -25,7 +27,8 @@ class MetadataHandler
     set_total_word_count if @total_word_count <= 0
     @logger.info "Metadata handler initialized."
   end
-  
+
+  # Convert a document pid (backend) to the corresponding WhiteLab document ID
   def docpid_to_id(docpid)
     return "id", @metadata["Metadata_id"]["values"][@fields["Metadata_id"][@doc_ids.index(docpid)]] if @fields.has_key?("Metadata_id")
     return "fromInputFile", @metadata["Metadata_fromInputFile"]["values"][@fields["Metadata_fromInputFile"][@doc_ids.index(docpid)]]
@@ -54,11 +57,13 @@ class MetadataHandler
     return docs if return_indices
     return docs.map{|index| @token_counts[index] }
   end
-  
+
+  # Convert a document index to a WhiteLab document ID
   def get_document_id(index)
     return @doc_ids[index]
   end
-  
+
+  # Retrieve the token count for a specific document ID
   def get_document_token_count(id)
     return @token_counts[@doc_ids.index(id)]
   end
@@ -71,18 +76,21 @@ class MetadataHandler
     return [] unless labels.any?
     return filter_documents(filter).group_by{|i| labels.map{|label| @metadata[label]['values'][@fields[label][i]] }.select{|value| !value.nil? && !value.eql?('Unknown')}.join(",") }.map{|value,doc_indices| { option => value, 'hit_count' => doc_indices.map{|d| @token_counts[d] }.reduce(:+), 'document_count' => doc_indices.size } }
   end
-  
+
+  # Retrieve the total token count for a filtered set of documents
   def get_filtered_word_count(filter)
     return filter_documents(filter, false).sum
   end
-  
+
+  # Convert a concatenated group-key-label back to its original group and key
   def get_group_and_key_from_label(label)
     group = label.split('_')[0]
     key = label.sub(/#{group}_/,'')
     group = group.eql?(key) ? 'Metadata' : group
     return group, key
   end
-  
+
+  # Return a translated list of group options for grouped hits/docs
   def get_group_options(view, namespace)
     groups = {}
     if view == 8
@@ -113,11 +121,13 @@ class MetadataHandler
     end
     return groups
   end
-  
+
+  # Retrieve all metadata fields that are configured to be shown when hovering a query result
   def get_hoverable_metadata
     return @metadata.keys.select{|mlabel| @metadata[mlabel]['hoverable'].eql?('true') }
   end
-  
+
+  # Retrieve all metadata field labels that match a specific group and key. By assigning the same group and key to multiple fields, they are grouped together in the interface, while still refering to separate fields on the backend.
   def get_labels_from_group_and_key(group, key)
     return @metadata.keys.select{|mlabel| @metadata[mlabel]['group'].eql?(group) && @metadata[mlabel]['key'].eql?(key) }
   end
@@ -129,21 +139,26 @@ class MetadataHandler
     fields = order.eql?("desc") ? fields.sort_by{|x| x[sort] }.reverse : fields.sort_by{|x| x[sort] }
     return { 'total' => total, 'metadata' => fields[offset..offset+number] }
   end
-  
+
+  # Retrieve a metadata field by its group and key
   def get_metadatum(group, key)
     group = group.eql?(key) ? 'Metadata' : group
     label = group.eql?('Metadata') ? key : "#{group}_#{key}"
     matches = @metadata ? @metadata.values.select{|data| data['group'].eql?(group) && data['key'].eql?(key) } : [{ 'group' => group, 'key' => key, 'label' => label }]
     return matches.size == 1 ? matches[0] : matches
   end
-  
+
+  # Retrieve a metadata field by its label
   def get_metadatum_by_label(label)
     group, key = label.split('_', 2)
     group = group.eql?(key) ? 'Metadata' : group
     matches = @metadata ? @metadata.values.select{|data| data['label'].eql?(label) } : [{ 'group' => group, 'key' => key, 'label' => label }]
     return matches.size == 1 ? matches[0] : matches
   end
-  
+
+  # Retrieve the values for a metadata field. If BlackLab is used as the backend, it will return counts only for documents where the field has been defined.
+  # This method automatically assigns the remaining total (based on the total returned by the backend and the total calculated from the metadata in memory)
+  # to a value labeled 'Unknown'.
   def get_metadatum_values(metadatum, filtered_total)
     return metadatum['values'] unless metadatum.is_a?(Array)
     return metadatum[0]['values'] unless metadatum.size > 1
@@ -159,25 +174,30 @@ class MetadataHandler
     end
     return values
   end
-  
+
+  # Return the total word count
   def get_total_word_count
     return @total_word_count
   end
-  
+
+  # Load the names of the available corpora
   def load_corpora
     group, key = get_group_and_key_from_label(CORPUS_TITLE_FIELD)
     return @metadata ? @metadata[CORPUS_TITLE_FIELD]['values'] : load_values_from_server(0, 0, "label", "asc", group, key)
   end
-  
+
+  # Retrieve the unique values and their frequencies for a metadata field
   def load_values(metadatum)
     data = @metadata["#{group}_#{key}"]
     return data['values'], data['value_count']
   end
-  
+
+  # Return the total metadata configuration
   def metadata
     return @metadata
   end
-  
+
+  # Reformat a metadata field
   def reformat_metadatum_values(metadatum)
     data = []
     metadatum['values'].each_with_index do |value, i|
@@ -188,7 +208,8 @@ class MetadataHandler
     end
     return data
   end
-  
+
+  # Retrieve the unique values for a metadata field from the backend
   def load_values_from_server(number, offset, sort, order, group, key)
     data = []
     metadatum = get_metadatum(group, key)
@@ -198,11 +219,13 @@ class MetadataHandler
     end
     data
   end
-  
+
+  # Save the current metadata configuration to file
   def save_metadata
     write_file(metadata_file, @metadata)
   end
-  
+
+  # Update the configuration of a single metadata field
   def update_metadatum(metadatum, updates)
     if @whitelab.respond_to?(:update_metadatum)
       @whitelab.update_metadatum(metadatum, updates)
@@ -215,11 +238,13 @@ class MetadataHandler
   end
   
   private
-  
+
+  # Return the path to the file holding the document data
   def documents_file
     return Rails.root.join("config", "metadata_#{@whitelab.get_backend_type}", "documents.#{@format}")
   end
-  
+
+  # Convert a metadata filter to a hash that is nested by group and key
   def filter_to_hash(filter)
     filters = {}
     filter[1, filter.length - 2].split(')AND(').each do |filter_part|
@@ -239,7 +264,8 @@ class MetadataHandler
     end
     return filters
   end
-  
+
+  # Split a list of document indices by corpus
   def get_corpus_division(doc_indices, corpora)
     sizes = {}
     corpora.each do |corpus, docs|
@@ -247,7 +273,8 @@ class MetadataHandler
     end
     return sizes
   end
-  
+
+  # Generate the metadata configuration files. This may take some time, but is only done once.
   def generate_metadata_files(backend)
     @logger.info "Generating metadata files..."
     output_dir = Rails.root.join("config", "metadata_#{backend}")
@@ -346,7 +373,8 @@ class MetadataHandler
     write_file(documents_file, documents)
     @logger.info "Finished generating metadata files."
   end
-  
+
+  # Get a list of document indices matching a set of values on a specific metadata field
   def get_documents_matching_values(metadatum, values, inverted = false)
     return [] if !values.any?
     if metadatum.is_a?(Array)
@@ -388,16 +416,19 @@ class MetadataHandler
     end
     groups
   end
-  
+
+  # Return the path to the metadata configuration file
   def metadata_file
     return Rails.root.join("config", "metadata_#{@whitelab.get_backend_type}", "metadata.#{@format}")
   end
-  
+
+  # Read a YAML file to a hash
   def read_file(file, key = nil)
     data = @format.eql?(:json) ? Yajl::Parser.parse(File.read(file)) : YAML.load_file(file)
     return key ? data[key] : data
   end
-  
+
+  # Set the total word count
   def set_total_word_count
     @total_word_count = @token_counts.sum
     Rails.configuration.x.total_token_count = @total_word_count
@@ -408,12 +439,14 @@ class MetadataHandler
     return value if value.nil?
     return value.chomp('"').reverse.chomp('"').reverse
   end
-  
+
+  # Convert a metadata field value to its index in the values array of the metadata field
   def value_to_index(label, value)
     return value if value.nil?
     return @metadata["#{label}"]["values"].index(value)
   end
-  
+
+  # Write a YAML file
   def write_file(outfile, data)
     dir = File.dirname(outfile)
     FileUtils.mkpath(dir) unless File.exists?(dir)

@@ -1,4 +1,4 @@
-# General helper methods
+# General helper methods. These are available in all the application controllers and views.
 module ApplicationHelper
   
   # Load list of all languages
@@ -26,7 +26,8 @@ module ApplicationHelper
   def load_info_page_data
     load_page_data('info_page')
   end
-  
+
+  # Load translated page content from configuration file
   def load_page_data(page)
     data = {}
     dir = Rails.root.join('config', 'locales', page)
@@ -42,14 +43,10 @@ module ApplicationHelper
         data[lang] = YAML.load_file("#{dir}/#{entry}")[lang]
       end
     end
-#    files = Dir.glob(Rails.root.join('config', 'locales', page).to_s+"/*.yml")
-#    files.each do |yml|
-#      lang = File.basename(yml, ".yml")
-#      data[lang] = YAML.load_file(yml)[lang]
-#    end
     data
   end
-  
+
+  # Load all unique PoS feature keys
   def load_pos_feature_keys
     data = []
     File.readlines(Rails.root.join('config').to_s+"/pos_features.txt").each do |line|
@@ -60,7 +57,8 @@ module ApplicationHelper
     end
     return data
   end
-  
+
+  # Load all PoS feature definitions
   def load_pos_feature_data(pos)
     data = {}
     unless pos.blank?
@@ -75,7 +73,8 @@ module ApplicationHelper
     end
     return data
   end
-  
+
+  # Load unique values for a specific PoS feature key
   def load_pos_feature_value_data(f)
     data = []
     unless f.blank?
@@ -91,6 +90,7 @@ module ApplicationHelper
     return data.uniq
   end
 
+  # Load translated site tour content from configuration file
   def load_tour_data
     load_page_data('tour')
   end
@@ -137,7 +137,8 @@ module ApplicationHelper
     
     data
   end
-  
+
+  # Set a translation for a specific metadata field
   def set_metadata_translation(ldata, key, value)
     ldata["metadata_#{key}s"]['keys'] = {} if !ldata["metadata_#{key}s"]['keys']
     keys = ldata["metadata_#{key}s"]['keys']
@@ -155,7 +156,7 @@ module ApplicationHelper
     end
   end
   
-  # Save translation data for language to configuration file
+  # Save translation data for a specific language to the appropriate configuration file
   def save_language(lang_obj)
     lang = lang_obj[:lang]
     new_data = {
@@ -168,7 +169,8 @@ module ApplicationHelper
   def save_info_page(lang_obj)
     save_page('info_page', lang_obj)
   end
-  
+
+  # Save page translation to configuration file
   def save_page(page, lang_obj)
     lang = lang_obj[:lang]
     new_data = {
@@ -179,6 +181,7 @@ module ApplicationHelper
     File.open(Rails.root.join('config', 'locales', page).to_s+"/"+lang+".yml", 'w', external_encoding: 'ASCII-8BIT') { |file| YAML.dump(new_data, file) }
   end
 
+  # Save site tour translation to configuration file
   def save_tour_data(tour_data)
     tour_data.each do |key, data|
       if ['explore','search'].include?(key)

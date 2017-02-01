@@ -2,14 +2,16 @@
 module WhitelabQuery
   extend ActiveSupport::Concern
   include DataFormatHelper
-  
+
   included do
     belongs_to :user
     enum status: [ :waiting, :running, :counting, :finished, :failed ]
     enum export_status: [ :not_exported, :exporting, :exported ]
+    # The output from the backend is stored on the query after execution, but not persisted to the database
     attr_accessor :output
   end
-  
+
+  # Find the current query using the incoming GET parameters
   def self.find_from_params(klass, page, user_id, params)
     if params.has_key?(:patt) || params.has_key?(:filter)
       options = klass.where(klass.where_data(user_id, page, params))
@@ -32,8 +34,11 @@ module WhitelabQuery
     query = query.update_from_params(params)
     return query
   end
-  
+
+  # Class methods for WhiteLab Queries
   module ClassMethods
+
+    # Convert the filter section of an XML query definition to URL params
     def filter_xml_to_url_params(filter_xml)
       if filter_xml.css("filter").any?
         arr = []
@@ -52,7 +57,8 @@ module WhitelabQuery
       end
       return "", false
     end
-    
+
+    # Extract all tokens from pattern in query XML definition
     def get_tokens_from_xml(tokens)
       arr = []
       tokens.css("> token").each do |token|
@@ -60,7 +66,8 @@ module WhitelabQuery
       end
       return arr.join("")
     end
-    
+
+    # Extract a single token from pattern in query XML definition
     def get_token_from_xml(token)
       if token.css("> value").any?
         return "#{token.css("type").any? && ["word","lemma","pos","phonetic"].include?(token.at_css("type").content) ? token.at_css("type").content : "word"}#{token.css("operator").any? && token.at_css("operator").include?("not") ? "!=" : "="}\"#{self.get_token_value_from_xml(token)}\""
@@ -78,12 +85,14 @@ module WhitelabQuery
         return "(#{arr.join("|")})"
       end
     end
-    
+
+    # Extract a single token's value from pattern in query XML definition
     def get_token_value_from_xml(token)
       op = token.at_css("operator").content if token.css("operator").any?
       return "#{["ends", "contains"].include?(op) ? ".*" : ""}#{token.at_css("value").content}#{["starts", "contains"].include?(op) ? ".*" : ""}"
     end
-    
+
+    # Extract a single token's quantifier from pattern in query XML definition
     def get_quantifier_from_token_xml(token)
       from = token.css("> repeat from").any? ? token.at_css("> repeat from").content.to_i : 0
       to = token.css("> repeat to").any? ? token.at_css("> repeat to").content.to_i : 0
@@ -95,7 +104,8 @@ module WhitelabQuery
         return ""
       end
     end
-  
+
+    # Convert a query XML definition to URL parameters for query execution
     def xml_to_url_params(xml)
       return "Invalid XML format! No query patt found.", 0 unless xml.css("query patt").any?
       arr, error = self.query_xml_to_url_params(xml.at_css("query"))
@@ -113,6 +123,7 @@ module WhitelabQuery
       end
     end
 
+    # Retrieve namespaced query history for a specific user ID
     def history(user_id, hist_offset = 0, hist_number = 5)
       return self.class.name.constantize.where(:user_id => user_id).sort("updated_at desc").limit(hist_number).offset(hist_offset)
     end
@@ -130,12 +141,14 @@ module WhitelabQuery
     end
     return prms.join('&')
   end
-  
+
+  # Check if a specific attribute's value in the GET parameters differs from the value on the query
   def attribute_is_changed?(attr,param)
     return false if param.blank?
     return attr.blank? || !param.to_s.eql?(attr.to_s)
   end
-  
+
+  # Check if any values in the GET parameters differ from the values on the query
   def attributes_are_changed?(params)
     changed = false
     params.each do |param_key, param_value|
@@ -144,11 +157,13 @@ module WhitelabQuery
     end
     return changed
   end
-  
+
+  # Count the number of columns in a query pattern
   def columns
     self.patt.scan(/\]\[/).count + 1
   end
 
+  # Execute a run of the query on the backend
   def do_run(max_count = nil)
     res, backend_status = self.run
     self.output = res
@@ -163,7 +178,8 @@ module WhitelabQuery
       self.save
     end
   end
-  
+
+  # Execute a query, either in this thread or in a separate thread
   def execute(threaded = true, max_count = nil)
     self.running!
     if !self.patt.nil? && ([1,2].include?(self.view) || !self.group.blank?)
@@ -179,7 +195,8 @@ module WhitelabQuery
       Rails.logger.debug "NOT EXECUTING QUERY"
     end
   end
-  
+
+  # Execute an export of the query results
   def export
     if self.failed? || self.exporting?
       Rails.logger.debug("NOT EXPORTING WL QUERY. STATUS: #{self.status}")
@@ -223,29 +240,34 @@ module WhitelabQuery
       end
     end
   end
-  
+
+  # Return the specific interface page to display the query on
   def page
     return self.input_page
   end
-  
+
+  # Get the query result, either from the output attribute or from the backend
   def result(threaded = true)
     return self.output if (self.finished? || self.counting?) && self.output && !self.output.blank?
     Rails.logger.debug "GET QUERY RESULT"
     self.execute(threaded)
     return self.output
   end
-  
+
+  # Run query
   def run
     backend = WhitelabBackend.instance
     return backend.search(self, backend.query_to_url(self))
   end
-  
+
+  # Return the selected viewgroup of a query
   def selected_group
     return self.group unless self.group =~ /^(hit|word|context)/
     position, type, rest = self.group.split(':',3)
     return position.eql?('context') ? position : "#{position}:#{type}"
   end
-  
+
+  # Return the query total based on the selected view
   def total
     if view == 1
       return self.hit_count unless self.hit_count.nil?

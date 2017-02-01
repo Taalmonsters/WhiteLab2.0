@@ -1,5 +1,5 @@
 require "nokogiri"
-# Interface controller for pages under Search namespace
+# Interface controller for the Search namespace. It defines the separate pages and page elements in the Search namespace and inherits from the application interface controller and the Search controller concern.
 class Search::InterfaceController < InterfaceController
   include WhitelabSearch
   before_action :set_field_values, :only => [:advanced_column, :advanced_box, :advanced_field]
@@ -14,53 +14,58 @@ class Search::InterfaceController < InterfaceController
       redirect_to search_simple_path
     end
   end
-  
+
+  # Load the Simple Search page
   def simple
     respond_to do |format|
       format.html
     end
   end
-  
+
+  # Load the Extended Search page
   def extended
     respond_to do |format|
       format.html
     end
   end
-  
+
+  # Load the Advanced Search page
   def advanced
     respond_to do |format|
       format.html
     end
   end
   
-  # Load column for Search Advanced interface
+  # Load column for the Advanced Search page
   def advanced_column
     respond_to do |format|
       format.js { render '/search/interface/advanced/column' }
     end
   end
   
-  # Load box for Search Advanced interface
+  # Load box for the Advanced Search page
   def advanced_box
     respond_to do |format|
       format.js { render '/search/interface/advanced/box' }
     end
   end
   
-  # Load field for Search Advanced interface
+  # Load field for the Advanced Search page
   def advanced_field
     respond_to do |format|
       format.js { render '/search/interface/advanced/field' }
     end
   end
-  
+
+  # Load the Expert Search page
   def expert
     respond_to do |format|
       format.html
       format.json { render json: @data }
     end
   end
-  
+
+  # Load the Document Search page
   def document
     respond_to do |format|
       flash[:error] = "Document '#{params[:xmlid]}' not found" if params.has_key?(:xmlid) && !params[:xmlid].blank? && !@document

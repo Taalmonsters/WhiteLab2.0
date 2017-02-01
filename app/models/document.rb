@@ -1,11 +1,14 @@
+# Module for documents, not persisted to the database
 class Document
   include ActiveModel::Model
   include DataFormatHelper
-  
+
+  # The document model uses 3 attributes: xmlid (document pid), patt (query pattern), and content (document content)
   attr_accessor :xmlid, :patt, :content
-  
+
   validates :xmlid, presence: true
-  
+
+  # Assemble the vocabulary growth data array for all documents matching a query
   def self.growth(query)
     vocab_growth = { 'types' => [{ ggroup: 'types', name: '', x: 0, x2: 0.0, y: 0, y2: 0.0 }], 'lemmas' => [{ ggroup: 'lemmas', name: '', x: 0, x2: 0.0, y: 0, y2: 0.0 }] }
     total = 0
@@ -53,11 +56,13 @@ class Document
     end
     return { document_count: d, hit_count: total, title: I18n.t(:"chart_labels.keys.growth_title"), labels: { unique: I18n.t(:"other.keys.unique").capitalize, progress: I18n.t(:"other.keys.progress").capitalize }, data: [{ name: I18n.t(:"data_labels.keys.word_type").pluralize, color: '#A90C28', data: vocab_growth['types'] }, { name: I18n.t(:"data_labels.keys.lemma").pluralize, color: '#53c4c3', data: vocab_growth['lemmas'] }] }
   end
-  
+
+  # Return the audio file for a document
   def audio_file(format = 'mp3')
     return "#{Rails.configuration.x.audio_dir}/#{format}/#{xmlid}.#{format}"
   end
-  
+
+  # Assemble the vocabulary growth data array for a document
   def growth
     total = self.token_count
     vocab_growth = { 'types' => [{ ggroup: 'types', name: '', x: 0, x2: 0.0, y: 0, y2: 0.0 }], 'lemmas' => [{ ggroup: 'lemmas', name: '', x: 0, x2: 0.0, y: 0, y2: 0.0 }] }
@@ -94,22 +99,26 @@ class Document
     end
     return { title: I18n.t(:"chart_labels.keys.growth_title"), labels: { unique: I18n.t(:"other.keys.unique").capitalize, progress: I18n.t(:"other.keys.progress").capitalize }, data: [{ name: I18n.t(:"data_labels.keys.word_type").pluralize, color: '#A90C28', data: vocab_growth['types'] }, { name: I18n.t(:"data_labels.keys.lemma").pluralize, color: '#53c4c3', data: vocab_growth['lemmas'] }] }
   end
-  
+
+  # Return simple document statistics
   def statistics
     contents = self.get_content
     total = self.token_count
     type_count = contents["word"].uniq.count
     return { "token_count" => total, "type_count" => type_count, "type-token ratio" => type_count / total, "lemma_count" => contents["lemma"].uniq.count }
   end
-  
+
+  # Retrieve the document metadata from the backend
   def metadata
     return WhitelabBackend.instance.get_document_metadata(xmlid)
   end
-  
+
+  # Retrieve the distribution of PoS tags for a document
   def pos_distribution
     return { title: I18n.t(:"chart_labels.keys.pos_pie_title"), data: self.get_content['pos'].group_by{|pos| pos.split('(')[0] }.each{|_,list| list.size }.sort_by{|_, freq| freq }.reverse.map{|pos_head,freq| { name: pos_head, y: freq.size } } }
   end
-  
+
+  # Retrieve the paginated content of a document
   def content(offset = 0, number = 50)
     total = self.token_count
     contents = self.get_content
@@ -145,15 +154,18 @@ class Document
     }.reduce Hash.new, :merge
     return { 'paragraphs' => paragraphs, 'audio_file' => self.audio_file, 'total_sentence_count' => contents['xmlid'].select{|x| x =~ /\.1$/ }.size, 'begin_time' => contents['begin_time'][0], 'end_time' => contents['end_time'][total-1] }
   end
-  
+
+  # Retrieve the XML content of a document
   def xml_content
     return WhitelabBackend.instance.get_document_content(self.xmlid)
   end
-  
+
+  # Retrieve the token count of a document
   def token_count
     return MetadataHandler.instance.get_document_token_count(xmlid)
   end
-  
+
+  # Return a snippet of the total document size for a document
   def get_content
     return WhitelabBackend.instance.get_document_snippet(self.xmlid, 0, self.token_count)['match']
   end

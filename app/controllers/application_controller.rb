@@ -1,4 +1,4 @@
-# General controller for the application.
+# General controller for the application. All other controllers inherit from this.
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :set_user
@@ -10,7 +10,8 @@ class ApplicationController < ActionController::Base
   include DataFormatHelper
   
   helper_method :get_translated_pos_heads
-  
+
+  # Load the translated intructions for the site tour
   def load_tour
     tour_file = Rails.root.join('config', 'locales', 'tour', "#{@current_language}.yml")
     ns_tour_file = Rails.root.join('config', 'locales', 'tour', @namespace, "#{@current_language}.yml")
@@ -57,12 +58,14 @@ class ApplicationController < ActionController::Base
     @interface_languages = load_available_languages.sort
     @current_language = I18n.locale.to_s
   end
-  
+
+  # Initialize backend services
   def set_backend
     @whitelab = WhitelabBackend.instance
     @metadata_handler = MetadataHandler.instance
   end
-  
+
+  # Set the current namespace
   def set_namespace
     @namespace = params[:controller].split("/").first
   end
@@ -124,7 +127,8 @@ class ApplicationController < ActionController::Base
       end
     end
   end
-  
+
+  # Helper method to expose translated PoS heads anywhere in the application
   def get_translated_pos_heads
     data = []
     @whitelab.get_pos_heads(12, 0, "label", "asc")["pos_heads"].each do |pos_head|

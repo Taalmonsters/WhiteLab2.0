@@ -1,7 +1,7 @@
 # Controller for specific interface elements.
 class InterfaceController < ApplicationController
   
-  # Load translated PoS selection dropdown
+  # Load values for PoS selection dropdown
   def pos_select_options
     @value = params[:value]
     @element = params[:element]
@@ -15,7 +15,8 @@ class InterfaceController < ApplicationController
       format.js { render '/pos_heads/select' }
     end
   end
-  
+
+  # Load values for PoS feature selection dropdown
   def pos_features
     @pos = params[:pos].sub(/\.\*$/,'') if params.has_key?(:pos) && !params[:pos].blank?
     @features = load_pos_feature_data(@pos)
@@ -26,7 +27,8 @@ class InterfaceController < ApplicationController
   end
   
   protected
-  
+
+  # Check the validity of an imported XML query. If the query is valid, a URL is constructed for the imported query.
   def check_query_import
     if params.has_key?(:file)
       @data = {}

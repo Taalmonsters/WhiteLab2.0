@@ -127,7 +127,8 @@ class DocumentsController < ApplicationController
   end
   
   protected
-  
+
+  # Get offset and number for selecting document content partitions from the GET parameters
   def set_limits
     @offset = !params[:offset].blank? ? params[:offset].to_i : 0
     @number = !params[:number].blank? ? params[:number].to_i : 50

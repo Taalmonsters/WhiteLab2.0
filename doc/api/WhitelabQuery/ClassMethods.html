@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>module WhitelabQuery::ClassMethods - WhiteLab 2.0</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/darkfish.js"></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-filter_xml_to_url_params">#filter_xml_to_url_params</a>
+    
+    <li ><a href="#method-i-get_quantifier_from_token_xml">#get_quantifier_from_token_xml</a>
+    
+    <li ><a href="#method-i-get_token_from_xml">#get_token_from_xml</a>
+    
+    <li ><a href="#method-i-get_token_value_from_xml">#get_token_value_from_xml</a>
+    
+    <li ><a href="#method-i-get_tokens_from_xml">#get_tokens_from_xml</a>
+    
+    <li ><a href="#method-i-history">#history</a>
+    
+    <li ><a href="#method-i-xml_to_url_params">#xml_to_url_params</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-WhitelabQuery::ClassMethods">
+  <h1 id="module-WhitelabQuery::ClassMethods" class="module">
+    module WhitelabQuery::ClassMethods
+  </h1>
+
+  <section class="description">
+    
+<p>Class methods for WhiteLab Queries</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-filter_xml_to_url_params" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">filter_xml_to_url_params</span><span
+            class="method-args">(filter_xml)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Convert the filter section of an XML query definition to URL params</p>
+          
+          
+
+          
+          <div class="method-source-code" id="filter_xml_to_url_params-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/whitelab_query.rb, line 42</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">filter_xml_to_url_params</span>(<span class="ruby-identifier">filter_xml</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">filter_xml</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&quot;filter&quot;</span>).<span class="ruby-identifier">any?</span>
+    <span class="ruby-identifier">arr</span> = []
+    <span class="ruby-identifier">filter_xml</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&quot;filter&quot;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">filter</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">filter</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&quot;values value&quot;</span>).<span class="ruby-identifier">any?</span>
+        <span class="ruby-identifier">filter</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&quot;values value&quot;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+          <span class="ruby-identifier">arr</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">URI</span>.<span class="ruby-identifier">escape</span>(<span class="ruby-node">&quot;#{filter.at_css(&quot;field&quot;).content}=\&quot;#{value.content}\&quot;&quot;</span>, <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;[^#{URI::PATTERN::UNRESERVED}]&quot;</span>))
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-string">&quot;&quot;</span>, <span class="ruby-keyword">true</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;filter=(#{arr.join(&quot;)AND(&quot;)})&quot;</span>, <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">filter_xml</span>.<span class="ruby-identifier">content</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;filter=#{filter_xml.content.sub(&#39;:&#39;,&#39;=&#39;)}&quot;</span>, <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-string">&quot;&quot;</span>, <span class="ruby-keyword">false</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_quantifier_from_token_xml" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_quantifier_from_token_xml</span><span
+            class="method-args">(token)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Extract a single token&#39;s quantifier from pattern in query XML
+definition</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_quantifier_from_token_xml-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/whitelab_query.rb, line 96</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_quantifier_from_token_xml</span>(<span class="ruby-identifier">token</span>)
+  <span class="ruby-identifier">from</span> = <span class="ruby-identifier">token</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&quot;&gt; repeat from&quot;</span>).<span class="ruby-identifier">any?</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">token</span>.<span class="ruby-identifier">at_css</span>(<span class="ruby-string">&quot;&gt; repeat from&quot;</span>).<span class="ruby-identifier">content</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">:</span> <span class="ruby-value">0</span>
+  <span class="ruby-identifier">to</span> = <span class="ruby-identifier">token</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&quot;&gt; repeat to&quot;</span>).<span class="ruby-identifier">any?</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">token</span>.<span class="ruby-identifier">at_css</span>(<span class="ruby-string">&quot;&gt; repeat to&quot;</span>).<span class="ruby-identifier">content</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">:</span> <span class="ruby-value">0</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">to</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;{#{from &gt; 0 &amp;&amp; from &lt; to ? &quot;#{from},&quot; : from &gt; 0 &amp;&amp; from == to ? &quot;&quot; : &quot;,&quot;}#{to}}&quot;</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">from</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-string">&quot;*&quot;</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_token_from_xml" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_token_from_xml</span><span
+            class="method-args">(token)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Extract a single token from pattern in query XML definition</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_token_from_xml-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/whitelab_query.rb, line 71</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_token_from_xml</span>(<span class="ruby-identifier">token</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">token</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&quot;&gt; value&quot;</span>).<span class="ruby-identifier">any?</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;#{token.css(&quot;type&quot;).any? &amp;&amp; [&quot;word&quot;,&quot;lemma&quot;,&quot;pos&quot;,&quot;phonetic&quot;].include?(token.at_css(&quot;type&quot;).content) ? token.at_css(&quot;type&quot;).content : &quot;word&quot;}#{token.css(&quot;operator&quot;).any? &amp;&amp; token.at_css(&quot;operator&quot;).include?(&quot;not&quot;) ? &quot;!=&quot; : &quot;=&quot;}\&quot;#{self.get_token_value_from_xml(token)}\&quot;&quot;</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">token</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&quot;&gt; and &gt; token&quot;</span>).<span class="ruby-identifier">any?</span>
+    <span class="ruby-identifier">arr</span> = []
+    <span class="ruby-identifier">token</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&quot;&gt; and &gt; token&quot;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">token2</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">arr</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_token_from_xml</span>(<span class="ruby-identifier">token2</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;(#{arr.join(&quot;&amp;&quot;)})&quot;</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">token</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&quot;&gt; or &gt; token&quot;</span>).<span class="ruby-identifier">any?</span>
+    <span class="ruby-identifier">arr</span> = []
+    <span class="ruby-identifier">token</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&quot;&gt; or &gt; token&quot;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">token2</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">arr</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_token_from_xml</span>(<span class="ruby-identifier">token2</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;(#{arr.join(&quot;|&quot;)})&quot;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_token_value_from_xml" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_token_value_from_xml</span><span
+            class="method-args">(token)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Extract a single token&#39;s value from pattern in query XML definition</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_token_value_from_xml-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/whitelab_query.rb, line 90</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_token_value_from_xml</span>(<span class="ruby-identifier">token</span>)
+  <span class="ruby-identifier">op</span> = <span class="ruby-identifier">token</span>.<span class="ruby-identifier">at_css</span>(<span class="ruby-string">&quot;operator&quot;</span>).<span class="ruby-identifier">content</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">token</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&quot;operator&quot;</span>).<span class="ruby-identifier">any?</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;#{[&quot;ends&quot;, &quot;contains&quot;].include?(op) ? &quot;.*&quot; : &quot;&quot;}#{token.at_css(&quot;value&quot;).content}#{[&quot;starts&quot;, &quot;contains&quot;].include?(op) ? &quot;.*&quot; : &quot;&quot;}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_tokens_from_xml" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_tokens_from_xml</span><span
+            class="method-args">(tokens)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Extract all tokens from pattern in query XML definition</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_tokens_from_xml-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/whitelab_query.rb, line 62</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_tokens_from_xml</span>(<span class="ruby-identifier">tokens</span>)
+  <span class="ruby-identifier">arr</span> = []
+  <span class="ruby-identifier">tokens</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&quot;&gt; token&quot;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">token</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">arr</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;[#{self.get_token_from_xml(token)}]#{token.css(&quot;&gt; repeat&quot;).any? ? self.get_quantifier_from_token_xml(token) : &quot;&quot;}&quot;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">arr</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-history" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">history</span><span
+            class="method-args">(user_id, hist_offset = 0, hist_number = 5)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Retrieve namespaced query history for a specific user ID</p>
+          
+          
+
+          
+          <div class="method-source-code" id="history-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/whitelab_query.rb, line 127</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">history</span>(<span class="ruby-identifier">user_id</span>, <span class="ruby-identifier">hist_offset</span> = <span class="ruby-value">0</span>, <span class="ruby-identifier">hist_number</span> = <span class="ruby-value">5</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">constantize</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:user_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user_id</span>).<span class="ruby-identifier">sort</span>(<span class="ruby-string">&quot;updated_at desc&quot;</span>).<span class="ruby-identifier">limit</span>(<span class="ruby-identifier">hist_number</span>).<span class="ruby-identifier">offset</span>(<span class="ruby-identifier">hist_offset</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-xml_to_url_params" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">xml_to_url_params</span><span
+            class="method-args">(xml)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Convert a query XML definition to URL parameters for query execution</p>
+          
+          
+
+          
+          <div class="method-source-code" id="xml_to_url_params-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/whitelab_query.rb, line 109</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">xml_to_url_params</span>(<span class="ruby-identifier">xml</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-string">&quot;Invalid XML format! No query patt found.&quot;</span>, <span class="ruby-value">0</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">xml</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&quot;query patt&quot;</span>).<span class="ruby-identifier">any?</span>
+  <span class="ruby-identifier">arr</span>, <span class="ruby-identifier">error</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">query_xml_to_url_params</span>(<span class="ruby-identifier">xml</span>.<span class="ruby-identifier">at_css</span>(<span class="ruby-string">&quot;query&quot;</span>))
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">error</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;Invalid query format! #{arr[0]}&quot;</span>, <span class="ruby-value">0</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">error</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">xml</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&quot;filters&quot;</span>).<span class="ruby-identifier">any?</span>
+    <span class="ruby-identifier">filter</span>, <span class="ruby-identifier">error</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">filter_xml_to_url_params</span>(<span class="ruby-identifier">xml</span>.<span class="ruby-identifier">at_css</span>(<span class="ruby-string">&quot;filters&quot;</span>))
+    <span class="ruby-keyword">return</span> <span class="ruby-string">&quot;Invalid filter format!&quot;</span>, <span class="ruby-value">0</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">error</span>
+    <span class="ruby-identifier">arr</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">filter</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">filter</span>.<span class="ruby-identifier">blank?</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">error</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-string">&quot;Invalid XML format!&quot;</span>, <span class="ruby-value">0</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">arr</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;&amp;&quot;</span>), <span class="ruby-value">1</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.3.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

@@ -3,12 +3,14 @@ class Search::Query < ActiveRecord::Base
   include WhitelabQuery
   
   before_destroy :delete_export_files
-  
+
+  # Delete export files before destroying the query record
   def delete_export_files
     dir = Rails.root.join('data','search',self.id.to_s)
     FileUtils.rm_r(dir) if File.exists?(dir)
   end
-  
+
+  # Return the path to the query export file
   def result_file(tsv = false)
     return tsv ? Rails.root.join('data','search',self.id.to_s,'result.tsv') : Rails.root.join('data','search',self.id.to_s,'result.csv')
   end
@@ -26,7 +28,8 @@ class Search::Query < ActiveRecord::Base
     filename = filename+'_g='+group if !group.blank?
     return filename
   end
-  
+
+  # Convert a query to an XML definition for download
   def to_xml
     hash = { search: { query: { patt: self.patt, within: self.within, view: self.view, offset: self.offset, number: self.number } } }
     hash[:search][:query][:gap_values_tsv] = self.gap_values_tsv unless self.gap_values_tsv.blank?
@@ -38,7 +41,8 @@ class Search::Query < ActiveRecord::Base
     hash[:search][:filters] = self.filter unless self.filter.blank?
     return hash.to_xml(:root => 'whitelab')
   end
-  
+
+  # Find the current query using the incoming GET parameters
   def self.find_from_params(page, user, params)
     params[:group] = params[:group].gsub('%3B',';') if params.has_key?(:group)
     if params.has_key?(:id)
@@ -57,7 +61,8 @@ class Search::Query < ActiveRecord::Base
     end
     return query ? query : WhitelabQuery.find_from_params(Search::Query, page, user.id, params)
   end
-  
+
+  # Create a hash to use for the creation of a new query from the current GET parameters
   def self.create_hash(user_id, page, params)
     return {
       :user_id => user_id, 
@@ -75,7 +80,8 @@ class Search::Query < ActiveRecord::Base
       :status => 0
     }
   end
-  
+
+  # Create a hash to use for the selection of an existing query from the current GET parameters
   def self.where_data(user_id, page, params)
     return {
       :user_id => user_id,
@@ -90,7 +96,8 @@ class Search::Query < ActiveRecord::Base
       :gap_values_tsv => params.has_key?(:gap_values_tsv) && !params[:gap_values_tsv].blank? ? params[:gap_values_tsv] : nil
     }
   end
-  
+
+  # Convert a query XML definition to URL parameters for query execution
   def self.query_xml_to_url_params(query_xml)
     arr = []
     if query_xml.css("patt tokens token").any?
@@ -120,7 +127,8 @@ class Search::Query < ActiveRecord::Base
     arr << "number=#{query_xml.at_css("number").content}" if query_xml.css("number").any? && [50,100,200].include?(query_xml.at_css("number").content.to_i)
     return arr, false
   end
-  
+
+  # Convert the group section of an XML query definition to URL params
   def self.get_complex_group_from_xml(query_xml)
     group = query_xml.at_css("group context").content
     if group.eql?("field")
@@ -147,7 +155,8 @@ class Search::Query < ActiveRecord::Base
     end
     return group, false
   end
-  
+
+  # Extract the context for a group in query XML definition
   def self.add_context_to_group(group, letter, sets, first, reverse)
     sets.each do |set|
       if reverse
@@ -165,7 +174,8 @@ class Search::Query < ActiveRecord::Base
     end
     return group, first
   end
-  
+
+  # Extract the hits group from a query XML definition
   def add_hits_group(hits_group)
     hits_group.gsub!(/([\(\)\[\]\'\"\?\!])/){|s| "\\"+s}
     qgroup_parts = group.split(':')
@@ -195,14 +205,16 @@ class Search::Query < ActiveRecord::Base
       self.filter = "#{self.filter}AND(#{self.group}=\"#{hits_group}\")"
     end
   end
-  
+
+  # Check if the currently requested query differs from the currently selected query
   def is_changed?(page, params)
     return true if attribute_is_changed?(patt,params[:patt])
     return true if attribute_is_changed?(within,params[:within])
     return true if attribute_is_changed?(filter,params[:filter])
     return false
   end
-  
+
+  # Update the currently selected query to match the currently requested query
   def update_from_params(params)
     new_query = self
     new_query.waiting! if new_query.failed?

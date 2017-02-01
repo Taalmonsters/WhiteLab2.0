@@ -3,12 +3,14 @@ class Explore::Query < ActiveRecord::Base
   include WhitelabQuery
   
   before_destroy :delete_export_files
-  
+
+  # Delete export files before destroying the query record
   def delete_export_files
     dir = Rails.root.join('data','explore',self.id.to_s)
     FileUtils.rm_r(dir) if File.exists?(dir)
   end
-  
+
+  # Return the path to the query export file
   def result_file(tsv = false)
     return tsv ? Rails.root.join('data','explore',self.id.to_s,'result.tsv') : Rails.root.join('data','explore',self.id.to_s,'result.csv')
   end
@@ -24,7 +26,8 @@ class Explore::Query < ActiveRecord::Base
     filename = filename+'_g='+group if !group.blank?
     return filename
   end
-  
+
+  # Convert a query to an XML definition for download
   def to_xml
     hash = { explore: { query: { page: self.page, patt: self.patt, within: self.within, view: self.view, listtype: self.listtype, offset: self.offset, number: self.number } } }
     hash[:explore][:query][:gap_values_tsv] = self.group unless self.gap_values_tsv.blank?
@@ -35,12 +38,14 @@ class Explore::Query < ActiveRecord::Base
     hash[:explore][:filters] = self.filter unless self.filter.blank?
     return hash.to_xml(:root => 'whitelab')
   end
-  
+
+  # Find the current query using the incoming GET parameters
   def self.find_from_params(page, user, params)
     query = user.explore_queries.find(params[:id].to_i) if params.has_key?(:id)
     return query ? query : WhitelabQuery.find_from_params(Explore::Query, page, user.id, params)
   end
-  
+
+  # Create a hash to use for the creation of a new query from the current GET parameters
   def self.create_hash(user_id, page, params)
     hash = {
       :user_id => user_id, 
@@ -64,7 +69,8 @@ class Explore::Query < ActiveRecord::Base
     end
     return hash
   end
-  
+
+  # Create a hash to use for the selection of an existing query from the current GET parameters
   def self.where_data(user_id, page, params)
     if page.eql?('statistics')
       return {
@@ -90,7 +96,8 @@ class Explore::Query < ActiveRecord::Base
       }
     end
   end
-  
+
+  # Convert a query XML definition to URL parameters for query execution
   def self.query_xml_to_url_params(query_xml)
     arr = []
     page = query_xml.css("page").any? ? query_xml.at_css("page").content : nil
@@ -118,14 +125,16 @@ class Explore::Query < ActiveRecord::Base
     arr << "number=#{query_xml.at_css("number").content}" if query_xml.css("number").any? && [50,100,200].include?(query_xml.at_css("number").content.to_i)
     return arr, false
   end
-  
+
+  # Convert the group section of an XML query definition to URL params
   def self.get_complex_group_from_xml(query_xml)
     group = query_xml.at_css("group context").content
     group = query_xml.css("group type").any? ? "#{group}:#{query_xml.at_css("group type").content}" : "word"
     group = query_xml.css("group case").any? ? "#{group}:#{query_xml.at_css("group case").content}" : "s"
     return group, false
   end
-  
+
+  # Check if the currently requested query differs from the currently selected query
   def is_changed?(page, params)
     if [page,self.page].include?('statistics')
       return true if attribute_is_changed?(patt,"[]")
@@ -139,7 +148,8 @@ class Explore::Query < ActiveRecord::Base
     return true if attribute_is_changed?(input_page,page)
     return false
   end
-  
+
+  # Update the currently selected query to match the currently requested query
   def update_from_params(params)
     new_query = self
     new_query.waiting! if new_query.failed?

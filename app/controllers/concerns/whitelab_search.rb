@@ -1,3 +1,4 @@
+# Global concern for controllers in the Search namespace. Defines which methods are executed on each request.
 module WhitelabSearch
   extend ActiveSupport::Concern
 

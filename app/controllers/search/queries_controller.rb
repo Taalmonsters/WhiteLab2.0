@@ -1,6 +1,8 @@
+# Queries controller for the Search namespace. It defines methods that return further specifications of an already executed query (KWIC, hits/docs in groups, etc.) and inherits from the application queries controller and the Search controller concern.
 class Search::QueriesController < QueriesController
   include WhitelabSearch
-  
+
+  # Load context options for a grouped hits query
   def context_options
     @query.group = params[:group] if params.has_key?(:group)
     respond_to do |format|
@@ -10,7 +12,7 @@ class Search::QueriesController < QueriesController
     end
   end
   
-  # Load hits for Search Query in selected document
+  # Load hits for the current query in selected document
   def doc_hits
     if @query && params.has_key?(:docpid)
       sub_query = @query.dup
@@ -31,7 +33,7 @@ class Search::QueriesController < QueriesController
     end
   end
   
-  # Load documents for Search Query in selected group
+  # Load documents for the current query in selected group
   def docs_in_group
     @group_id = params[:group_id]
     @offset = params[:offset].to_i || 0
@@ -52,7 +54,7 @@ class Search::QueriesController < QueriesController
     end
   end
   
-  # Load hits for Search Query in selected group
+  # Load hits for the current query in selected group
   def hits_in_group
     @group_id = params[:group_id]
     @offset = params[:offset].to_i || 0

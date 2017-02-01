@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class Document - WhiteLab 2.0</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link">Object
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><span class="include">ActiveModel::Model</span>
+  
+  
+  
+    <li><a class="include" href="DataFormatHelper.html">DataFormatHelper</a>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-growth">::growth</a>
+    
+    <li ><a href="#method-i-audio_file">#audio_file</a>
+    
+    <li ><a href="#method-i-get_content">#get_content</a>
+    
+    <li ><a href="#method-i-growth">#growth</a>
+    
+    <li ><a href="#method-i-metadata">#metadata</a>
+    
+    <li ><a href="#method-i-pos_distribution">#pos_distribution</a>
+    
+    <li ><a href="#method-i-statistics">#statistics</a>
+    
+    <li ><a href="#method-i-token_count">#token_count</a>
+    
+    <li ><a href="#method-i-xml_content">#xml_content</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Document">
+  <h1 id="class-Document" class="class">
+    class Document
+  </h1>
+
+  <section class="description">
+    
+<p>Module for documents, not persisted to the database</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-content" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">content</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>The document model uses 3 attributes: xmlid (document pid), patt (query
+pattern), and content (document content)</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-patt" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">patt</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>The document model uses 3 attributes: xmlid (document pid), patt (query
+pattern), and content (document content)</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-xmlid" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">xmlid</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>The document model uses 3 attributes: xmlid (document pid), patt (query
+pattern), and content (document content)</p>
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-growth" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">growth</span><span
+            class="method-args">(query)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Assemble the vocabulary growth data array for all documents matching a
+query</p>
+          
+          
+
+          
+          <div class="method-source-code" id="growth-source">
+            <pre><span class="ruby-comment"># File app/models/document.rb, line 12</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">growth</span>(<span class="ruby-identifier">query</span>)
+  <span class="ruby-identifier">vocab_growth</span> = { <span class="ruby-string">&#39;types&#39;</span> =<span class="ruby-operator">&gt;</span> [{ <span class="ruby-identifier">ggroup</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;types&#39;</span>, <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">x</span><span class="ruby-operator">:</span> <span class="ruby-value">0</span>, <span class="ruby-identifier">x2</span><span class="ruby-operator">:</span> <span class="ruby-value">0.0</span>, <span class="ruby-identifier">y</span><span class="ruby-operator">:</span> <span class="ruby-value">0</span>, <span class="ruby-identifier">y2</span><span class="ruby-operator">:</span> <span class="ruby-value">0.0</span> }], <span class="ruby-string">&#39;lemmas&#39;</span> =<span class="ruby-operator">&gt;</span> [{ <span class="ruby-identifier">ggroup</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;lemmas&#39;</span>, <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">x</span><span class="ruby-operator">:</span> <span class="ruby-value">0</span>, <span class="ruby-identifier">x2</span><span class="ruby-operator">:</span> <span class="ruby-value">0.0</span>, <span class="ruby-identifier">y</span><span class="ruby-operator">:</span> <span class="ruby-value">0</span>, <span class="ruby-identifier">y2</span><span class="ruby-operator">:</span> <span class="ruby-value">0.0</span> }] }
+  <span class="ruby-identifier">total</span> = <span class="ruby-value">0</span>
+  <span class="ruby-identifier">t</span> = <span class="ruby-value">0</span>
+  <span class="ruby-identifier">l</span> = <span class="ruby-value">0</span>
+  <span class="ruby-identifier">type_growth</span> = []
+  <span class="ruby-identifier">lemma_growth</span> = []
+  <span class="ruby-identifier">types</span> = []
+  <span class="ruby-identifier">lemmas</span> = []
+  <span class="ruby-identifier">d</span> = <span class="ruby-value">0</span>
+  <span class="ruby-constant">MetadataHandler</span>.<span class="ruby-identifier">instance</span>.<span class="ruby-identifier">filter_documents</span>(<span class="ruby-identifier">query</span>.<span class="ruby-identifier">filter</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">doc</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">d</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+    <span class="ruby-identifier">xmlid</span> = <span class="ruby-constant">MetadataHandler</span>.<span class="ruby-identifier">instance</span>.<span class="ruby-identifier">get_document_id</span>(<span class="ruby-identifier">doc</span>)
+    <span class="ruby-identifier">document</span> = <span class="ruby-constant">Document</span>.<span class="ruby-identifier">new</span>({<span class="ruby-value">:xmlid</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">xmlid</span>})
+    <span class="ruby-identifier">contents</span> = <span class="ruby-identifier">document</span>.<span class="ruby-identifier">get_content</span>
+    <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">document</span>.<span class="ruby-identifier">token_count</span>
+    <span class="ruby-identifier">types</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">contents</span>[<span class="ruby-string">&#39;word&#39;</span>]
+    <span class="ruby-identifier">lemmas</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">contents</span>[<span class="ruby-string">&#39;lemma&#39;</span>]
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">type_growth</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">total</span>, <span class="ruby-value">0</span>)
+  <span class="ruby-identifier">lemma_growth</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">total</span>, <span class="ruby-value">0</span>)
+  <span class="ruby-identifier">total_unique_types</span> = <span class="ruby-value">0</span>
+  <span class="ruby-identifier">total_unique_lemmas</span> = <span class="ruby-value">0</span>
+  <span class="ruby-identifier">types</span>.<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">type_growth</span>[<span class="ruby-identifier">types</span>.<span class="ruby-identifier">index</span>(<span class="ruby-identifier">x</span>)] = <span class="ruby-value">1</span>; <span class="ruby-identifier">total_unique_types</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>; }
+  <span class="ruby-identifier">lemmas</span>.<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">lemma_growth</span>[<span class="ruby-identifier">lemmas</span>.<span class="ruby-identifier">index</span>(<span class="ruby-identifier">x</span>)] = <span class="ruby-value">1</span>; <span class="ruby-identifier">total_unique_lemmas</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>; }
+  (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">total</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>).<span class="ruby-identifier">to_a</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">t</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">type_growth</span>[<span class="ruby-identifier">i</span>]
+    <span class="ruby-identifier">l</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">lemma_growth</span>[<span class="ruby-identifier">i</span>]
+    <span class="ruby-identifier">vocab_growth</span>[<span class="ruby-string">&#39;types&#39;</span>] <span class="ruby-operator">&lt;&lt;</span> {
+      <span class="ruby-identifier">ggroup</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;types&#39;</span>,
+      <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">types</span>[<span class="ruby-identifier">i</span>],
+      <span class="ruby-identifier">x</span><span class="ruby-operator">:</span> <span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>,
+      <span class="ruby-identifier">x2</span><span class="ruby-operator">:</span> (((<span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>).<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">total</span>) <span class="ruby-operator">*</span> <span class="ruby-value">100</span>).<span class="ruby-identifier">round</span>(<span class="ruby-value">1</span>),
+      <span class="ruby-identifier">y</span><span class="ruby-operator">:</span> <span class="ruby-identifier">t</span>,
+      <span class="ruby-identifier">y2</span><span class="ruby-operator">:</span> ((<span class="ruby-identifier">t</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">total_unique_types</span>) <span class="ruby-operator">*</span> <span class="ruby-value">100</span>).<span class="ruby-identifier">round</span>(<span class="ruby-value">1</span>)
+    }
+    <span class="ruby-identifier">vocab_growth</span>[<span class="ruby-string">&#39;lemmas&#39;</span>] <span class="ruby-operator">&lt;&lt;</span> {
+      <span class="ruby-identifier">ggroup</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;lemmas&#39;</span>,
+      <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">lemmas</span>[<span class="ruby-identifier">i</span>],
+      <span class="ruby-identifier">x</span><span class="ruby-operator">:</span> <span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>,
+      <span class="ruby-identifier">x2</span><span class="ruby-operator">:</span> (((<span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>).<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">total</span>) <span class="ruby-operator">*</span> <span class="ruby-value">100</span>).<span class="ruby-identifier">round</span>(<span class="ruby-value">1</span>),
+      <span class="ruby-identifier">y</span><span class="ruby-operator">:</span> <span class="ruby-identifier">l</span>,
+      <span class="ruby-identifier">y2</span><span class="ruby-operator">:</span> ((<span class="ruby-identifier">l</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">total_unique_lemmas</span>) <span class="ruby-operator">*</span> <span class="ruby-value">100</span>).<span class="ruby-identifier">round</span>(<span class="ruby-value">1</span>)
+    }
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> { <span class="ruby-identifier">document_count</span><span class="ruby-operator">:</span> <span class="ruby-identifier">d</span>, <span class="ruby-identifier">hit_count</span><span class="ruby-operator">:</span> <span class="ruby-identifier">total</span>, <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-value">:&quot;chart_labels.keys.growth_title&quot;</span>), <span class="ruby-identifier">labels</span><span class="ruby-operator">:</span> { <span class="ruby-identifier">unique</span><span class="ruby-operator">:</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-value">:&quot;other.keys.unique&quot;</span>).<span class="ruby-identifier">capitalize</span>, <span class="ruby-identifier">progress</span><span class="ruby-operator">:</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-value">:&quot;other.keys.progress&quot;</span>).<span class="ruby-identifier">capitalize</span> }, <span class="ruby-identifier">data</span><span class="ruby-operator">:</span> [{ <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-value">:&quot;data_labels.keys.word_type&quot;</span>).<span class="ruby-identifier">pluralize</span>, <span class="ruby-identifier">color</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;#A90C28&#39;</span>, <span class="ruby-identifier">data</span><span class="ruby-operator">:</span> <span class="ruby-identifier">vocab_growth</span>[<span class="ruby-string">&#39;types&#39;</span>] }, { <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-value">:&quot;data_labels.keys.lemma&quot;</span>).<span class="ruby-identifier">pluralize</span>, <span class="ruby-identifier">color</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;#53c4c3&#39;</span>, <span class="ruby-identifier">data</span><span class="ruby-operator">:</span> <span class="ruby-identifier">vocab_growth</span>[<span class="ruby-string">&#39;lemmas&#39;</span>] }] }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-audio_file" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">audio_file</span><span
+            class="method-args">(format = 'mp3')</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Return the audio file for a document</p>
+          
+          
+
+          
+          <div class="method-source-code" id="audio_file-source">
+            <pre><span class="ruby-comment"># File app/models/document.rb, line 61</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">audio_file</span>(<span class="ruby-identifier">format</span> = <span class="ruby-string">&#39;mp3&#39;</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;#{Rails.configuration.x.audio_dir}/#{format}/#{xmlid}.#{format}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_content" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_content</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Return a snippet of the total document size for a document</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_content-source">
+            <pre><span class="ruby-comment"># File app/models/document.rb, line 169</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_content</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-constant">WhitelabBackend</span>.<span class="ruby-identifier">instance</span>.<span class="ruby-identifier">get_document_snippet</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">xmlid</span>, <span class="ruby-value">0</span>, <span class="ruby-keyword">self</span>.<span class="ruby-identifier">token_count</span>)[<span class="ruby-string">&#39;match&#39;</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-growth" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">growth</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Assemble the vocabulary growth data array for a document</p>
+          
+          
+
+          
+          <div class="method-source-code" id="growth-source">
+            <pre><span class="ruby-comment"># File app/models/document.rb, line 66</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">growth</span>
+  <span class="ruby-identifier">total</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">token_count</span>
+  <span class="ruby-identifier">vocab_growth</span> = { <span class="ruby-string">&#39;types&#39;</span> =<span class="ruby-operator">&gt;</span> [{ <span class="ruby-identifier">ggroup</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;types&#39;</span>, <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">x</span><span class="ruby-operator">:</span> <span class="ruby-value">0</span>, <span class="ruby-identifier">x2</span><span class="ruby-operator">:</span> <span class="ruby-value">0.0</span>, <span class="ruby-identifier">y</span><span class="ruby-operator">:</span> <span class="ruby-value">0</span>, <span class="ruby-identifier">y2</span><span class="ruby-operator">:</span> <span class="ruby-value">0.0</span> }], <span class="ruby-string">&#39;lemmas&#39;</span> =<span class="ruby-operator">&gt;</span> [{ <span class="ruby-identifier">ggroup</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;lemmas&#39;</span>, <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">x</span><span class="ruby-operator">:</span> <span class="ruby-value">0</span>, <span class="ruby-identifier">x2</span><span class="ruby-operator">:</span> <span class="ruby-value">0.0</span>, <span class="ruby-identifier">y</span><span class="ruby-operator">:</span> <span class="ruby-value">0</span>, <span class="ruby-identifier">y2</span><span class="ruby-operator">:</span> <span class="ruby-value">0.0</span> }] }
+  <span class="ruby-identifier">contents</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_content</span>
+  <span class="ruby-identifier">types</span> = <span class="ruby-identifier">contents</span>[<span class="ruby-string">&#39;word&#39;</span>]
+  <span class="ruby-identifier">total_unique_types</span> = <span class="ruby-value">0</span>
+  <span class="ruby-identifier">type_growth</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">total</span>, <span class="ruby-value">0</span>)
+  <span class="ruby-identifier">types</span>.<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">type_growth</span>[<span class="ruby-identifier">types</span>.<span class="ruby-identifier">index</span>(<span class="ruby-identifier">x</span>)] = <span class="ruby-value">1</span>; <span class="ruby-identifier">total_unique_types</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>; }
+  <span class="ruby-identifier">lemmas</span> = <span class="ruby-identifier">contents</span>[<span class="ruby-string">&#39;lemma&#39;</span>]
+  <span class="ruby-identifier">total_unique_lemmas</span> = <span class="ruby-value">0</span>
+  <span class="ruby-identifier">lemma_growth</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">total</span>, <span class="ruby-value">0</span>)
+  <span class="ruby-identifier">lemmas</span>.<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">lemma_growth</span>[<span class="ruby-identifier">lemmas</span>.<span class="ruby-identifier">index</span>(<span class="ruby-identifier">x</span>)] = <span class="ruby-value">1</span>; <span class="ruby-identifier">total_unique_lemmas</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>; }
+  <span class="ruby-identifier">t</span> = <span class="ruby-value">0</span>
+  <span class="ruby-identifier">l</span> = <span class="ruby-value">0</span>
+  (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">total</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>).<span class="ruby-identifier">to_a</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">t</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">type_growth</span>[<span class="ruby-identifier">i</span>]
+    <span class="ruby-identifier">l</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">lemma_growth</span>[<span class="ruby-identifier">i</span>]
+    <span class="ruby-identifier">vocab_growth</span>[<span class="ruby-string">&#39;types&#39;</span>] <span class="ruby-operator">&lt;&lt;</span> {
+      <span class="ruby-identifier">ggroup</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;types&#39;</span>,
+      <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">types</span>[<span class="ruby-identifier">i</span>],
+      <span class="ruby-identifier">x</span><span class="ruby-operator">:</span> <span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>,
+      <span class="ruby-identifier">x2</span><span class="ruby-operator">:</span> <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">helpers</span>.<span class="ruby-identifier">number_with_precision</span>(((<span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>).<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">total</span>) <span class="ruby-operator">*</span> <span class="ruby-value">100</span>, <span class="ruby-identifier">precision</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">separator</span><span class="ruby-operator">:</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-value">:&quot;other.keys.numeric_separator&quot;</span>)),
+      <span class="ruby-identifier">y</span><span class="ruby-operator">:</span> <span class="ruby-identifier">t</span>,
+      <span class="ruby-identifier">y2</span><span class="ruby-operator">:</span> <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">helpers</span>.<span class="ruby-identifier">number_with_precision</span>((<span class="ruby-identifier">t</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">total_unique_types</span>) <span class="ruby-operator">*</span> <span class="ruby-value">100</span>, <span class="ruby-identifier">precision</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">separator</span><span class="ruby-operator">:</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-value">:&quot;other.keys.numeric_separator&quot;</span>))
+    }
+    <span class="ruby-identifier">vocab_growth</span>[<span class="ruby-string">&#39;lemmas&#39;</span>] <span class="ruby-operator">&lt;&lt;</span> {
+      <span class="ruby-identifier">ggroup</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;lemmas&#39;</span>,
+      <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">lemmas</span>[<span class="ruby-identifier">i</span>],
+      <span class="ruby-identifier">x</span><span class="ruby-operator">:</span> <span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>,
+      <span class="ruby-identifier">x2</span><span class="ruby-operator">:</span> <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">helpers</span>.<span class="ruby-identifier">number_with_precision</span>(((<span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>).<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">total</span>) <span class="ruby-operator">*</span> <span class="ruby-value">100</span>, <span class="ruby-identifier">precision</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">separator</span><span class="ruby-operator">:</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-value">:&quot;other.keys.numeric_separator&quot;</span>)),
+      <span class="ruby-identifier">y</span><span class="ruby-operator">:</span> <span class="ruby-identifier">l</span>,
+      <span class="ruby-identifier">y2</span><span class="ruby-operator">:</span> <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">helpers</span>.<span class="ruby-identifier">number_with_precision</span>((<span class="ruby-identifier">l</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">total_unique_lemmas</span>) <span class="ruby-operator">*</span> <span class="ruby-value">100</span>, <span class="ruby-identifier">precision</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">separator</span><span class="ruby-operator">:</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-value">:&quot;other.keys.numeric_separator&quot;</span>))
+    }
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> { <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-value">:&quot;chart_labels.keys.growth_title&quot;</span>), <span class="ruby-identifier">labels</span><span class="ruby-operator">:</span> { <span class="ruby-identifier">unique</span><span class="ruby-operator">:</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-value">:&quot;other.keys.unique&quot;</span>).<span class="ruby-identifier">capitalize</span>, <span class="ruby-identifier">progress</span><span class="ruby-operator">:</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-value">:&quot;other.keys.progress&quot;</span>).<span class="ruby-identifier">capitalize</span> }, <span class="ruby-identifier">data</span><span class="ruby-operator">:</span> [{ <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-value">:&quot;data_labels.keys.word_type&quot;</span>).<span class="ruby-identifier">pluralize</span>, <span class="ruby-identifier">color</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;#A90C28&#39;</span>, <span class="ruby-identifier">data</span><span class="ruby-operator">:</span> <span class="ruby-identifier">vocab_growth</span>[<span class="ruby-string">&#39;types&#39;</span>] }, { <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-value">:&quot;data_labels.keys.lemma&quot;</span>).<span class="ruby-identifier">pluralize</span>, <span class="ruby-identifier">color</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;#53c4c3&#39;</span>, <span class="ruby-identifier">data</span><span class="ruby-operator">:</span> <span class="ruby-identifier">vocab_growth</span>[<span class="ruby-string">&#39;lemmas&#39;</span>] }] }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-metadata" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">metadata</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Retrieve the document metadata from the backend</p>
+          
+          
+
+          
+          <div class="method-source-code" id="metadata-source">
+            <pre><span class="ruby-comment"># File app/models/document.rb, line 112</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">metadata</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-constant">WhitelabBackend</span>.<span class="ruby-identifier">instance</span>.<span class="ruby-identifier">get_document_metadata</span>(<span class="ruby-identifier">xmlid</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-pos_distribution" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">pos_distribution</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Retrieve the distribution of PoS tags for a document</p>
+          
+          
+
+          
+          <div class="method-source-code" id="pos_distribution-source">
+            <pre><span class="ruby-comment"># File app/models/document.rb, line 117</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">pos_distribution</span>
+  <span class="ruby-keyword">return</span> { <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-value">:&quot;chart_labels.keys.pos_pie_title&quot;</span>), <span class="ruby-identifier">data</span><span class="ruby-operator">:</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_content</span>[<span class="ruby-string">&#39;pos&#39;</span>].<span class="ruby-identifier">group_by</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">pos</span><span class="ruby-operator">|</span> <span class="ruby-identifier">pos</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;(&#39;</span>)[<span class="ruby-value">0</span>] }.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_</span>,<span class="ruby-identifier">list</span><span class="ruby-operator">|</span> <span class="ruby-identifier">list</span>.<span class="ruby-identifier">size</span> }.<span class="ruby-identifier">sort_by</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_</span>, <span class="ruby-identifier">freq</span><span class="ruby-operator">|</span> <span class="ruby-identifier">freq</span> }.<span class="ruby-identifier">reverse</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">pos_head</span>,<span class="ruby-identifier">freq</span><span class="ruby-operator">|</span> { <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">pos_head</span>, <span class="ruby-identifier">y</span><span class="ruby-operator">:</span> <span class="ruby-identifier">freq</span>.<span class="ruby-identifier">size</span> } } }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-statistics" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">statistics</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Return simple document statistics</p>
+          
+          
+
+          
+          <div class="method-source-code" id="statistics-source">
+            <pre><span class="ruby-comment"># File app/models/document.rb, line 104</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">statistics</span>
+  <span class="ruby-identifier">contents</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_content</span>
+  <span class="ruby-identifier">total</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">token_count</span>
+  <span class="ruby-identifier">type_count</span> = <span class="ruby-identifier">contents</span>[<span class="ruby-string">&quot;word&quot;</span>].<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">count</span>
+  <span class="ruby-keyword">return</span> { <span class="ruby-string">&quot;token_count&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">total</span>, <span class="ruby-string">&quot;type_count&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">type_count</span>, <span class="ruby-string">&quot;type-token ratio&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">type_count</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">total</span>, <span class="ruby-string">&quot;lemma_count&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">contents</span>[<span class="ruby-string">&quot;lemma&quot;</span>].<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">count</span> }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-token_count" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">token_count</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Retrieve the token count of a document</p>
+          
+          
+
+          
+          <div class="method-source-code" id="token_count-source">
+            <pre><span class="ruby-comment"># File app/models/document.rb, line 164</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">token_count</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-constant">MetadataHandler</span>.<span class="ruby-identifier">instance</span>.<span class="ruby-identifier">get_document_token_count</span>(<span class="ruby-identifier">xmlid</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-xml_content" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">xml_content</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Retrieve the XML content of a document</p>
+          
+          
+
+          
+          <div class="method-source-code" id="xml_content-source">
+            <pre><span class="ruby-comment"># File app/models/document.rb, line 159</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">xml_content</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-constant">WhitelabBackend</span>.<span class="ruby-identifier">instance</span>.<span class="ruby-identifier">get_document_content</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">xmlid</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.3.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

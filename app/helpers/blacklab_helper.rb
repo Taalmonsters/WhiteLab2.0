@@ -1,18 +1,23 @@
-# BlackLab backend helper methods.
+# Backend helper specifically for BlackLab Server (http://inl.github.io/BlackLab/).
 module BlacklabHelper
   
   include BackendHelper
   include DataFormatHelper
 
+  # If gap values are enabled, the 'Import TSV' buttons in Expert Search and Explore N-grams are active.
+  # If gap values are disabled, the 'Import TSV' buttons show an alert explaining the functionality, but do not allow file upload.
+  # The functionality will likely become available in BlackLab version 1.6.0.
   def gap_values_enabled
     return self.version.gsub('.','').to_i > 150
   end
-  
+
+  # Get the base URL for a query based on the selected view
   def query_to_url(query)
     page = [1,8].include?(query.view) ? "hits" : "docs"
     return "#{backend_url}#{page}"
   end
-  
+
+  # Reformat the WhiteLab query parameters to match BlackLab parameters
   def reformat_query_attributes(query)
     attrs = { 'outputformat' => 'json' }
     query.as_json.select{|key,_| ['patt', 'filter', 'group', 'sort', 'offset', 'number', 'docpid', 'viewgroup', 'sample', 'samplenum', 'sampleseed', 'gap_values_tsv'].include?(key) }.each do |key, value|
@@ -30,7 +35,8 @@ module BlacklabHelper
     attrs["sort"] = "size" unless !attrs.has_key?("group") || attrs.has_key?("sort") || (attrs.has_key?("viewgroup") && query.view == 2)
     return attrs
   end
-  
+
+  # Combine the value of the within parameter with the query pattern
   def combine_patt_and_within(query)
     within = query.within
     patt = query.patt
@@ -38,7 +44,8 @@ module BlacklabHelper
     return "#{patt} within (<p/> | <event/>)" if within.eql?('paragraph')
     return "#{patt} within <s/>" if within.eql?('sentence')
   end
-  
+
+  # Finish query execution
   def finish_query(query, response)
     Rails.logger.debug "FINISHING QUERY"
     Rails.logger.debug query
@@ -53,7 +60,8 @@ module BlacklabHelper
     Rails.logger.debug "QUERY STATUS = #{status}"
     return output, status
   end
-  
+
+  # Reformat BlackLab Server output to match the format expected by WhiteLab
   def reformat_output(response, key, query)
     view = query.view
     return {
@@ -117,7 +125,8 @@ module BlacklabHelper
       }
     } if [8,16].include?(view)
   end
-  
+
+  # Return the backend identifier
   def db_type
     return 'blacklab'
   end
@@ -125,7 +134,8 @@ module BlacklabHelper
   # Get node containing total counts for all node labels in index, not implemented for BlackLab
   def get_counter_node
   end
-  
+
+  # Get the filename of the audio file for a specific document ID
   def get_document_audio_file(xmlid)
     data = get_document_metadata(xmlid)["Metadata"]
     if data.has_key?("AudioExportFormat")
@@ -135,7 +145,9 @@ module BlacklabHelper
     end
     return "Unknown"
   end
-  
+
+  # Retrieve the paginated content for a document ID. The query pattern is currently not sent to the backend, which effectively disables query highlighting.
+  # Currently, the only way to enable it is to retrieve the entire document. We have decided against that approach to save bandwidth.
   def get_document_content(xmlid, patt, offset, number)
     data = {
       "audio_file" => get_document_audio_file(xmlid),
@@ -160,7 +172,8 @@ module BlacklabHelper
     data["content"] = reformat_content(xmlid, sdata)
     return data
   end
-  
+
+  # Retrieve a paginated document list without a query
   def get_document_list(offset, number)
     return execute_query({
       :url => backend_url+'docs',
@@ -171,7 +184,8 @@ module BlacklabHelper
       }
     })
   end
-  
+
+  # Retrieve a filtered paginated document list without a query
   def get_filtered_document_list(filter, offset, number)
     return execute_query({
       :url => backend_url+'docs',
@@ -188,13 +202,15 @@ module BlacklabHelper
       }
     })
   end
-  
+
+  # Retrieve the entire XML contents of a document ID without a query
   def get_document_xml_content(xmlid)
     return execute_query({
       :url => "#{backend_url}docs/#{xmlid}"
     })
   end
-  
+
+  # Retrieve the entire list of documents for a specific corpus
   def get_corpus_document_list(corpus)
     docs = {}
     offset = 0
@@ -218,7 +234,8 @@ module BlacklabHelper
     end
     return docs
   end
-  
+
+  # Retrieve a filtered list of document IDs
   def get_document_id_list(filter)
     docs = []
     offset = 0
@@ -239,7 +256,8 @@ module BlacklabHelper
     end
     return docs
   end
-  
+
+  # Retrieve the metadata for a specific document ID
   def get_document_metadata(xmlid)
     data = execute_query({
       :url => backend_url+'docs/'+xmlid,
@@ -255,7 +273,8 @@ module BlacklabHelper
     end
     return metadata
   end
-  
+
+  # Get the sentence count for a specific document ID
   def get_document_sentence_count(xmlid)
     data = execute_query({
       :url => backend_url+'hits',
@@ -273,7 +292,8 @@ module BlacklabHelper
       return data["numberOfHits"]
     end
   end
-  
+
+  # Get all token indices marking sentence starts for a specific document ID
   def get_document_sentence_starts(xmlid, offset, number)
     return execute_query({
       :url => backend_url+'hits',
@@ -286,7 +306,8 @@ module BlacklabHelper
       }
     })
   end
-  
+
+  # Retrieve a content snippet for a specific document ID
   def get_document_snippet(xmlid, hitstart, hitend)
     return execute_query({
       :url => backend_url+'docs/'+xmlid+'/snippet',
@@ -298,7 +319,8 @@ module BlacklabHelper
       }
     })
   end
-  
+
+  # Retrieve simple statistics for a specific document ID
   def get_document_statistics(xmlid)
     token_count = MetadataHandler.instance.get_document_token_count(xmlid)
     contents = get_document_snippet(xmlid, 0, token_count)["match"]
@@ -311,7 +333,8 @@ module BlacklabHelper
       "lemma_count" => lemma_count
     }
   end
-  
+
+  # Retrieve the concatenated contents of a set of filtered documents (for vocabulary growth calculation)
   def get_filtered_content(query)
     contents = []
     get_filtered_document_list(query.filter).keys.each do |doc_id|
@@ -319,7 +342,8 @@ module BlacklabHelper
     end
     return contents
   end
-  
+
+  # Retrieve a keyword in context
   def get_kwic(docpid, first_index, last_index, size = 50)
     data = execute_query({
       :url => backend_url+'docs/'+docpid+'/snippet',
@@ -336,7 +360,8 @@ module BlacklabHelper
       "right_context" => data["right"]["word"].join(" ")
     }
   end
-  
+
+  # Retrieve a list of metadata fields from the backend
   def get_metadata_from_server(number, offset, sort, order)
     resp = execute_query({
       :url => backend_url,
@@ -365,7 +390,8 @@ module BlacklabHelper
     })
     return number == 0 ? resp["fieldValues"].keys : resp["fieldValues"].keys[offset..offset+number]
   end
-  
+
+  # Retrieve a list of PoS head tags and their frequencies from the backend
   def get_pos_heads_counted(number, offset, sort, order)
     data = ['ADJ', 'BW', 'LET', 'LID', 'N', 'SPEC', 'TW', 'TSW', 'VG', 'VNW', 'VZ', 'WW']
     ph = {
@@ -383,7 +409,8 @@ module BlacklabHelper
     ph["pos_heads"] = ph["pos_heads"].reverse if order.eql?("desc")
     return ph
   end
-  
+
+  # Retrieve the frequency of a specific PoS head tag from the backend
   def get_pos_head_counts(head)
     obj = {
       "label" => head,
@@ -408,17 +435,20 @@ module BlacklabHelper
     end
     return obj
   end
-  
+
+  # Get PoS tag by label
   def get_pos_tag_by_label(label)
     return reformat_pos_tag({ "label" => label })
   end
-  
+
+  # Get PoS tag feature by label
   def get_pos_tag_features_by_label(label)
     return label.split(/\(/)[1].sub(/\)^/,"").split(/,/).map do |feat|
       { "key" => "unknown", "value" => feat }
     end
   end
-  
+
+  # Get PoS tag type by label
   def get_pos_tag_types_by_label(number, offset, sort, order, label)
     pid = label.gsub(/\(/,'\(').gsub(/\)/,'\)').gsub(/\-/,'\-')
     patt = "[pos=\"#{pid}\"]"
@@ -437,7 +467,8 @@ module BlacklabHelper
       { "word_type" => hit["identityDisplay"], "token_count" => hit["size"]}
     end
   end
-  
+
+  # Get PoS tags
   def get_pos_tags(number, offset, sort, order)
     while true do
       resp = execute_query({
@@ -457,11 +488,12 @@ module BlacklabHelper
     return { 'total' => summary["numberOfGroups"], 'pos_tags' => resp["hitGroups"].map{|hit_group| reformat_pos_tag(hit_group) } }
   end
 
+  # Get human readable name of backend
   def name
     return "BlackLab Server"
   end
   
-  # Reformat BlackLab content output to same format as Neo4J
+  # Reformat BlackLab content output to match the format expected by WhiteLab
   def reformat_content(xmlid, data)
     token_index = 0
     reformat = []
@@ -471,7 +503,8 @@ module BlacklabHelper
     end
     return reformat
   end
-  
+
+  # Reformat BlackLab sentence content output to match the format expected by WhiteLab
   def reformat_sentence_content(xmlid, sentence, token_index)
     reformat = []
     sentence["word"].each_with_index do |word, index|
@@ -487,7 +520,8 @@ module BlacklabHelper
     end
     return reformat, token_index
   end
-  
+
+  # Reformat BlackLab word content output to match the format expected by WhiteLab
   def reformat_word_content(obj)
     token = { "word_type" => obj[:word], "token_index" => obj[:token_index] }
     ["lemma", "pos", "phonetic", "xmlid", "speaker", "begin_time", "end_time"].each do |field|
@@ -495,7 +529,8 @@ module BlacklabHelper
     end
     return token
   end
-  
+
+  # Reformat BlackLab field content output to match the format expected by WhiteLab
   def reformat_field_content(obj, field, token)
     sentence_field = obj[:sentence][field][obj[:index]]
     if field.eql?("pos")
@@ -527,7 +562,8 @@ module BlacklabHelper
     end
     return ''
   end
-  
+
+  # Reformat group to BlackLab format
   def reformat_group(group)
     if !group.blank?
       if group.start_with?('hit') || group.start_with?('word') || group.start_with?('context')
@@ -538,7 +574,8 @@ module BlacklabHelper
     end
     return ''
   end
-  
+
+  # Reformat phonetic to BlackLab format
   def reformat_phonetic(phonetic)
     has_phonetic = false
     
@@ -555,7 +592,8 @@ module BlacklabHelper
       return ""
     end
   end
-  
+
+  # Reformat PoS to BlackLab format
   def reformat_pos_tag(pos)
     obj = { "label" => pos.has_key?("label") ? pos["label"] : pos["identityDisplay"], "token_count" => 0 }
     MetadataHandler.instance.load_corpora.each do |corpus|
@@ -584,6 +622,7 @@ module BlacklabHelper
   def run_benchmark_test(cql,iterations)
   end
 
+  # Get the current version of the backend. This will be implemented in BlackLab Server 1.6.0.
   def version
     response = get_headers({ :url => backend_url }).parsed_response
     return response.has_key?("blacklabVersion") ? response["blacklabVersion"] : "1.5.0"

@@ -1,7 +1,8 @@
+# Controller for query related requests.
 class QueriesController < ApplicationController
   before_action :set_limits_and_queries, :only => [:history]
   
-  # Download Query export
+  # Download query result export
   def download
     respond_to do |format|
       format.csv { send_file @query.result_file, :disposition=>"attachment; filename='#{@query.generate_filename}.csv'" }
@@ -10,7 +11,8 @@ class QueriesController < ApplicationController
     end
   end
   
-  # Start Query export
+  # Start query export. If the selected output format is Javascript (.js), then the query results are exported and an alert is shown to the user.
+  # If the output format is XML (.xml), then the query definition is generated and immediately sent to the user for download.
   def export
     respond_to do |format|
       format.js do
@@ -25,7 +27,7 @@ class QueriesController < ApplicationController
     end
   end
   
-  # Show Query history
+  # Show query history
   def history
     respond_to do |format|
       format.js do
@@ -34,7 +36,7 @@ class QueriesController < ApplicationController
     end
   end
   
-  # Remove Query
+  # Remove query from the query history
   def remove
     if !@query.blank?
       @query_id = @query.id
@@ -47,7 +49,7 @@ class QueriesController < ApplicationController
     end
   end
   
-  # Show Query result
+  # Show query result
   def result
     respond_to do |format|
       format.js do
@@ -56,7 +58,7 @@ class QueriesController < ApplicationController
     end
   end
   
-  # Load Query result pagination
+  # Load query result pagination
   def result_pagination
     respond_to do |format|
       format.js do
@@ -66,7 +68,8 @@ class QueriesController < ApplicationController
   end
   
   protected
-  
+
+  # Set the limits for listing queries in the query history table
   def set_limits_and_queries
     @sl = params.has_key?(:sl) && !params[:sl].blank? ? params[:sl].to_i : 5
     @el = params.has_key?(:el) && !params[:el].blank? ? params[:el].to_i : 5

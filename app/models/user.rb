@@ -7,7 +7,8 @@ class User < ActiveRecord::Base
   def query_history(query_method, ql = 5)
     return self.send(query_method).order("updated_at DESC").limit(ql)
   end
-  
+
+  # Check whether the current user has executed any queries
   def has_queries?
     self.search_queries.any? || self.explore_queries.any?
   end

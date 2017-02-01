@@ -1,3 +1,4 @@
+# Queries controller for the Explore namespace. It defines methods that return the data for the charts on the Explore Corpora page and inherits from the application queries controller and the Explore controller concern.
 class Explore::QueriesController < QueriesController
   include WhitelabExplore
   before_action :set_option
@@ -56,7 +57,8 @@ class Explore::QueriesController < QueriesController
       end
     end
   end
-  
+
+  # Get selected option for chart
   def set_option
     @option = params[:option] || CORPUS_TITLE_FIELD
   end

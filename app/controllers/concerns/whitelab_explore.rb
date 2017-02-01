@@ -1,3 +1,4 @@
+# Global concern for controllers in the Explore namespace. Defines which methods are executed on each request.
 module WhitelabExplore
   extend ActiveSupport::Concern
 
@@ -16,7 +17,8 @@ module WhitelabExplore
     @document = Document.new({ :xmlid => params[:xmlid] }) if params.has_key?(:xmlid)
     @document = nil if @document && @document.token_count.blank?
   end
-  
+
+  # Set current group based on the current query or, if no query is selected, the GET parameters
   def set_grouping
     @group = @query && !@query.group.blank? ? @query.group : params[:group] || params[:listtype]
   end

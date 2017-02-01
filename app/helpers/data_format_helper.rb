@@ -13,7 +13,8 @@ module DataFormatHelper
     end
     prefix+suffix
   end
-  
+
+  # Convert group to correct value
   def group_to_label(group)
     if group.eql?('text')
       'word'
@@ -21,11 +22,13 @@ module DataFormatHelper
       group
     end
   end
-  
+
+  # Get translation key for a specific metadata group
   def group_translation_key(group)
     :"metadata_groups.keys.#{group}"
   end
-  
+
+  # Get translation key for a specific metadata key
   def key_translation_key(key)
     :"metadata_keys.keys.#{key}"
   end

@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>module WhitelabQuery - WhiteLab 2.0</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="DataFormatHelper.html">DataFormatHelper</a>
+  
+  
+  </ul>
+</div>
+
+    <div id="extends-section" class="nav-section">
+  <h3>Extended With Modules</h3>
+
+  <ul class="link-list">
+    
+  
+    <li><span class="extend">ActiveSupport::Concern</span>
+  
+  
+  </ul>
+</div>
+
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-find_from_params">::find_from_params</a>
+    
+    <li ><a href="#method-i-assemble_url_params">#assemble_url_params</a>
+    
+    <li ><a href="#method-i-attribute_is_changed-3F">#attribute_is_changed?</a>
+    
+    <li ><a href="#method-i-attributes_are_changed-3F">#attributes_are_changed?</a>
+    
+    <li ><a href="#method-i-columns">#columns</a>
+    
+    <li ><a href="#method-i-do_run">#do_run</a>
+    
+    <li ><a href="#method-i-execute">#execute</a>
+    
+    <li ><a href="#method-i-export">#export</a>
+    
+    <li ><a href="#method-i-page">#page</a>
+    
+    <li ><a href="#method-i-result">#result</a>
+    
+    <li ><a href="#method-i-run">#run</a>
+    
+    <li ><a href="#method-i-selected_group">#selected_group</a>
+    
+    <li ><a href="#method-i-total">#total</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-WhitelabQuery">
+  <h1 id="module-WhitelabQuery" class="module">
+    module WhitelabQuery
+  </h1>
+
+  <section class="description">
+    
+<p>Base module for WhiteLab queries</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-find_from_params" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find_from_params</span><span
+            class="method-args">(klass, page, user_id, params)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Find the current query using the incoming GET parameters</p>
+          
+          
+
+          
+          <div class="method-source-code" id="find_from_params-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/whitelab_query.rb, line 15</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">find_from_params</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">page</span>, <span class="ruby-identifier">user_id</span>, <span class="ruby-identifier">params</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-value">:patt</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-value">:filter</span>)
+    <span class="ruby-identifier">options</span> = <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">klass</span>.<span class="ruby-identifier">where_data</span>(<span class="ruby-identifier">user_id</span>, <span class="ruby-identifier">page</span>, <span class="ruby-identifier">params</span>))
+    <span class="ruby-identifier">options_without_exports</span> = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span>.<span class="ruby-identifier">not_exported?</span> }
+    <span class="ruby-identifier">query</span> = <span class="ruby-identifier">options_without_exports</span>.<span class="ruby-identifier">first</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">options_without_exports</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+    <span class="ruby-identifier">query</span> = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">first</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">options</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">query</span>
+    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">query</span>
+      [<span class="ruby-value">:view</span>, <span class="ruby-value">:group</span>, <span class="ruby-value">:input_page</span>, <span class="ruby-value">:viewgroup</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">param</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-identifier">param</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">params</span>[<span class="ruby-identifier">param</span>].<span class="ruby-identifier">blank?</span>
+          <span class="ruby-identifier">filtered_options</span> = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">where</span>({<span class="ruby-identifier">param</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">param</span>]})
+          <span class="ruby-identifier">options</span> = <span class="ruby-identifier">filtered_options</span>.<span class="ruby-identifier">any?</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">filtered_options</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">options</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">query</span> = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">first</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">query</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">query</span> = <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">klass</span>.<span class="ruby-identifier">create_hash</span>(<span class="ruby-identifier">user_id</span>, <span class="ruby-identifier">page</span>, <span class="ruby-identifier">params</span>))
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">query</span> = <span class="ruby-identifier">query</span>.<span class="ruby-identifier">update_from_params</span>(<span class="ruby-identifier">params</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">query</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-assemble_url_params" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">assemble_url_params</span><span
+            class="method-args">(only, translations = {})</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Create URL parameter string for query with selected properties</p>
+          
+          
+
+          
+          <div class="method-source-code" id="assemble_url_params-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/whitelab_query.rb, line 133</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">assemble_url_params</span>(<span class="ruby-identifier">only</span>, <span class="ruby-identifier">translations</span> = {})
+  <span class="ruby-identifier">prms</span> = []
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">only</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">name</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">value</span>.<span class="ruby-identifier">blank?</span>
+      <span class="ruby-identifier">name</span> = <span class="ruby-identifier">translations</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">name</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">translations</span>[<span class="ruby-identifier">name</span>] <span class="ruby-operator">:</span> <span class="ruby-identifier">name</span>
+      <span class="ruby-identifier">value</span> = <span class="ruby-identifier">translations</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-node">&quot;#{name}_value&quot;</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">translations</span>[<span class="ruby-node">&quot;#{name}_value&quot;</span>] <span class="ruby-operator">:</span> <span class="ruby-identifier">value</span>
+      <span class="ruby-identifier">prms</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{name}=#{URI.escape(value.to_s, Regexp.new(&quot;[^#{URI::PATTERN::UNRESERVED}]&quot;))}&quot;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">prms</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;&amp;&#39;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-attribute_is_changed-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">attribute_is_changed?</span><span
+            class="method-args">(attr,param)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Check if a specific attribute&#39;s value in the GET parameters differs
+from the value on the query</p>
+          
+          
+
+          
+          <div class="method-source-code" id="attribute_is_changed-3F-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/whitelab_query.rb, line 146</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">attribute_is_changed?</span>(<span class="ruby-identifier">attr</span>,<span class="ruby-identifier">param</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">param</span>.<span class="ruby-identifier">blank?</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">attr</span>.<span class="ruby-identifier">blank?</span> <span class="ruby-operator">||</span> <span class="ruby-operator">!</span><span class="ruby-identifier">param</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-identifier">attr</span>.<span class="ruby-identifier">to_s</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-attributes_are_changed-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">attributes_are_changed?</span><span
+            class="method-args">(params)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Check if any values in the GET parameters differ from the values on the
+query</p>
+          
+          
+
+          
+          <div class="method-source-code" id="attributes_are_changed-3F-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/whitelab_query.rb, line 152</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">attributes_are_changed?</span>(<span class="ruby-identifier">params</span>)
+  <span class="ruby-identifier">changed</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-identifier">params</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">param_key</span>, <span class="ruby-identifier">param_value</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">changed</span> = <span class="ruby-identifier">attribute_is_changed?</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">param_key</span>.<span class="ruby-identifier">to_s</span>),<span class="ruby-identifier">param_value</span>)
+    <span class="ruby-keyword">break</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">changed</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">changed</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-columns" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">columns</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Count the number of columns in a query pattern</p>
+          
+          
+
+          
+          <div class="method-source-code" id="columns-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/whitelab_query.rb, line 162</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">columns</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">patt</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">/\]\[/</span>).<span class="ruby-identifier">count</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-do_run" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">do_run</span><span
+            class="method-args">(max_count = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Execute a run of the query on the backend</p>
+          
+          
+
+          
+          <div class="method-source-code" id="do_run-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/whitelab_query.rb, line 167</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">do_run</span>(<span class="ruby-identifier">max_count</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">res</span>, <span class="ruby-identifier">backend_status</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">run</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">output</span> = <span class="ruby-identifier">res</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">counting!</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">backend_status</span> <span class="ruby-operator">==</span> <span class="ruby-value">2</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">finished!</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">backend_status</span> <span class="ruby-operator">==</span> <span class="ruby-value">3</span> <span class="ruby-operator">||</span> (<span class="ruby-identifier">max_count</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">res</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-string">&#39;hit_count&#39;</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">res</span>[<span class="ruby-string">&#39;hit_count&#39;</span>] <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">max_count</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">failed!</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">backend_status</span> <span class="ruby-operator">==</span> <span class="ruby-value">4</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">failed?</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">hit_count</span> = <span class="ruby-identifier">res</span>[<span class="ruby-string">&#39;hit_count&#39;</span>]
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">document_count</span> = <span class="ruby-identifier">res</span>[<span class="ruby-string">&#39;document_count&#39;</span>]
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">group_count</span> = <span class="ruby-identifier">res</span>[<span class="ruby-string">&#39;group_count&#39;</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">res</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-string">&#39;group_count&#39;</span>)
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">sampleseed</span> = <span class="ruby-identifier">res</span>[<span class="ruby-string">&#39;sampleseed&#39;</span>] <span class="ruby-keyword">unless</span> <span class="ruby-identifier">res</span>[<span class="ruby-string">&#39;sampleseed&#39;</span>].<span class="ruby-identifier">blank?</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">save</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-execute" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">execute</span><span
+            class="method-args">(threaded = true, max_count = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Execute a query, either in this thread or in a separate thread</p>
+          
+          
+
+          
+          <div class="method-source-code" id="execute-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/whitelab_query.rb, line 183</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">execute</span>(<span class="ruby-identifier">threaded</span> = <span class="ruby-keyword">true</span>, <span class="ruby-identifier">max_count</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">running!</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-keyword">self</span>.<span class="ruby-identifier">patt</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> ([<span class="ruby-value">1</span>,<span class="ruby-value">2</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">view</span>) <span class="ruby-operator">||</span> <span class="ruby-operator">!</span><span class="ruby-keyword">self</span>.<span class="ruby-identifier">group</span>.<span class="ruby-identifier">blank?</span>)
+    <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">&quot;EXECUTING QUERY&quot;</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">threaded</span>
+      <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">do_run</span>(<span class="ruby-identifier">max_count</span>)
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">do_run</span>(<span class="ruby-identifier">max_count</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">&quot;NOT EXECUTING QUERY&quot;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-export" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">export</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Execute an export of the query results</p>
+          
+          
+
+          
+          <div class="method-source-code" id="export-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/whitelab_query.rb, line 200</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">export</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">failed?</span> <span class="ruby-operator">||</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">exporting?</span>
+    <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span>(<span class="ruby-node">&quot;NOT EXPORTING WL QUERY. STATUS: #{self.status}&quot;</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span>(<span class="ruby-string">&quot;EXPORTING WL QUERY&quot;</span>)
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">exporting!</span>
+    <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">do</span>
+      <span class="ruby-identifier">n_start</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">number</span>
+      <span class="ruby-identifier">o_start</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">offset</span>
+      <span class="ruby-identifier">status_start</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">status</span>
+      <span class="ruby-identifier">max</span> = [<span class="ruby-constant">EXPORT_LIMIT</span>,<span class="ruby-keyword">self</span>.<span class="ruby-identifier">total</span>].<span class="ruby-identifier">min</span>
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">number</span> = <span class="ruby-value">1000</span>
+      <span class="ruby-identifier">o</span> = <span class="ruby-value">0</span>
+      <span class="ruby-identifier">csv_file</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">result_file</span>
+      <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mkpath</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-identifier">csv_file</span>))
+      <span class="ruby-constant">File</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">csv_file</span>) <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-identifier">csv_file</span>)
+      <span class="ruby-identifier">tsv_file</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">result_file</span>(<span class="ruby-keyword">true</span>)
+      <span class="ruby-constant">File</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">tsv_file</span>) <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-identifier">tsv_file</span>)
+      <span class="ruby-keyword">while</span> <span class="ruby-identifier">o</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">max</span>
+        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">offset</span> = <span class="ruby-identifier">o</span>
+        <span class="ruby-identifier">res</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">result</span>(<span class="ruby-keyword">false</span>)
+        <span class="ruby-identifier">header_keys</span> = <span class="ruby-identifier">res</span>[<span class="ruby-string">&#39;results&#39;</span>].<span class="ruby-identifier">first</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span> <span class="ruby-operator">!</span><span class="ruby-identifier">key</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-string">&quot;metadata&quot;</span>)}
+        <span class="ruby-constant">CSV</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">csv_file</span>, <span class="ruby-string">&quot;a&quot;</span>, <span class="ruby-identifier">force_quotes</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">csv</span><span class="ruby-operator">|</span>
+          <span class="ruby-identifier">csv</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">header_keys</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">o</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+          <span class="ruby-identifier">res</span>[<span class="ruby-string">&#39;results&#39;</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">hash</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">csv</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">header_keys</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span> <span class="ruby-identifier">hash</span>[<span class="ruby-identifier">key</span>]}
+          <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">tsv_file</span>, <span class="ruby-string">&quot;a&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tsv</span><span class="ruby-operator">|</span>
+          <span class="ruby-identifier">tsv</span>.<span class="ruby-identifier">write</span> <span class="ruby-identifier">header_keys</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;\t&quot;</span>)<span class="ruby-operator">+</span><span class="ruby-string">&quot;\n&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">o</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+          <span class="ruby-identifier">res</span>[<span class="ruby-string">&#39;results&#39;</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">hash</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">tsv</span>.<span class="ruby-identifier">write</span> <span class="ruby-identifier">header_keys</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span> <span class="ruby-identifier">hash</span>[<span class="ruby-identifier">key</span>]}.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;\t&quot;</span>)<span class="ruby-operator">+</span><span class="ruby-string">&quot;\n&quot;</span>
+          <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">o</span> <span class="ruby-operator">+=</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">number</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">number</span> = <span class="ruby-identifier">n_start</span>
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">offset</span> = <span class="ruby-identifier">o_start</span>
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">finished!</span>
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">exported!</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-page" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">page</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Return the specific interface page to display the query on</p>
+          
+          
+
+          
+          <div class="method-source-code" id="page-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/whitelab_query.rb, line 245</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">page</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">input_page</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-result" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">result</span><span
+            class="method-args">(threaded = true)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Get the query result, either from the output attribute or from the backend</p>
+          
+          
+
+          
+          <div class="method-source-code" id="result-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/whitelab_query.rb, line 250</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">result</span>(<span class="ruby-identifier">threaded</span> = <span class="ruby-keyword">true</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">output</span> <span class="ruby-keyword">if</span> (<span class="ruby-keyword">self</span>.<span class="ruby-identifier">finished?</span> <span class="ruby-operator">||</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">counting?</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">output</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-keyword">self</span>.<span class="ruby-identifier">output</span>.<span class="ruby-identifier">blank?</span>
+  <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">&quot;GET QUERY RESULT&quot;</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-identifier">threaded</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">output</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-run" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">run</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Run query</p>
+          
+          
+
+          
+          <div class="method-source-code" id="run-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/whitelab_query.rb, line 258</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">run</span>
+  <span class="ruby-identifier">backend</span> = <span class="ruby-constant">WhitelabBackend</span>.<span class="ruby-identifier">instance</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">backend</span>.<span class="ruby-identifier">search</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">backend</span>.<span class="ruby-identifier">query_to_url</span>(<span class="ruby-keyword">self</span>))
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-selected_group" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">selected_group</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Return the selected viewgroup of a query</p>
+          
+          
+
+          
+          <div class="method-source-code" id="selected_group-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/whitelab_query.rb, line 264</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">selected_group</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">group</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">group</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^(hit|word|context)/</span>
+  <span class="ruby-identifier">position</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">rest</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">group</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;:&#39;</span>,<span class="ruby-value">3</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">position</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-string">&#39;context&#39;</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">position</span> <span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{position}:#{type}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-total" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">total</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Return the query total based on the selected view</p>
+          
+          
+
+          
+          <div class="method-source-code" id="total-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/whitelab_query.rb, line 271</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">total</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">view</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">hit_count</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">hit_count</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">view</span> <span class="ruby-operator">==</span> <span class="ruby-value">2</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">document_count</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">document_count</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">group_count</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">group_count</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-value">0</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.3.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+
