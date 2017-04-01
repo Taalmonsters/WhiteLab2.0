@@ -8,7 +8,7 @@ module BlacklabHelper
   # If gap values are disabled, the 'Import TSV' buttons show an alert explaining the functionality, but do not allow file upload.
   # The functionality will likely become available in BlackLab version 1.6.0.
   def gap_values_enabled
-    return self.version.gsub('.','').to_i > 150
+    return self.version.gsub('.','').gsub('-SNAPSHOT','').to_i > 150
   end
 
   # Get the base URL for a query based on the selected view
@@ -25,6 +25,8 @@ module BlacklabHelper
         if ['filter', 'group'].include?(key)
           attrs[key] = reformat_filters(value) if key.eql?('filter')
           attrs[key] = reformat_group(value) if key.eql?('group') && ([8,16].include?(query.view) || !query.viewgroup.blank?)
+        elsif key.eql?('gap_values_tsv')
+          attrs['pattgapdata'] = value
         else
           key = 'first' if key.eql?('offset')
           value = combine_patt_and_within(query) if key.eql?('patt')
@@ -624,8 +626,9 @@ module BlacklabHelper
 
   # Get the current version of the backend. This will be implemented in BlackLab Server 1.6.0.
   def version
-    response = get_headers({ :url => backend_url }).parsed_response
-    return response.has_key?("blacklabVersion") ? response["blacklabVersion"] : "1.5.0"
+    response = get_headers({ :url => backend_url.sub(/\/[a-zA-Z0-9_]+\/*$/,'') }).parsed_response
+    puts response
+    return response["blacklabResponse"].has_key?("blacklabVersion") ? response["blacklabResponse"]["blacklabVersion"] : "1.5.0"
   end
   
 end

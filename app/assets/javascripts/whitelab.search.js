@@ -338,9 +338,9 @@ Whitelab.search = {
                 e.preventDefault();
                 alert("Sorry! This functionality has yet to be implemented on the backend. Once it has, you will be able to "+
                 "use this button to upload a TSV file with terms to complete a query with marked gaps. For instance, given a query:\n\n"+
-                "[lemma=~][pos=\"LID.*\"][lemma=~]\n\n"+
+                "[lemma=\"@@\"][pos=\"LID.*\"][lemma=\"@@\"]\n\n"+
                 "you would supply a list with two tab-separated columns of terms, where the terms in the first column will be "+
-                "entered at the position of the first gap (~) and the words in the second column at the position of the second gap. "+
+                "entered at the position of the first gap (@@) and the words in the second column at the position of the second gap. "+
                 "This mimics the batch functionality of the Extended and Advanced interfaces.");
                 e.stopPropagation();
 		    }
