@@ -627,7 +627,6 @@ module BlacklabHelper
   # Get the current version of the backend. This will be implemented in BlackLab Server 1.6.0.
   def version
     response = get_headers({ :url => backend_url.sub(/\/[a-zA-Z0-9_]+\/*$/,'') }).parsed_response
-    puts response
     return response["blacklabResponse"].has_key?("blacklabVersion") ? response["blacklabResponse"]["blacklabVersion"] : "1.5.0"
   end
   
