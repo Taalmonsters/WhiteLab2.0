@@ -506,7 +506,8 @@ Whitelab.search = {
 			group = group.replace(/;/g, '%3B');
 			var page = $("#result-pane").data('query-page');
 			var params = Whitelab.assembleQueryParams({
-				'patt': $("#result-pane").data('query-patt'), 
+				'patt': $("#result-pane").data('query-patt'),
+				'gap_values_tsv': $('#gap_values_tsv').length > 0 ? $('#gap_values_tsv').val() : null,
 				'filter': $("#result-pane").data('query-filter'), 
 				'within': $("#result-pane").data('query-within'), 
 				'view': $("#result-pane").data('query-view')+"",
@@ -517,6 +518,10 @@ Whitelab.search = {
 				'offset': "0", 
 				'number': "50"
 			});
+			if ($('#gap_values_tsv').length > 0) {
+			    console.log('gaps');
+			    params['gap_values_tsv'] = $('#gap_values_tsv').val();
+			}
 			Whitelab.debug(params);
 			window.location = '/search/'+page+'?'+params+'#results';
 		}

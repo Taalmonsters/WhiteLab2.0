@@ -41,7 +41,7 @@ var Whitelab = {
 		Whitelab.debug("assembleQueryParams");
 		Whitelab.debug(data);
 		var params = [];
-		var keys = ['patt', 'filter', 'within', 'view', 'group', 'offset', 'number', 'sample', 'samplenum', 'sampleseed'];
+		var keys = ['patt', 'gap_values_tsv', 'filter', 'within', 'view', 'group', 'offset', 'number', 'sample', 'samplenum', 'sampleseed'];
 		for (var k = 0; k < keys.length; k++) {
 			if (keys[k] in data && data[keys[k]] != null && data[keys[k]].length > 0) {
 				params.push(keys[k]+'='+encodeURIComponent(data[keys[k]]));
