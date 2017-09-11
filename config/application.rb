@@ -55,3 +55,4 @@ end
 ::FILTER_TOKEN_SAFE_LIMIT = 500000
 ::CORPUS_TITLE_FIELD = 'Corpus_title'
 ::COLLECTION_TITLE_FIELD = 'Collection_title'
+#::BASE_HREF = 'opensonar_whitelab/' # Will be used in the <base href=""> tag in the head section

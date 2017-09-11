@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
+		<% if BASE_HREF %><base href="<%= BASE_HREF %>"><% end %>
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<% if yield(:title).length > 0 %>
 		<title><%= t(:'application.keys.page_title') %> - <%= yield(:title) %></title>
