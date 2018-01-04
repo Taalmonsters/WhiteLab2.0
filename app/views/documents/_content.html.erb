@@ -10,7 +10,7 @@
 	</div>
 	<% if !content['audio_file'].blank? && !content['audio_file'].eql?('Unknown') && has_audio %>
 		<div class="padding-bottom-20">
-			<a href="#" class="playsound btn btn-xs btn-info" data-audio-url="/<%= @namespace %>/document/<%= xmlid %>/audio?format=mp3" data-audio-id="<%= xmlid %>" data-begin-time="<%= !content['begin_time'].blank? ? content['begin_time'] : '' %>" data-end-time="<%= !content['end_time'].blank? ? content['end_time'] : '' %>">
+			<a href="#" class="playsound btn btn-xs btn-info" data-audio-url="<%= BASE_PATH %>/<%= @namespace %>/document/<%= xmlid %>/audio?format=mp3" data-audio-id="<%= xmlid %>" data-begin-time="<%= !content['begin_time'].blank? ? content['begin_time'] : '' %>" data-end-time="<%= !content['end_time'].blank? ? content['end_time'] : '' %>">
 				<span class="glyphicon glyphicon-play"></span> Play sound
 			</a>
 		</div>
@@ -21,7 +21,7 @@
 			<% paragraph['sentences'].each do |s,sentence| %>
 				<div class="sentence">
 					<% if has_audio && sentence.has_key?('begin_time') && sentence.has_key?('end_time') && !sentence['begin_time'].blank? && !sentence['end_time'].blank? && !content['audio_file'].eql?('Unknown') %>
-						<a href="#" class="playsound btn btn-xs btn-info" data-audio-url="/<%= @namespace %>/document/<%= xmlid %>/audio?format=mp3" data-audio-id="<%= xmlid %>" data-begin-time="<%= sentence['begin_time'] %>" data-end-time="<%= sentence['end_time'] %>">
+						<a href="#" class="playsound btn btn-xs btn-info" data-audio-url="<%= BASE_PATH %>/<%= @namespace %>/document/<%= xmlid %>/audio?format=mp3" data-audio-id="<%= xmlid %>" data-begin-time="<%= sentence['begin_time'] %>" data-end-time="<%= sentence['end_time'] %>">
 							<span class="glyphicon glyphicon-play"></span>
 						</a>
 					<% end %>

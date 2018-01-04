@@ -1,3 +1,12 @@
+// JN 2017-10-31
+// Scripts use this to get the base URL.
+// This is a quick fix without knowing the ins and outs of Rails.
+// There is almost certainly a better, more 'Railsy' way to
+// achieve this.
+// NOTE: config/application.rb also contains a copy of this value,
+//       and the vhost file refers to it as well for Passenger.
+var BASE_PATH = '/opensonar_whitelab';
+
 var Whitelab = {
 	namespace : 'search',
 	doDebug : false,
@@ -138,7 +147,7 @@ var Whitelab = {
 	    var qid = $("#result-pane").data("query-id");
         var o = $("#"+group_id).data("offset");
 		group_value = encodeURIComponent(group_value.replace(/\./g,'\\.'));
-        $.getScript('/'+$("#main-div").data("namespace")+'/result/id/'+qid+'/group'+type+'.js?group_id='+group_id+'&'+type+'_group='+group_value+'&offset='+o+'&number=20');
+        $.getScript(BASE_PATH + '/'+$("#main-div").data("namespace")+'/result/id/'+qid+'/group'+type+'.js?group_id='+group_id+'&'+type+'_group='+group_value+'&offset='+o+'&number=20');
 	},
 	
 	readFile : function(f, callback) {
@@ -194,7 +203,7 @@ var Whitelab = {
 	    var sampleseed = $("#query-details").find("td.sampleseed").first().html();
         if (typeof sampleseed === 'undefined')
             sampleseed = '';
-        window.location = "/search/expert?view="+view+"&patt="+patt+"&within="+within+"&filter="+filter+"&group="+group+"&viewgroup="+group_value+"&sample="+sample+"&samplenum="+samplenum+"&sampleseed="+sampleseed+"#results";
+        window.location = BASE_PATH + "/search/expert?view="+view+"&patt="+patt+"&within="+within+"&filter="+filter+"&group="+group+"&viewgroup="+group_value+"&sample="+sample+"&samplenum="+samplenum+"&sampleseed="+sampleseed+"#results";
 	},
 	
 	sleep : function(ms) {
@@ -231,7 +240,7 @@ var Whitelab = {
 				e.preventDefault();
 				e.stopPropagation();
 				Whitelab.help.dialog.dialog( "open" );
-				$.getScript('/help');
+				$.getScript(BASE_PATH + '/help');
 			});
 			
 		}
@@ -265,9 +274,9 @@ var Whitelab = {
 			var ns = $("#main-div").data("namespace");
 			var id = $('#query-list').find("table."+ns+"-query-table").first().data("current-query-id");
 			if (id != null && id.length > 0)
-				$.getScript('/'+ns+'/history/id/'+id+'.js?sl='+sl+'&el='+el);
+				$.getScript(BASE_PATH + '/'+ns+'/history/id/'+id+'.js?sl='+sl+'&el='+el);
 			else
-				$.getScript('/'+ns+'/history.js?sl='+sl+'&el='+el);
+				$.getScript(BASE_PATH + '/'+ns+'/history.js?sl='+sl+'&el='+el);
 		}
 		
 	}
@@ -430,7 +439,7 @@ $(document).on('click', 'a.export', function(e) {
 	e.stopPropagation();
 	var ns = $(this).data("namespace");
 	var queryId = $(this).data("query-id");
-	$.getScript('/'+ns+'/export/id/'+queryId+'.js');
+	$.getScript(BASE_PATH + '/'+ns+'/export/id/'+queryId+'.js');
 });
 
 $(document).on('click', '#load-more-search-queries', function(e) {

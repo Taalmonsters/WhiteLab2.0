@@ -26,9 +26,9 @@ Whitelab.metadata = {
 			i++;
 		}
 		if (group && key && operator && value)
-			$.getScript('/metadata/rule/new.js?rule_id='+i+'&group='+group+'&key='+key+'&operator='+operator+'&value='+value);
+			$.getScript(BASE_PATH + '/metadata/rule/new.js?rule_id='+i+'&group='+group+'&key='+key+'&operator='+operator+'&value='+value);
 		else
-			$.getScript('/metadata/rule/new.js?rule_id='+i);
+			$.getScript(BASE_PATH + '/metadata/rule/new.js?rule_id='+i);
 	},
 	
 	getFilterString : function() {
@@ -75,7 +75,7 @@ Whitelab.metadata = {
 		if (filterString.length > 0) {
 			$('span.metadata-selected-percentage').html('<div class="tiny-loading-icon"></div>');
 			$('span.metadata-selected-absolute').html('<div class="tiny-loading-icon"></div>');
-			$.getScript('/metadata/coverage.js?filter='+filterString);
+			$.getScript(BASE_PATH + '/metadata/coverage.js?filter='+filterString);
 		} else {
 			$('span.metadata-selected-percentage').html('100.0 %');
 			$('span.metadata-selected-absolute').html($('#metadata-filters').data('total-tokens-delimited'));
@@ -120,7 +120,7 @@ $(document).on('change', '.metadata-key-select', function(e) {
 	var key = $(this).val().replace(group+'_','');
 	var rule_id = $(this).parent().parent().attr('id');
 	if (group.length > 0 && key.length > 0 && rule_id.length > 0)
-		$.getScript('/metadata/'+group+'/'+key+'/values.js?rule_id='+rule_id);
+		$.getScript(BASE_PATH + '/metadata/'+group+'/'+key+'/values.js?rule_id='+rule_id);
 	else {
 		$(this).parent().parent().find('select.metadata-input').first().replaceWith('<input class="metadata-input" type="text">');
 		Whitelab.metadata.updateCoverage();

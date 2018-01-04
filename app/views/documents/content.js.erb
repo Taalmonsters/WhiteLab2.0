@@ -1,3 +1,3 @@
 <% content = @document.content(@offset, @number) %>
 $('#document-display div.tab-content').html('<%= escape_javascript(raw render partial: "/documents/content", layout: false, locals: { xmlid: @document.xmlid, content: content }) %>');
-$('#document-content div.pagination').html('<%= escape_javascript(raw render partial: "/layouts/pagination_min", layout: false, locals: { url: '/documents/content.js', total: content['total_sentence_count'], offset: @offset, number: @number }) %>');
+$('#document-content div.pagination').html('<%= escape_javascript(raw render partial: "/layouts/pagination_min", layout: false, locals: { url: '<%= BASE_PATH %>/documents/content.js', total: content['total_sentence_count'], offset: @offset, number: @number }) %>');

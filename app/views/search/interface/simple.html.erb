@@ -5,7 +5,7 @@
 			<%= text_field_tag :patt, nil, placeholder: t(:'instructions.keys.search_for_word'), class: 'full-width-minus-siblings form-control' %>
 			<div class="btn-group" role="group">
 				<button type="button" class="btn btn-primary btn-submit"><%= t('button_labels.keys.search').capitalize %></button>
-				<button type="button" class="btn btn-default btn-reset" data-url="/search/simple"><%= t('button_labels.keys.reset').capitalize %></button>
+				<button type="button" class="btn btn-default btn-reset" data-url="<%= BASE_PATH %>/search/simple"><%= t('button_labels.keys.reset').capitalize %></button>
 			</div>
 		</div>
 	</div>

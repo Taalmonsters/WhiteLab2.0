@@ -10,7 +10,7 @@
 			</div>
 			<div class="full-width text-right padding-top-15" style="position: relative;">
 				<button type="button" class="btn btn-primary btn-submit"><%= t('button_labels.keys.search').capitalize %></button>
-				<button type="button" class="btn btn-default btn-reset" data-url="/search/expert"><%= t('button_labels.keys.reset').capitalize %></button>
+				<button type="button" class="btn btn-default btn-reset" data-url="<%= BASE_PATH %>/search/expert"><%= t('button_labels.keys.reset').capitalize %></button>
 				<input class="loadxml" type="file" onchange="Whitelab.search.expert.importXMLQuery(event,this);">
 				<button type="button" class="btn btn-info btn-import btn-import-xml"><%= t('button_labels.keys.import').capitalize %> XML</button>
 				<% gap_values_enabled = @whitelab.gap_values_enabled %>

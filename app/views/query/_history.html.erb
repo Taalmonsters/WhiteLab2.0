@@ -21,7 +21,7 @@
 				</thead>
 				<tbody>
 					<% @search_queries.each do |query| %>
-						<tr id="<%= query.id %>" class="clickable" data-url="<%= "/search/#{query.page}?#{query.assemble_url_params(['id', 'patt', 'filter', 'within', 'view', 'group', 'sort', 'viewgroup', 'sample', 'samplenum', 'sampleseed', 'page', 'number', 'offset', 'gap_values_tsv'])}" %>" data-namespace="search" data-query-id="<%= query.id %>">
+						<tr id="<%= query.id %>" class="clickable" data-url="<%= BASE_PATH + "/search/#{query.page}?#{query.assemble_url_params(['id', 'patt', 'filter', 'within', 'view', 'group', 'sort', 'viewgroup', 'sample', 'samplenum', 'sampleseed', 'page', 'number', 'offset', 'gap_values_tsv'])}" %>" data-namespace="search" data-query-id="<%= query.id %>">
 							<td class="patt" data-patt="<%= query.patt %>"><%= query.patt %></td>
                             <td class="gap_values_tsv"><%= query.gap_values_tsv.blank? ? '-' : '<span class="glyphicon glyphicon-ok"></span>'.html_safe %></td>
                             <td class="within" data-within="<%= query.within %>"><%= query.within %></td>
@@ -40,8 +40,8 @@
                                     <% elsif query.exporting? %>
                                         <img src="<%= image_url('spinner.gif') %>" />
                                     <% elsif query.exported? %>
-                                        <a class="btn btn-xs btn-info download" data-format="csv" href="/search/download/id/<%= query.id %>.csv" style="z-index:2000;">CSV</a>
-                                        <a class="btn btn-xs btn-info download" data-format="tsv" href="/search/download/id/<%= query.id %>.tsv" style="z-index:2000;">TSV</a>
+                                        <a class="btn btn-xs btn-info download" data-format="csv" href="<%= BASE_PATH %>/search/download/id/<%= query.id %>.csv" style="z-index:2000;">CSV</a>
+                                        <a class="btn btn-xs btn-info download" data-format="tsv" href="<%= BASE_PATH %>/search/download/id/<%= query.id %>.tsv" style="z-index:2000;">TSV</a>
                                     <% end %>
 								<% end %>
 							</td>
@@ -75,7 +75,7 @@
 			</thead>
 			<tbody>
 				<% @explore_queries.each do |query| %>
-					<tr id="<%= query.id %>" class="clickable" data-url="<%= "/explore/#{query.page}?#{query.assemble_url_params(['id', 'patt', 'filter', 'within', 'view', 'group', 'sort', 'sample', 'samplenum', 'sampleseed', 'page', 'number', 'offset', 'listtype', 'gap_values_tsv'])}" %>" data-namespace="explore" data-query-id="<%= query.id %>">
+					<tr id="<%= query.id %>" class="clickable" data-url="<%= BASE_PATH + "/explore/#{query.page}?#{query.assemble_url_params(['id', 'patt', 'filter', 'within', 'view', 'group', 'sort', 'sample', 'samplenum', 'sampleseed', 'page', 'number', 'offset', 'listtype', 'gap_values_tsv'])}" %>" data-namespace="explore" data-query-id="<%= query.id %>">
 						<td class="patt" data-patt="<%= query.patt %>"><%= query.patt %></td>
                         <td class="gap_values_tsv"><%= query.gap_values_tsv.blank? ? '-' : '<span class="glyphicon glyphicon-ok"></span>'.html_safe %></td>
 						<td class="page" data-page="<%= query.page %>"><%= query.page %></td>
@@ -93,8 +93,8 @@
                                 <% elsif query.exporting? %>
                                     <img src="<%= image_url('spinner.gif') %>" />
                                 <% elsif query.exported? %>
-                                    <a class="btn btn-xs btn-info download" data-format="csv" href="/explore/download/id/<%= query.id %>.csv" style="z-index:2000;">CSV</a>
-                                    <a class="btn btn-xs btn-info download" data-format="tsv" href="/explore/download/id/<%= query.id %>.tsv" style="z-index:2000;">TSV</a>
+                                    <a class="btn btn-xs btn-info download" data-format="csv" href="<%= BASE_PATH %>/explore/download/id/<%= query.id %>.csv" style="z-index:2000;">CSV</a>
+                                    <a class="btn btn-xs btn-info download" data-format="tsv" href="<%= BASE_PATH %>/explore/download/id/<%= query.id %>.tsv" style="z-index:2000;">TSV</a>
                                 <% end %>
 							<% end %>
 						</td>

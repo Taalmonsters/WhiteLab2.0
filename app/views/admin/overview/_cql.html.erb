@@ -1,5 +1,5 @@
 <h3>CQL Tester</h3>
-<%= form_tag({:url => '/admin/overview'}, {:method => 'get'}) do |f| %>
+<%= form_tag({:url => BASE_PATH + '/admin/overview'}, {:method => 'get'}) do |f| %>
 	<br />
 	<br />
 	<h5><%= t(:"instructions.keys.cql_tester_header") %></h5>
@@ -8,7 +8,7 @@
 	<br />
 	<div class="btn-group" role="group">
 		<%= submit_tag "Submit", :class => "btn btn-primary" %>
-		<button onclick="window.location='/admin/overview';" type="button" class="btn btn-default"><%= t('button_labels.keys.reset').capitalize %></button>
+		<button onclick="window.location='<%= BASE_PATH %>/admin/overview';" type="button" class="btn btn-default"><%= t('button_labels.keys.reset').capitalize %></button>
 	</div>
 	<br />
 	<br />

@@ -1,4 +1,4 @@
-<%= form_tag "/metadata/"+metadatum['label']+"/update", :id => 'metadatum-update-form', :class => "remote-form", :method => "PUT", :remote => true do %>
+<%= form_tag BASE_PATH+"/metadata/"+metadatum['label']+"/update", :id => 'metadatum-update-form', :class => "remote-form", :method => "PUT", :remote => true do %>
 	<div class="row">
 		<div class="errors col-xs-12 panel-error hidden"><div class="panel-body"></div></div>
 		<div class="col-xs-12 col-sm-6">

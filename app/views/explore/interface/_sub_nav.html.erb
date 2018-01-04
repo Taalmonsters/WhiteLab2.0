@@ -4,23 +4,23 @@
 			<% if action_name.eql?('corpora') %>
 				<li id="corpora_link" class="active"><a class="tablink" onclick="event.preventDefault();"><%= t(:"page_titles.keys.corpora").capitalize %></a></li>
 			<% else %>
-				<li id="corpora_link"><a class="tablink"  href="/explore/corpora<%= '?filter='+@filter if !@filter.blank? %>"><%= t(:"page_titles.keys.corpora").capitalize %></a></li>
+				<li id="corpora_link"><a class="tablink"  href="<%= BASE_PATH %>/explore/corpora<%= '?filter='+@filter if !@filter.blank? %>"><%= t(:"page_titles.keys.corpora").capitalize %></a></li>
 			<% end %>
 			<% if action_name.eql?('statistics') %>
 				<li id="statistics_link" class="active"><a class="tablink" onclick="event.preventDefault();"><%= t(:"page_titles.keys.statistics").capitalize %></a></li>
 			<% else %>
-				<li id="statistics_link"><a class="tablink"  href="/explore/statistics<%= '?filter='+@filter if !@filter.blank? %>"><%= t(:"page_titles.keys.statistics").capitalize %></a></li>
+				<li id="statistics_link"><a class="tablink"  href="<%= BASE_PATH %>/explore/statistics<%= '?filter='+@filter if !@filter.blank? %>"><%= t(:"page_titles.keys.statistics").capitalize %></a></li>
 			<% end %>
 			<% if action_name.eql?('ngrams') %>
 				<li id="ngrams_link" class="active"><a class="tablink" onclick="event.preventDefault();"><%= t(:"page_titles.keys.ngrams").capitalize %></a></li>
 			<% else %>
-				<li id="ngrams_link"><a class="tablink"  href="/explore/ngrams<%= '?filter='+@filter if !@filter.blank? %>"><%= t(:"page_titles.keys.ngrams").capitalize %></a></li>
+				<li id="ngrams_link"><a class="tablink"  href="<%= BASE_PATH %>/explore/ngrams<%= '?filter='+@filter if !@filter.blank? %>"><%= t(:"page_titles.keys.ngrams").capitalize %></a></li>
 			<% end %>
 		<% end %>
 		<% if !ENABLE_METADATA_FILTERING || action_name.eql?('document') %>
 			<li id="document_link" class="active"><a class="tablink" onclick="event.preventDefault();"><%= t(:"page_titles.keys.document").capitalize %></a></li>
 		<% else %>
-			<li id="document_link"><a class="tablink"  href="/explore/document"><%= t(:"page_titles.keys.document").capitalize %></a></li>
+			<li id="document_link"><a class="tablink"  href="<%= BASE_PATH %>/explore/document"><%= t(:"page_titles.keys.document").capitalize %></a></li>
 		<% end %>
 	</ul>
 	<% if !action_name.eql?('document') && ENABLE_METADATA_FILTERING %>

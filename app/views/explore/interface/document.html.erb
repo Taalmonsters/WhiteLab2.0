@@ -2,11 +2,11 @@
 <div id="document" class="explore-input-display" data-query-filter="<%= @query && !@query.filter.blank? ? @query.filter : "" %>" data-query-group="<%= @query && !@query.group.blank? ? @query.group : '' %>" data-query-pattern="<%= @query ? @query.patt : '' %>">
 	<div class="row small-form">
 		<div class="col-xs-10 col-sm-8 col-xs-offset-1 col-sm-offset-2">
-			<%= form_tag("/explore/document", id: "document-input-form", method: "get") do %>
+			<%= form_tag(BASE_PATH + "/explore/document", id: "document-input-form", method: "get") do %>
 				<%= text_field_tag :xmlid, @document ? @document.xmlid : nil, :class => "full-width-minus-siblings form-control" %>
 				<div class="btn-group" role="group" id="submit-group">
 					<button class="btn btn-primary submit"><%= t('button_labels.keys.search').capitalize %></button>
-					<button type="button" class="btn btn-default btn-reset" data-url="/explore/document"><%= t('button_labels.keys.reset').capitalize %></button>
+					<button type="button" class="btn btn-default btn-reset" data-url="<%= BASE_PATH %>/explore/document"><%= t('button_labels.keys.reset').capitalize %></button>
 				</div>
 			<% end %>
 		</div>
