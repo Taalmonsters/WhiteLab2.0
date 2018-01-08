@@ -5,7 +5,7 @@
 // achieve this.
 // NOTE: config/application.rb also contains a copy of this value,
 //       and the vhost file refers to it as well for Passenger.
-var BASE_PATH = '/opensonar_whitelab';
+var BASE_PATH = '/';   // e.g. set this to '/opensonar_whitelab' when mounting application on that URL
 
 var Whitelab = {
 	namespace : 'search',
@@ -478,7 +478,7 @@ $(document).on('click', '#result-pane ul.nav-tabs a', function(e) {
 	e.stopPropagation();
 	var ns = $("#main-div").data("namespace");
 	var page = $("div."+ns+"-input-display").attr("id");
-	window.location = "/"+ns+"/"+page+"?"+$(this).data("params")+"#results";
+	window.location = BASE_PATH + "/"+ns+"/"+page+"?"+$(this).data("params")+"#results";
 });
 
 $(document).on('click', '#info a', function(e) {
