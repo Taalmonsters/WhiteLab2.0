@@ -647,7 +647,7 @@ ul.examples {
       }
       .attributes {
         display: none;
-        &.active {
+        &.active, &.clicked {
           font-size: 12px;
           font-weight: normal;
           display: block;
