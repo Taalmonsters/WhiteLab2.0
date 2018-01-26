@@ -65,13 +65,11 @@ $(document).on('mouseout', '#document-content span.t > a', function(e) {
 	$(this).parent().parent().find('span.hoverdiv').first().removeClass('active');
 });
 
-/*
 $(document).on("click", "#document-content span.t > a", function(e){
 	e.preventDefault();
 	var currentTooltip = $(this).parent().parent().find('span.hoverdiv').first();
-	if (!currentTooltip.hasClass("clicked")) {
-		$(this).parent().parent().parent().find("span.hoverdiv.clicked").first().removeClass("clicked");
-		currentTooltip.addClass("clicked");
-	}
+	//if (!currentTooltip.hasClass("clicked")) {
+		//$(this).parent().parent().parent().find("span.hoverdiv.clicked").first().removeClass("clicked");
+		currentTooltip.toggleClass("clicked");
+	//}
 });
-*/

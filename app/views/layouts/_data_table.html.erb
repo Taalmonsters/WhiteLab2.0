@@ -3,7 +3,7 @@
 	<% idlabel = data_label %>
 <% end %>
 <% if url && @number && @offset %>
-<table class="table data-table table-hover table-striped" data-url="<%= url %>" data-number="<%= @number %>" data-offset="<%= @offset %>">
+<table class="table data-table table-hover table-striped" data-url="<%= BASE_PATH + url %>" data-number="<%= @number %>" data-offset="<%= @offset %>">
 <% else %>
 <table class="table table-hover table-striped">
 <% end %>
