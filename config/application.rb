@@ -65,4 +65,4 @@ end
 # to be directly accessible from .erb files)
 # NOTE: whitelab.js also contains a copy of this value,
 #       and the vhost file refers to it as well for Passenger.
-::BASE_PATH = '/'  # e.g. set this to '/opensonar_whitelab' when mounting application on that URL
+::BASE_PATH = ''  # e.g. set this to '/opensonar_whitelab' when mounting application on that URL
