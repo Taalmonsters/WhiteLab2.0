@@ -23,9 +23,9 @@ Whitelab.tour = {
 			if (Whitelab.tour.nextUrl != null)
 				window.location = Whitelab.tour.nextUrl;
 			else 
-				window.location = '/tour/end';
+				window.location = BASE_PATH + '/tour/end';
 		}).onexit(function() {
-			window.location = '/tour/end';
+			window.location = BASE_PATH + '/tour/end';
 		});
 		
 		Whitelab.tour.intro.setOptions({

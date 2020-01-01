@@ -1,28 +1,46 @@
 ---
 nl:
-  info_page: '<h2>Welkom bij OpenSoNaR+</h2><p></p><p><b>Credits:</b></p><p>Als het
-    gebruik van OpenSoNaR bijgedragen heeft aan uw werk, verleent u dan alstublieft
-    erkenning aan de makers van het STEVIN SoNaR referentie corpus van hedendaags,
-    geschreven Nederlands door het volgende paper te citeren:</p><p><b>Titel:</b>
-    The Construction of a 500-Million-Word Reference Corpus of Contemporary Written
-    Dutch<br><b>Auteurs:</b> Nelleke Oostdijk, Martin Reynaert, Véronique Hoste and
-    Ineke Schuurman</p><p>Dit is hoofdstuk 13 van het STEVIN boek "Essential Speech
-    and Language Technology for Dutch: Results by the STEVIN-programme", redactie:
-    Peter Spyns, Jan Odijk.</p><p><b>Bibtex referentie:</b></p><p>@incollection{StevinSONAR2013,<br>
-      booktitle = {Essential Speech and Language Technology for Dutch: Results by
-    the STEVIN-programme},<br>   chapter = {13},<br>   keywords = {Dutch corpus written
-    contemporary reference},<br>   publisher = {Springer Verlag},<br>   author = {Oostdijk,
-    Nelleke and Reynaert, Martin and Hoste, V''{e}ronique and Schuurman, Ineke},<br>
-      title = {The construction of a 500-million-word reference corpus of contemporary
-    written {D}utch},<br>   year = {2013},<br> }</p><p><b>Handleiding:</b></p><p>Een
-    handleiding in het Nederlands over de OpenSoNaR interface vindt u <a target="_blank"
-    rel="nofollow" href="http://black.uvt.nl/opensonar/OpenSoNaR%20Manual.pdf">hier</a>.<br>
-    Een handleiding in het Engels over het SoNaR corpus vindt u <a target="_blank"
-    rel="nofollow" href="http://ticclops.uvt.nl/SoNaR_end-user_documentation_v.1.0.4.pdf">hier</a>.</p><p><b>Dankwoord:</b></p><p>CQL
-    is ontwikkeld door de goede mensen van <a target="_blank" rel="nofollow" href="http://cwb.sourceforge.net/">IMS
-    Open Corpus Workbench</a>. Een mooie tutorial over CQL door Stefan Evert &amp;
-    het OCWB Development Team vindt u <a target="_blank" rel="nofollow" href="http://cwb.sourceforge.net/files/CQP_Tutorial/">hier</a>.</p><p>We
-    hebben veel waardering voor de elegantie van de ''Extended'' zoekoptie zoals ontworpen
-    door onze Zweedse collega''s van <a target="_blank" rel="nofollow" href="http://spraakbanken.gu.se/korp/#lang=eng">Språkbanken</a>
-    en geven dankbaar toe deze opnieuw geïmplementeerd te hebben in de ''Geavanceerd''
-    interface van OpenSoNaR.</p>'
+  info_page: '<h2>Welkom bij OpenSoNaR+</h2>
+<p></p><p>
+OpenSoNaR+ is een webinterface waarmee u zowel het STEVIN Nederlandstalig Referentiecorpus (SoNaR) als het Corpus Gesproken Nederlands (CGN) kunt benaderen, onafhankelijk van elkaar of in combinatie. Voor gebruikers die nog weinig ervaring hebben met het gebruik van corpusexploitatiesoftware biedt OpenSoNaR+ een eenvoudige interface die het mogelijk de corpora te doorzoeken op basis van woorden, lemma&#39;s en woordsoortaanduidingen. Meer ervaren en expert gebruikers kunnen gebruikmaken van de zoektaal CQL. Zoekacties kunnen nader worden aangescherpt door metadatafilters toe te passen. Resultaten kunnen in context nader worden bekeken en, waar het CGN-data betreft, ook worden beluisterd. Ook bestaat de mogelijkheid resultaten te exporteren. 
+
+<p></p><p>
+<h2>Documentatie</h2>
+</p><p>
+Een handleiding (in het Engels) over het SoNaR corpus vindt u <a href="http://ticclops.uvt.nl/SoNaR_end-user_documentation_v.1.0.4.pdf" target="_blank">hier</a>.
+</p><p>
+De CGN-documentatie is  <a href="http://tst-centrale.org/images/stories/producten/documentatie/cgn_website/doc_Dutch/start.htm" target="_blank">online</a>  beschikbaar. Als onderdeel van de documentatie zijn de diverse protocollen opgenomen zoals die bij het tot stand komen van het CGN zijn gebruikt (o.a. voor orthografische transcriptie, POS tagging en lemmatisering, fonetische transcriptie). Zie onder Versie 2.0/Protocollen
+
+<p></p><p>
+<h2>Referenties</h2>
+</p><p>
+
+Als het gebruik van OpenSoNaR bijgedragen heeft aan uw werk, verleent u dan alstublieft erkenning aan de makers van de corpora en de exploitatiesoftware door in presentaties en publicaties onderstaande papers te citeren:
+</p><p>
+Voor het STEVIN Nederlandstalige Referentiecorpus (SoNaR) - het referentiecorpus van het hedendaags, geschreven Nederlands:
+</p><p>
+Nelleke Oostdijk, Martin Reynaert, Véronique Hoste & Ineke Schuurman. 2013.  The Construction of a 500-Million-Word Reference Corpus of Contemporary Written Dutch. Hoofdstuk 13 in Peter Spyns & Jan Odijk (red.), Essential Speech and Language Technology for Dutch: Results by the STEVIN-programme. pp. 219-247. Springer Verlag
+</p><p><b>Bibtex referentie:</b></p><p><span class="bibtex">@incollection{StevinSONAR2013,<br /> booktitle = {Essential Speech and Language Technology for Dutch: Results by the STEVIN-programme},<br /> chapter = {13},<br /> keywords = {Dutch corpus written contemporary reference},<br /> publisher = {Springer Verlag},<br /> author = {Oostdijk, Nelleke and Reynaert, Martin and Hoste, V&#39;{e}ronique and Schuurman, Ineke},<br /> title = {The construction of a 500-million-word reference corpus of contemporary written {D}utch},<br /> year = {2013},<br /> }</span>
+
+</p><p>
+Voor het Corpus Gesproken Nederlands (CGN):
+</p><p>
+Nelleke Oostdijk. 2000. The Spoken Dutch Corpus. Overview and First evaluation. In Proceedings of the 3rd International Conference on Language Resources and Evaluation, Athens, 31 May- 2 June 2000. Athens, Greece. Vol. 2: 887-894. 
+
+
+</p><p>
+Voor OpenSoNaR+:
+</p><p>
+Matje van de Camp, Martin Reynaert & Nelleke Oostdijk. 2016. WhiteLab 2.0 A web interface for corpus exploitation. In: Jan Odijk & Arjan van Hessen (eds.): CLARIN in the Low Countries. To appear with Ubiquity Press.
+
+</p><p></p><p>
+<h2>Credits en contact informatie</h2>
+</p><p>
+CQL is ontwikkeld door het team van <a href="http://cwb.sourceforge.net/" target="_blank">IMS Open Corpus Workbench</a>. Een goede tutorial over CQL door Stefan Evert & het OCWB Development Team vindt u daar.
+</p><p>
+De elegantie van de &#39;Extended&#39; zoekoptie zoals ontworpen door collega&#39;s van de Zweedse <a href="https://spraakbanken.gu.se/korp/#?lang=en " target="_blank">Språkbanken</a>   was reden deze ook te implementeren in de &#39;Geavanceerd&#39; interface van OpenSoNaR+.
+</p><p>
+OpenSoNaR+ werd ontwikkeld door Matje van de Camp (De Taalmonsters) en Martin Reynaert (RU CLST) met financiële steun vanuit het <a href="http://www.clarin.nl/" target="_blank">CLARIN-NL</a> project.
+</p><p>
+<p>Mocht u suggesties hebben voor verbetering van OpenSoNaR+ of onverhoopt stuiten op onvolkomenheden, laat dat dan alstublieft weten via  <a href="http://zilla.taalmonsters.nl//" target="_blank">http://zilla.taalmonsters.nl/</a> of per email, gericht aan whitelab@taalmonsters.nl.</p>'
+

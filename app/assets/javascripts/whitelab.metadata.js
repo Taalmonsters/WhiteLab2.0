@@ -1,3 +1,5 @@
+var ENABLE_AND_OR_FIX = false; // JN WIP fix voor feit dat als je meerdere keren hetzelfde veld opgeeft, ze niet met OR gecombineerd worden (zie onder)
+
 Whitelab.metadata = {
 	filterTokenSafeLimit : 0,
 	
@@ -6,14 +8,33 @@ Whitelab.metadata = {
 		var filter = $('#metadata-filters').data('filter');
 		if (filter.length > 0) {
 			filter = filter.substr(1,filter.length - 2);
-			var parts = filter.split(')AND(');
-			for (var i = 0; i < parts.length; i++) {
-				var match = parts[i].match(/^(([A-Za-z0-9]+)_)*([A-Za-z0-9_\-]+)(\!*=|\>=*|\<=*)(.+)$/);
-				var group = "Metadata";
-				if (match[2] != null)
-					group = match[2];
-				Whitelab.metadata.addMetadataRule(group,match[3],Whitelab.search.operatorToValue(match[4]),match[5].replace(/"/g, ''));
+
+			if (ENABLE_AND_OR_FIX) {
+				// NOTE JN: AND/OR fix werkt maar gedeeltelijk. Bijv. 'coverage' server-operatie (om te berekenen hoeveel % van het corpus je selecteert
+				//   als je metadatavelden invult) moet ook worden aangepast, en misschien nog andere dingen.
+				var andParts = filter.split(')AND(');
+				for (var j = 0; j < andParts.length; j++) {
+					var andPart = andParts[j].substr(1, andParts[j].length - 2);
+					var parts = andPart.split(')OR(');
+					for (var i = 0; i < parts.length; i++) {
+						var match = parts[i].match(/^(([A-Za-z0-9]+)_)*([A-Za-z0-9_\-]+)(\!*=|\>=*|\<=*)(.+)$/);
+						var group = "Metadata";
+						if (match[2] != null)
+							group = match[2];
+						Whitelab.metadata.addMetadataRule(group,match[3],Whitelab.search.operatorToValue(match[4]),match[5].replace(/"/g, ''));
+					}
+				}
+	        } else {
+	            var parts = filter.split(')AND(');
+	            for (var i = 0; i < parts.length; i++) {
+		            var match = parts[i].match(/^(([A-Za-z0-9]+)_)*([A-Za-z0-9_\-]+)(\!*=|\>=*|\<=*)(.+)$/);
+	                var group = "Metadata";
+	                if (match[2] != null)
+		                group = match[2];
+	                Whitelab.metadata.addMetadataRule(group,match[3],Whitelab.search.operatorToValue(match[4]),match[5].replace(/"/g, ''));
+	            }
 			}
+
 		} else {
 			Whitelab.metadata.addMetadataRule(null,null,null,null);
 		}
@@ -26,13 +47,18 @@ Whitelab.metadata = {
 			i++;
 		}
 		if (group && key && operator && value)
-			$.getScript('/metadata/rule/new.js?rule_id='+i+'&group='+group+'&key='+key+'&operator='+operator+'&value='+value);
+			$.getScript(BASE_PATH + '/metadata/rule/new.js?rule_id='+i+'&group='+group+'&key='+key+'&operator='+operator+'&value='+value);
 		else
-			$.getScript('/metadata/rule/new.js?rule_id='+i);
+			$.getScript(BASE_PATH + '/metadata/rule/new.js?rule_id='+i);
 	},
 	
 	getFilterString : function() {
-		var filters = new Array();
+		if (ENABLE_AND_OR_FIX) {
+			var filtersPerField = {};
+			var n = 0;
+		} else {
+			var filters = new Array();
+		}
 		$("#metadata-rules .rule").each(function( index ) {
 			var label = $(this).find(".metadata-key-select").val().replace("Metadata_", "");
 			var input = $(this).find(".metadata-input").val().replace(/&/g,"%26").replace(/\\/g,"%5C");
@@ -45,13 +71,36 @@ Whitelab.metadata = {
 			if (label && input && input.length > 0) {
 				var f = label+op+"\""+input+"\"";
 				f = f.replace(/field\:/g,"");
-				filters.push(f);
+
+				if (ENABLE_AND_OR_FIX) {
+					//JN_AND_OR
+					if (! (label in filtersPerField)) {
+						filtersPerField[label] = [];
+					}
+					filtersPerField[label].push(f);
+					n++;
+				} else {
+					filters.push(f);
+				}
 			}
 		});
-		if (filters.length > 0) {
-			var filterQuery = "("+filters.join(")AND(")+")";
-			return filterQuery;
-		}
+		if (ENABLE_AND_OR_FIX) {
+			if (n > 0) {
+				var filterQueryParts = [];
+				for (var field in filtersPerField) {
+					var filterValues = filtersPerField[field];
+					if (filterValues.length > 0)
+						filterQueryParts.push("(" + filterValues.join(")OR(") + ")");
+				}
+				var filterQuery = "(" + filterQueryParts.join(")AND(") + ")";
+				return filterQuery;
+			}
+		} else {
+			if (filters.length > 0) {
+	            var filterQuery = "("+filters.join(")AND(")+")";
+				return filterQuery;
+	        }
+	    }
 		return "";
 	},
 	
@@ -75,7 +124,7 @@ Whitelab.metadata = {
 		if (filterString.length > 0) {
 			$('span.metadata-selected-percentage').html('<div class="tiny-loading-icon"></div>');
 			$('span.metadata-selected-absolute').html('<div class="tiny-loading-icon"></div>');
-			$.getScript('/metadata/coverage.js?filter='+filterString);
+			$.getScript(BASE_PATH + '/metadata/coverage.js?filter='+filterString);
 		} else {
 			$('span.metadata-selected-percentage').html('100.0 %');
 			$('span.metadata-selected-absolute').html($('#metadata-filters').data('total-tokens-delimited'));
@@ -120,7 +169,7 @@ $(document).on('change', '.metadata-key-select', function(e) {
 	var key = $(this).val().replace(group+'_','');
 	var rule_id = $(this).parent().parent().attr('id');
 	if (group.length > 0 && key.length > 0 && rule_id.length > 0)
-		$.getScript('/metadata/'+group+'/'+key+'/values.js?rule_id='+rule_id);
+		$.getScript(BASE_PATH + '/metadata/'+group+'/'+key+'/values.js?rule_id='+rule_id);
 	else {
 		$(this).parent().parent().find('select.metadata-input').first().replaceWith('<input class="metadata-input" type="text">');
 		Whitelab.metadata.updateCoverage();

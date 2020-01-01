@@ -5,7 +5,7 @@
 		<div class="col-xs-10 col-xs-offset-1">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<%= form_tag("/explore/ngrams#results", id: "ngrams-input-form", method: "get", :class => "full-height form-horizontal") do %>
+					<%= form_tag(BASE_PATH + "/explore/ngrams#results", id: "ngrams-input-form", method: "get", :class => "full-height form-horizontal") do %>
 						<div class="row">
 							<%= hidden_field_tag :patt, "" %>
 							<%= hidden_field_tag :filter, "" %>
@@ -60,7 +60,7 @@
 					</div>
 					<div class="col-xs-12 right-aligned">
 						<button id="ngrams-submit-form" class="btn btn-primary submit"><%= t('button_labels.keys.go').capitalize %></button>
-						<button id="ngrams-reset-form" class="btn btn-default btn-reset" data-url="/explore/ngrams"><%= t('button_labels.keys.reset').capitalize %></button>
+						<button id="ngrams-reset-form" class="btn btn-default btn-reset" data-url="<%= BASE_PATH %>/explore/ngrams"><%= t('button_labels.keys.reset').capitalize %></button>
 						<input class="loadxml explore-xml" type="file" onchange="Whitelab.explore.importXMLQuery(event,this,'ngrams');">
 						<button type="button" class="btn btn-info btn-import btn-import-xml"><%= t('button_labels.keys.import').capitalize %> XML</button>
 						<% gap_values_enabled = @whitelab.gap_values_enabled %>

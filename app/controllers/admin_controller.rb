@@ -8,7 +8,7 @@ class AdminController < ApplicationController
   # Load admin page
   def page
     if !@admin_logged_in
-      redirect_to('/admin/login') and return
+      redirect_to(BASE_PATH + '/admin/login') and return
     elsif !@page
       redirect_to(admin_page_path(:page => 'index')) and return
     end

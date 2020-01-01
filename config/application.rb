@@ -55,3 +55,14 @@ end
 ::FILTER_TOKEN_SAFE_LIMIT = 500000
 ::CORPUS_TITLE_FIELD = 'Corpus_title'
 ::COLLECTION_TITLE_FIELD = 'Collection_title'
+
+# JN 2017-10-31
+# Templates use this to get the base URL.
+# This is a quick fix without knowing the ins and outs of Rails.
+# There is almost certainly a better, more 'Railsy' way to
+# achieve this (according to several pages, request.base_path 
+# should contain the same value, but this object doesn't appear 
+# to be directly accessible from .erb files)
+# NOTE: whitelab.js also contains a copy of this value,
+#       and the vhost file refers to it as well for Passenger.
+::BASE_PATH = ''  # e.g. set this to '/opensonar_whitelab' when mounting application on that URL

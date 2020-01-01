@@ -380,6 +380,7 @@ ul.wysihtml5-toolbar {
 .accordion-heading {
   @extend .panel-heading;
   padding: 0;
+  height: 50px;
   a {
     display: block;
     width: 100%;
@@ -647,7 +648,7 @@ ul.examples {
       }
       .attributes {
         display: none;
-        &.active {
+        &.active, &.clicked {
           font-size: 12px;
           font-weight: normal;
           display: block;

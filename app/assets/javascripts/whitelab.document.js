@@ -15,18 +15,18 @@ Whitelab.document = {
 		if (tab === 'content') {
 			if (qid != null && qid !== '') {
 				Whitelab.debug('A: /'+namespace+'/document/'+xmlid+'/query/'+qid+'/'+tab+'.js?offset='+offset+'&number='+number);
-				$.getScript('/'+namespace+'/document/'+xmlid+'/query/'+qid+'/'+tab+'.js?offset='+offset+'&number='+number);
+				$.getScript(BASE_PATH + '/'+namespace+'/document/'+xmlid+'/query/'+qid+'/'+tab+'.js?offset='+offset+'&number='+number);
 			} else {
 				Whitelab.debug('B: /'+namespace+'/document/'+xmlid+'/'+tab+'.js?offset='+offset+'&number='+number);
-				$.getScript('/'+namespace+'/document/'+xmlid+'/'+tab+'.js?offset='+offset+'&number='+number);
+				$.getScript(BASE_PATH + '/'+namespace+'/document/'+xmlid+'/'+tab+'.js?offset='+offset+'&number='+number);
 			}
 		} else {
 			if (qid != null && qid !== '') {
 				Whitelab.debug('C: /'+namespace+'/document/'+xmlid+'/query/'+qid+'/'+tab+'.js');
-				$.getScript('/'+namespace+'/document/'+xmlid+'/query/'+qid+'/'+tab+'.js');
+				$.getScript(BASE_PATH + '/'+namespace+'/document/'+xmlid+'/query/'+qid+'/'+tab+'.js');
 			} else {
 				Whitelab.debug('ddddD: /'+namespace+'/document/'+xmlid+'/'+tab+'.js');
-				$.getScript('/'+namespace+'/document/'+xmlid+'/'+tab+'.js');
+				$.getScript(BASE_PATH + '/'+namespace+'/document/'+xmlid+'/'+tab+'.js');
 			}
 		}
 	}
@@ -63,4 +63,13 @@ $(document).on('mouseover', '#document-content span.t > a', function(e) {
 $(document).on('mouseout', '#document-content span.t > a', function(e) {
 	e.preventDefault();
 	$(this).parent().parent().find('span.hoverdiv').first().removeClass('active');
+});
+
+$(document).on("click", "#document-content span.t > a", function(e){
+	e.preventDefault();
+	var currentTooltip = $(this).parent().parent().find('span.hoverdiv').first();
+	//if (!currentTooltip.hasClass("clicked")) {
+		//$(this).parent().parent().parent().find("span.hoverdiv.clicked").first().removeClass("clicked");
+		currentTooltip.toggleClass("clicked");
+	//}
 });

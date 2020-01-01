@@ -6,18 +6,18 @@
 			<% if !@page || @page.eql?('overview') %>
 				<li id="overview_link" class="active"><a class="tablink" onclick="event.preventDefault();"><%= t(:"page_titles.keys.overview").capitalize %></a></li>
 			<% else %>
-				<li id="overview_link"><a class="tablink" href="/admin/overview"><%= t(:"page_titles.keys.overview").capitalize %></a></li>
+				<li id="overview_link"><a class="tablink" href="<%= BASE_PATH %>/admin/overview"><%= t(:"page_titles.keys.overview").capitalize %></a></li>
 			<% end %>
 			<% end %>
 			<% if @page && @page.eql?('index') %>
 				<li id="index_link" class="active"><a class="tablink" onclick="event.preventDefault();"><%= t(:"page_titles.keys.index").capitalize %></a></li>
 			<% else %>
-				<li id="index_link"><a class="tablink" href="/admin/index"><%= t(:"page_titles.keys.index").capitalize %></a></li>
+				<li id="index_link"><a class="tablink" href="<%= BASE_PATH %>/admin/index"><%= t(:"page_titles.keys.index").capitalize %></a></li>
 			<% end %>
 			<% if @page && @page.eql?('interface') %>
 				<li id="interface_link" class="active"><a class="tablink" onclick="event.preventDefault();"><%= t(:"page_titles.keys.interface").capitalize %></a></li>
 			<% else %>
-				<li id="interface_link"><a class="tablink" href="/admin/interface"><%= t(:"page_titles.keys.interface").capitalize %></a></li>
+				<li id="interface_link"><a class="tablink" href="<%= BASE_PATH %>/admin/interface"><%= t(:"page_titles.keys.interface").capitalize %></a></li>
 			<% end %>
 			<li id="interface_link">
 				<%= link_to t(:"page_titles.keys.logout").capitalize, signout_path, method: 'DELETE' %>

@@ -481,7 +481,7 @@ Whitelab.cql = {
 								for (var i = 0; i < vals.length; i++) {
 									vals[i] = vals[i].replace(/[^0-9a-z\-]/g, "");
 								}
-								$.getScript("/search/pos/features.js?pos="+pos+"&values="+vals.join(","));
+								$.getScript(BASE_PATH + "/search/pos/features.js?pos="+pos+"&values="+vals.join(","));
 							}
 						} else {
 							$("#extended-pos .searchinput").html('<input type="text" id="pos-text" name="pos" value="'+vals.join(" ")+'" />');

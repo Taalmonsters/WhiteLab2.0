@@ -7,7 +7,7 @@ Whitelab.explore = {
 
 //		if ($("#main-div[data-namespace='explore'] #query-details").length > 0) {
 //			var id = $('#query-details').data("query-id");
-//			$.getScript('/explore/details/id/'+id+'.js');
+//			$.getScript(BASE_PATH + '/explore/details/id/'+id+'.js');
 //		}
 
 		if ($("#document-display").length > 0)
@@ -28,7 +28,7 @@ Whitelab.explore = {
 	
 	getQueryResult : function(number,offset) {
 		var id = $('div#result-pane').data("query-id");
-		$.getScript('/explore/result/id/'+id+'.js?number='+number+'&offset='+offset);
+		$.getScript(BASE_PATH + '/explore/result/id/'+id+'.js?number='+number+'&offset='+offset);
 	},
 	
 	importXMLQuery: function(e, el, page) {
@@ -38,7 +38,7 @@ Whitelab.explore = {
 			var formData = new FormData();
 			formData.append('file', file);
 			$.ajax({
-		       url : '/explore/'+page+'.json',
+		       url : BASE_PATH + '/explore/'+page+'.json',
 		       type : 'POST',
 		       data : formData,
 		       processData: false,  // tell jQuery not to process the data
@@ -55,7 +55,7 @@ Whitelab.explore = {
 	},
 	
 	removeQuery : function(queryId) {
-		$.getScript('/explore/remove/id/'+queryId+'.js');
+		$.getScript(BASE_PATH + '/explore/remove/id/'+queryId+'.js');
 	},
 	
 	corpora : {
@@ -70,11 +70,11 @@ Whitelab.explore = {
 		},
 		
 		loadBubbleChart : function(option, filter) {
-			$.getScript('/explore/bubble/option/'+option+'.js?filter='+filter);
+			$.getScript(BASE_PATH + '/explore/bubble/option/'+option+'.js?filter='+filter);
 		},
 		
 		loadTreemap : function(option, filter) {
-			$.getScript('/explore/treemap/option/'+option+'.js?filter='+filter);
+			$.getScript(BASE_PATH + '/explore/treemap/option/'+option+'.js?filter='+filter);
 		}
 		
 	},
@@ -151,7 +151,7 @@ Whitelab.explore = {
 			var f = $(item).data("field");
 			var typeValue = $(item).find(":selected").val();
 			if (typeValue == "pos")
-				$.getScript('/explore/pos/select.js?element_class=field-input&element=%23field-'+f+'&value='+value);
+				$.getScript(BASE_PATH + '/explore/pos/select.js?element_class=field-input&element=%23field-'+f+'&value='+value);
 			else
 				$("#field-"+f).html('<input class="field-input" type="text">');
 		},
@@ -237,7 +237,7 @@ Whitelab.explore = {
 		init : function() {
 			
 			var id = $('div#result-pane').data("query-id");
-			$.getScript('/explore/result/id/'+id+'.js');
+			$.getScript(BASE_PATH + '/explore/result/id/'+id+'.js');
 			
 		}
 	}
@@ -246,7 +246,7 @@ Whitelab.explore = {
 $(document).on('click', '#corpora-treemap-update', function(e) {
 	$('#display').html('<span class="loading"></span>');
 	var filter = Whitelab.metadata.getFilterString();
-	window.location = '/explore/corpora?option='+$('#corpora-treemap-select').val()+'&filter='+filter;
+	window.location = BASE_PATH + '/explore/corpora?option='+$('#corpora-treemap-select').val()+'&filter='+filter;
 });
 
 $(document).on('click', '#ngrams-submit-form', function(e) {
@@ -257,7 +257,7 @@ $(document).on('click', '#ngrams-submit-form', function(e) {
 
 $(document).on('click', '#ngrams-reset-form', function(e) {
     e.preventDefault();
-    window.location = '/explore/ngrams';
+    window.location = BASE_PATH + '/explore/ngrams';
 });
 
 $(document).on('change', '#ngrams #size', function(e) {
@@ -294,14 +294,14 @@ $(document).on('click', '#statistics-input-form button.submit', function(e) {
 
 $(document).on('click', '#statistics-input-form button.reset', function(e) {
     e.preventDefault();
-    window.location = '/explore/statistics';
+    window.location = BASE_PATH + '/explore/statistics';
 });
 
 $(document).on('click', '#main-div[data-namespace="explore"] button.show-document', function(e) {
 	e.preventDefault();
 	e.stopPropagation();
 	var docpid = $(this).data("docpid");
-	window.location = '/explore/document/'+docpid;
+	window.location = BASE_PATH + '/explore/document/'+docpid;
 });
 
 $(document).on('click', '#main-div[data-namespace="explore"] tr.hit-row', function(e) {
@@ -311,7 +311,7 @@ $(document).on('click', '#main-div[data-namespace="explore"] tr.hit-row', functi
 	var f = $(this).data("first-index");
 	var l = $(this).data("last-index");
 	if ($("#"+docpid+"_"+f+"_"+l).html().length == 0) {
-		$.getScript('/explore/kwic.js?docpid='+docpid+'&first_index='+f+'&last_index='+l+'&size=50');
+		$.getScript(BASE_PATH + '/explore/kwic.js?docpid='+docpid+'&first_index='+f+'&last_index='+l+'&size=50');
 	}
 	$("#"+docpid+"_"+f+"_"+l).toggleClass("hidden");
 });
@@ -323,12 +323,12 @@ $(document).on('click', '#main-div[data-namespace="explore"] tr.doc-row', functi
 	var hits = $(this).data("hits");
 	var qid = $("#result-pane").data("query-id");
 	if ($("#"+docpid).html().length == 0) {
-		$.getScript('/explore/doc_hits/id/'+qid+'.js?view=1&docpid='+docpid+'&hits='+hits);
+		$.getScript(BASE_PATH + '/explore/doc_hits/id/'+qid+'.js?view=1&docpid='+docpid+'&hits='+hits);
 	}
 	$("#"+docpid).toggleClass("hidden");
 });
 
 $(document).on("click", "#main-div[data-namespace=\"explore\"] #history-label button.export", function(e) {
 	e.preventDefault();
-	window.location = '/explore/export/id/'+$("#result-pane").data("query-id")+'.xml';
+	window.location = BASE_PATH + '/explore/export/id/'+$("#result-pane").data("query-id")+'.xml';
 });

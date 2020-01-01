@@ -39,7 +39,7 @@ Whitelab.search = {
 	
 	getQueryResult : function(number,offset) {
 		var id = $('div#result-pane').data("query-id");
-		$.getScript('/search/result/id/'+id+'.js?number='+number+'&offset='+offset);
+		$.getScript(BASE_PATH + '/search/result/id/'+id+'.js?number='+number+'&offset='+offset);
 	},
 	
 	operatorToValue : function(op) {
@@ -49,11 +49,11 @@ Whitelab.search = {
 	},
 	
 	removeQuery : function(queryId) {
-		$.getScript('/search/remove/id/'+queryId+'.js');
+		$.getScript(BASE_PATH + '/search/remove/id/'+queryId+'.js');
 	},
 	
 	removeExportQuery : function(queryId) {
-		$.getScript('/export/remove/id/'+queryId+'.js');
+		$.getScript(BASE_PATH + '/export/remove/id/'+queryId+'.js');
 	},
 	
 	advanced : {
@@ -85,19 +85,19 @@ Whitelab.search = {
 		addColumn : function() {
 			Whitelab.search.advanced.debug("Whitelab.search.advanced.addColumn");
 			var c = document.getElementsByClassName("advanced-column").length;
-			$.getScript('/search/advanced/column.js?column='+c);
+			$.getScript(BASE_PATH + '/search/advanced/column.js?column='+c);
 		},
 		
 		addBoxToColumn : function(c) {
 			Whitelab.search.advanced.debug("Whitelab.search.advanced.addBoxToColumn");
 			var b = $("#column"+c).find('div.advanced-box').length;
-			$.getScript('/search/advanced/box.js?column='+c+'&box='+b);
+			$.getScript(BASE_PATH + '/search/advanced/box.js?column='+c+'&box='+b);
 		},
 		
 		addFieldToBoxInColumn : function(b, c, token_type, operator, input, batch, sensitive, startsen, endsen, repeat_from, repeat_to) {
 			Whitelab.search.advanced.debug("Whitelab.search.advanced.addFieldToBoxInColumn");
 			var f = $("#column"+c+"-box"+b).find('div.advanced-field').length;
-			var url = '/search/advanced/field.js?column='+c+'&box='+b+'&field='+f;
+			var url = BASE_PATH + '/search/advanced/field.js?column='+c+'&box='+b+'&field='+f;
 			if (token_type != null)
 				url = url + '&token_type='+token_type;
 			if (operator != null)
@@ -262,16 +262,16 @@ Whitelab.search = {
 			var typeValue = $(row).find(".token-type").find(":selected").val();
 			var operatorValue = $(row).find(".token-operator").find(":selected").val();
 			if (typeValue == "pos" && (operatorValue == "is" || operatorValue == "not"))
-				$.getScript('/search/pos/select.js?element_class=advanced-pos-select&element=%23column'+c+'-box'+b+'-field'+f+'%20div.token-input-field');
+				$.getScript(BASE_PATH + '/search/pos/select.js?element_class=advanced-pos-select&element=%23column'+c+'-box'+b+'-field'+f+'%20div.token-input-field');
 			else if (["word", "lemma", "pos", "phonetic"].indexOf(typeValue) == -1 && (operatorValue == "is" || operatorValue == "not"))
-				$.getScript('/search/pos/select.js?element_class=advanced-pos-select&element=%23column'+c+'-box'+b+'-field'+f+'%20div.token-input-field&feat='+typeValue);
+				$.getScript(BASE_PATH + '/search/pos/select.js?element_class=advanced-pos-select&element=%23column'+c+'-box'+b+'-field'+f+'%20div.token-input-field&feat='+typeValue);
 			else
 				$("#column"+c+"-box"+b+"-field"+f+" div.token-input-field").html('<input placeholder="<any>" type="text">');
 		},
 		
 		parseQuery : function() {
 			var view = Whitelab.metadata.getView();
-			var url = '/search/advanced?patt='+encodeURIComponent(Whitelab.cql.advancedQueryStringToCQL())+'&filter='+encodeURIComponent(Whitelab.metadata.getFilterString())+'&within='+$("#within").val()+'&view='+view;
+			var url = BASE_PATH + '/search/advanced?patt='+encodeURIComponent(Whitelab.cql.advancedQueryStringToCQL())+'&filter='+encodeURIComponent(Whitelab.metadata.getFilterString())+'&within='+$("#within").val()+'&view='+view;
 			if (view > 2)
     			url = url+'&group='+encodeURIComponent($("#metadata-options #group").val());
             if ($("#sample_type").val() === "sample" && $("#sample_size").val().length > 0) {
@@ -353,7 +353,7 @@ Whitelab.search = {
 				var formData = new FormData();
 				formData.append('file', file);
 				$.ajax({
-			       url : '/search/expert.json',
+			       url : BASE_PATH + '/search/expert.json',
 			       type : 'POST',
 			       data : formData,
 			       processData: false,  // tell jQuery not to process the data
@@ -371,7 +371,7 @@ Whitelab.search = {
 		
 		parseQuery : function() {
 			var view = Whitelab.metadata.getView();
-			var url = '/search/expert?patt='+encodeURIComponent($("#expert-input").val())+'&filter='+encodeURIComponent(Whitelab.metadata.getFilterString())+'&within='+$("#within").val()+'&view='+view;
+			var url = BASE_PATH + '/search/expert?patt='+encodeURIComponent($("#expert-input").val())+'&filter='+encodeURIComponent(Whitelab.metadata.getFilterString())+'&within='+$("#within").val()+'&view='+view;
 			if (view > 2)
     			url = url+'&group='+encodeURIComponent($("#metadata-options #group").val());
             if ($("#sample_type").val() === "sample" && $("#sample_size").val().length > 0) {
@@ -427,7 +427,7 @@ Whitelab.search = {
 		
 		parseQuery : function() {
 			var view = Whitelab.metadata.getView();
-			var url = '/search/extended?patt='+encodeURIComponent(Whitelab.cql.extendedQueryStringToCQL())+'&filter='+encodeURIComponent(Whitelab.metadata.getFilterString())+'&within='+$("#within").val()+'&view='+view;
+			var url = BASE_PATH + '/search/extended?patt='+encodeURIComponent(Whitelab.cql.extendedQueryStringToCQL())+'&filter='+encodeURIComponent(Whitelab.metadata.getFilterString())+'&within='+$("#within").val()+'&view='+view;
 			if (view > 2)
 			    url = url+'&group='+encodeURIComponent($("#metadata-options #group").val())+'#results';
             if ($("#sample_type").val() === "sample" && $("#sample_size").val().length > 0) {
@@ -456,7 +456,7 @@ Whitelab.search = {
 			var view = $('div#result-pane').data("query-view")+0;
 			var group = $('div#result-pane').data("query-group");
 			if (view < 8 || group.length > 0) {
-				$.getScript('/search/result/id/'+id+'.js');
+				$.getScript(BASE_PATH + '/search/result/id/'+id+'.js');
 			}
 			
 		},
@@ -523,7 +523,7 @@ Whitelab.search = {
 			    params['gap_values_tsv'] = $('#gap_values_tsv').val();
 			}
 			Whitelab.debug(params);
-			window.location = '/search/'+page+'?'+params+'#results';
+			window.location = BASE_PATH + '/search/'+page+'?'+params+'#results';
 		}
 		
 	},
@@ -540,7 +540,7 @@ Whitelab.search = {
 		
 		parseQuery : function() {
 			var patt = Whitelab.cql.simpleQueryStringToCQL($("#patt").val(), false);
-			window.location = '/search/simple?patt='+encodeURIComponent(patt)+'&view=1#results';
+			window.location = BASE_PATH + '/search/simple?patt='+encodeURIComponent(patt)+'&view=1#results';
 		}
 		
 	}
@@ -668,7 +668,7 @@ $(document).on('click', '#main-div[data-namespace="search"] button.show-document
 	e.stopPropagation();
 	var docpid = $(this).data("docpid");
 	var qid = $("#result-pane").data("query-id");
-	window.location = '/search/document/'+docpid+'/query/'+qid;
+	window.location = BASE_PATH + '/search/document/'+docpid+'/query/'+qid;
 });
 
 $(document).on('change', '#main-div[data-namespace="search"] select.group-by-select', function(e) {
@@ -678,7 +678,7 @@ $(document).on('change', '#main-div[data-namespace="search"] select.group-by-sel
 			$("#context-options").removeClass("hidden");
 			var qid = $("#result-pane").data("query-id");
 			group = group.replace(/;/g,'%3B');
-			$.getScript('/search/context_options/id/'+qid+'.js?group='+group);
+			$.getScript(BASE_PATH + '/search/context_options/id/'+qid+'.js?group='+group);
 		} else
 			Whitelab.search.result.groupResults(group);
 	}
@@ -724,7 +724,7 @@ $(document).on('click', '#context-options .update-context-options', function(e) 
 	// Regenerate context options partial with new group
 	var qid = $("#result-pane").data("query-id");
 	group = group.replace(/;/g,'%3B');
-	$.getScript('/search/context_options/id/'+qid+'.js?group='+group);
+	$.getScript(BASE_PATH + '/search/context_options/id/'+qid+'.js?group='+group);
 });
 
 $(document).on('click', '#main-div[data-namespace="search"] tr.hit-row', function(e) {
@@ -735,7 +735,7 @@ $(document).on('click', '#main-div[data-namespace="search"] tr.hit-row', functio
 	var l = $(this).data("last-index");
 	if ($("#"+docpid+"_"+f+"_"+l).html().length == 0) {
 		$("#"+docpid+"_"+f+"_"+l).html('<span class="loading"></span>');
-		$.getScript('/search/kwic.js?docpid='+docpid+'&first_index='+f+'&last_index='+l+'&size=50');
+		$.getScript(BASE_PATH + '/search/kwic.js?docpid='+docpid+'&first_index='+f+'&last_index='+l+'&size=50');
 	}
 	$("#"+docpid+"_"+f+"_"+l).toggleClass("hidden");
 });
@@ -748,7 +748,7 @@ $(document).on('click', '#main-div[data-namespace="search"] tr.doc-row', functio
 	var qid = $("#result-pane").data("query-id");
 	if ($("#"+docpid).html().length == 0) {
 		$("#"+docpid).html('<span class="loading"></span>');
-		$.getScript('/search/doc_hits/id/'+qid+'.js?view=1&docpid='+docpid+'&hits='+hits);
+		$.getScript(BASE_PATH + '/search/doc_hits/id/'+qid+'.js?view=1&docpid='+docpid+'&hits='+hits);
 	}
 	$("#"+docpid).toggleClass("hidden");
 });
@@ -763,7 +763,7 @@ $(document).on('click', '#simple button.btn-submit', function(e) {
 $(document).on('change', 'div.search-input-display input, div.search-input-display select, #expert-input', function(e) {
 	var searchpage = $("#main-div[data-namespace='search'] div.search-input-display").attr("id");
 	if (searchpage === 'extended' && $(this).attr("id") === 'pos-text') {
-		$.getScript("/search/pos/features.js?pos="+$(this).val());
+		$.getScript(BASE_PATH + "/search/pos/features.js?pos="+$(this).val());
 	} else if (searchpage === 'advanced') {
 	    Whitelab.search.advanced.setTokenInput(this);
 	}
@@ -777,7 +777,7 @@ $(document).on('change', 'div.search-input-display input, div.search-input-displ
 $(document).on('click', '#main-div[data-namespace="search"] a.tablink', function(e) {
 	e.preventDefault();
 	e.stopPropagation();
-	var url = "/search/"+$(this).data('page');
+	var url = BASE_PATH + "/search/"+$(this).data('page');
 	var params = $(this).data("params");
 	var patt = $(this).data("patt");
 	var filter = Whitelab.metadata.getFilterString();
@@ -820,5 +820,5 @@ function hover_metadata(e, el) {
 
 $(document).on("click", "#main-div[data-namespace=\"search\"] #history-label button.export", function(e) {
 	e.preventDefault();
-	window.location = '/search/export/id/'+$("#result-pane").data("query-id")+'.xml';
+	window.location = BASE_PATH + '/search/export/id/'+$("#result-pane").data("query-id")+'.xml';
 });

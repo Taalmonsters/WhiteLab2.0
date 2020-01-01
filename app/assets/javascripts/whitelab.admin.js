@@ -5,7 +5,7 @@ Whitelab.admin = {
 	init : function() {
 		
 		if ($('#metadata div.metadata-list').length > 0) {
-			$.getScript(Whitelab.getListPage('#metadata','/metadata/index.js',null,null,null,null));
+			$.getScript(Whitelab.getListPage('#metadata',BASE_PATH + '/metadata/index.js',null,null,null,null));
 			Whitelab.admin.meta_dialog = $( "#metadatum-dialog" ).dialog({
 				closeOnEscape: true,
 				draggable: false,
@@ -21,13 +21,13 @@ Whitelab.admin = {
 					$('#metadatum-dialog div.edit-form').html('<span class="loading"></span>');
 					$('#metadatum-dialog div.value-list').html('<span class="loading"></span>');
 					$('#metadatum-dialog').dialog('option', 'title', 'Loading...');
-					$.getScript(Whitelab.getListPage('#metadata','/metadata/index.js',null,null,null,null));
+					$.getScript(Whitelab.getListPage('#metadata',BASE_PATH + '/metadata/index.js',null,null,null,null));
 				}
 			});
 		}
 		
 		if ($('#pos-tags div.pos-tags-list').length > 0) {
-			$.getScript(Whitelab.getListPage('#pos-tags','/pos/index.js',null,null,null,null));
+			$.getScript(Whitelab.getListPage('#pos-tags',BASE_PATH + '/pos/index.js',null,null,null,null));
 			Whitelab.admin.pos_dialog = $( "#pos-tag-dialog" ).dialog({
 				closeOnEscape: true,
 				draggable: false,
@@ -47,7 +47,7 @@ Whitelab.admin = {
 		}
 		
 		if ($('#pos-heads div.pos-heads-list').length > 0) {
-			$.getScript(Whitelab.getListPage('#pos-heads','/poshead/index.js',null,null,null,null));
+			$.getScript(Whitelab.getListPage('#pos-heads',BASE_PATH + '/poshead/index.js',null,null,null,null));
 			Whitelab.admin.pos_dialog = $( "#pos-head-dialog" ).dialog({
 				closeOnEscape: true,
 				draggable: false,
@@ -81,7 +81,7 @@ Whitelab.admin = {
 		var queryRow = $("tr.benchmark-query.waiting").first();
 		queryRow.removeClass("waiting").addClass("running");
 		queryRow.find("td.status").html("Running");
-		$.getScript('/admin/benchmark?id='+queryRow.attr('id')+'&cql='+queryRow.find("td.cql").html());
+		$.getScript(BASE_PATH + '/admin/benchmark?id='+queryRow.attr('id')+'&cql='+queryRow.find("td.cql").html());
 		if ($("tr.benchmark-query.waiting").length > 0) {
 			Whitelab.admin.performBenchmarkTests();
 		}
@@ -101,12 +101,12 @@ Whitelab.admin = {
 	},
 
 	getPosHeadList : function(sort,order) {
-		url = '/poshead/index.js';
+		url = BASE_PATH + '/poshead/index.js';
 		Whitelab.admin.getList(url,null,null,sort,order);
 	},
 
 	getPosTagList : function(number,offset,sort,order) {
-		url = '/pos/index.js';
+		url = BASE_PATH + '/pos/index.js';
 		Whitelab.admin.getList(url,number,offset,sort,order);
 	}
 	
@@ -115,19 +115,19 @@ Whitelab.admin = {
 $(document).on( "click", "#metadata tr.metadatum", function() {
 	Whitelab.admin.meta_dialog.dialog( "open" );
 	var label = $(this).data("metadatum-label");
-	$.getScript('/metadata/'+label+'/edit.js');
+	$.getScript(BASE_PATH + '/metadata/'+label+'/edit.js');
 });
 
 $(document).on( "click", "#pos-tags tr.pos-tag", function() {
 	Whitelab.admin.pos_dialog.dialog( "open" );
 	var label = $(this).data("pos-tag-label");
-	$.getScript('/pos/'+label+'/show.js');
+	$.getScript(BASE_PATH + '/pos/'+label+'/show.js');
 });
 
 $(document).on( "click", "#pos-heads tr.pos-head", function() {
 	Whitelab.admin.pos_dialog.dialog( "open" );
 	var label = $(this).data("pos-head-label");
-	$.getScript('/poshead/'+label+'/show.js');
+	$.getScript(BASE_PATH + '/poshead/'+label+'/show.js');
 });
 
 $(document).on('click', 'button.benchmark-report-button', function(e) {

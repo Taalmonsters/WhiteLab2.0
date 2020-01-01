@@ -57,7 +57,7 @@ Next, install the following essentials:
 $ sudo apt-get install build-essential libssl-dev libyaml-dev libreadline-dev openssl curl git-core zlib1g-dev bison libxml2-dev libxslt1-dev libcurl4-openssl-dev libgmp3-dev nodejs
 ```
 
-Download the latest stable Ruby source code from [here](https://www.ruby-lang.org/en/downloads/) and unpack the archive. Go into the newly created directory and use the following commands to configure, make and install Ruby:
+The application currently may not work correctly with Ruby 2.3 or above. Download the Ruby source code for version 2.2.7 [here](https://www.ruby-lang.org/en/downloads/) and unpack the archive. Go into the newly created directory and use the following commands to configure, make and install Ruby:
 
 ```
 $ ./configure
@@ -66,6 +66,10 @@ $ sudo make install
 ```
 
 After installation is complete, you may delete the Ruby archive and the directory where you unpacked it.
+
+If you prefer, you can also use [rvm](https://rvm.io/), the Ruby Version Manager to install Ruby 2.2.7.
+
+In either case, be careful that there are no conflicts with any pre-existing ruby installation (e.g. see the note about Passenger Phusion below).
 
 Apache and Phusion Passenger
 ============================
@@ -148,7 +152,7 @@ NB: Do NOT adjust the "config.x.total_token_count" property. This will be set by
 Next issue the following command:
 
 ```
-$ rake assets:precompile dp:drop db:create db:migrate RAILS_ENV=production
+$ rake assets:precompile db:drop db:create db:migrate RAILS_ENV=production
 ```
 
 This will precompile all css, images and javascript files, and also create the MySQL database to store the user profiles and query results.
@@ -156,6 +160,38 @@ This will precompile all css, images and javascript files, and also create the M
 ```
 NB: Any "rake" commands will initialize the application in the background to check for errors. During first initialization the application will
 retrieve lists of available metadata en documents from the index and stores them for use in the interface (i.e. to dynamically calculate filter coverage). If your index is of considerable size, this may take some time. Please do not interrupt the process.
+```
+
+In certain cases, running the above command may generate an error message. Here's an overview of some error messages and possible causes:
+
+```
+undefined method `keys' for nil:NilClass
+/vol1/redirect-sites/opensonar/whitelab/app/helpers/blacklab_helper.rb:393
+```
+
+This might indicate that your corpus does not have a metadata field with the name "Corpus_title". To correct this, when indexing your corpus, either place a setting "meta-Corpus_title=mycorpusname" in a file called indexer.properties in the current directory, or pass an option "---meta-Corpus_title mycorpusname" (note the 3 dashes!) to the IndexTool. See [Indexing with BlackLab](http://inl.github.io/BlackLab/indexing-with-blacklab.html) for more information.
+
+```
+undefined method `[]' for nil:NilClass
+/vol1/redirect-sites/opensonar/whitelab/app/helpers/blacklab_helper.rb:630
+```
+
+This might indicate that BlackLab Server could not be reached. Please check that the BlackLab Server WAR is in the correct place and Tomcat has deployed it. It might be helpful to try accessing BlackLab Server directly through the browser, e.g. http://yourhostname:8080/blacklab-server/.
+
+```
+ERROR: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock'
+```
+
+This might indicate that the MySQL socket file is in a different place on your flavour of Linux. Locate the socket file (e.g. on CentOS, it's in /var/lib/mysql/mysql.sock) and edit the file config/database.yml with the correct path.
+
+```
+ERROR: cannot load such file -- bundler/setup
+```
+
+This might indicate that Passenger Phusion is using the wrong version of Ruby. To indicate the correct version of Ruby Passenger should use, edit the passenger.conf file in the Apache conf.d directory (e.g. /etc/httpd/conf.d/passenger.conf) and change the PassengerRuby setting to the correct ruby binary. If you used rvm on CentOS to install Ruby 2.2.7, that would be:
+
+```
+PassengerRuby /usr/local/rvm/gems/ruby-2.2.7/wrappers/ruby
 ```
 
 If you are running WhiteLab 2.0 in production mode, you should generate a secret key base for the application using the following command:

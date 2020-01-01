@@ -7,7 +7,7 @@
 <br />
 <div>
 <h4><%= t(:'form_labels.keys.enter_query') %></h4>
-<%= form_tag({:url => '/admin/overview'}, {:method => 'get', :multipart => true}) do %>
+<%= form_tag({:url => BASE_PATH + '/admin/overview'}, {:method => 'get', :multipart => true}) do %>
 	<%= hidden_field_tag 'tab', 'qbm' %>
 	<%= text_field_tag :query, @cql_query ? @cql_query.query : nil, {:class => "form-control"} %>
 	<br />
@@ -24,7 +24,7 @@
 <div class="panel panel-info panel-info-lg hidden">
 	<div class="panel-body"><%= t(:'instructions.keys.batch_cql_description').html_safe %></div>
 </div>
-<%= form_tag({:url => '/admin/overview'}, :multipart => true) do %>
+<%= form_tag({:url => BASE_PATH + '/admin/overview'}, :multipart => true) do %>
 	<%= hidden_field_tag 'tab', 'qbm' %>
 	<%= file_field_tag :file, :accept => '.txt' %>
 	<br />

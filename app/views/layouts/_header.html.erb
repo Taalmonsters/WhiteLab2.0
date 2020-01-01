@@ -44,7 +44,7 @@
 					<a id="start-tour"><%= image_tag "info_icon.png", :class => "icon" %></a>
 				</li>
 				<li class="left-spaced">
-					<a id="admin-icon" href="/admin/login"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+					<a id="admin-icon" href="<%= BASE_PATH %>/admin/login"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
 				</li>
 				<% if @namespace.eql?('search') %>
 				<li id="main-search" class="left-spaced active">
@@ -52,7 +52,7 @@
 				</li>
 				<% else %>
 				<li id="main-search" class="left-spaced">
-					<a href="/search/simple"><%= t(:"page_titles.keys.search").capitalize %></a>
+					<a href="<%= BASE_PATH %>/search/simple"><%= t(:"page_titles.keys.search").capitalize %></a>
 				</li>
 				<% end %>
 				<% if @namespace.eql?('explore') %>
@@ -61,7 +61,7 @@
 				</li>
 				<% else %>
 				<li id="main-explore" class="left-spaced">
-					<a href="<%= ENABLE_METADATA_FILTERING ? '/explore/corpora' : '/explore/document' %>"><%= t(:"page_titles.keys.explore").capitalize %></a>
+					<a href="<%= BASE_PATH %><%= ENABLE_METADATA_FILTERING ? '/explore/corpora' : '/explore/document' %>"><%= t(:"page_titles.keys.explore").capitalize %></a>
 				</li>
 				<% end %>
 				<% if @namespace.eql?('static_pages') %>
@@ -70,18 +70,23 @@
 				</li>
 				<% else %>
 				<li id="main-info" class="left-spaced">
-					<a href="/info"><%= t(:"page_titles.keys.info").capitalize %></a>
+					<a href="<%= BASE_PATH %>/info"><%= t(:"page_titles.keys.info").capitalize %></a>
 				</li>
 				<% end %>
+				<li class="left-spaced">
+					<a href="https://portal.clarin.inl.nl/opensonar_frontend/opensonar/search">
+						<b>WARNING:</b> THIS IS AN OLDER VERSION; CLICK HERE FOR THE LATEST VERSION OF OPENSONAR/CGN
+					</a>
+				</li>
 			</ul>
 
 			<!-- Right Nav Section -->
 			<div class="right">
 				<div class="visible-sm visible-md visible-lg">
-					<a href="/"> <%= image_tag "logo.png" %> </a>
+					<a href="<%= BASE_PATH %>/"> <%= image_tag "logo.png" %> </a>
 				</div>
 				<div class="visible-xs">
-					<a href="/"> <%= image_tag "logo.png", :class => "img-xs" %> </a>
+					<a href="<%= BASE_PATH %>/"> <%= image_tag "logo.png", :class => "img-xs" %> </a>
 				</div>
 			</div>
 		</nav>

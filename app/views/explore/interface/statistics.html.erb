@@ -4,7 +4,7 @@
 		<div class="col-xs-10 col-xs-offset-1">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<%= form_tag("/explore/statistics#results", id: "statistics-input-form", method: "get", :class => "full-height form-horizontal") do %>
+					<%= form_tag(BASE_PATH + "/explore/statistics#results", id: "statistics-input-form", method: "get", :class => "full-height form-horizontal") do %>
 						<%= hidden_field_tag :filter, "" %>
 						<%= hidden_field_tag :view, @query && [2,8,4].include?(@query.view) ? @query.view : 8 %>
 						<%= hidden_field_tag :offset, @view == 4 ? 0 : 0 %>
@@ -20,7 +20,7 @@
 						</div>
 						<div class="col-xs-12 right-aligned">
 							<button class="btn btn-primary submit"><%= t('button_labels.keys.go').capitalize %></button>
-							<button class="btn btn-default btn-reset" data-url="/explore/statistics"><%= t('button_labels.keys.reset').capitalize %></button>
+							<button class="btn btn-default btn-reset" data-url="<%= BASE_PATH %>/explore/statistics"><%= t('button_labels.keys.reset').capitalize %></button>
 							<input class="loadxml explore-xml2" type="file" onchange="Whitelab.explore.importXMLQuery(event,this,'statistics');">
 							<button type="button" class="btn btn-info btn-import btn-import-xml"><%= t('button_labels.keys.import').capitalize %> XML</button>
 						</div>

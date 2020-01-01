@@ -4,7 +4,7 @@
 		<h3>WhiteLab Tester</h3>
 		<br />
 		<br />
-		<%= form_tag("/test", id: "test-form", method: "get") do %>
+		<%= form_tag(BASE_PATH + "/test", id: "test-form", method: "get") do %>
 			<%= number_field_tag(:id, value = @id, options = { :min => 1, :step => 1 }) %>
 			<%= submit_tag('Go', class: 'btn btn-primary') %>
 		<% end %>
